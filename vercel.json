@@ -1,14 +1,22 @@
-{
-    "version": 2,
-    "builds": [
-    {
-        "src": "Genplus_Production/wsgi.py",    
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "50mb" }
-    }
-    ],
-    "routes": [
-    { "src": "/(.*)", "dest": "Genplus_Production/wsgi.py" } 
 
-    ]
+
+
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Genplus_Production/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "runtime": "python3.11"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "Genplus_Production/wsgi.py"
+    }
+  ]
 }
