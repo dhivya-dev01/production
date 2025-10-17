@@ -1,0 +1,987 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content"> 
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">GCF Purchase Order  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey Colored Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/po-list">GCF Purchase Order </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                    
+                                    <div class="card"> 
+
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                           
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                    
+                                                        <form id="add_new" method="POST">
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="order_date" class="form-label">Purchase Number</label>
+                                                                    <input class="form-control" type="number" name="purchase_number" id="purchase_number" value="{{purchase_number}}">
+                                                                </div>
+
+
+                                                                 <div class="col-md-3 mt-3">
+                                                                     <label for="order_date" class="form-label">Purchase Date</label>
+                                                                     <input class="form-control" type="date" name="purchase_date" id="purchase_date" required>
+                                                                 </div>
+
+                                                                 <div class="col-md-3 mt-3">
+                                                                    <label for="product_id" class="form-label">Supplier </label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div> 
+                                                                
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="price_list" class="form-label">Price List Details</label>
+                                                                    <input type="text" class="form-control" name="price_list" id="price_list">
+                                                                </div>
+
+                                                                
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="bag" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in product %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                              <div class="col-md-3 mt-3">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id" class="form-label">Count</label>
+                                                                        
+                                                                         <select id="count_id" name="count_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in count %}
+                                                                        <option value="{{ k.id }}">{{ k.count }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="per_bag" class="form-label">Gauge</label>
+                                                                    <select id="gauge_id" name="gauge_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in gauge %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3 mt-3 ">
+                                                                    <label for="quantity" class="form-label">TEX/GSM</label>
+                                                                    <select id="tex_id" name="tex_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in tex %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rate" class="form-label">DIA</label>
+                                                                    <input type="number"  class="form-control" id="dia" name="dia"  >
+                                                                </div>
+                                                                
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rolls" class="form-label">Rolls</label>
+                                                                    <input type="number" class="form-control" id="rolls" name="rolls" oninput="calculateValueTotal()">
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="wt_per_roll" class="form-label">Wt. Per Roll</label>
+                                                                    <input type="number" class="form-control" id="wt_per_roll" name="wt_per_roll" oninput="calculateValueTotal()">
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="quantity" class="form-label">Qty in kg</label>
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" readonly>
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rate" class="form-label">Rate</label>
+                                                                    <input type="number" class="form-control" id="rate" name="rate" oninput="calculateValueTotal()">
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="total_amount" class="form-label">Total Amount</label>
+                                                                    <input type="number" step="0.01" class="form-control" id="total_amount" name="total_amount" readonly>
+                                                                </div>
+
+                                                               
+
+
+                                                               
+                                                                <div class="col-md-2 mt-5" >
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="button" id="update" class="btn btn-primary mb-1 " onclick="addRow()">Add</button>
+                                                                </div>
+                                                       
+                                                            </div> 
+                    
+                    
+                    
+                                                    </div>
+
+
+                                                  
+
+                                                    <div class="col-md-4" style="border-left: 1px solid #e2e5e8; padding-left: 10px;">
+                                                        <!-- <h5 >Deliver To:</h5>  -->
+                                                        <section class="hk-sec-wrapper">
+                                                            <div class="row">
+                                                                <div class="row">
+                                                                    <div class="col-md-6 mt-3 ">
+                                                                        <label for="company_name" class="form-label">Company Name</label>
+                                                                        <input class="form-control" id="company_name" name="company_name" type="text" value="Mirra" placeholder="Name" >
+                                                                    </div> 
+
+ 
+                                                                    
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="knitting" class="form-label">Knitting</label>
+                                                                        <select id="knitting" name="knitting" class="single-select">
+                                                                            <option value="company">Select</option>
+                                                                            {% for k in party %}
+                                                                            <option value="{{k.id}}">{{k.name}}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+
+
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="ph_email" class="form-label">Delivery Date</label>
+                                                                        <input class="form-control" id="deliver_date" name="deliver_date" type="date">
+                                                                    </div>
+
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="bag" class="form-label">Fabric</label>
+                                                                        <select id="deliver_fabric_id" name="deliver_fabric_id" class="form-control form-select single-select" >
+                                                                            <option value="">Select</option>
+                                                                            {% for k in product %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="rolls" class="form-label">Rolls</label> 
+                                                                        <input type="number" class="form-control" id="deliver_rolls" name="deliver_rolls">
+                                                                    </div>
+<!--     
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="wt_per_roll" class="form-label">Wt. Per Roll</label>
+                                                                        <input type="number" class="form-control" id="deliver_wt_per_roll" name="deliver_wt_per_roll" readonly>
+                                                                    </div>
+                                                                    
+                                                                    <div class="col-md-6 mt-3">
+                                                                        <label for="wt_per_roll" class="form-label">Total Amount</label>
+                                                                        <input type="number" class="form-control" id="delivery_amount" name="delivery_amount" readonly>
+                                                                    </div> -->
+                                                                   
+                                                                <div class="col-md-6 mt-5" >
+                                                                    <button type="button" class="btn btn-raised btn-primary me-5 mb-2" onclick="addDeliveryRow()">+</button>
+                                                                </div>                                                                </div>
+
+                                                                <!-- </div> -->
+                                                                <div class="row mt-4">
+                                                                    <div class="col-sm">
+                                                                        <!-- <div class="table-wrap">
+                                                                            <table id="delivery_table" class="table table-responsive table-hover w-100 display pb-30"> -->
+                                                                              
+                                                                            <div class="dt-responsive table-responsive table-hover">
+                                                                                <table id="delivery_table"  class="table table-striped table-bordered nowrap">
+                                                                                 {% csrf_token %}
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <!-- <th>#</th> -->
+                                                                                        <th >Fabric</th>
+                                                                                        <th>Knitting</th> 
+                                                                                        <th>Delivery Date</th>
+                                                                                        <th>Rolls</th>
+                                                                                        <!-- <th>Wt. Per Roll</th>
+                                                                                        <th>Total Amount</th> -->
+                                                                                        <th style="display: none;">company Name</th>
+                                                                                        <th style="display: none;">Fabric id</th>
+                                                                                        <th style="display: none;">Knitting id</th>
+                                                                                        <!-- <th>Wt Per Roll</th>
+                                                                                        <th>Total Amount</th> -->
+                                                                                        <th>Action</th>
+                                                                                    </tr> 
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <!-- <tr>
+                                                                                        <td colspan="5" class="text-center">No data</td>
+                                                                                    </tr> -->
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div> 
+
+
+                                                
+                                                <!-- <form id="add_new"> -->
+                                                    <div class="card-body">
+                                                        <div class="table-responsive table-desi">
+                                                            <table id="purchaseTable" class="table table-striped table-bordered nowrap">
+                                                               {% csrf_token %}
+                                                                <thead>
+                                                                    <tr>
+                                                                    
+                                                                        <th>Count</th>
+                                                                        <th>fabric</th>
+                                                                        <th>Gauge</th>
+                                                                        <th>Tex</th>
+                                                                        <th>Dia</th>
+                                                                        <th>Rolls</th>
+                                                                        <th>Wt. Per Roll</th>
+                                                                        <th>Qty in kg</th>
+                                                                        <th>Rate</th>
+                                                                        <th>Total Amount</th>
+                                                                        <th>Action</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Rows will be dynamically added here -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                 
+                                                    
+                                                <div class="row">
+                    
+                                                    <div class="col-md-8">
+                                                        
+                                                    </div>
+                                                    <!-- <div class="col-md-3"></div> -->
+                                                    <div class="col-md-4">
+                                                    <div class=" m-b-30">
+                                                        <div class="card-body">            
+                                                            <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2">Summary Table</th>
+                                                                    </tr> 
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Total Quantity</td>
+                                                                        <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Sub Total</td>
+                                                                        <td align="end" colspan="2" id="sub_total_placeholder">0.00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Total Tax</td>
+                                                                        <td align="end" colspan="2" id="tax_placeholder">0.00</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Round off</td>
+                                                                        <td align="end" colspan="2" id="round_off">0.00</td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td>Grand Total</td>
+                                                                        <td style="background-color: #428bca; color: black; font-size: 21px" align="end" colspan="2" id="total_payable">0.00</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>     
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <div class="" style="text-align: center; "  >
+                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                    <button type="submit" id="submit_button" class="btn btn-primary">Save</button>
+
+
+                                                </div>
+                                            </div> </form>
+                                        </div>
+                                    </div>
+
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+<script>
+
+function calculateValueTotal() {
+        // Get input values
+        let rolls = parseFloat(document.getElementById("rolls").value) || 0;
+        let wtPerRoll = parseFloat(document.getElementById("wt_per_roll").value) || 0;
+        let rate = parseFloat(document.getElementById("rate").value) || 0;
+
+        // Calculate quantity in kg
+        let quantity = rolls * wtPerRoll;
+        document.getElementById("quantity").value = quantity.toFixed(2); // Set with 2 decimal places
+
+        // Calculate total amount
+        let totalAmount = quantity * rate;
+        document.getElementById("total_amount").value = totalAmount.toFixed(2); // Set with 2 decimal places
+    }
+
+
+    
+
+// ````````````````````````````````` 06-02-2025 ````````````````````````````````
+
+
+// Function to get total rolls from the purchase table for the selected fabric
+function getPurchaseTableRolls(fabricId) {
+    let totalRolls = 0;
+    let fabricFound = false; // Track if fabric exists in the purchase table
+
+    $("#purchaseTable tbody tr").each(function () {
+        let rowFabricId = $(this).find("td:eq(8)").text().trim(); // Fabric ID in column 9
+        let rolls = parseInt($(this).find("td:eq(5)").text().trim()) || 0; // Rolls in column 6
+
+        if (rowFabricId === fabricId) {
+            totalRolls += rolls;
+            fabricFound = true;
+        }
+    });
+
+    return fabricFound ? totalRolls : -1; // -1 means fabric is not found
+}
+
+
+
+// Function to get total rolls from the delivery table for the selected fabric
+function getDeliveryTableRolls(fabricId) {
+    let totalRolls = 0;
+
+    $("#delivery_table tbody tr").each(function () {
+        let rowFabricId = $(this).data("fabric-id");
+        let rolls = parseInt($(this).find("td:eq(3)").text().trim()) || 0;
+
+        if (rowFabricId == fabricId) { // Ensure comparison works correctly
+            totalRolls += rolls;
+        }
+    });
+
+    return totalRolls; // Correctly returns the sum of all added rolls
+}
+
+
+function addDeliveryRow() {
+    let fabricId = $("#deliver_fabric_id").find(":selected").val();
+    let fabricName = $("#deliver_fabric_id").find(":selected").text();  // Get fabric name
+    let rollsToAdd = $("#deliver_rolls").val().trim();
+    rollsToAdd = rollsToAdd === "" ? NaN : parseInt(rollsToAdd);
+
+    console.log("Fabric ID:", fabricId);
+    console.log("Fabric Name:", fabricName);
+    console.log("Rolls to Add:", rollsToAdd);
+
+    if (!fabricId || isNaN(rollsToAdd) || rollsToAdd <= 0) {
+        alert("❌ Please select a valid fabric and enter a valid number of rolls!");
+        return;
+    }
+
+    let purchaseRolls = getPurchaseTableRolls(fabricId);
+    let currentDeliveryRolls = getDeliveryTableRolls(fabricId);
+
+    console.log("Purchase Rolls:", purchaseRolls);
+    console.log("Current Delivery Rolls:", currentDeliveryRolls);
+
+    if (purchaseRolls === -1) {
+        alert("⚠️ This fabric is not available in the purchase records. Cannot proceed.");
+        return;
+    }
+
+    let remainingRolls = purchaseRolls - currentDeliveryRolls;
+    console.log("Remaining Rolls:", remainingRolls);
+
+    if (rollsToAdd > remainingRolls) {
+        alert(`❌ You can only add ${remainingRolls} more rolls. Cannot exceed purchased rolls.`);
+        return;
+    }
+
+    // Proceed to add the row
+    let companyName = $("#company_name").val();
+    let knittingId = $("#knitting").find(":selected").val();
+
+    let knitting = $("#knitting option:selected").text(); 
+    let deliverDate = $("#deliver_date").val();  
+
+    let newRow = `<tr data-fabric-id="${fabricId}">
+                    <td>${fabricName}</td>  <!-- Display Fabric Name -->
+                    <td>${knitting}</td>
+                    <td>${deliverDate}</td>
+                    <td>${rollsToAdd}</td>
+                    <td style="display:none">${companyName}</td>
+                    <td style="display:none">${fabricId}</td>
+                    <td style="display:none">${knittingId}</td>
+                    
+                    <td><button onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+                  </tr>`;
+
+    $("#delivery_table tbody").append(newRow);
+}
+
+
+
+
+function storeDeliveryTblValues() { 
+    var TableData = [];
+    $('#delivery_table tr').each(function(row, tr) {
+        TableData[row] = {
+            "company_name": $(tr).find('td:eq(4)').text(),
+            "fabric_id": $(tr).find('td:eq(5)').text(),
+            "knitting_id": $(tr).find('td:eq(6)').text(),
+            // "wt_per_roll": $(tr).find('td:eq(7)').text(),
+            // "total_amount": $(tr).find('td:eq(8)').text(),
+            "fabric": $(tr).find('td:eq(0)').text(),
+            "knitting": $(tr).find('td:eq(1)').text(), 
+            "delivery_date": $(tr).find('td:eq(2)').text(),
+            "rolls": $(tr).find('td:eq(3)').text()   // Add this line
+        };
+    });
+    TableData.shift();   // Remove the first empty row
+    return TableData;
+    console.log('table-data:',TableData);
+    console.log('rolls:',rolls);
+}
+
+
+
+
+
+// Function to remove a row from the delivery table
+function removeRow(button) {
+    $(button).closest("tr").remove();
+}
+
+
+// ``````````````````````````````````````````
+
+function storeTblValues() {
+    var TableData = [];
+
+    // Iterate over each row in the table
+    $('#purchaseTable tbody tr').each(function(index, tr) {
+        var count = $(tr).find('td:eq(0)').text().trim();
+        var product_id = $(tr).find('td:eq(8) span').text().trim();  // Ensure correct retrieval
+        var product_name = $(tr).find('td:eq(1)').text().trim();
+        var gauge = $(tr).find('td:eq(2)').text().trim();
+        var tex = $(tr).find('td:eq(3)').text().trim();
+        var dia = $(tr).find('td:eq(4)').text().trim();
+        var rolls = $(tr).find('td:eq(5)').text().trim();
+        var wt_per_roll = $(tr).find('td:eq(6)').text().trim();
+        var quantity = $(tr).find('td:eq(7)').text().trim();
+        var rate = $(tr).find('td:eq(9)').text().trim();
+        var total_amount = $(tr).find('td:eq(10)').text().trim();
+        var count_id = $(tr).find('td:eq(11)').text().trim();
+        var gauge_id = $(tr).find('td:eq(12)').text().trim();
+        var tex_id = $(tr).find('td:eq(13)').text().trim();
+
+        console.log("Row Data:", { count, product_id, product_name, gauge, tex, dia, rolls, wt_per_roll, quantity, rate, total_amount });
+
+        if (count && product_id && gauge && dia) {
+            TableData.push({
+                "count": count,
+                "product_id": product_id,
+                "product_name": product_name,
+                "gauge": gauge, 
+                "tex": tex,
+                "dia": dia,
+                "rolls": rolls,
+                "wt_per_roll": wt_per_roll,
+                "quantity": quantity,
+                "rate": rate,
+                "total_amount": total_amount,
+                'count_id':count_id,
+                'gauge_id':gauge_id,
+                'tex_id':tex_id
+            });
+        } else {
+            console.log("Skipping row due to missing data...");
+        }
+    });
+
+    console.log("Stored Table Values:", TableData);
+    return TableData;
+}
+
+function getCSRFToken() {
+    let csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
+    return csrfToken ? csrfToken[1] : null;
+}
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault();
+    console.log("Submit button clicked");
+
+    var TableData = storeTblValues();
+    console.log("Knitting Table Data:", TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'The knitting table is empty. Please add items before submitting.', 
+            'danger', 
+            "{% static 'assets/images/notification/error-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    var DeliveryTableData = storeDeliveryTblValues();
+    console.log("Delivery Table Data:", DeliveryTableData);
+
+    if (confirm("Are you sure you want to save this purchase order?")) {
+        var formData = new FormData(this);
+        formData.append('chemical_data', JSON.stringify(TableData));
+        formData.append('delivery_data', JSON.stringify(DeliveryTableData));
+
+        // Append total values
+        formData.append('total_quantity', $('#qty_total_placeholder').text().trim());
+        formData.append('sub_total', $('#sub_total_placeholder').text().trim());
+        formData.append('tax_total', $('#tax_placeholder').text().trim());
+        formData.append('round_off', $('#round_off').text().trim());
+        formData.append('total_payable', $('#total_payable').text().trim());
+
+        $.ajax({
+            type: "POST",
+            url: "/gcf-po-add/",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr) {
+                console.log("Sending AJAX request...");
+                $('#submit').prop('disabled', true).text('Processing...');
+                xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+            },
+            success: function(response) { 
+                console.log("Server Response:", response);
+                $('#submit').prop('disabled', false).text('Save');
+
+                if (status === 'Success') {
+                    notifier.show(
+                        'Success!', 
+                        'Purchase Order successfully added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                    $('#add_new')[0].reset();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to add the Purchase Order. Please try again.',  
+                        'danger',  
+                        "{% static 'assets/images/notification/error-48.png' %}", 
+                        4000 
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert('Error while adding data');
+                $('#submit').prop('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach event listeners for real-time calculations
+    document.getElementById("rolls").addEventListener("input", calculateAmount);
+    document.getElementById("wt_per_roll").addEventListener("input", calculateAmount);
+});
+
+
+
+function calculateAmount() {
+    var quantity = parseFloat(document.getElementById("rolls").value) || 0;
+    var rate = parseFloat(document.getElementById("wt_per_roll").value) || 0;
+    var amount = quantity * rate;
+    document.getElementById("quantity").value = amount.toFixed(2);
+}
+
+
+// `````````````````````````````````````````````````` End delivery table datas ```````````````````````````````````````````````````````
+
+    
+$('.single-select').select2({
+        dropdownParent: $('#add_new')
+    }); 
+    
+
+  
+var first = true; 
+
+function remove_row(mrow) { 
+    $(mrow).closest('tr').remove();
+} 
+
+ 
+// ```````````````````````````````````````````````````````````````
+
+
+
+function addRow() {
+    alert('yes');
+
+    var productSelect = $("#fabric_id");
+    var productId = productSelect.val();
+    var productText = productSelect.find("option:selected").text();
+
+    var countSelect = $("#count_id");
+    var countId = countSelect.val();
+    var countText = countSelect.find("option:selected").text();
+
+    var gaugeSelect = $("#gauge_id");
+    var gaugeId = gaugeSelect.val();
+    var gaugeText = gaugeSelect.find("option:selected").text();
+
+    var texSelect = $("#tex_id");
+    var texId = texSelect.val();
+    var texText = texSelect.find("option:selected").text();
+
+    var dia = $("#dia").val();
+    var rate = parseFloat($("#rate").val()) || 0; // Added rate check
+    var rolls = parseFloat($("#rolls").val()) || 0;
+    var wt_per_roll = parseFloat($("#wt_per_roll").val()) || 0;
+    var quantity = parseFloat($("#quantity").val()) || 0;
+    var total_amount = parseFloat($("#total_amount").val()) || 0;
+
+    // Validate input fields
+    if (!productId || !countId || !gaugeId || !texId || !dia || !rate || rolls <= 0 || wt_per_roll <= 0 || quantity <= 0 || total_amount <= 0) {
+        alert("Please fill all fields with valid values before adding a row.");
+        return;
+    }
+
+    var tableBody = $("#purchaseTable tbody");
+    var productExists = false;
+
+    // Iterate through table rows to check if the product already exists
+    tableBody.find("tr").each(function () {
+        var rowProductId = $(this).find("td:eq(8) span").text();
+        var rowCountId = $(this).find("td:eq(11) span").text();
+        var rowGaugeId = $(this).find("td:eq(12) span").text();
+        var rowTexId = $(this).find("td:eq(13) span").text();
+        var rowDia = $(this).find("td:eq(4)").text();
+        var rowRate = parseFloat($(this).find("td:eq(9)").text()) || 0; // Extracting rate
+
+        if (rowProductId === productId && rowCountId === countId && rowGaugeId === gaugeId && rowTexId === texId && rowDia === dia && rowRate === rate) {
+            // Update existing row values
+            var currentRolls = parseFloat($(this).find("td:eq(5)").text()) || 0;
+            var currentQuantity = parseFloat($(this).find("td:eq(7)").text()) || 0;
+            var currentTotalAmount = parseFloat($(this).find("td:eq(10)").text()) || 0;
+
+            var newRolls = currentRolls + rolls;
+            var newQuantity = currentQuantity + quantity;
+            var newTotalAmount = currentTotalAmount + total_amount;
+
+            $(this).find("td:eq(5)").text(newRolls);
+            $(this).find("td:eq(7)").text(newQuantity);
+            $(this).find("td:eq(9)").text(newTotalAmount);
+
+            productExists = true;
+            return false; // Exit loop once found
+        }
+    });
+
+    // If the product does not exist, add a new row
+    if (!productExists) {
+        var newRow = `
+            <tr>
+                <td class="text-start">${countText}</td>
+                <td class="text-start">${productText}</td> 
+                <td class="text-end">${gaugeText}</td>
+                <td class="text-end">${texText}</td>
+                <td class="text-end">${dia}</td>
+                <td class="text-end">${rolls}</td>
+                <td class="text-end">${wt_per_roll}</td>
+                <td class="text-end">${quantity}</td>
+                 
+                <td id="product_id" style="display:none"><span>${productId}</span></td>
+                <td class="text-end">${rate}</td> 
+
+                <td class="text-end">${total_amount}</td> 
+                <td id="count_id" style="display:none"><span>${countId}</span></td>
+                <td id="gauge_id" style="display:none"><span>${gaugeId}</span></td>
+                <td id="tex_id" style="display:none"><span>${texId}</span></td>
+                <td>
+                    <button class="btn btn-xs btn-primary" type="button" onclick="editRow(this)">
+                        <i class="feather icon-edit"></i>
+                    </button>
+                    <button class="btn btn-xs btn-danger" type="button" onclick="removeRow(this)">
+                        <i class="feather icon-trash-2"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+
+        tableBody.append(newRow); 
+        calculateTotalValue();
+
+    }
+
+    
+    resetFields();
+}
+
+
+
+
+var editIndex = -1;  
+
+function editRow(mrow) {
+    // Get the row index and assign to editIndex 
+    editIndex = $(mrow).closest('tr').index();
+
+    // Fetch the values from the table row
+    var count = $(mrow).closest('tr').find('td:eq(0)').text();                 // Quantity
+    var fabric = $(mrow).closest('tr').find('td:eq(1)').text();                 // Quantity
+    var gauge = $(mrow).closest('tr').find('td:eq(2)').text();                 // Quantity
+    var tex = $(mrow).closest('tr').find('td:eq(3)').text();                 // Quantity
+    var dia = $(mrow).closest('tr').find('td:eq(4)').text();                 // Quantity
+    var rolls = $(mrow).closest('tr').find('td:eq(5)').text();                 // Quantity
+    var wt_per_roll = $(mrow).closest('tr').find('td:eq(6)').text();                 // Quantity
+    var quantity = $(mrow).closest('tr').find('td:eq(7)').text();                 // Quantity
+
+    // Set the form fields with the values from the table row
+    $("#count").val(count);
+    $("#fabric").val(fabric);
+    $("#gauge").val(gauge);
+    $("#tex").val(tex);
+    $("#rolls").val(rolls);
+    $("#wt_per_roll").val(wt_per_roll);
+    $("#quantity").val(quantity);
+
+    // Remove the row from the table
+    
+    $(mrow).closest('tr').remove();
+}
+
+
+
+
+function resetFields() {
+
+    // document.getElementById('count').value = ''; 
+    $('#fabric_id').val('').trigger("change");
+    $('#count_id').val('').trigger("change");
+    $('#gauge_id').val('').trigger("change");
+    $('#tex_id').val('').trigger("change");
+    document.getElementById('total_amount').value = ''; 
+    document.getElementById('dia').value = ''; 
+    document.getElementById('rolls').value = ''; 
+    document.getElementById('wt_per_roll').value = ''; 
+    document.getElementById('quantity').value = ''; 
+}
+
+
+
+
+
+
+function removeRow(button) {
+    // Remove the row
+    $(button).closest('tr').remove();
+
+    // Update totals after removing the row
+    calculateTotalValue();
+}
+ 
+
+
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#purchaseTable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseInt($(this).find('td:eq(7)').text()) || 0; // Quantity
+        const rate = parseFloat($(this).find('td:eq(9)').text()) || 0; // Rate
+        const amount = parseFloat($(this).find('td:eq(10)').text()) || 0; // Amount
+       
+        // Calculate tax amount as 5% of the amount
+        const taxAmount = (amount * taxRate) / 100; 
+
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += amount;
+        totalTax += taxAmount;  // Adding calculated tax to total tax
+
+        // Update tax summary (if any tax logic is needed)
+        if (taxAmount > 0) {
+            if (!taxSummary[taxRate]) {
+                taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+            }
+            // Assuming SGST and CGST split equally for simplicity
+            const sgstAmount = taxAmount / 2;
+            taxSummary[taxRate].sgst += sgstAmount;
+            taxSummary[taxRate].cgst += sgstAmount;
+            taxSummary[taxRate].totalTax += taxAmount;
+        }
+    });
+
+    // Calculate round-off value and grand total
+    const totalAmount = subTotal + totalTax;
+    const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+
+    // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+    const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2)); 
+    $('#tax_placeholder').text(totalTax.toFixed(2));
+    $('#round_off').text(adjustedRoundOff.toFixed(2));
+    $('#total_payable').text(grandTotal);
+
+    // Update tax summary table (if needed)
+    $('#tax_summary_body').empty();
+    for (const [rate, data] of Object.entries(taxSummary)) {
+        $('#tax_summary_body').append(`
+            <tr>
+                <td>${rate}%</td>
+                <td>${data.sgst.toFixed(2)}</td>
+                <td>${data.cgst.toFixed(2)}</td>
+                <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+                <td>${data.totalTax.toFixed(2)}</td>
+            </tr>
+        `);
+    }
+}
+
+
+
+
+
+
+</script>
+<script>
+
+
+ 
+$('.single-select').select2();
+
+            // Get current date and time
+            const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('purchase_date').value = currentDateString;
+    document.getElementById('deliver_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+
+
+    
+    
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+// });
+
+
+ </script>

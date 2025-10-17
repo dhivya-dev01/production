@@ -1,0 +1,2990 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    </style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Stitching Delivery  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/stitching-delivery"> Stitching Delivery</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li> 
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+
+
+                                    <!-- `````````````````````````````````````````````````````````  modal  `````````````````````````````````````````````````````````` -->
+
+
+
+                                    <div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">Cutting Entry</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="add_form"> 
+                                                        <div class="modal-body">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                    <div class="table-responsive table-desi">
+ 
+
+                                                                         <table id="purchaseTable" class="table table-bordered table-striped w-100">
+                                                                            <thead></thead>
+                                                                            <tbody></tbody>
+                                                                            <!-- <tfoot> will be appended dynamically -->
+                                                                        </table>
+
+                                                                    </div>                                                       
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                             <button type="button" id="save_cutting_modal" onclick="save_modaldata()" class="btn btn-success">Save</button>
+
+                                                        </div>
+                                                    </form> 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                         <div id="update_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="update_exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">Cutting Entry</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="update_form">
+                                                        <div class="modal-body">
+                                                            {% csrf_token %}
+                                                            <div class="row"> 
+                                                                    <div class="table-responsive table-desi">
+
+                                                                        <table id="update_table" class="table table-bordered table-striped w-100">
+                                                                            <thead></thead>
+                                                                            <tbody></tbody>
+                                                                            <!-- <tfoot> will be appended dynamically -->
+                                                                        </table> 
+
+                                                                    </div>                                                       
+                                                            </div>
+                                                        </div>  
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">+Add</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <!-- edit- modal -->
+
+
+                                            <div id="edit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">Stitching Delivery</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="add_form">
+                                                        <div class="modal-body">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                      
+                                                                         <table id="StichingTable" class="table table-bordered table-striped w-100">
+                                                                            <thead></thead>
+                                                                            <tbody></tbody>
+                                                                            <!-- <tfoot> will be appended dynamically -->
+                                                                        </table>
+
+                                                                    </div>                                                        
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                            <!-- <button type="submit" class="btn btn-success">Save</button> -->
+                                                             <!-- <button type="button" id="save_cutting_modal" onclick="save_modaldata()" class="btn btn-success">Save</button> -->
+                                                            <button type="button" id="save_cutting_modal" class="btn btn-success">Save</button>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                    <!-- ``````````````````````````````````````````````````` end modal ```````````````````````````````````````````````````````````````` -->
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                 <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Outward No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.outward_no}}" readonly>
+                                                                    <input type="hidden" class="form-control" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="outward_date" class="form-label">Outward Date</label>
+                                                                    <input class="form-control" type="date" name="outward_date" id="outward_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="party_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadEntry()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                             
+   
+                                                                <!-- <div class="col-md-2 mt-2">
+                                                                    <input class="form-check-input mt-5" type="checkbox" id="is_packing" name="is_packing" >
+                                                                    <label class="form-label mt-5" for="is_packing">Direct Delivery  To Packing</label>  
+                                                                </div>
+                                                                 -->
+
+                                                                 <div class="col-md-2 mt-5">
+                                                                    <input class="form-check-input" type="checkbox" id="is_packing" name="is_packing" 
+                                                                        {% if parent_stock_instance.is_packing == 1 %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_packing"> Direct Delivery With Packing</label>  
+                                                                </div>
+
+                                                               
+                                                           
+                                                                
+
+                                                                   <!-- <div class="col-md-1 mt-3">
+                                                                    </div>   -->
+                                                                
+                                                                <div class="col-md-2 mt-4">
+                                                                    <!-- <input type="hidden" id="edit_id" name="edit_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="tm_po_id" name="tm_po_id" value="{{parent_stock_instance.id}}"> -->
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="update" onclick="updateTm_Data()" class="btn btn-primary mt-3">Update</button>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="product_id" class="form-label">Cutting Entry <span>   
+                                                                        <button style="display: none;" id="load_entry" onclick="LoadCuttingData()" >Load</button>
+
+                                                                    </span></label>
+                                                                    <select id="entry_id" name="entry_id" class="form-control form-select single-select" onchange="LoadQualityStyle()">
+                                                                        <option value="">Select</option>
+                                                                        <!-- {% for k in cutting_entry %}
+                                                                        <option value="{{ k.id }}">{{ k.cutting_no }} - ({{k.work_order_no}})</option> 
+                                                                        {% endfor %}  -->
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+                                                                <input type="hidden" id="prg_id" name="prg_id">
+
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="qualtity_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" readonly onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="style_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="color_id" class="form-label">Color</label>
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()" multiple>
+                                                                        <option value="">Select</option>
+                                                                        
+                                                                    </select> 
+                                                                </div> -->
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()" multiple>
+                                                                        <option value="">Select</option>
+                                                                       
+                                                                    </select>
+                                                                </div>
+
+                                                          
+                                                          
+                                                                <div class="col-md-1 mt-4">
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+
+                                                                    <button class="btn btn-primary mt-3" type="button" onclick="EditStiching()">+Load</button>
+
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                   
+                                                                    <button class="btn btn-secondary mt-3" type="button" id="load_all_button" onclick="LoadAllData()">+ Load All</button>
+
+                                                                </div>
+
+                                                            </div>
+                                                    
+                                                        </div> 
+                                                        
+
+                                                        
+                                                            
+                                                        <div class="">
+                                                            <div class="table-responsive table-desi">
+
+                                                               <!-- <table id="stiching_delivery_table" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr><th>Color</th><th>Size</th><th>Used Qty</th></tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                </table> -->
+
+
+                                                                <table id="stiching_delivery_table" class="table table-bordered table-striped w-100">
+                                                                    <thead>
+                                                                        <tr>
+
+                                                                            <th>Color</th>
+                                                                            <th>Size</th>
+                                                                            <th>Total</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+ 
+
+
+   
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                                </div>
+
+                        
+                                                            <!-- <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id">
+                                                                    <button type="submit" id="submit_data" onclick="AddDelivery()" class="btn btn-primary">Save</button>
+
+                                                                </div>
+                                                            </div> -->
+ 
+
+                                                            <!-- <form id="add_new">
+                                                            {% csrf_token %} -->
+                                                            <input type="hidden" id="fabric_id" name="fabric_id">
+
+                                                            <div class="col-md-2 mt-3">
+                                                                <div style="text-align: center;">
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <button type="submit" id="submit_data" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>  
+                                                        <!-- </form> -->
+
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                                <style>
+                                                                    .summary-container {
+                                                                        max-width: 500px;
+                                                                        margin: 20px auto;
+                                                                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                                                                        color: white;
+                                                                        padding: 15px;
+                                                                        border-radius: 10px;
+                                                                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                                                                    }
+                                                                
+                                                                    .summary-table {
+                                                                        width: 100%;
+                                                                        background: white;
+                                                                        color: black;
+                                                                        border-radius: 10px;
+                                                                        overflow: hidden;
+                                                                        padding: 10px;
+                                                                    }
+                                                                
+                                                                    .summary-table th {
+                                                                        /* background: white; */
+                                                                        color: black    ;
+                                                                        padding: 10px;
+                                                                        text-align: center;
+                                                                    }
+                                                                
+                                                                    .summary-table td {
+                                                                        padding: 8px;
+                                                                        font-weight: bold;
+                                                                    }
+                                                                
+                                                                    .highlight {
+                                                                        background: #428bca;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                        text-align: right;
+                                                                    }
+                                                                
+                                                                    .transparent-input {
+                                                                        width: 100%;
+                                                                        border: none;
+                                                                        outline: none;
+                                                                        background: transparent;
+                                                                        text-align: right;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                        color: black;
+                                                                    }
+                                                                
+                                                                    .transparent-input:focus {
+                                                                        border-bottom: 2px solid #428bca;
+                                                                    }
+                                                                </style>
+                                                               
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+if ("{{ parent_stock_instance.outward_date }}" && "{{ parent_stock_instance.outward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.outward_date }}";
+    console.log('out-date:',purchaseDate); 
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#outward_date').val(formattedDate).trigger("change");
+    LoadCuttingData();
+}
+ 
+
+
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+} 
+
+
+
+if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+    $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+}
+
+
+
+
+if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+    $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+}
+
+
+
+function LoadQualityStyle() {
+    var entry_id = $('#entry_id').val();
+    console.log('Entry ID:', entry_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_entry_quality_style_list/',
+        data: {
+            'entry_id': entry_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+            // Clear old options and add a default "Select" option
+            $('#quality_id').empty().append('<option value="">Select</option>');
+            $('#style_id').empty().append('<option value="">Select</option>');
+
+            // Make sure color_id is a multiple select
+            $('#size_id').empty();
+
+            // Append quality if available
+            if (data.quality) {
+                $('#quality_id').append(
+                    `<option selected value="${data.quality.id}">${data.quality.name}</option>`
+                );
+                console.log('Quality:', data.quality.id, data.quality.name);
+            }
+
+            // Append style if available 
+            if (data.style) {
+                $('#style_id').append(
+                    `<option selected value="${data.style.id}">${data.style.name}</option>`
+                );
+                console.log('Style:', data.style.id, data.style.name);
+            }
+
+            // Get a list of color IDs already in the stitching_delivery_table
+            const existingSizeIds = new Set();
+            $('#stiching_delivery_table tbody td[data-size-id]').each(function() {
+                const sizeId = $(this).data('size-id');
+                if (sizeId) existingSizeIds.add(parseInt(sizeId));
+            });
+
+            if (data.sizes && data.sizes.length > 0) {
+                // First add existing sizes as selected options
+                existingSizeIds.forEach(existingId => {
+                    const existingSize = data.sizes.find(c => c.id === existingId);
+                    if (existingSize) {
+                        $('#size_id').append(
+                            `<option selected value="${existingSize.id}">${existingSize.name}</option>`
+                        );
+                    }
+                });
+
+                // Then add the remaining sizes not in existingSizeIds
+                data.sizes.forEach(size => {
+                    if (!existingSizeIds.has(size.id)) {
+                        $('#size_id').append(
+                            `<option value="${size.id}">${size.name}</option>`
+                        );
+                    }
+                });
+            } else {
+                console.log('No sizes received from the server.');
+            }
+
+            // If you're using a plugin like select2 or chosen, refresh it here
+            // $('#size_id').trigger('change');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading data:', error);
+        }
+    });
+}
+
+
+function LoadEntry() {
+    var party_id = $('#party_id').val(); 
+    $('#entry_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', party_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_entry_available/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        }, 
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#entry_id').append(
+                        '<option value="' + po.id + '">' + po.cutting_no + ' - ' + po.work_order_no + '</option>'
+                    );
+                });
+            }
+
+            const preset_entry_id = "{{parent_stock_instance.cutting_entry_id}}";
+            if (preset_entry_id && preset_entry_id !== "") {
+                $('#entry_id').val(preset_entry_id).trigger("change");
+
+                // ✅ Automatically trigger the Load button click
+                $('#load_entry').trigger("click");
+
+                // LoadCutting_entry();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading cutting entries:', error);
+        } 
+    }); 
+}
+ 
+
+
+
+$("#entry_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "CN123 - WO5678"
+
+    if (prgText.includes(" - ")) {
+        const parts = prgText.split(" - ");
+        $("#work_order_no").val(parts[1].trim());  // set only work_order_no
+    } else {
+        $("#work_order_no").val('');
+    }
+});
+
+
+$(document).ready(function () {
+    function toggleFields() {
+        const isChecked = $('#is_packing').is(':checked');
+
+        // Enable if checked, disable if not
+        $(' #deliver_to').prop('disabled', !isChecked);
+    }
+
+    // Call on page load
+    toggleFields();
+
+    // Call when checkbox changes
+    $('#is_packing').change(function () {
+        toggleFields();
+    });
+});
+
+
+
+
+
+function storeTblValues() { 
+    const TableData = []; 
+
+    $('#StichingTable tbody tr').each(function () {
+        const $row = $(this); 
+
+        // ✅ Check if this row's checkbox is checked 
+        const isChecked = $row.find('.color-checkbox').is(':checked');
+        if (!isChecked) return;  // Skip this row if not selected
+
+        const size = $row.find('td:eq(2)').text().trim();
+        const color = $row.find('td:eq(1)').text().trim();
+
+        const quantity = parseFloat($row.find('td:eq(3)').text().trim()) || 0;
+        // const color_id = $row.find('.color_id').text().trim();
+        // const size_id = $row.find('.size_id').text().trim();
+
+        const color_id = $row.data('color-id');
+        const size_id = $row.data('size-id');
+
+
+ 
+        const is_packing = $('#is_packing').val() || 0;
+
+        TableData.push({
+            quantity: quantity.toFixed(2),
+            size_id,
+            color_id,
+            is_packing,
+        });
+    });
+
+    console.log("Stitching-table-DATA:", TableData);
+    return TableData;
+}
+
+
+
+
+
+// function storeTblValues() { 
+//     const TableData = [];
+
+//     $('#StichingTable tbody tr').each(function () {
+//         const $row = $(this); 
+
+//         // ✅ Check if this row's checkbox is checked 
+//         const isChecked = $row.find('.color-checkbox').is(':checked');
+//         if (!isChecked) return;  // Skip this row if not selected
+
+//         const size = $row.find('td:eq(2)').text().trim();
+//         const color = $row.find('td:eq(1)').text().trim();
+
+//         const quantity = parseFloat($row.find('td:eq(3)').text().trim()) || 0;
+//         // const color_id = $row.find('.color_id').text().trim();
+//         // const size_id = $row.find('.size_id').text().trim();
+
+//         const color_id = $row.data('color-id');
+//         const size_id = $row.data('size-id');
+
+
+
+//         const is_packing = $('#is_packing').val() || 0;
+
+//         TableData.push({
+//             quantity: quantity.toFixed(2),
+//             size_id,
+//             color_id,
+//             is_packing,
+//         });
+//     });
+
+//     console.log("Stinching-table-DATA:", TableData);
+//     return TableData;
+// }
+
+
+
+// ````````````````````````````````````` add selected values intable ``````````````````````````````````````````````````````````
+
+
+
+function loadCuttingModalTable(entry_id) {
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_stock_modal/',
+        data: {
+            entry_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status !== 'success') return;
+
+            const summaryData = response.data || [];
+
+            // Filter only rows with available_stock_quantity > 0 (exclude negative or zero)
+            const filteredData = summaryData.filter(row => parseFloat(row.available_stock_quantity) > 0);
+
+            // If no valid rows, don't show modal 
+            // if (filteredData.length === 0) {
+            //     console.warn('No stock entries with available quantity > 0 found for this entry_id.');
+            //     return;
+            // }
+
+            const quality = response.quality; 
+            const style = response.style;
+            const fabric = response.fabric;
+
+            $('#fabric_id').val(fabric?.id || ''); 
+
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append('<option selected value="' + quality.id + '">' + quality.name + '</option>');
+            }
+
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append('<option selected value="' + style.id + '">' + style.name + '</option>');
+            }
+
+            if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+                $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+            }
+            // Don't touch or read #stiching_delivery_table here (per your request)
+
+            let tbody = '';
+            filteredData.forEach(row => { 
+                tbody += `
+                    <tr data-size-id="${row.size_id}" data-color-id="${row.color_id}" data-ht-id="${row.ht_id || ''}">
+                        <td><input type="checkbox" class="form-check-input color-checkbox" checked></td>
+                        <td>${row.size_name}</td>
+                        <td>${row.color_name}</td>
+                        <td class="text-end">${parseFloat(row.available_stock_quantity).toFixed(0)}</td>
+                    </tr>
+                `;
+            });
+
+            $('#purchaseTable thead').html(`
+                <tr>
+                    <th><input type="checkbox" id="select_all" checked></th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th class="text-end">Available</th>
+                    <th style="display:none;">Size Id</th>
+                    <th style="display:none;">Color Id</th>
+                </tr>
+            `);
+
+            $('#purchaseTable tbody').html(tbody);
+            $('#purchaseTable tfoot').remove();
+
+            $('#select_all').off('change').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('.color-checkbox').prop('checked', isChecked);
+            });
+
+            $('#add_modal').modal('show'); // Show modal only when filteredData.length > 0
+        }
+    });
+}
+
+
+
+
+// ``````````````````
+
+
+
+// function loadStitchingSummaryTable(entry_id, tm_id, modalData = {}) {
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_stitching_delivery_summary/',
+//         data: {
+//             entry_id,
+//             tm_id,
+//             csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+//         success: function (response) {
+//             if (response.status !== 'success') return;
+
+//             const data = response.data || [];
+//             const grouped = {};
+//             const sizesSet = new Set();
+
+//             // Add DB data
+//             data.forEach(row => {
+//                 const color = row.color_name;
+//                 const size = row.size_name;
+//                 const qty = parseFloat(row.total_out_quantity || 0);
+
+//                 sizesSet.add(size);
+//                 if (!grouped[color]) grouped[color] = {};
+//                 if (!grouped[color][size]) {
+//                     grouped[color][size] = {
+//                         qty: 0,
+//                         color_id: row.color_id,
+//                         size_id: row.size_id
+//                     };
+//                 }
+//                 grouped[color][size].qty += qty;
+//             });
+
+//             // Add Modal Data
+//             for (const color in modalData) { 
+//                 for (const size in modalData[color]) {
+//                     const entry = modalData[color][size];
+//                     sizesSet.add(size);
+
+//                     if (!grouped[color]) grouped[color] = {};
+//                     if (!grouped[color][size]) {
+//                         grouped[color][size] = {
+//                             qty: 0,
+//                             color_id: entry.color_id,
+//                             size_id: entry.size_id
+//                         };
+//                     }
+//                     grouped[color][size].qty += parseFloat(entry.qty || 0);
+//                 }
+//             }
+
+//             const sizeList = Array.from(sizesSet).sort();
+
+//             // Build thead
+//             let thead = `<tr><th>Color</th>`;
+//             sizeList.forEach(size => {
+//                 let size_id = null;
+//                 for (const color in grouped) {
+//                     if (grouped[color][size]) {
+//                         size_id = grouped[color][size].size_id;
+//                         break;
+//                     }
+//                 }
+
+//                 thead += `<th style="text-align:right;">${size}
+//                     <input type="hidden" class="header-size-id" value="${size_id}">
+//                     <button class="btn btn-xs btn-primary edit-size-btn" data-size-id="${size_id}">
+//                         <i class="feather icon-edit-2"></i>
+//                     </button>
+//                 </th>`;
+//             });
+//             thead += `<th style="font-weight:bolder;">Total</th></tr>`;
+//             $('#stiching_delivery_table thead').html(thead);
+
+//             // Build tbody
+//             let tbody = '';
+//             const sizeTotals = {};
+//             sizeList.forEach(size => sizeTotals[size] = 0);
+//             let grandTotal = 0;
+
+//             for (const color in grouped) {
+//                 let row = `<tr><td>${color}</td>`;
+//                 let rowTotal = 0;
+
+//                 sizeList.forEach(size => {
+//                     const entry = grouped[color][size];
+//                     if (entry && entry.qty > 0) {
+//                         row += `<td data-color-id="${entry.color_id}" data-size-id="${entry.size_id}" style="text-align:right;">${entry.qty.toFixed(0)}</td>`;
+//                         rowTotal += entry.qty;
+//                         sizeTotals[size] += entry.qty;
+//                     } else {
+//                         row += `<td style="text-align:right;">-</td>`;
+//                     }
+//                 });
+
+//                 grandTotal += rowTotal;
+//                 row += `<td style="text-align:right;">${rowTotal.toFixed(0)}</td></tr>`;
+//                 tbody += row;
+//             }
+
+//             $('#stiching_delivery_table tbody').html(tbody);
+
+//             // Build tfoot
+//             let totalRowPcs = `<tr><td style="font-weight:bolder;">Total Pcs</td>`;
+//             sizeList.forEach(size => {
+//                 totalRowPcs += `<td style="text-align:right;">${sizeTotals[size].toFixed(0)}</td>`;
+//             });
+//             totalRowPcs += `<td style="text-align:right;">${grandTotal.toFixed(0)}</td></tr>`; 
+
+//             let totalRowDozen = `<tr><td style="font-weight:bolder;">Total Dozens</td>`;
+//             sizeList.forEach(size => { 
+//                 let dozens = Math.floor(sizeTotals[size] / 12);
+//                 let pcsLeft = sizeTotals[size] % 12;
+//                 totalRowDozen += `<td style="text-align:right;">${dozens} Dz ${pcsLeft} Pcs</td>`;
+//             });
+//             let grandDozens = Math.floor(grandTotal / 12);
+//             let grandPcs = grandTotal % 12;
+//             totalRowDozen += `<td style="text-align:right;">${grandDozens} Dz ${grandPcs} Pcs</td></tr>`;
+
+//             // Inject tfoot
+//             $('#stiching_delivery_table tfoot').remove(); 
+//             $('#stiching_delivery_table').append(`<tfoot>${totalRowPcs}${totalRowDozen}</tfoot>`);
+//         }
+//     });
+// }
+
+  
+
+
+function loadStitchingSummaryTable(entry_id, tm_id, modalData = {}) {
+    $.ajax({
+        type: 'POST',
+        url: '/get_stitching_delivery_summary/',
+        data: {
+            entry_id,
+            tm_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status !== 'success') return;
+
+            const data = response.data || [];
+            const grouped = {};
+            const sizeMap = new Map();  // { size_name: { size_id, sort_order_no } }
+
+            // Process DB data
+            data.forEach(row => {
+                const { color_name: color, size_name: size, total_out_quantity, size_id, sort_order_no, color_id } = row;
+                const qty = parseFloat(total_out_quantity || 0);
+
+                if (!sizeMap.has(size)) {
+                    sizeMap.set(size, { size_id, sort_order_no: sort_order_no || 9999 });
+                }
+
+                if (!grouped[color]) grouped[color] = {};
+                if (!grouped[color][size]) {
+                    grouped[color][size] = {
+                        qty: 0,
+                        size_id,
+                        color_id
+                    };
+                }
+
+                grouped[color][size].qty += qty;
+            });
+
+            // Process modal data
+            for (const color in modalData) {
+                for (const size in modalData[color]) {
+                    const entry = modalData[color][size];
+
+                    if (!sizeMap.has(size)) {
+                        sizeMap.set(size, {
+                            size_id: entry.size_id,
+                            sort_order_no: 9999 // fallback if not provided
+                        });
+                    }
+
+                    if (!grouped[color]) grouped[color] = {};
+                    if (!grouped[color][size]) {
+                        grouped[color][size] = {
+                            qty: 0,
+                            color_id: entry.color_id,
+                            size_id: entry.size_id
+                        };
+                    }
+
+                    grouped[color][size].qty += parseFloat(entry.qty || 0);
+                }
+            }
+
+            // Sort sizes by sort_order_no
+            const sizeList = Array.from(sizeMap.entries())
+                .sort((a, b) => a[1].sort_order_no - b[1].sort_order_no)
+                .map(entry => entry[0]);  // Extract just size names
+
+            // Build thead
+            let thead = `<tr><th>Color</th>`;
+            sizeList.forEach(size => {
+                const { size_id } = sizeMap.get(size);
+                thead += `<th style="text-align:right;">${size}
+                    <input type="hidden" class="header-size-id" value="${size_id}">
+                    <button class="btn btn-xs btn-primary edit-size-btn" data-size-id="${size_id}">
+                        <i class="feather icon-edit-2"></i>
+                    </button>
+                </th>`;
+            });
+            thead += `<th style="font-weight:bolder;">Total</th></tr>`;
+            $('#stiching_delivery_table thead').html(thead);
+
+            // Build tbody
+            let tbody = '';
+            const sizeTotals = {};
+            sizeList.forEach(size => sizeTotals[size] = 0);
+            let grandTotal = 0;
+
+            for (const color in grouped) {
+                let row = `<tr><td>${color}</td>`;
+                let rowTotal = 0;
+
+                sizeList.forEach(size => {
+                    const entry = grouped[color][size];
+                    if (entry && entry.qty > 0) {
+                        row += `<td data-color-id="${entry.color_id}" data-size-id="${entry.size_id}" style="text-align:right;">${entry.qty.toFixed(0)}</td>`;
+                        rowTotal += entry.qty;
+                        sizeTotals[size] += entry.qty;
+                    } else {
+                        row += `<td style="text-align:right;">-</td>`;
+                    }
+                });
+
+                grandTotal += rowTotal;
+                row += `<td style="text-align:right;">${rowTotal.toFixed(0)}</td></tr>`;
+                tbody += row;
+            }
+
+            $('#stiching_delivery_table tbody').html(tbody);
+
+            // Build tfoot: Total Pcs
+            let totalRowPcs = `<tr><td style="font-weight:bolder;">Total Pcs</td>`;
+            sizeList.forEach(size => {
+                totalRowPcs += `<td style="text-align:right;">${sizeTotals[size].toFixed(0)}</td>`;
+            });
+            totalRowPcs += `<td style="text-align:right;">${grandTotal.toFixed(0)}</td></tr>`; 
+
+            // Build tfoot: Total Dozens
+            let totalRowDozen = `<tr><td style="font-weight:bolder;">Total Dozens</td>`;
+            sizeList.forEach(size => { 
+                let dozens = Math.floor(sizeTotals[size] / 12);
+                let pcsLeft = sizeTotals[size] % 12;
+                totalRowDozen += `<td style="text-align:right;">${dozens} Dz ${pcsLeft} Pcs</td>`;
+            }); 
+            let grandDozens = Math.floor(grandTotal / 12);
+            let grandPcs = grandTotal % 12;
+            totalRowDozen += `<td style="text-align:right;">${grandDozens} Dz ${grandPcs} Pcs</td></tr>`;
+
+            // Inject tfoot
+            $('#stiching_delivery_table tfoot').remove(); 
+            $('#stiching_delivery_table').append(`<tfoot>${totalRowPcs}${totalRowDozen}</tfoot>`);
+        }
+    });
+}
+
+
+
+//````````````````````````````````````````````````  edit function  ````````````````````````````````````````````````````
+
+
+
+// // Delegate click event after table is built
+// $('#stiching_delivery_table').on('click', '.edit-size-btn', function () {
+//     // const size = $(this).data('size'); // e.g., "36", "38", etc.
+
+//     const size = $(this).data('size-id'); // ✅ Use correct attribute
+
+//     console.log('sizes:',size);
+//     const entry_id = $("#entry_id").val();
+
+//     if (!entry_id || !size) {
+//         alert("Missing entry ID or size.");
+//         return;
+//     }
+
+//     // You can call your existing function with size_ids as single size
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_cutting_summary_stock_lists/', 
+//         data: {
+//             entry_id,
+//             size_ids: [size],  // Send only the selected size
+//             csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+ 
+//         success: function (response) {
+//             const summaryData = response.data || [];
+
+//             if (summaryData.length === 0) {
+//                 notifier.show(
+//                     'Error!',
+//                     'No data found for selected size.',
+//                     'danger',
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                     4000
+//                 );
+//                 return;
+//             }
+
+//             let tbody = '';
+//             summaryData.forEach(row => {
+//                 const sizeName = row.size_name;
+//                 const colorName = row.color_name;
+//                 const sizeId = row.size_id;
+//                 const colorId = row.color_id;
+//                 const inQty = parseFloat(row.total_in_quantity) || 0;
+
+//                 // 🔍 Check if quantity already exists in stitching_delivery_table
+//                 let existingQty = 0;
+//                 $('#stiching_delivery_table tbody tr').each(function () {
+//                     const colorCell = $(this).find('td:first').text().trim();
+//                     if (colorCell === colorName) {
+//                         $(this).find(`td[data-size-id="${sizeId}"]`).each(function () {
+//                             const val = parseFloat($(this).text()) || 0;
+//                             existingQty = val;
+//                         });
+//                     }
+//                 });
+
+//                 const isChecked = existingQty > 0 ? 'checked' : '';
+
+//                 tbody += `
+//                     <tr>
+//                         <td>
+//                             <input type="checkbox" ${isChecked} class="form-check-input ms-3 me-1 color-checkbox"
+//                                 id="color_${colorId}_${sizeId}" value="${colorId}">
+//                         </td>
+
+
+
+                        
+//                         <td>${sizeName}</td>
+//                         <td>${colorName}</td>
+//                         <td align="right">${inQty.toFixed(0)}</td>
+//                         <td style="display:none;" class="color_id">${colorId}</td>
+//                         <td style="display:none;" class="size_id">${sizeId}</td> 
+//                     </tr>
+//                 `;
+//             });
+
+//             const thead = `
+//                 <tr>
+//                     <th>
+//                         <input type="checkbox" id="select_all" class="form-check-input ms-3 me-1">
+//                     </th>
+//                     <th>Size</th>
+//                     <th>Color</th>
+//                     <th class="text-center">ENTRY (Qty)</th>
+//                 </tr>
+//             `;
+
+
+
+//             $("#update_table thead").html(thead);
+//             $("#update_table tbody").html(tbody);
+//             $("#update_table tfoot").remove();
+
+
+            
+//             $('#update_modal').modal('show');
+
+//             // Select all toggle
+//             $('#select_all').on('change', function () {
+//                 const isChecked = $(this).is(':checked');
+//                 $('.color-checkbox').prop('checked', isChecked);
+//             });
+
+
+//             $(".outward-qty, .outward-wt").on("input", updateFooterTotals);
+
+//         },
+
+//         error: function (xhr, status, error) {
+//             console.error("Error loading size colors:", error);
+//             alert("Failed to load colors for the selected size.");
+//         }
+//     });
+// });
+
+
+
+
+// Delegate click event after table is built
+$('#stiching_delivery_table').on('click', '.edit-size-btn', function () {
+    const size = $(this).data('size-id'); // Use correct attribute
+    const entry_id = $("#entry_id").val();
+
+    if (!entry_id || !size) {
+        alert("Missing entry ID or size.");
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_summary_stock_lists/',
+        data: {
+            entry_id,
+            size_ids: [size],
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+        success: function (response) {
+            const summaryData = response.data || [];
+
+            if (summaryData.length === 0) {
+                notifier.show(
+                    'Error!',
+                    'No data found for selected size.',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                return;
+            }
+
+            let tbody = '';
+            summaryData.forEach(row => {
+                const sizeName = row.size_name;
+                const colorName = row.color_name;
+                const sizeId = row.size_id;
+                const colorId = row.color_id;
+                const inQty = parseFloat(row.total_in_quantity) || 0;
+
+                // Check if quantity already exists in stitching_delivery_table
+                let existingQty = 0;
+                $('#stiching_delivery_table tbody tr').each(function () {
+                    const colorCell = $(this).find('td:first').text().trim();
+                    if (colorCell === colorName) {
+                        $(this).find(`td[data-size-id="${sizeId}"]`).each(function () {
+                            const val = parseFloat($(this).text()) || 0;
+                            existingQty = val;
+                        });
+                    }
+                });
+
+                const isChecked = existingQty > 0 ? 'checked' : '';
+
+                tbody += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" ${isChecked} class="form-check-input ms-3 me-1 color-checkbox"
+                                id="color_${colorId}_${sizeId}" value="${colorId}">
+                        </td>
+                        <td>${sizeName}</td>
+                        <td>${colorName}</td>
+                        <td align="right">${inQty.toFixed(0)}</td>
+                        <td style="display:none;" class="color_id">${colorId}</td>
+                        <td style="display:none;" class="size_id">${sizeId}</td>
+                    </tr>
+                `;
+            });
+
+            const thead = `
+                <tr>
+                    <th>
+                        <input type="checkbox" id="select_all_update" class="form-check-input ms-3 me-1">
+                    </th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th class="text-center">ENTRY (Qty)</th>
+                </tr>
+            `;
+
+            $("#update_table thead").html(thead);
+            $("#update_table tbody").html(tbody);
+            $("#update_table tfoot").remove();
+
+            $('#update_modal').modal('show');
+
+            // Bind events to inputs after render
+            $(".outward-qty, .outward-wt").on("input", updateFooterTotals);
+        },
+
+        error: function (xhr, status, error) {
+            console.error("Error loading size colors:", error);
+            alert("Failed to load colors for the selected size.");
+        } 
+    }); 
+});
+
+// --- Delegated event to toggle all checkboxes in #update_table ---
+$('#update_table').on('change', '#select_all_update', function () {
+    const isChecked = $(this).is(':checked');
+    $('#update_table .color-checkbox').prop('checked', isChecked); 
+});
+
+// --- Sync "Select All" checkbox when individual checkboxes change ---
+$('#update_table').on('change', '.color-checkbox', function () {
+    const total = $('#update_table .color-checkbox').length;
+    const checked = $('#update_table .color-checkbox:checked').length;
+    $('#select_all_update').prop('checked', total === checked);
+});
+
+
+
+function LoadAllData(){
+
+    // $("#purchaseTable tbody").empty();
+    // $("#stiching_delivery_table tbody").empty(); 
+
+    LoadAllEntryData();
+
+}
+
+
+function LoadAllEntryData(){
+    // $('#load_button').on('click', function () { 
+        const party_id = $("#party_id").val();
+        const work_order_no = $("#work_order_no").val();
+        const entry_id =$("#entry_id").val();
+        // const size_ids =$("#size_id").val(); 
+        // console.log('sz-id:',size_ids);
+        // const size_text = $('#entry_id option:selected').text().trim();
+        const deliver_to = $("#deliver_to option:selected").text() || '-';
+        const deliver_id = $("#deliver_to").val() || 0;
+        const isInward = $("#is_packing").is(":checked") ? 1 : 0;
+    
+        // if (!size_ids || size_ids.length === 0) {
+        //     alert("Please select at least one color.");
+        //     return;
+        // }
+        
+        $.ajax({
+            type: 'POST',
+            url: '/get_cutting_summary_stock_data/', 
+            data: {
+                entry_id,
+                // size_ids: size_ids,
+                csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function (response) {
+                console.log('response:',response);
+                const summaryData = response.data || [];
+
+
+
+                if (summaryData.length === 0) {
+                    console.warn('No stock entries found for this entry_id.');
+                    return;
+                }
+
+
+                const quality = response.quality;
+                const style = response.style; 
+                const fabric = response.fabric;
+
+                // $('#fabric_id').val(fabric.id);
+                if (fabric && typeof fabric === 'object') { 
+                    $('#fabric_id').val(fabric.id);
+                }
+
+
+                if (quality && typeof quality === 'object') {
+                    $('#quality_id').empty().append('<option selected value="' + quality.id + '">' + quality.name + '</option>');
+                }
+
+                if (style && typeof style === 'object') {
+                    $('#style_id').empty().append('<option selected value="' + style.id + '">' + style.name + '</option>');
+                }
+
+                $("#purchaseTable thead").empty();
+                $("#purchaseTable tbody").empty(); 
+                $("#purchaseTable tfoot").remove();
+
+                if (summaryData.length === 0) {
+                    // alert('No data found for selected entry.');
+                    return;
+                }
+
+                // ===== Table Header =====
+                // <tr>
+                //     <th colspan="6" class="text-center">${size_text}</th>
+                // </tr>
+
+
+
+                let thead = ` 
+              
+                <tr>
+                    <th>
+                        <input type="checkbox" checked id="select_all" class="form-check-input ms-3 me-1">
+                    </th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th class="text-center">ENTRY (Qty)</th>
+                </tr>
+
+                `;
+                $("#purchaseTable thead").html(thead);
+
+                // ===== Table Body =====
+                let tbody = '';
+                let total_in = 0, total_balance = 0, total_out = 0, total_out_wt = 0;
+
+                
+                const existingItems = new Set();
+                $('#stiching_delivery_table tbody tr').each(function () {
+                    $(this).find('td').each(function () {
+                        const colorId = $(this).data('color-id');
+                        const sizeId = $(this).data('size-id');
+                        if (colorId !== undefined && sizeId !== undefined) {
+                            existingItems.add(`${colorId}_${sizeId}`);
+                        }
+                    });
+                });
+
+                function isAlreadyPresent(colorId, sizeId) {
+                    return existingItems.has(`${colorId}_${sizeId}`);
+                }
+
+                summaryData.forEach(row => {
+                    const sizeName = row.size_name;
+                    const colorName = row.color_name;
+                    const sizeId = row.size_id;
+                    const colorId = row.color_id;
+
+                    const inQty = parseFloat(row.total_in_quantity) || 0;
+                    const balQty = parseFloat(row.available_stock_quantity) || 0;
+
+                    total_in += inQty;
+                    total_balance += balQty;
+
+                const alreadyPresent = isAlreadyPresent(colorId, sizeId);
+                const checkedAttr = alreadyPresent ? 'checked' : '';
+
+                tbody += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" checked class="form-check-input ms-3 me-1 color-checkbox" 
+                                id="color_${colorId}_${sizeId}" value="${colorId}" ${checkedAttr}>
+                        </td>
+                        <td>${sizeName}</td>
+                        <td>${colorName}</td>
+                        <td align="right">${inQty.toFixed(0)}</td>
+
+                        <td style="display:none;" class="color_id">${colorId}</td>
+                        <td style="display:none;" class="size_id">${sizeId}</td>
+                        <td style="display:none;" id="is_packing-data">${isInward}</td>
+                    </tr>
+                `;
+
+                });
+
+
+
+
+                $('#add_modal').modal('show'); 
+
+                $("#purchaseTable tbody").html(tbody);
+
+
+                // Toggle check/uncheck all checkboxes
+                $('#select_all').on('change', function () {
+                    const isChecked = $(this).is(':checked');
+                    $('.color-checkbox').prop('checked', isChecked);
+                });
+
+
+                // ===== Table Footer =====
+                let tfoot = `
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" style="font-weight: bolder;">Total Pcs</th>
+                            <th style="text-align:right;">${total_in.toFixed(0)}</th>
+                        
+                        </tr>
+
+                        
+                    </tfoot>
+                `;
+                $("#purchaseTable").append(tfoot);
+
+                // $('#add_form').submit(); // trigger form submit programmatically
+                // $('#add_modal').modal('hide');  
+
+                // ===== Attach Listeners for Auto Total Update =====
+                $(".outward-qty, .outward-wt").on("input", updateFooterTotals);
+
+                // $('#add_form').submit(); // trigger form submit programmatically
+                // $('#add_modal').modal('hide');  
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching cutting stock summary:", error);
+                $('#add_modal').modal('hide'); 
+                $("#purchaseTable thead").empty();
+                $("#purchaseTable tbody").empty();
+                $("#purchaseTable tfoot").remove();
+            }
+        });
+    // });
+}
+
+
+
+// ````````````````````````````````````````````````````
+
+// $('#update_form').on('submit', function (e) {
+//     e.preventDefault();
+
+//     let groupedData = {};
+//     let editedSizeId = null;
+//     let anyCheckboxChecked = false;
+
+//     // Collect data from checked rows and check if any checkbox is selected
+//     $("#update_table tbody tr").each(function () {
+//         const checkbox = $(this).find('.color-checkbox');
+//         const isChecked = checkbox.is(':checked');
+
+//         const color = $(this).find('td:eq(2)').text().trim();
+//         const qty = parseFloat($(this).find('td:eq(3)').text()) || 0;
+//         const colorId = parseInt($(this).find('.color_id').text()) || 0;
+//         const sizeId = parseInt($(this).find('.size_id').text()) || 0;
+
+//         if (!editedSizeId) {
+//             editedSizeId = sizeId;
+//         }
+
+//         if (isChecked) {
+//             anyCheckboxChecked = true;
+//             if (!groupedData[color]) {
+//                 groupedData[color] = {
+//                     qty: qty,
+//                     color_id: colorId,
+//                     size_id: sizeId
+//                 };
+//             } else {
+//                 groupedData[color].qty += qty;
+//             }
+//         }
+//     });
+
+//     if (!editedSizeId) {
+//         $('#update_modal').modal('hide');
+//         return;
+//     }
+
+//     const $mainTableBody = $('#stiching_delivery_table tbody');
+//     const $mainTable = $('#stiching_delivery_table');
+//     let colIndexToRemove = -1;
+
+//     // Find the column index for the edited size
+//     $mainTable.find('thead th').each(function (index) {
+//         if ($(this).data('size-id') == editedSizeId) {
+//             colIndexToRemove = index;
+//             return false; // Exit the loop
+//         }
+//     });
+
+//     // If no checkboxes were checked, remove the entire column
+//     if (!anyCheckboxChecked && colIndexToRemove > -1) {
+//         // Remove header cell
+//         $mainTable.find('thead th').eq(colIndexToRemove).remove();
+        
+//         // Remove all cells in this column across body and footer
+//         $mainTable.find('tbody tr, tfoot tr').each(function () {
+//             $(this).find(`td`).eq(colIndexToRemove).remove();
+//         });
+        
+//         // Recalculate and update the footer
+
+        
+//     // === Check if the entire size column is now empty and remove it ===
+// let isSizeEmpty = true;
+
+// $('#stiching_delivery_table tbody tr').each(function () {
+//     const firstText = $(this).find('td:first').text().trim().toLowerCase();
+//     if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+//     const cell = $(this).find(`td[data-size-id="${editedSizeId}"]`);
+//     const value = cell.text().trim();
+//     if (value && value !== '-' && value !== '0') {
+//         isSizeEmpty = false;
+//     }
+// });
+
+// if (isSizeEmpty) {
+//     $('#stiching_delivery_table thead th').each(function (index) {
+//         const sizeId = $(this).data('size-id');
+//         if (sizeId == editedSizeId) {
+//             const colIndex = index;
+
+//             // Remove header
+//             $(this).remove();
+
+//             // Remove all cells in this column across body
+//             $('#stiching_delivery_table tbody tr').each(function () {
+//                 $(this).find(`td:eq(${colIndex})`).remove();
+//             });
+//         }
+//     });
+// }
+
+//         recalculateTotals();
+
+//         $('#update_modal').modal('hide');
+//         return;
+//     }
+
+//     // --- The rest of your existing update logic goes here ---
+
+//     // Update or clear size column cells for all rows
+//     $mainTableBody.find('tr').each(function () {
+//         const $row = $(this);
+//         const firstCellText = $row.find('td:first').text().trim().toLowerCase();
+
+//         if (firstCellText === 'total pcs' || firstCellText === 'total dozens') {
+//             return;
+//         }
+
+//         const color = $row.find('td:first').text().trim();
+//         const cell = $row.find(`td[data-size-id="${editedSizeId}"]`);
+
+//         if (cell.length) {
+//             if (groupedData[color]) {
+//                 const data = groupedData[color];
+//                 cell
+//                     .attr('data-color-id', data.color_id)
+//                     .attr('data-size-id', data.size_id)
+//                     .text(data.qty.toFixed(0));
+//             } else {
+//                 cell.removeAttr('data-color-id').removeAttr('data-size-id').text('-');
+//             }
+//         }
+//     });
+
+//     // Remove color rows where all sizes are empty
+//     $mainTableBody.find('tr').each(function () {
+//         const $row = $(this);
+//         const firstText = $row.find('td:first').text().trim().toLowerCase();
+//         if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+//         const hasQty = $row.find('td[data-size-id]').toArray().some(td => {
+//             const text = $(td).text().trim();
+//             return text !== '-' && text !== '' && text !== '0';
+//         });
+
+//         if (!hasQty) {
+//             $row.remove();
+//         }
+//     });
+    
+//     // Recalculate totals and update the footer
+//     recalculateTotals();
+    
+//     // Check if the entire size column is now empty and remove it
+//     // The previous logic for checking/removing an empty column is now handled by the `if (!anyCheckboxChecked)` block above.
+    
+//     $('#update_modal').modal('hide');
+// });
+
+
+
+// function recalculateTotals() {
+//     const $mainTable = $('#stiching_delivery_table');
+//     const $tbody = $mainTable.find('tbody');
+//     const $thead = $mainTable.find('thead');
+//     const sizeTotals = {};
+//     let grandTotal = 0;
+
+//     // Get all size IDs from the header. This is the correct way to get the columns we need.
+//     const sizeIds = $thead.find('th[data-size-id]').map(function () {
+//         return $(this).data('size-id');
+//     }).get();
+
+//     // Initialize sizeTotals with 0 for each size to avoid undefined values.
+//     sizeIds.forEach(sizeId => {
+//         sizeTotals[sizeId] = 0;
+//     });
+
+//     // Calculate totals for each row and each size
+//     $tbody.find('tr').each(function () {
+//         const $row = $(this);
+//         let rowTotal = 0;
+        
+//         // Iterate over each size column to get its value
+//         sizeIds.forEach(sizeId => {
+//             const val = parseFloat($row.find(`td[data-size-id="${sizeId}"]`).text()) || 0;
+//             sizeTotals[sizeId] += val;
+//             rowTotal += val;
+//         });
+
+//         grandTotal += rowTotal;
+
+//         // Find the correct cell to update the row's total. This assumes the total cell is the last one.
+//         $row.find('td:last').text(rowTotal.toFixed(0));
+//     });
+
+//     // Remove the old footer before rebuilding
+//     $mainTable.find('tfoot').remove();
+
+//     // Build the new footer rows
+//     let totalPcsRow = `<tr><td style="font-weight:bold;">Total Pcs</td>`;
+//     let totalDozenRow = `<tr><td style="font-weight:bold;">Total Dozens</td>`;
+
+//     sizeIds.forEach(sizeId => {
+//         const qty = sizeTotals[sizeId] || 0;
+//         const dozens = Math.floor(qty / 12);
+//         const pcs = qty % 12;
+//         totalPcsRow += `<td style="text-align:right;">${qty.toFixed(0)}</td>`;
+//         totalDozenRow += `<td style="text-align:right;">${dozens} Dz ${pcs} Pcs</td>`;
+//     });
+
+//     // Add the final grand total cells to the end of the rows
+//     const gDz = Math.floor(grandTotal / 12);
+//     const gPcs = grandTotal % 12;
+//     totalPcsRow += `<td style="font-weight:bold; text-align:right;">${grandTotal.toFixed(0)}</td></tr>`;
+//     totalDozenRow += `<td style="font-weight:bold; text-align:right;">${gDz} Dz ${gPcs} Pcs</td></tr>`;
+
+//     // Append the new footer
+//     $mainTable.append(`<tfoot>${totalPcsRow}${totalDozenRow}</tfoot>`);
+// }
+
+
+
+
+
+
+$('#update_form').on('submit', function (e) {
+    e.preventDefault();
+
+    let groupedData = {}; // { color: { qty, color_id, size_id } }
+    let editedSizeId = null;
+
+    // Collect checked items only
+    $("#update_table tbody tr").each(function () {
+        const checkbox = $(this).find('.color-checkbox');
+        const isChecked = checkbox.is(':checked');
+
+        const size = $(this).find('td:eq(1)').text().trim();
+        const color = $(this).find('td:eq(2)').text().trim();
+        const qty = parseFloat($(this).find('td:eq(3)').text()) || 0;
+        const colorId = parseInt($(this).find('td:eq(4)').text()) || 0;
+        const sizeId = parseInt($(this).find('td:eq(5)').text()) || 0;
+
+        editedSizeId = sizeId; // store once
+
+        if (isChecked) {
+            if (!groupedData[color]) {
+                groupedData[color] = {
+                    qty: qty,
+                    color_id: colorId,
+                    size_id: sizeId
+                };
+            } else {
+                groupedData[color].qty += qty;
+            }
+        }
+    });
+
+    if (!editedSizeId) {
+        alert("Missing size ID.");
+        return;
+    }
+
+    const $tableBody = $('#stiching_delivery_table tbody');
+
+    // Update or clear size column cells for all rows
+    $tableBody.find('tr').each(function () {
+        const $row = $(this);
+        const firstCell = $row.find('td:first');
+        const color = firstCell.text().trim();
+
+        // Skip footer rows
+        if (color.toLowerCase() === 'total pcs' || color.toLowerCase() === 'total dozens') {
+            return;
+        }
+
+        const cell = $row.find(`td[data-size-id="${editedSizeId}"]`);
+
+        if (cell.length) {
+            if (groupedData[color]) {
+                // Update with new qty
+                const data = groupedData[color];
+                cell 
+                    .attr('data-color-id', data.color_id)
+                    .attr('data-size-id', data.size_id)
+                    .text(data.qty.toFixed(0));
+            } else {
+                // Clear cell if not selected
+                cell.removeAttr('data-color-id').removeAttr('data-size-id').text('-');
+            }
+        }
+    });
+
+    // Remove color rows where all sizes are empty
+    $tableBody.find('tr').each(function () {
+        const $row = $(this);
+        const firstText = $row.find('td:first').text().trim().toLowerCase();
+        if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+        const hasQty = $row.find('td[data-size-id]').toArray().some(td => {
+            const text = $(td).text().trim();
+            return text !== '-' && text !== '' && text !== '0';
+        });
+
+        if (!hasQty) {
+            $row.remove(); // remove row if no size columns have qty
+        }
+    });
+ 
+    // Recalculate totals for this size column
+    let sizeTotal = 0;
+    $tableBody.find(`td[data-size-id="${editedSizeId}"]`).each(function () {
+        const val = parseFloat($(this).text()) || 0;
+        sizeTotal += val;
+    });
+
+    // Update Total Pcs and Total Dozens
+    $tableBody.find('tr').each(function () {
+        const rowLabel = $(this).find('td:first').text().trim().toLowerCase();
+
+        if (rowLabel === 'total pcs') {
+            $(this).find(`td[data-size-id="${editedSizeId}"]`).text(sizeTotal.toFixed(0));
+        }
+
+        if (rowLabel === 'total dozens') {
+            const dozens = Math.floor(sizeTotal / 12);
+            const pcsLeft = sizeTotal % 12;
+            $(this).find(`td[data-size-id="${editedSizeId}"]`).text(`${dozens} Dz ${pcsLeft} Pcs`);
+        }
+    });
+
+    // === Check if the entire size column is now empty and remove it ===
+let isSizeEmpty = true;
+
+$('#stiching_delivery_table tbody tr').each(function () {
+    const firstText = $(this).find('td:first').text().trim().toLowerCase();
+    if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+    const cell = $(this).find(`td[data-size-id="${editedSizeId}"]`);
+    const value = cell.text().trim();
+    if (value && value !== '-' && value !== '0') {
+        isSizeEmpty = false;
+    }
+});
+
+if (isSizeEmpty) {
+    $('#stiching_delivery_table thead th').each(function (index) {
+        const sizeId = $(this).data('size-id');
+        if (sizeId == editedSizeId) {
+            const colIndex = index;
+
+            // Remove header
+            $(this).remove();
+
+            // Remove all cells in this column across body
+            $('#stiching_delivery_table tbody tr').each(function () {
+                $(this).find(`td:eq(${colIndex})`).remove();
+            });
+        }
+    });
+}
+updateFooterTotal();
+// updateFooterTotals();
+
+$('#update_modal').modal('hide');
+    // $('#update_modal').modal('hide');
+});
+
+
+function updateFooterTotal() {
+    const $table = $('#stiching_delivery_table');
+
+    // Find all size-id columns from header
+    let sizeIds = [];
+    $table.find('thead th[data-size-id]').each(function () {
+        sizeIds.push($(this).data('size-id'));
+    });
+
+    // Prepare totals per sizeId
+    let totals = {};
+    sizeIds.forEach(id => totals[id] = 0);
+
+    // Sum quantities in tbody per size column 
+    $table.find('tbody tr').each(function () {
+        const rowLabel = $(this).find('td:first').text().trim().toLowerCase();
+        if (rowLabel === 'total pcs' || rowLabel === 'total dozens') return; // skip total rows
+
+        sizeIds.forEach(sizeId => {
+            // Find the cell with this sizeId attribute 
+            const $cell = $(this).find(`td[data-size-id="${sizeId}"]`);
+            if ($cell.length) {
+                const val = parseFloat($cell.text()) || 0;
+                totals[sizeId] += val;
+            }
+        });
+    });
+
+    // Update footer rows "total pcs" and "total dozens"
+    $table.find('tbody tr').each(function () {
+        const rowLabel = $(this).find('td:first').text().trim().toLowerCase();
+
+        if (rowLabel === 'total pcs') {
+            sizeIds.forEach(sizeId => {
+                const $cell = $(this).find(`td[data-size-id="${sizeId}"]`);
+                if ($cell.length) {
+                    $cell.text(totals[sizeId].toFixed(0));
+                }
+            });
+        }
+
+        if (rowLabel === 'total dozens') {
+            sizeIds.forEach(sizeId => {
+                const $cell = $(this).find(`td[data-size-id="${sizeId}"]`);
+                if ($cell.length) {
+                    const dozens = Math.floor(totals[sizeId] / 12);
+                    const pcsLeft = totals[sizeId] % 12;
+                    $cell.text(`${dozens} Dz ${pcsLeft} Pcs`);
+                }
+            });
+        }
+    });
+}
+
+// // This function updates the main table based on the checked items in the update form.
+// $('#update_form').on('submit', function (e) {
+//     e.preventDefault();
+
+//     let groupedData = {};
+//     let editedSizeId = null;
+//     let anyCheckboxChecked = false;
+
+//     // Collect data from checked rows and check if any checkbox is selected
+//     $("#update_table tbody tr").each(function () {
+//         const checkbox = $(this).find('.color-checkbox');
+//         const isChecked = checkbox.is(':checked');
+
+//         const color = $(this).find('td:eq(2)').text().trim();
+//         const qty = parseFloat($(this).find('td:eq(3)').text()) || 0;
+//         const colorId = parseInt($(this).find('.color_id').text()) || 0;
+//         const sizeId = parseInt($(this).find('.size_id').text()) || 0;
+
+//         if (!editedSizeId) {
+//             editedSizeId = sizeId;
+//         }
+
+//         if (isChecked) {
+//             anyCheckboxChecked = true;
+//             if (!groupedData[color]) {
+//                 groupedData[color] = {
+//                     qty: qty,
+//                     color_id: colorId,
+//                     size_id: sizeId
+//                 };
+//             } else {
+//                 groupedData[color].qty += qty;
+//             }
+//         }
+//     });
+
+//     if (!editedSizeId) {
+//         $('#update_modal').modal('hide');
+//         return;
+//     }
+
+//     const $mainTableBody = $('#stiching_delivery_table tbody');
+//     const $mainTable = $('#stiching_delivery_table');
+//     let colIndexToRemove = -1;
+
+//     // Find the column index for the edited size
+//     $mainTable.find('thead th').each(function (index) {
+//         if ($(this).data('size-id') == editedSizeId) {
+//             colIndexToRemove = index;
+//             return false; // Exit the loop
+//         }
+//     });
+
+//     // --- MAIN FIX: This block handles all column removal logic. ---
+//     // If no checkboxes were checked, or if the column becomes empty after the update, remove it.
+//     if (!anyCheckboxChecked) {
+//         if (colIndexToRemove > -1) {
+//              // Remove header cell
+//             $mainTable.find('thead th').eq(colIndexToRemove).remove();
+            
+//             // Remove all cells in this column across body and footer
+//             $mainTable.find('tbody tr, tfoot tr').each(function () {
+//                 $(this).find(`td`).eq(colIndexToRemove).remove();
+//             });
+//         }
+//         // Recalculate totals after removing the column
+//         recalculateTotals();
+//         $('#update_modal').modal('hide');
+//         return;
+//     }
+
+//     // Update or clear size column cells for all rows
+//     $mainTableBody.find('tr').each(function () {
+//         const $row = $(this);
+//         const firstCellText = $row.find('td:first').text().trim().toLowerCase();
+
+//         if (firstCellText === 'total pcs' || firstCellText === 'total dozens') {
+//             return;
+//         }
+
+//         const color = $row.find('td:first').text().trim();
+//         const cell = $row.find(`td[data-size-id="${editedSizeId}"]`);
+
+//         if (cell.length) {
+//             if (groupedData[color]) {
+//                 const data = groupedData[color];
+//                 cell
+//                     .attr('data-color-id', data.color_id)
+//                     .attr('data-size-id', data.size_id)
+//                     .text(data.qty.toFixed(0));
+//             } else {
+//                 cell.removeAttr('data-color-id').removeAttr('data-size-id').text('-');
+//             }
+//         }
+//     });
+
+//     // Remove color rows where all sizes are empty
+//     $mainTableBody.find('tr').each(function () {
+//         const $row = $(this);
+//         const firstText = $row.find('td:first').text().trim().toLowerCase();
+//         if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+//         const hasQty = $row.find('td[data-size-id]').toArray().some(td => {
+//             const text = $(td).text().trim();
+//             return text !== '-' && text !== '' && text !== '0';
+//         });
+
+//         if (!hasQty) {
+//             $row.remove();
+//         }
+//     });
+
+//     // Recalculate totals and update the footer
+//     recalculateTotals();
+
+//     // The logic to check if a column is now empty and remove it is handled by
+//     // the initial 'anyCheckboxChecked' check and the recalculation. No need for a second check.
+    
+//     $('#update_modal').modal('hide');
+// });
+
+
+// This helper function now correctly calculates and rebuilds the footer.
+function recalculateTotals() {
+    const $mainTable = $('#stiching_delivery_table');
+    const $tbody = $mainTable.find('tbody');
+    const $thead = $mainTable.find('thead');
+    const sizeTotals = {};
+    let grandTotal = 0;
+
+    // Get all size IDs from the header. This is the correct way to get the columns we need.
+    const sizeIds = $thead.find('th[data-size-id]').map(function () {
+        return $(this).data('size-id');
+    }).get();
+
+    // Initialize sizeTotals with 0 for each size to avoid undefined values.
+    sizeIds.forEach(sizeId => {
+        sizeTotals[sizeId] = 0;
+    });
+
+    // Calculate totals for each row and each size
+    $tbody.find('tr').each(function () {
+        const $row = $(this);
+        let rowTotal = 0;
+        
+        // Iterate over each size column to get its value
+        sizeIds.forEach(sizeId => {
+            const val = parseFloat($row.find(`td[data-size-id="${sizeId}"]`).text()) || 0;
+            sizeTotals[sizeId] += val;
+            rowTotal += val;
+        });
+
+        grandTotal += rowTotal;
+
+        // Find the correct cell to update the row's total. This assumes the total cell is the last one.
+        // It's crucial to check if the row has a total column first.
+        const $totalCell = $row.find('td:last-child');
+        if ($totalCell.hasClass('total-cell')) { // Add a class to your total column for robustness
+             $totalCell.text(rowTotal.toFixed(0));
+        } else {
+            $row.append(`<td>${rowTotal.toFixed(0)}</td>`);
+        }
+
+    });
+
+    // Remove the old footer before rebuilding
+    $mainTable.find('tfoot').remove();
+
+    // Build the new footer rows
+    let totalPcsRow = `<tr><td style="font-weight:bold;">Total Pcs</td>`;
+    let totalDozenRow = `<tr><td style="font-weight:bold;">Total Dozens</td>`;
+
+    sizeIds.forEach(sizeId => {
+        const qty = sizeTotals[sizeId] || 0;
+        const dozens = Math.floor(qty / 12);
+        const pcs = qty % 12;
+        totalPcsRow += `<td style="text-align:right;">${qty.toFixed(0)}</td>`;
+        totalDozenRow += `<td style="text-align:right;">${dozens} Dz ${pcs} Pcs</td>`;
+    });
+
+    // Add the final grand total cells to the end of the rows
+    const gDz = Math.floor(grandTotal / 12);
+    const gPcs = grandTotal % 12;
+    totalPcsRow += `<td style="font-weight:bold; text-align:right;">${grandTotal.toFixed(0)}</td></tr>`;
+    totalDozenRow += `<td style="font-weight:bold; text-align:right;">${gDz} Dz ${gPcs} Pcs</td></tr>`;
+
+    // Append the new footer
+    $mainTable.append(`<tfoot>${totalPcsRow}${totalDozenRow}</tfoot>`);
+}
+
+
+
+
+// Helper function to remove a size column if it's completely empty
+function removeEmptySizeColumn(sizeIdToRemove) {
+    const $mainTable = $('#stiching_delivery_table');
+    let isSizeEmpty = true;
+    let colIndex = -1;
+
+    // Find the column index and check if it's empty
+    $mainTable.find('thead th').each(function (index) {
+        if ($(this).data('size-id') == sizeIdToRemove) {
+            colIndex = index;
+            // Check all rows in the body for a value in this column
+            $mainTable.find('tbody tr').each(function () {
+                const cell = $(this).find(`td`).eq(colIndex);
+                const value = cell.text().trim();
+                if (value && value !== '-' && value !== '0') {
+                    isSizeEmpty = false;
+                    return false; // Exit the loop
+                }
+            });
+            return false; // Exit the header loop
+        }
+    });
+
+    if (isSizeEmpty && colIndex !== -1) {
+        // Remove header cell
+        $mainTable.find('thead th').eq(colIndex).remove();
+
+        // Remove all cells in this column across body and footer
+        $mainTable.find('tbody tr, tfoot tr').each(function () {
+            $(this).find(`td`).eq(colIndex).remove();
+        });
+    }
+}
+
+// Helper function to recalculate and update all totals
+function recalculateTotals_test() {
+    const $mainTable = $('#stiching_delivery_table');
+    const $tbody = $mainTable.find('tbody');
+    const $thead = $mainTable.find('thead');
+    const sizeTotals = {};
+    let grandTotal = 0;
+
+    // Get all size IDs from the header, skipping the first (Color) and last (Total) columns
+    const sizeIds = $thead.find('th[data-size-id]').map(function () {
+        return $(this).data('size-id');
+    }).get();
+
+    // Calculate totals for each row and each size
+    $tbody.find('tr').each(function () {
+        const $row = $(this);
+        let rowTotal = 0;
+        sizeIds.forEach(sizeId => {
+            const val = parseFloat($row.find(`td[data-size-id="${sizeId}"]`).text()) || 0;
+            sizeTotals[sizeId] = (sizeTotals[sizeId] || 0) + val;
+            rowTotal += val;
+        });
+        grandTotal += rowTotal;
+        // Update the row's own total cell
+        $row.find('td:last').text(rowTotal.toFixed(0));
+    });
+
+    // Remove old footer if it exists
+    $mainTable.find('tfoot').remove();
+
+    // Build and append new footer
+    let totalPcsRow = `<tr><td style="font-weight:bold;">Total Pcs</td>`;
+    let totalDozenRow = `<tr><td style="font-weight:bold;">Total Dozens</td>`;
+
+    sizeIds.forEach(sizeId => {
+        const qty = sizeTotals[sizeId] || 0;
+        const dozens = Math.floor(qty / 12);
+        const pcs = qty % 12;
+        totalPcsRow += `<td style="text-align:right;">${qty.toFixed(0)}</td>`;
+        totalDozenRow += `<td style="text-align:right;">${dozens} Dz ${pcs} Pcs</td>`;
+    });
+
+    // Add Grand Total cells
+    totalPcsRow += `<td style="font-weight:bold; text-align:right;">${grandTotal.toFixed(0)}</td></tr>`;
+    const gDz = Math.floor(grandTotal / 12);
+    const gPcs = grandTotal % 12;
+    totalDozenRow += `<td style="font-weight:bold; text-align:right;">${gDz} Dz ${gPcs} Pcs</td></tr>`;
+
+    $mainTable.append(`<tfoot>${totalPcsRow}${totalDozenRow}</tfoot>`);
+}
+
+
+// Helper function to recalculate and update all totals
+function recalculateTotals() {
+    const $mainTable = $('#stiching_delivery_table');
+    const $tbody = $mainTable.find('tbody');
+    const $thead = $mainTable.find('thead');
+    const sizeTotals = {};
+    let grandTotal = 0;
+
+    // Get all size IDs from the header
+    const sizeIds = $thead.find('th[data-size-id]').map(function () {
+        return $(this).data('size-id');
+    }).get();
+
+    // Calculate totals for each row and each size
+    $tbody.find('tr').each(function () {
+        const $row = $(this);
+        let rowTotal = 0;
+        $row.find('td[data-size-id]').each(function () {
+            const sizeId = $(this).data('size-id');
+            const val = parseFloat($(this).text()) || 0;
+            sizeTotals[sizeId] = (sizeTotals[sizeId] || 0) + val;
+            rowTotal += val;
+        });
+        grandTotal += rowTotal;
+    });
+
+    // Remove old footer if it exists
+    $mainTable.find('tfoot').remove();
+
+    // Build and append new footer
+    let totalPcsRow = `<tr><td style="font-weight:bold;">Total Pcs</td>`;
+    let totalDozenRow = `<tr><td style="font-weight:bold;">Total Dozens</td>`;
+
+    sizeIds.forEach(sizeId => {
+        const qty = sizeTotals[sizeId] || 0;
+        const dozens = Math.floor(qty / 12);
+        const pcs = qty % 12;
+        totalPcsRow += `<td data-size-id="${sizeId}" style="text-align:right;">${qty.toFixed(0)}</td>`;
+        totalDozenRow += `<td data-size-id="${sizeId}" style="text-align:right;">${dozens} Dz ${pcs} Pcs</td>`;
+    });
+
+    totalPcsRow += `<td style="font-weight:bold; text-align:right;">${grandTotal.toFixed(0)}</td></tr>`;
+    const gDz = Math.floor(grandTotal / 12);
+    const gPcs = grandTotal % 12;
+    totalDozenRow += `<td style="font-weight:bold; text-align:right;">${gDz} Dz ${gPcs} Pcs</td></tr>`;
+
+    $mainTable.append(`<tfoot>${totalPcsRow}${totalDozenRow}</tfoot>`);
+}
+
+
+
+
+function EditStiching() {
+    const entry_id = $('#entry_id').val();
+    const tm_id = $('#tm_id').val();
+
+    const csrf = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // First: Get existing stitching data (checked)
+    $.post('/get_stitching_delivery_data/', {
+        entry_id,
+        tm_id,
+        csrfmiddlewaretoken: csrf
+    }, function (stitchingResponse) {
+        if (stitchingResponse.status !== 'success') return;
+
+        const stitchingData = stitchingResponse.data || []; // Checked entries
+        const stitchingKeys = new Set(
+            stitchingData.map(row => `${row.color_id}_${row.size_id}`)
+        );
+
+        const missingData = stitchingResponse.missing || [];
+
+        // Second: Get cutting stock data (to populate modal with all entries)
+        $.post('/get_cutting_stock_modal/', {
+            entry_id,
+            csrfmiddlewaretoken: csrf
+        }, function (cuttingResponse) {
+            if (cuttingResponse.status !== 'success') return;
+
+            const cuttingData = cuttingResponse.data || [];
+
+            let tbody = '';
+
+
+            // ✅ Add checked rows (present in stitching) 
+            stitchingData.forEach(row => {
+                const qty = parseFloat(row.total_out_quantity) || 0;
+                const checkedAttr = qty > 0 ? 'checked' : '';
+                tbody += `
+                    <tr data-color-id="${row.color_id}" data-size-id="${row.size_id}">
+                        <td><input type="checkbox" class="form-check-input color-checkbox" ${checkedAttr}></td>
+                        <td>${row.color_name}</td>
+                        <td>${row.size_name}</td>
+                        <td class="text-end">${qty.toFixed(0)}</td>
+                    </tr>
+                `;
+            });
+
+            // 🚫 Add unchecked rows (present in cutting, but NOT already selected)
+            cuttingData.forEach(row => {
+                const key = `${row.color_id}_${row.size_id}`;
+                const availableQty = parseFloat(row.available_stock_quantity) || 0;
+                const checkedAttr = availableQty > 0 ? 'checked' : '';  // if you want checked here too, otherwise leave ''
+                if (!stitchingKeys.has(key)) {
+                    tbody += `
+                        <tr data-color-id="${row.color_id}" data-size-id="${row.size_id}" class="table-warning">
+                            <td><input type="checkbox" class="form-check-input color-checkbox" ${checkedAttr}></td>
+                            <td>${row.color_name}</td>
+                            <td>${row.size_name}</td>
+                            <td class="text-end">${availableQty.toFixed(0)}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+
+            // Render Table
+            $('#StichingTable thead').html(`
+                <tr>
+                    <th><input type="checkbox" id="select_all"></th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th class="text-end">Available</th>
+                </tr>
+            `);
+                    // <th>Action</th>
+
+            $('#StichingTable tbody').html(tbody);
+            $('#StichingTable tfoot').remove();
+
+            // Select All Handler
+            $('#select_all').on('change', function () {
+                $('.color-checkbox').prop('checked', $(this).is(':checked'));
+            });
+
+            // Delete Handler
+            $('#StichingTable').on('click', '.delete-row-btn', function () {
+                const row = $(this).closest('tr');
+                const color_id = row.data('color-id');
+                const size_id = row.data('size-id');
+
+                if (confirm('Are you sure you want to delete this entry?')) {
+                    $.post('/delete_stiching_entry/', {
+                        tm_id,
+                        entry_id,
+                        color_id,
+                        size_id,
+                        csrfmiddlewaretoken: csrf
+                    }, function (res) {
+                        if (res.status === 'success') {
+                            row.remove();
+                            notifier.show('Well Done!', 'Deleted Successfully!.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+                        } else {
+                            alert('Delete failed: ' + res.message);
+                        }
+                    });
+                }
+            });
+
+            // Show Modal
+            $('#edit_modal').modal('show');
+            save_modaldata();  // binds the click handler on #save_cutting_modal button
+
+        });
+    });
+}
+
+
+
+
+
+function save_modaldata(){
+$('#save_cutting_modal').on('click', function () {
+    const tm_id = $('#tm_id').val();  // parent stitching delivery ID
+    const entry_id = $('#entry_id').val(); // cutting entry ID
+    const quality_id = $('#quality_id').val(); // cutting entry ID
+    const isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';  // ✅ Correct value: 1 or 0
+    console.log('checked-data:', isPackingChecked); // Log the correct value (1 or 0)
+    const style_id = $('#style_id').val(); // cutting entry ID
+
+    if (!tm_id || !entry_id) {
+        alert('Missing TM ID or Entry ID.');
+        return;
+    }
+
+    let selectedData = [];
+    console.log('selected-data:',selectedData);
+
+   
+
+ 
+    $('#purchaseTable tbody tr').each(function () {
+        // const size_id = $(this).data('size-id');
+        // const color_id = $(this).data('color-id'); 
+        const ht_id = $(this).data('ht-id');  // Will be undefined or empty if new row
+        const size_name = $(this).find('td:eq(1)').text().trim();
+        const color_name = $(this).find('td:eq(2)').text().trim();
+        const quantity = parseFloat($(this).find('td:eq(3)').text().trim());
+        const color_id = $(this).find('.color_id').text().trim();
+        const size_id = $(this).find('.size_id').text().trim();
+        // You can then construct your payload:
+        if ($(this).find('.color-checkbox').prop('checked')) {
+            selectedData.push({
+                size_id,
+                color_id,
+                ht_id,
+                size_name,
+                color_name,
+                quantity,
+
+                // any additional values
+            });
+        } 
+    });
+
+    if (selectedData.length === 0) {
+        alert("No items selected to save."); 
+        return  ; 
+    } 
+
+
+    if (confirm("Are you sure you want to save?")) {
+
+    $.ajax({
+        type: 'POST',
+        url: '/update_stitching_delivery_data/',  // Django view URL
+        data: {
+            tm_id: tm_id,
+            entry_id: entry_id, 
+            quality_id:quality_id, 
+            style_id :style_id,
+            is_packing :isPackingChecked,
+            selected_data: JSON.stringify(selectedData),
+                    // mdata.append('is_packing', isPackingChecked); // This will send '1' or '0'
+
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status === 'success') {
+
+                notifier.show(   
+                    'success',
+                    'Added Successfully!.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                ); 
+                $('#add_modal').modal('hide');
+                // loadCuttingModalTable(entry_id);  // Reload modal
+                loadStitchingSummaryTable(entry_id, tm_id);  // Refresh main table
+            } else {
+                alert("Failed to save: " + response.message);
+            }
+        },
+        error: function () {
+            alert("Server error during save.");
+        }
+    });
+}
+});
+}
+
+
+
+function storestitchingTblValues() { 
+    const TableData = [];
+
+    $('#StichingTable tbody tr').each(function () {
+        const $row = $(this); 
+
+        // ✅ Check if this row's checkbox is checked 
+        const isChecked = $row.find('.color-checkbox').is(':checked');
+        if (!isChecked) return;  // Skip this row if not selected
+
+        const size = $row.find('td:eq(2)').text().trim();
+        const color = $row.find('td:eq(1)').text().trim();
+
+
+        const color_id = $row.data('color-id');
+        const size_id = $row.data('size-id');
+
+
+
+        const quantity = parseFloat($row.find('td:eq(3)').text().trim()) || 0;
+        // const color_id = $row.find('.color_id').text().trim();
+        // const size_id = $row.find('.size_id').text().trim();
+        const is_packing = $('#is_packing').val() || 0;
+
+        TableData.push({
+            quantity: quantity.toFixed(2),
+            size_id,
+            color_id,
+            is_packing,
+        });
+    });
+
+    console.log("update-table-DATA:", TableData);
+    return TableData;
+}
+
+
+
+function LoadCuttingData(){
+// $('#load_entry').on('click', function () {
+$('#load_entry').on('click', function () {
+
+// $('#entry_id').on('change', function () {
+    const entry_id = $('#entry_id').val();
+    const tm_id = $('#tm_id').val();
+
+    if (!entry_id) return;
+
+    // loadCuttingModalTable(entry_id);      // Load modal stock
+    if (tm_id) loadStitchingSummaryTable(entry_id, tm_id); // Load stitching summary
+// });
+});
+}
+
+
+// update tm data
+
+
+function updateTm_Data(){
+    
+$('#add_new').on('submit', function(e) { 
+    e.preventDefault();
+
+    var formData = new FormData(this);
+   
+    const tm_id = $('#tm_id').val();  // parent stitching delivery ID
+   
+    const isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';  // ✅ Correct value: 1 or 0
+    console.log('checked-data:', isPackingChecked); // Log the correct value (1 or 0)
+    const style_id = $('#style_id').val(); // cutting entry ID
+ 
+
+    formData.append('outward_date', $('#outward_date').val());
+    formData.append('party_id', $('#party_id').val());
+    formData.append('is_packing',isPackingChecked);  // ← This line fixed
+    
+
+
+    $.ajax({
+        url: '/stiching-out-master-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#name').val('');
+                $('#program_date').val('');
+                
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+}
+
+
+
+        // function updateFooterTotals() {
+        //     let totalOut = 0;
+        //     let totalBalance = 0;
+
+        //     $(".outward-qty").each(function () {
+        //         totalOut += parseFloat($(this).val()) || 0;
+        //     });
+
+        //     $(".balance-qty").each(function () {
+        //         totalBalance += parseFloat($(this).text()) || 0;
+        //     });
+
+        //     $(".footer-out-qty").text(totalOut.toFixed(3));
+        //     $(".footer-balance").text(totalBalance.toFixed(3));
+        // }
+
+
+
+
+
+
+
+function updateFooterTotals() {
+    let totalOut = 0;
+    let totalBalance = 0;
+
+    // Sum all quantity cells in #stiching_delivery_table tbody for your sizes
+    $('#stiching_delivery_table tbody tr').each(function () {
+        const firstText = $(this).find('td:first').text().trim().toLowerCase();
+
+        // Skip total rows if needed
+        if (firstText === 'total pcs' || firstText === 'total dozens') return;
+
+        // Sum all numeric cells that represent quantities
+        $(this).find('td').each(function () {
+            const val = parseFloat($(this).text()) || 0;
+            totalOut += val;
+        });
+    });
+
+    // If you have balance quantities elsewhere, sum similarly or update this logic
+    $(".balance-qty").each(function () {
+        totalBalance += parseFloat($(this).text()) || 0;
+    });
+
+    $(".footer-out-qty").text(totalOut.toFixed(3));
+    $(".footer-balance").text(totalBalance.toFixed(3));
+}
+// function AddDelivery(){
+
+
+// $('#add_new').on('submit', function(e) {
+//     e.preventDefault(); // Prevent default form submission
+//     console.log("Submit button clicked"); // Debugging
+
+//     var TableData = storeTblValues();
+//     console.log('tbl-data:', TableData);
+
+//     if (TableData.length === 0) {
+
+//         notifier.show(   
+//             'Error!',  
+//             'Empty. Please insert the program details.', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+
+
+//         return;
+//     }
+
+//     if (confirm("Are you sure you want to save?")) {
+//         TableData = JSON.stringify(TableData); 
+//         var mdata = new FormData(this);
+//         mdata.append('chemical_data', TableData);
+//         var isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';
+//         mdata.append('is_packing', isPackingChecked);
+
+//         var do_no = $('#outward_no').val();
+//         mdata.append('do_number', do_no);
+       
+
+//         $.ajax({
+//             type: "POST",  
+//             url: "/update-stitching-outward/", 
+//             data: mdata,
+//             processData: false, 
+//             contentType: false,
+//             beforeSend: function() {
+//                 console.log("Sending AJAX request...");
+//                 $('#submit').attr('disabled', true).text('Processing...');
+//             },
+//              success: function(data) {
+//                 console.log("Server Response:", data);
+//                 $('#submit').attr('disabled', false).text('Save');
+
+//                 if (data.status === 'success') {
+//                     notifier.show( 
+//                         'Well Done!', 
+//                         data.message || 'Added Successfully!', 
+//                         'success', 
+//                         "{% static 'assets/images/notification/ok-48.png' %}", 
+//                         4000
+//                     ); 
+
+
+//                     // $('#outward_no').val(data.do_number);
+//                     // $('#add_new').trigger('reset');
+ 
+//                     // location.href='/stiching-delivery';
+//                 } else {
+//                     notifier.show(
+//                         'Error!', 
+//                         'Failed To add', 
+//                         'danger', 
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     ); 
+//                 }
+//             },
+//             error: function(jqXHR, textStatus, errorThrown) {
+//                 console.log("AJAX Error:", textStatus, errorThrown);
+//                 notifier.show(
+//                         'Error!', 
+//                         'Error adding data', 
+//                         'danger',  
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     ); 
+//                 // alert('Error Adding data'); 
+//                 $('#submit').attr('disabled', false).text('Save');
+//             }
+//         }); 
+//     }
+// });
+
+
+
+// }
+
+
+
+// `````````````````````````````````````````````````````````````````````````````
+
+
+$(document).ready(function () {
+    $('#add_new').on('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        console.log("Submit button clicked");
+
+        var TableData = storeTblValues();
+        console.log('tbl-data:', TableData);
+
+        if (TableData.length === 0) {
+            // notifier.show(   
+            //     'Error!',  
+            //     'Empty. Please insert the program details.', 
+            //     'danger', 
+            //     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            //     4000
+            // );
+            console.log('Empty. Please insert the program details'); 
+            return;
+        }
+
+        if (confirm("Are you sure you want to save?")) {
+            TableData = JSON.stringify(TableData); 
+            var mdata = new FormData(this);
+            mdata.append('chemical_data', TableData);
+
+            var isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';
+            mdata.append('is_packing', isPackingChecked);
+
+            var do_no = $('#outward_no').val();
+            mdata.append('do_number', do_no);
+
+            $.ajax({
+                type: "POST",  
+                url: "/update-stitching-outward/", 
+                data: mdata,
+                processData: false, 
+                contentType: false,
+                beforeSend: function() {
+                    console.log("Sending AJAX request...");
+                    $('#submit_data').attr('disabled', true).text('Processing...');
+                },
+                success: function(data) {
+                    console.log("Server Response:", data);
+                    $('#submit_data').attr('disabled', false).text('Save');
+
+                    if (data.status === 'success') {
+                        notifier.show( 
+                            'Well Done!', 
+                            data.message || 'Added Successfully!', 
+                            'success', 
+                            "{% static 'assets/images/notification/ok-48.png' %}", 
+                            4000
+                        ); 
+
+                        // Optional reset or redirect
+                        // $('#add_new').trigger('reset');
+                        // location.href='/stiching-delivery';
+                    } else {
+                        notifier.show(
+                            'Error!', 
+                            'Failed To add', 
+                            'danger', 
+                            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                            4000
+                        ); 
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log("AJAX Error:", textStatus, errorThrown);
+                    notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger',  
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                    $('#submit_data').attr('disabled', false).text('Save');
+                }
+            }); 
+        }
+    });
+});
+
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            // $('#color_id').empty().append('<option value="">Select Color</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');     
+
+                });
+            }
+            if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+    $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+}
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+
+
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value 
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+// ````````````````````````````````````````````
+    $('.single-select').select2(); 
+
+            // Get current date and time
+   
+</script>       

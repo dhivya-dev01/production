@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>MIRRA GARMENTS - YARN INWARD</title>
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+   
+      
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+      </style>
+      
+
+      <style>
+        @page {
+            size: A5;
+            margin: 1cm;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #000;
+        }
+
+        /* h4, p, td, th {
+            margin: 0;
+            padding: 0;
+        } */
+
+        /* table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        } */
+
+        th, td {
+            padding: 4px;
+            border: 1px solid #ddd;
+        }
+
+        .no-border td, .no-border {
+            border: none;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 90px;
+        }
+
+        .section {
+            padding: 10px 0;
+        }
+
+        .signature {
+            margin-top: 30px;
+        }
+
+        .small-note {
+            font-size: 8px;
+        }
+
+        /* .border-box {
+            border: 2px solid black;
+            text-align: center;
+            width: 140px;
+            margin-top: 2px;
+ 
+        } */
+
+        #logo {
+         text-align: center;
+         margin-bottom: 10px; 
+         }
+         #logo img {
+         width: 90px;
+         }
+         * {margin:0; padding:0; text-indent:0; }
+         a { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 8pt; }
+         h1 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13.5pt; }
+         h4 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; }
+         p { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 8pt; margin:0pt; }
+         
+		 
+		 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			padding: 4px;
+			
+		}
+         
+      </style>
+  
+   </head>
+   <body class="A5">
+    <section >
+
+        
+        <table class="no-border" width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="35%" style="vertical-align: top;">
+				<img  width="140" height="70" src="{{ image_url }}"/>
+				
+                </td>
+                
+               <td width="65%" align="right">
+                  <h4><big><b><strong>{{ company.name.upper }}</strong><b></big></h4>
+                  
+                  <div class="mt-5" style="margin-top: -6px;">
+                     <p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+                     <p><b>Cell:</b> {{ company.mobile }} | <b>Phone:</b> {{ company.phone }}</p>
+                     <p><b>Email:</b> {{ company.email }}</p>
+                     <p><b>GSTIN:</b> {{ company.gstin }} </p>
+
+                     </div>
+                
+               </td>
+            </tr>   
+        </table>
+
+        <hr style="margin-top:6px ; margin-bottom: 6px;">
+        
+         <table class="no-border" width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tbody>
+        
+ 
+               {% if inward_details %}
+                <tr>
+                <td align="left">
+                    <p><strong>Inward No. : &nbsp;&nbsp; {{ inward_details.0.inward_number }} </strong> </p>
+                </td>
+                <!-- <td align="center">
+                    <div class="border-box" style="width: 140px;border:2px solid black;text-align:center;">
+                    <p style="text-align: center; margin-top: 5px;"><strong>YARN INWARD</strong></p>
+                    </div>
+                </td> --> 
+
+                <td align="center" >
+				  	<div class="border-box" style="margin-top: 20px; width: 110px;border:2px solid black;text-align:center;padding: 3px;">
+                        <p><strong>YARN INWARD</strong></p>
+					</div>
+                    
+                  </td>
+
+ 
+                <td align="right">
+                    <p><strong>Inward Date: {{ inward_details.0.inward_date|date:"d-m-Y" }}</strong></p>
+                </td>
+                </tr>
+                {% endif %}
+
+               
+            </tbody>					
+      </table>
+
+
+      <hr style="margin-top:3px;margin-bottom:3px;">
+
+      <table class="no-border" width="100%" border="0" cellspacing="0" cellpadding="0" >
+         <tbody>
+     
+
+               {% if inward_details %}
+                <tr>
+                <td align="left">
+                    <p>To. M/S : <strong>{{ inward_details.0.mill }}</strong></p>
+                    <p>GSTIN   : <strong>{{ gstin }}</strong></p>
+                    <p>Mobile  : <strong>{{ mobile }}</strong></p>
+                </td>
+                <td align="right">
+                    <p><strong>PO No: </strong>{{ po_number }}</p>
+                </td>
+                </tr>
+                {% endif %}
+
+               
+         </tbody>					
+      </table>
+
+
+ 
+ 
+
+        <table class="table table-striped table-bordered" style="border: black; margin-top:6px; margin-bottom:6px">
+			<tbody>
+         
+                <tr>
+					<td><p><strong>Yarn Count</strong></p></td>
+                    <td align="center"><p><strong>Bag</strong></p></td>
+                    <td align="right"><p><strong>per Bag Wt<br>(in kg)</strong></p></td>
+                    <td align="right" ><p><strong>Quantity <br>(in kg)</strong></p></td>
+                    <td align="right" ><p><strong>Gross Quantity <br>(in kg)</strong></p></td>
+                </tr>
+            
+                {% for item in inward_details %}
+                <tr>
+                  
+                  <td style="width: 150px;"><p>{{ item.yarn_count }}</p></td>
+                  <td align="center"><p>{{ item.bag }}</p></td>
+                  <td align="right"><p>{{ item.per_bag|floatformat:3  }}</p></td>
+                  <td align="right" ><p>{{ item.quantity|floatformat:3 }}</p></td>
+                  <td align="right"><p>{{ item.gross_quantity|floatformat:3 }}</p></td>
+                </tr>
+                {% endfor %}
+            
+				{% if remarks %}
+					<tr colspan="5">
+					   <td><p>REMARKS:   {{remarks}}</p></td>
+					</tr>
+				{% endif %}
+				
+			</tbody> 
+        </table>  
+
+     
+		
+        <table class="no-border" width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tbody>
+               <tr>
+                  <td width="50%"></td>
+                  <td width="50%" align="right"><p><strong>For MIRRA GARMENTS PVT LTD</strong></p></td>
+               </tr>
+               <tr><td width="100%" colspan="2"><br><br></td></tr>
+               <tr>
+                  <td width="50%" align="left"><p><strong>Party's Signature</strong></p></td> 
+                  <td width="50%" align="right"><p><strong>Authorized Signature</strong></p></td>
+               </tr>
+            </tbody>
+      
+        </table>
+		
+
+      </section>
+   </body>
+</html>

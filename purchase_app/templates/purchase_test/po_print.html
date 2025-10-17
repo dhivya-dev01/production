@@ -1,0 +1,339 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+            padding: 2px;
+            color: black;
+            font-size: 13px;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 5px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .header, .footer {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .header td, .footer td {
+            vertical-align: top;
+            padding: 5px;
+            border-collapse: collapse; 
+        }
+        .invoice-table, .totals-table {
+            width: 100%;
+            border-collapse: collapse;
+            /* margin-top: 10px; */
+            border: 1px solid #000;
+        }
+        .invoice-table th, .invoice-table td, .totals-table th, .totals-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+        .invoice-table th {
+            background-color: lightgrey;
+        }
+
+       
+        .right-align {
+            text-align: right;
+        }
+        .center-align {
+            text-align: center;
+        }
+        .footer {
+            border-top: 1px solid black;
+            /* bottom: 5px; */
+            padding-top: 10px;
+            font-size: 11px;
+        }
+        .value-assign {
+            font-size: 12px;
+            text-align: right;
+        }
+        .amount {
+            font-size: 12px;
+            text-align: right;
+            max-width: 120px; /* Decrease width for the amount column */
+            width: 120px; /* Adjust width as necessary */
+        }
+        .border{
+            border-bottom: 1px solid black;
+            /* padding-top: 1px; */
+            /* margin-top: 5px; */
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<!-- <body style="border: 1px solid black; padding: 10px;"> -->
+<body>
+    <!-- <div>
+
+    </div> -->       
+
+<div class="container" style="border: 1px solid black; ">  
+    
+
+    <!-- <div class="card"> -->
+    <table class="invoice-table">
+    
+        <tr>
+            <!-- Left Side Content (Company Information) -->
+            <td class="col-md-6">
+                
+                <strong>MIRRA</strong><br>
+                <p>INNERWEARS</p><br>
+                14/1A, RAM NAGAR 3RD STREET, TIRUPUR-641602<br>
+                GSTIN/UIN: 33FIXPS2994M1ZZ<br>
+                State Name: Tamil Nadu, Code: 33<br>
+                Email: cosmicitcp@gmail.com
+            </td>
+            <!-- Invoice Information -->
+            <td class="col-md-3">
+                <p class="border">Invoice No.: {{ order.id }} {{invoice_number}}</p>
+                <p class="border">Delivery Note: {{ order.delivery_note }}</p>
+                <p >Reference No. & Date: {{ order.reference_number }}</p>
+            </td>
+            <!-- Payment Information -->
+            <td class="col-md-3">
+                <p class="border">Dated: {{ order.date }}</p>
+                <p class="border">Mode/Terms of Payment: {{ order.payment_mode }}</p>
+                <p>Other References: {{ order.other_references }}</p>
+            </td>
+        </tr>
+
+        <!-- Row 2 -->
+        <tr>
+            <!-- Repeat Company Information -->
+            <td class="col-md-6">
+                <strong>Consignee (Ship to)</strong><br>
+                {{ customer_name }}<br>
+                {{ address_line1 }}<br>
+                State Name: {{ state }}, Code: {{ pincode }}
+            </td>
+            <!-- Buyer Information -->
+            <td class="col-md-3">
+                <p class="border">Buyer's Order No.: {{ order.buyer_order_no }}</p>
+                <p class="border">Dispatch Doc No.: {{ order.dispatch_doc_no }}</p>
+                <p>Dispatched Through: {{ order.dispatched_through }}</p>
+            </td>
+            <!-- Dispatch Information -->
+            <td class="col-md-3">
+                <p class="border">Dated: {{ order.dated }}</p>
+                <p class="border">Delivery Note Date: {{ order.delivery_note_date }}</p>
+                <p>Destination: {{ order.destination }}</p>
+            </td>
+        </tr>
+
+        <!-- Row 3 -->
+        <tr>
+            <!-- Buyer (Bill To) -->
+            <td class="col-md-6" >
+                <strong>Buyer (Bill to)</strong><br>
+                {{ customer_name }}<br>
+                {{ address_line1 }}<br>
+                State Name: {{ state }}, Code: {{ pincode }}
+            </td>
+            <!-- Terms and Conditions -->
+            <td class="col-md-6" colspan="2">
+                <p>Terms And Conditions</p>
+                <p  style="height: 20px;"></p>
+            </td>
+        </tr>
+    </table>
+<!-- </div> -->
+
+<!-- ````````````````````````````` -->
+
+    <!-- header invoice -->
+    <table class="invoice-table" style="margin-top: 1px;">
+        <thead>
+            <tr>
+                <!-- <th>Sl.No:</th> -->
+                <th>Description of Goods</th>
+                <th>HSN/SAC</th>
+                <th>Quantity</th>
+                <th>Rate (Inc. of Tax)</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in combined_details %}
+            <tr>
+                <!-- <td>{{ forloop.counter }}</td> -->
+                <td><b>{{ item.description }}</b></td>
+                <td>{{ item.hsn_sac }}</td>
+                <td>{{ item.quantity }} {{ item.unit }}</td>
+                <td>{{ item.rate }}</td>
+                <td>{{ item.selling_price }}</td>
+                <td class="amount" style="text-align: right;">{{ item.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+      
+        <tfoot>
+            <!-- Row for Total Amount -->
+            <tr>
+                <td colspan="4"></td>
+                <td><strong>Total Amount</strong></td>
+                <td style="text-align: right;">{{ total_amount }}</td>
+            </tr>
+            <!-- CGST and SGST Rows -->
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2">CGST</td>
+                <td style="text-align: end;">{{ cgst }}%</td>
+                <td style="text-align: right;">{{ output_cgst_value }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2">SGST</td>
+                <td style="text-align: end;">{{ sgst }}%</td>
+                <td style="text-align: right;">{{ output_sgst_value }}</td>
+            </tr> 
+            <!-- Rounding Row -->
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2">Rounded Off</td>
+                <td></td>
+                <td style="text-align: right;">{{ rounded_off }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2"><strong>Total Payable</strong></td>
+                <td></td>
+                <td style="text-align: right; color: red;">{{ total_amount }}</td>
+            </tr>
+        </tfoot>
+
+        
+        
+    </table>
+    
+
+    <table class="footer">
+        <tr>
+            <td style="width: 50%;">
+                <p>Amount Chargeable (in words)</p> 
+                <strong>INR &#8377; {{ amount_in_words|title }}</strong>
+            </td>
+            <td style="width: 50%;" align="right">
+                <p>E. & O.E</p>
+                
+            </td>
+          
+            
+            <tr class="invoice-table">
+          
+
+                    <table class="invoice-table">
+                        <thead class="invoice-table">
+                            <tr class="invoice-table">
+                                <th>HSN/SAC</th>
+                                <th>Taxable Value (₹)</th>
+                                <th colspan="2">Central Tax</th>
+                                <th colspan="2">State Tax</th>
+                                <th>Total Tax Amount (₹)</th>
+                            </tr>
+                            <tr class="invoice-table">
+                                <th></th>
+                                <th></th>
+                                <th>Rate (%)</th>
+                                <th>Amount (₹)</th>
+                                <th>Rate (%)</th>
+                                <th>Amount (₹)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for detail in tax_combined_details %}
+                            <tr>
+                                <td>{{ detail.hsn }}</td>  <!-- hsn code  -->
+                                <td style="text-align: end;">{{ detail.amount }}</td> <!-- total amount  -->
+                                <td style="text-align: end;">{{ detail.cgst_rate }} %</td> <!-- tax %  /2 -->
+                                <td style="text-align: end;">{{ detail.cgst_amount|floatformat:2 }}</td> <!-- cgst tax  -->
+                                <td style="text-align: end;">{{ detail.sgst_rate }} %</td> <!--  tax % / 2-->
+                                <td style="text-align: end;">{{ detail.sgst_amount|floatformat:2 }}</td> <!-- sgst tax -->
+                                <td style="text-align: end;">{{ detail.total_tax_amount }}</td> <!-- total tax amount -->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td style="text-align: end;">{{ footer_totals.total_taxable_value|floatformat:2 }}</td>
+                                <td></td>
+                                <td style="text-align: end;">{{ footer_totals.total_cgst_amount|floatformat:2 }}</td>
+                                <td></td>
+                                <td style="text-align: end;">{{ footer_totals.total_sgst_amount|floatformat:2 }}</td>
+                                <td style="text-align: end;">{{ footer_totals.total_tax_amount|floatformat:2 }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                     
+            </tr>
+            <td style="width: 50%;">
+                <p>Tax Amount (in words)</p> 
+                <strong>INR &#8377; {{ total_tax_amount_in_words|title }}</strong>
+            </td>
+           
+        </tr>
+
+        
+        <table style="width: 100%; border-collapse: collapse;font-size: 10px; " >
+            <!-- Row for Bank Details -->
+            <tr>
+                <td style="width: 50%;">
+
+                </td>
+                <td style="width: 50%; text-align: right;">
+                    <strong>Company's Bank Details:</strong><br> 
+                    A/c Holder's Name: <span>COSMIC COMPUTERS (2024-2025)</span><br>
+                    A/C No: 1234567890<br>
+                    IFSC Code: ABCD12345<br>
+                    Bank Name: XYZ Bank
+                </td>
+            </tr>
+        
+            <!-- Spacer row -->
+            <tr><td colspan="2" style="height: 2px;"></td></tr>
+        
+            <!-- Row for Declaration and Authorized Signatory -->
+            <tr>
+                <!-- Declaration -->
+                <td style="width: 50%; text-align: left; vertical-align: top;">
+                    <strong style="text-decoration: underline;">Declaration</strong>
+                    <p>
+                    We declare that this invoice shows the actual price of the goods described 
+                    and that all particulars are true and correct.</p>
+                </td>
+                
+                <!-- Authorized Signatory -->
+                <td style="width: 50%; text-align: right; vertical-align: top; border: 1px solid black; padding: 10px;">
+                    for For MIRRA GARMENTS PVT LTD <br><br>
+                    <p>Authorized Signatory</p>
+                </td>
+            </tr>
+        </table>
+        
+    </table>
+
+</div>
+
+</body>
+</html>

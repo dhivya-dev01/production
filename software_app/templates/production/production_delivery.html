@@ -1,0 +1,1038 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Production Delivery  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/email-settings">Production Delivery </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                    <!-- <div class=""> -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="">
+                                                    <div class="">
+                                                        <!-- Tabs for selecting different forms -->
+
+                                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active text-uppercase" id="knitting-tab" data-bs-toggle="tab"
+                                                                    href="#knitting" role="tab" aria-controls="knitting" aria-selected="true">Knitting</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-uppercase" id="bleaching-tab" data-bs-toggle="tab"
+                                                                    href="#bleaching" role="tab" aria-controls="bleaching"
+                                                                    aria-selected="false">Bleaching</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-uppercase" id="dyeing-tab" data-bs-toggle="tab"
+                                                                    href="#dyeing" role="tab" aria-controls="dyeing"
+                                                                    aria-selected="false">Dyeing</a>
+                                                            </li>
+
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-uppercase" id="compacting-tab" data-bs-toggle="tab"
+                                                                    href="#compacting" role="tab" aria-controls="compacting"
+                                                                    aria-selected="false">Compacting</a>
+                                                            </li>
+
+
+                                                        </ul>
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="tab-content" id="myTabContent">
+                                                            <!-- Email Form -->
+                                                            <div class="tab-pane fade show active" id="knitting" role="tabpanel" aria-labelledby="knitting-tab">
+                                                                <h5 class="ms-3"><b>Knitting</b></h5>
+                                                                <form id="knitting_form">
+
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+
+                                                                    
+                                                                        {% csrf_token %}
+                                                                        <div class="row ms-2">
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="product_id" class="form-label">Supplier </label>
+                                                                                <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" onchange="LoadknittingList()" required>
+                                                                                    <option value="">Select</option>
+                                                                                    {% for k in supplier %}
+                                                                                    <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                                    {% endfor %} 
+                                                                                </select> 
+                                                                            </div>
+            
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="product_id" class="form-label">Knitting List</label>
+                                                                                <select id="po_id" name="po_id" class="form-control form-select single-select" multiple  required>
+                                                                                    <option value="">Select</option>
+                                                                            
+                                                                                </select> 
+                                                                            </div>
+                                                    
+            
+            
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="product_id" class="form-label">Lot Number </label>
+                                                                                <select id="lot_no" name="lot_no" class="form-control form-select single-select" required>
+                                                                                    <option value="">Select</option>
+                                                                                    {% for k in knitting %}
+                                                                                    <option value="{{ k.lot_no }}">{{ k.lot_no }}</option> 
+                                                                                    {% endfor %} 
+                                                                                </select> 
+                                                                            </div>
+            
+                                                                            
+
+
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="product_id" class="form-label">Process</label>
+                                                                                <select id="process_id" name="process_id" class="form-control form-select single-select" onchange="LoadSupplier()">
+                                                                                    <option value="">Select</option>
+                                                                                    {% for k in process %}
+                                                                                    <option value="{{ k.stage }}">{{ k.stage }}</option> 
+                                                                                    {% endfor %} 
+                                                                                </select> 
+                                                                            </div>
+            
+
+
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="product_id" class="form-label">Deliver To </label>
+                                                                                <select id="deliver_id" name="deliver_id" class="form-control form-select single-select" >
+                                                                                    <option value="">Select</option>
+                                                                                    {% for k in deliver %}
+                                                                                    <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                                    {% endfor %} 
+                                                                                </select> 
+                                                                            </div>
+            
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="unit" class="form-label"> Quantity</label>
+                                                                                <input class="form-control" type="number" name="quantity" id="quantity" required>
+                                                                            </div>
+                                                                            
+                                                                            
+                                                                            <div class="col-md-2 mt-2">
+                                                                                <label for="order_date" class="form-label">Delivery Date</label>
+                                                                                <input class="form-control" type="date" name="delivery_date" id="delivery_date" required>
+                                                                            </div>
+            
+                                                                        
+                                                                            <div class="col-md-4 mt-2">
+                                                                                <label for="order_date" class="form-label">Remarks</label>
+                                                                                <input class="form-control" type="text" name="remarks" id="remarks" required>
+                                                                            </div>
+
+
+                                                                    </div>
+
+                                                                    
+                                                                </div>
+                                                                
+
+
+                                                                <div class="col-md-4">
+ 
+                                                                    <!-- <div class="">
+                                                                        <div class=""> -->
+                                                                        <div class=" m-b-30">
+                                                                            <div class="card-body">            
+                                                                                <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th colspan="2">Summary Table</th>
+                                                                                        </tr> 
+                                                                                    </thead>
+                                                                                    <tbody>
+
+                                                                                        <tr>
+                                                                                            <td>Total Rolls</td>
+                                                                                            <td align="end" colspan="2" id="total_rolls">0.00</td>
+                                                                                        </tr>
+                     
+                                                                                        <tr>
+                                                                                            <td> Total Quantity</td>
+                                                                                            <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td>Sub Total</td>
+                                                                                            <td align="end" colspan="2" id="sub_total_placeholder">0.00</td>
+                                                                                        </tr>
+                                                                                        
+                                                                                        <tr> 
+                                                                                            <td>Grand Total</td>
+                                                                                            <td style="background-color: #428bca; color: black; font-size: 21px" align="end" colspan="2" id="total_payable">0.00</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>     
+                                                                            </div>
+                                                                        <!-- </div>
+                                                                    </div> -->
+
+
+                                                                </div>
+
+                                                            </div>
+                                                                <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="card-body">
+                                                                        <div class="table-responsive table-desi">
+                                                                           
+                                                                            <table id="purchaseTable" class="table table-bordered">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Fabric</th>
+                                                                                        <th>Count</th>
+                                                                                        <th>Gauge</th>
+                                                                                        <th>Tex</th>
+                                                                                        <th>Dia</th>
+                                                                                        <th>Rolls</th>
+                                                                                        <th>Wt Per Roll</th>
+                                                                                        <th>Quantity</th>
+                                                                                        <th>Amount</th>
+                                                                                        <th>Tax</th>
+                                                                                        <th style="display:none;">TM ID</th>
+                                                                                        <th style="display:none;">ID</th>
+                                                                                        <th style="display:none;">Fabric ID</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                </tbody>
+                                                                            </table>
+
+                                                                            
+
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    
+                
+                                                                    </div>
+                                                                    
+                                                                </div>
+                
+                                                                <div class="modal-footer" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        </form>
+
+
+                                                        
+                                     
+ 
+                                                    </div>
+                        
+
+
+
+                                                            <div class="tab-pane fade " id="process" role="tabpanel" aria-labelledby="process-tab">
+                                                                <h5 class="ms-3"><b>Process</b></h5>
+                                                  
+
+
+                                                                    <form id="process_form" method="POST" >
+ 
+                                                                        {% csrf_token %}
+                                                                        
+
+                                                                       
+                                                                        <!-- <h2>{{process.stage}}</h2> -->
+                                                                        <div class="row align-items-center mb-3">
+                                                                            <!-- Knitting --> {% for process in process %}
+                                                                            <div class="col-md-2">
+                                                                                <label for="knitting" class="col-form-label"><b>{{ process.stage }}</b></label>
+                                                                                <input class="form-control" type="number" name="tolerance_{{ process.stage_name|lower }}" 
+                                                                                id="Tollerance_{{ process.stage_name|lower }}" 
+                                                                                value="{{ process.tolerance }}">
+                                                                         
+                                                                            </div>
+                                                                     
+                                                                            
+
+                                                                       {% endfor %}  
+                                                                    </div>
+                                                                    
+                                                                        <!-- Footer -->
+                                                                        <div class="modal-footer mt-2">
+                                                                            <button type="submit" id="edit_button" class="btn btn-primary">Update</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    
+                                                                    
+                                                                    
+
+                                                            </div>
+                                                            <!-- SMS Form -->
+                                                            <div class="tab-pane fade" id="sms" role="tabpanel" aria-labelledby="sms-tab">
+                                                                <h5><b>SMS</b></h5>
+                                                                <form id="sms_form">
+                                                                    {% csrf_token %}
+                                                                    <div class="row ">
+                                                                        {% for sms in sms %}
+                                                                        <div class="col-3 mb-3">
+                                                                            <label for="email_host" class="col-form-label">SMS API Key</label>
+                                                                            <input class="form-control" type="text" name="sms_api_key" id="sms_api_key" required value="{{sms.sms_api_key}}">
+                                                                        </div>
+                                                                       
+                                                                        <div class="col-md-3 mb-3">
+                                                                            <label for="number" class="col-form-label">Support Phone Number</label>
+                                                                            <input type="number" maxlength="12" class="form-control" name="support_number" id="support_number" required value="{{sms.support_number}}">
+                                                                        </div>
+                                                                        <div class="col-md-4 mb-3">
+                                                                            <label for="email_description" class="col-form-label">Description</label>
+                                                                            <textarea rows="3" class="form-control" name="description" id="description" >{{sms.description}}</textarea>
+                                                                        </div>
+                                                                        
+                                                                        <div class="col-md-2 mt-5">
+                                                                            <input type="hidden" id="edit_id" name="edit_id" value="{{sms.id}}">
+                                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </form>
+                                                                <!-- SMS form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- Telegram Form -->
+                                                            <div class="tab-pane fade" id="telegram" role="tabpanel" aria-labelledby="telegram-tab">
+                                                                <!-- Telegram form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- WhatsApp Form -->
+                                                            <div class="tab-pane fade" id="whatsapp" role="tabpanel" aria-labelledby="whatsapp-tab">
+                                                                <!-- WhatsApp form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- Payment Form -->
+                                                            <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                                                                <!-- Test Keys -->
+                                                                <h5><b>Test Keys</b></h5>
+                                                                <form id="add_test_payment">
+                                                                    {% csrf_token %}
+                                                                    
+                                                                    
+                                                                </form> 
+                        
+                                                                <!-- Live Keys -->
+                                                                <h5 class="mt-5"><b>Live Keys</b></h5>
+                                                                <form id="add_live_payment">
+                                                                    {% csrf_token %}
+                                                                    
+                                                                    
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+
+
+ 
+                                            
+                                            
+        
+        
+
+
+                                          
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                   
+                                        
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+
+<script>
+
+
+ 
+
+function LoadSupplier() {
+    var process_id = $('#process_id').val(); 
+    console.log('Process-ID:', process_id); // Adjusted for clarity
+
+
+    $.ajax({
+        type: 'POST',  // Change to POST
+        url: '/get-supplier-list/',
+        data: {
+            'process_id': process_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        
+        success: function(data) {
+            $('#deliver_id').empty().append('<option value="">Select</option>');
+            
+            if (data.length > 0) {
+                data.forEach(function(po) {
+                    $('#deliver_id').append('<option value="' + po.id + '">' + po.name + '</option>');
+                });
+            }
+
+
+            
+        },
+        error: function(xhr, status, error) { 
+            console.error('Error loading po lists:', error); 
+            alert('error-po:',error); 
+        } 
+    }); 
+}
+
+
+
+    function LoadknittingList() { 
+        var supplier_id = $('#supplier_id').val(); 
+        console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+     
+        $.ajax({
+            type: 'POST',  // Change to POST
+            url: '/get-knitting-lists/',
+            data: {
+                'supplier_id': supplier_id,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+            },
+            success: function(data) {
+                $('#po_id').empty().append('<option value="">Select</option>');
+                
+                if (data.length > 0) {
+                    data.forEach(function(po) {
+                        $('#po_id').append('<option value="' + po.id + '">' + po.knitting_number + '</option>');
+                    });
+                }
+    
+    
+                
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading po lists:', error); 
+            }  
+        });
+    }
+    
+
+    
+    function LoadknittingDeliver() {
+        var po_id = $('#po_id').val();  // Get selected PO ID
+        console.log('PO-ID:', po_id);   // Debugging for clarity
+    
+        $.ajax({
+            type: 'POST',  // Change to POST
+            url: '/get_knitting_deliver_lists/',  // URL for delivering list
+            data: {
+                'po_id': po_id,  // Pass the correct PO ID
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+            },
+            success: function(data) {
+                $('#deliver_id').empty().append('<option value="">Select</option>');
+    
+                // Iterate over the returned data to populate the dropdown
+                if (data.deliveries && data.deliveries.length > 0) {
+                    data.deliveries.forEach(function(deliver) {
+                        $('#deliver_id').append('<option value="' + deliver.id + '">' + deliver.stage + '</option>');
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading deliver lists:', error);
+            }
+        });
+    }
+    
+ 
+    
+    
+    $(document).on('change', '#po_id', function() {
+        const supplierId = $('#supplier_id').val();
+        const poId = $(this).val(); // Get selected Purchase Order IDs from the multiple select
+    
+        if (!supplierId || !poId) {
+            alert("Please select both a Supplier and a Purchase Order.");
+            return; // Exit if either is not selected
+        }
+    
+        // Call the function to load purchases based on the selected supplier and purchase orders
+        // LoadDeliver();
+        loadDeliveryList(supplierId, poId);
+    });
+    
+    
+    
+    // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+    
+    
+    // function loadDeliveryList(supplierId, poIds) {
+    //     const currentLoadedItems = new Set();
+    
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/load-knitting-deliver/",
+    //         data: {
+    //             supplier_id: supplierId,
+    //             'po_id[]': poIds // Send selected IDs as an array
+    //         },
+
+    //         success: function(data) { 
+    //             console.log('Response Data:', data);
+    //             if (data.orders && data.orders.length > 0) {
+    //                 data.orders.forEach(function(item) {
+    //                     console.log('Adding Row:', item);
+    //                     addRow(item.fabric, item.count, item.gauge, item.tex, item.dia, item.rolls, item.wt_per_roll,
+    //                         item.id, item.fabric_id, item.tm_id, item.quantity, tax_value, item.total_amount);
+    //                 });
+    //             } else {
+    //                 console.warn('No items found in response.');
+    //             }
+    //         },
+
+    //         // success: function(data) { 
+    //         //     if (data.orders && data.orders.length > 0) {
+    //         //         data.orders.forEach(function(item) {
+    //         //             const uniqueKey = `${item.product_id}_${item.tm_id}`;
+    
+    //         //             if (!loadedItemsMap[uniqueKey]) {
+    //         //                 const price = parseFloat(item.rate) || 0;
+    //         //                 const tax_value = 5; //parseFloat(item.tax_value) || 0;
+    
+    //         //                 // Add row to table using the new addRow function
+    //         //                 addRow(item.fabric, item.count,item.gauge, item.tex, item.dia, item.rolls,item.wt_per_roll,
+    //         //                         item.id, item.fabric_id, 
+    //         //                        item.tm_id, item.quantity, tax_value, item.total_amount,
+    //         //                        );
+                                   
+    //         //                 loadedItemsMap[uniqueKey] = true; 
+    //         //                 calculateTotal();
+    //         //             }
+    
+    //         //             currentLoadedItems.add(uniqueKey);
+    //         //         });
+    //         //     } else {
+    //         //         alert('No unassigned items found or all items are already assigned.');
+    //         //     }
+    
+    //         //     // Clean up loaded items
+    //         //     for (const key in loadedItemsMap) {
+    //         //         if (!currentLoadedItems.has(key)) {
+    //         //             delete loadedItemsMap[key]; 
+    //         //         }
+    //         //     }
+    //         // },
+    //         error: function(xhr, status, error) {
+    //             alert('Error loading purchases: ' + error);
+    //         }
+    //     });
+    // }
+    
+    
+    const loadedItemsMap = {};
+    
+     
+    
+    let rowCounter = 0; // Initialize row counter
+    
+
+
+    function addRow(fabric, count, gauge, tex, dia, rolls ,wt_per_roll , id, fabricId, tmId, quantity, total_amount, taxValue) {
+    const tableBody = document.querySelector("#purchaseTable tbody"); // ✅ Fix 1
+
+    if (!tableBody) {
+        console.error("Table body not found! Ensure #purchaseTable exists in the DOM.");
+        return;
+    }
+
+    console.log("Table Body found:", tableBody);
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-fabric-id", fabricId);
+    newRow.setAttribute("data-tm-id", tmId);
+    newRow.setAttribute("data-row-id", rowId);
+
+    newRow.innerHTML = `
+        <td>${fabric}</td>
+        <td><input type="text" class="count" name="count" value="${count}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="gauge" name="gauge" value="${gauge}" max="${gauge}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="tex" name="tex" value="${tex}" max="${tex}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="dia" name="dia" value="${dia}" max="${dia}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="rolls" name="rolls" value="${rolls}" max="${rolls}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="wt_per_roll" name="wt_per_roll" value="${wt_per_roll}" max="${wt_per_roll}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="quantity" name="quantity" value="${quantity}" min="1" max="${quantity}" data-row-id="${rowId}"></td>
+        <td><input type="number" class="amount" name="amount" value="${(parseFloat(total_amount) || 0).toFixed(2)}" disabled data-row-id="${rowId}"></td>
+        <td>${taxValue}%</td>
+        <td id="tm_id" style="display:none">${tmId}</td>
+        <td id="id" style="display:none">${id}</td>
+        <td id="fabric_id" style="display:none">${fabricId}</td>
+        <td><button class="btn btn-danger btn-sm remove-row">Remove</button></td>
+    `;
+
+    tableBody.appendChild(newRow);
+    calculateTotal();
+    console.log("Row added successfully!");
+}
+
+// ✅ Fix loadDeliveryList() AJAX call
+function loadDeliveryList(supplierId, poIds) {
+    $.ajax({
+        type: "GET",
+        url: "/load-knitting-deliver/",
+        data: { supplier_id: supplierId, 'po_id[]': poIds },
+        success: function(data) {
+            console.log('Response Data:', data);
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(item) {
+                    console.log('Adding Row:', item);
+                    addRow(item.fabric, item.count, item.guage, item.tex, item.dia, item.rolls, item.wt_per_roll,
+                           item.id, item.fabric_id, item.tm_id, item.quantity, item.total_amount, item.tax_value);
+                });
+            } else {
+                console.warn('No items found in response.');
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('Error loading purchases: ' + error);
+        }
+    });
+}
+
+    // function addRow(fabric, count, gauge, tex, dia, rolls ,wt_per_roll , id, fabricId, tmId, quantity, total_amount,taxValue) {
+
+    //     // const tableBody = document.querySelector("#purchaseTable tbody");
+
+
+
+    //     // // Locate the table body where rows will be added
+    //     // // const tableBody = document.querySelector("#purchaseTable tbody");
+    //     // if (!tableBody) {
+    //     //     console.error("Table body not found!");
+    //     //     return;
+    //     // }
+
+
+    //     console.log("Table Body:", tableBody);
+    //         if (!tableBody) {
+    //             console.error("Table body not found! Ensure #purchaseTable exists in the DOM.");
+    //             return;
+    //         }
+
+    
+    //     // Generate a unique rowId using the counter
+    //     rowCounter++;  // Increment rowCounter for each new row
+    //     const rowId = `row_${rowCounter}`;  // Create a unique ID for the row
+    
+    //     // Create a new table row
+    //     const newRow = document.createElement("tr");
+    //     newRow.setAttribute("data-fabric-id", fabricId); 
+    //     newRow.setAttribute("data-tm-id", tmId);
+    //     newRow.setAttribute("data-row-id", rowId); // Set rowId as data attribute for identification
+        
+    //     newRow.innerHTML = `
+    //         <td>${fabric}</td>
+    //         <td><input type="number" class="count" name="count" value="${(parseFloat(count) || 0).toFixed(2)}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="gauge" name="gauge" value="${gauge}" max="${gauge}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="tex" name="tex" value="${tex}" max="${tex}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="dia" name="dia" value="${dia}" max="${dia}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="rolls" name="rolls" value="${rolls}" max="${rolls}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="wt_per_rolls" name="wt_per_rolls" value="${wt_per_rolls}" max="${wt_per_rolls}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="quantity" name="quantity" value="${quantity}" min="1" max="${quantity}" data-row-id="${rowId}"></td>
+    //         <td><input type="number" class="amount" name="amount" value="${(parseFloat(total_amount) || 0).toFixed(2)}" disabled data-row-id="${rowId}"></td>
+    //         <td>${taxValue}%</td>
+    //         <td id="tm_id" style="display:none">${tmId}</td>
+    //         <td id="id" style="display:none">${id}</td>
+    //         <td id="fabric_id" style="display:none">${fabricId}</td>
+    //         <td> 
+    //             <button class="btn btn-danger btn-sm remove-row">Remove</button>
+    //         </td>
+    //     `;
+    
+    //     // Append the new row to the table body
+    //     tableBody.appendChild(newRow);
+    //     calculateTotal();
+    
+    //     // Add event listener to remove row button
+    //     newRow.querySelector(".remove-row").addEventListener("click", function() {
+    //         newRow.remove();
+    //     });
+    
+    //     // Attach event listeners for real-time calculations
+    //     newRow.querySelector('.rate').addEventListener("input", calculateRow);
+    //     newRow.querySelector('.bag').addEventListener("input", calculateRow);
+    //     newRow.querySelector('.per_bag').addEventListener("input", calculateRow);
+    //     newRow.querySelector('.quantity').addEventListener("input", calculateRow);
+    // }
+    
+    // Calculation function for the row
+    function calculateRow(event) {
+        var rowId = event.target.getAttribute('data-row-id');
+        var row = document.querySelector(`[data-row-id="${rowId}"]`).closest('tr');
+        
+        var bagElement = row.querySelector('.bag');
+        var perBagElement = row.querySelector('.per_bag');
+        var quantityElement = row.querySelector('.quantity');
+        var rateElement = row.querySelector('.rate');
+        
+        if (bagElement && perBagElement && quantityElement && rateElement) {
+            // Calculate quantity based on bag and per_bag
+            var bag = parseFloat(bagElement.value) || 0;
+            var perBag = parseFloat(perBagElement.value) || 0;
+            var quantity = bag * perBag;
+            quantityElement.value = quantity;
+    
+            // Calculate amount based on quantity and rate
+            var rate = parseFloat(rateElement.value) || 0;
+            var amount = quantity * rate;
+            row.querySelector('.amount').value = amount.toFixed(2);
+        } else {
+            console.error('Missing elements in the row.');
+        }
+        calculateTotal();
+    }
+    
+    
+    function storeTblValues() {
+        var TableData = [];
+    
+        // Loop through each row in the table body
+        $('#purchaseTable tbody tr').each(function(index) {
+            // Extract values from the columns of the row
+            var fabric = $(this).find('td:eq(0)').text().trim(); // fabric name
+            var count = parseFloat($(this).find('.count').val()) || 0;  // Rate from input field
+            var gauge = parseInt($(this).find('.gauge').val()) || 0;  // Bag quantity from input field
+            var tex = parseFloat($(this).find('.tex').val()) || 0;  // Per Bag price
+            var dia = parseInt($(this).find('.dia').val()) || 0;  // Quantity
+            var rolls = parseFloat($(this).find('.rolls').val()) || 0;  // Amount calculated
+            var wt_per_role = parseFloat($(this).find('.wt_per_roll').val()) || 0;  // Amount calculated
+            var quantity = parseFloat($(this).find('.quantity').val()) || 0;  // Amount calculated
+            var total_amount = parseFloat($(this).find('.total_amount').val()) || 0;  // Amount calculated
+            var taxValue = parseFloat($(this).find('td:eq(6)').text().trim()); // Tax value (as percentage)
+            var tmId = $(this).find('#tm_id').text().trim(); // TM ID
+            var id = $(this).find('#id').text().trim();  // ID for the fabric/order
+            var fabric_id = $(this).find('#fabric_id').text().trim();  // ID for the fabric/order
+    
+            // Validate that the necessary fields are populated
+            if (fabric && rate && quantity && amount !== undefined && tmId && id) {
+                TableData.push({
+                    "fabric": fabric,
+                    "count": count,  // Fixed decimal format for rate
+                    "gauge": gauge,
+                    "tex": tex.toFixed(2),  // Fixed decimal format for per bag
+                    "dia": dia,
+                    "rolls": rolls.toFixed(2),  // Fixed decimal format for amount
+                    "wt_per_roll": wt_per_roll.toFixed(2), // Fixed decimal format for tax value
+                    "quantity": quantity.toFixed(2), // Fixed decimal format for tax value
+                    "total_amount": total_amount.toFixed(2), // Fixed decimal format for tax value
+                    "tm_id": tmId,
+                    "id": id ,
+                    'fabric_id':fabric_id
+                });
+            } else {
+                console.error(`Row ${index + 1} is missing required data:`, {
+                    fabric_name: fabric || "Missing", 
+                    count: count || "Missing",
+                    quantity: quantity || "Missing",
+                    total_amount: total_amount || "Missing",
+                    tm_id: tmId || "Missing",
+                    id: id || "Missing"
+                });
+            }
+        });
+    
+        // Calculate the total (assuming you have a function for total calculation)
+        calculateTotal();  // Call to calculate the total after collecting all values
+        
+        console.log('TABLE-DATA:', TableData);  // Output the collected table data
+        return TableData;  // Return the data to be used further (for submission, storage, etc.)
+    }
+    
+    
+    // Calculate the total of all rows
+    function calculateTotal() {
+        let totalQuantity = 0;
+        let subTotal = 0;
+        let totalTax = 0;
+        let taxSummary = {}; 
+    
+        // Tax rate as a percentage
+        const taxRate = 5;
+    
+        // Iterate over each row in the table to calculate totals
+        $('#purchaseTable tbody > tr').each(function() {
+            // Fetch values from each cell
+            const quantity = parseFloat($(this).find('.quantity').val()) || 0; // Quantity from input field
+            const rate = parseFloat($(this).find('.rate').val()) || 0; // Rate from input field
+            const amount = parseFloat($(this).find('.amount').val()) || 0; // Amount from input field
+    
+            // Calculate tax amount as 5% of the amount
+            const taxAmount = (amount * taxRate) / 100;
+    
+            // Update totals 
+            totalQuantity += quantity;
+            subTotal += amount;
+            totalTax += taxAmount;  // Adding calculated tax to total tax
+    
+            // Update tax summary (if any tax logic is needed)
+            if (taxAmount > 0) {
+                if (!taxSummary[taxRate]) {
+                    taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+                }
+                // Assuming SGST and CGST split equally for simplicity
+                const sgstAmount = taxAmount / 2;
+                taxSummary[taxRate].sgst += sgstAmount;
+                taxSummary[taxRate].cgst += sgstAmount;
+                taxSummary[taxRate].totalTax += taxAmount;
+            }
+        });
+    
+        // Calculate round-off value and grand total
+        const totalAmount = subTotal + totalTax;
+        const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+    
+        // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+        const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+    
+        const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+    
+        // Display totals 
+        $('#qty_total_placeholder').text(totalQuantity);
+        $('#sub_total_placeholder').text(subTotal.toFixed(2));
+        $('#tax_placeholder').text(totalTax.toFixed(2));
+        $('#round_off').text(adjustedRoundOff.toFixed(2));
+        $('#total_payable').text(grandTotal);
+     
+
+    }
+    
+    
+    // `````````````````````````````````````````````````````````````````````
+    
+    
+    
+    
+    // ```````````````````````````````````````````````````````
+    
+    
+    $('#add_new').on('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        console.log("Submit button clicked"); // Debugging
+    
+        var TableData = storeTblValues();
+        console.log('tbl-data:', TableData);
+    
+        if (TableData.length === 0) {
+            notifier.show(
+                'Error!', 
+                'Table is empty. Please insert the program details.', 
+                'success', 
+                "{% static 'assets/images/notification/ok-48.png' %}", 
+                4000
+            ); 
+    
+    
+            return;
+        }
+    
+        if (confirm("Are you sure you want to save?")) {
+            TableData = JSON.stringify(TableData); 
+            var mdata = new FormData(this);
+            mdata.append('chemical_data', TableData);
+    
+            var totalQty = $('#qty_total_placeholder').text();
+            var subTotal = $('#sub_total_placeholder').text();
+            var taxTotal = $('#tax_placeholder').text();
+            var roundOff = $('#round_off').text();
+            var totalPayable = $('#total_payable').text();
+    
+            // Append total values to FormData
+            mdata.append('total_quantity', totalQty);  // This is where total_quantity is added 
+            mdata.append('sub_total', subTotal); 
+            mdata.append('tax_total', taxTotal);
+            mdata.append('round_off', roundOff);
+            mdata.append('total_payable', totalPayable);
+    
+           
+    
+            $.ajax({
+                type: "POST", 
+                url: "/add-knitting-deliver/",
+                data: mdata,
+                processData: false,
+                contentType: false,
+                beforeSend: function() {
+                    console.log("Sending AJAX request...");
+                    $('#submit').attr('disabled', true).text('Processing...');
+                },
+                success: function(data) {
+                    console.log("Server Response:", data);
+                    $('#submit').attr('disabled', false).text('Save');
+    
+                    if (data === 'yes') {
+                        notifier.show( 
+                            'Well Done!', 
+                            'Knitting program added!', 
+                            'success', 
+                            "{% static 'assets/images/notification/ok-48.png' %}", 
+                            4000
+                        ); 
+                        $('#add_new').trigger('reset');
+     
+                        // location.reload();
+                    } else {
+                        notifier.show(
+                            'Error!', 
+                            'Failed To add', 
+                            'danger', 
+                            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                            4000
+                        ); 
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log("AJAX Error:", textStatus, errorThrown);
+                    notifier.show(
+                            'Error!', 
+                            'Error adding data', 
+                            'danger', 
+                            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                            4000
+                        ); 
+                    // alert('Error Adding data');
+                    $('#submit').attr('disabled', false).text('Save');
+                }
+            });
+        }
+    });
+    
+    
+    $('.single-select').select2();
+    
+                // Get current date and time
+        const currentDate = new Date();
+        const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+        const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+    
+        // Set default values for date and time fields
+        document.getElementById('delivery_date').value = currentDateString;
+        // document.getElementById('purchase_time').value = currentTimeString;
+    
+    
+    
+    </script>
+<!-- <script>
+
+
+ 
+     $('.edit').select2({
+        dropdownParent: $('#edit_modal')
+    });
+ 
+
+
+    
+
+    
+    var table = $('#email-datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        "columns": [
+            { "data": "action", "title": "Action" },            
+            { "data": "default_email", "title": "Default Email " },
+            { "data": "email_port", "title": "Email Port" },
+            { "data": "email_host", "title": "Email Host" },
+            { "data": "email_host_user", "title": "Email User" },
+            { "data": "status", "title": "Status" }
+        ],
+        "ajax": {
+            "url": '/email-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            }
+        }
+    });
+
+    function refresh_data(){
+        table.ajax.reload();
+    }
+
+ 
+</script> -->

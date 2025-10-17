@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MIRRA GARMENTS - ACCESSORY OUTWARD </title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+      @page {
+        size: A4 landscape;
+        margin: 1cm;
+      }
+
+      @media print {
+        header, footer {
+          display: block;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        tr {
+          page-break-inside: avoid;
+        }
+
+        table {
+          page-break-inside: auto;
+          width: 100%;
+        }
+
+        .page-break {
+          page-break-before: always;
+        }
+      }
+
+      body {
+        width: 29.7cm;
+        height: 21cm;
+        margin: 0 auto;
+        padding: 1cm;
+        font-family: Roboto, Arial, sans-serif;
+        font-size: 12px;
+        color: #001028;
+        background: #FFFFFF;
+      }
+
+      header {
+        margin-bottom: 10px;
+      }
+
+      footer {
+        bottom: 0px;
+      }
+
+      p {
+        font-size: 8pt;
+        margin: 0;
+      }
+
+      .table > tbody > tr > td,
+      .table > tbody > tr > th,
+      .table > tfoot > tr > td,
+      .table > tfoot > tr > th,
+      .table > thead > tr > td,
+      .table > thead > tr > th {
+        padding: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="page-header">
+      <table width="100%">
+        <tr>
+          <td width="35%"><img width="140" height="70" src="{{ image_url }}"/></td>
+          <td width="65%" align="right">
+            <h4><strong>{{ company.name.upper }}</strong></h4>
+            <p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+            <p><b>Cell:</b> {{ company.mobile }} | <b>Phone:</b> {{ company.phone }}</p>
+            <p><b>Email:</b> {{ company.email }}</p>
+            <p><b>GSTIN:</b> {{ company.gstin }}</p>
+          </td>
+        </tr>
+      </table>
+    </header>
+
+    <section class="sheet" >
+    <!-- <section class="sheet" style="padding:20px"> -->
+      <hr>
+      <table width="100%">
+        <tr>
+          <td align="left"><p><strong>OUTWARD No. :</strong> {{ delivery_data.outward_no }}</p></td>
+          <td align="center">
+            <div style="width: 140px; border:2px solid black; text-align:center; padding:3px;">
+              <p><strong>ACCESSORY OUTWARD</strong></p>
+            </div>
+          </td>
+          <td align="right"><p><strong>OUTWARD DATE:</strong> {{ delivery_data.outward_date|date:"d-m-Y" }}</p></td>
+        </tr>
+      </table>
+
+      <hr>
+
+      <table width="100%">
+        <tr>
+          <td align="left">
+            <p>To M/S: <strong>{{ party_name.name }}</strong></p>
+            <p>GSTIN: <strong>{{ gstin }}</strong></p>
+            <p>Mobile: <strong>{{ mobile }}</strong></p>
+          </td>
+          <!-- <td align="right">
+            <p><strong>Prev. Out Quantity:</strong> {{ previous_no|floatformat:3 }}</p>
+          </td> -->
+        </tr>
+      </table>
+
+      
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <td colspan="9" align="center"><strong>DELIVERY INFORMATION</strong></td>
+    </tr>
+    <tr>
+      <th>Item Group</th>
+      <th>Item</th>
+      <th>Acc Size</th>
+      <th>Acc Quality</th>
+      <th>Program Type</th>
+      <th>Size</th>
+      <th>UOM</th>
+      <th >Outward Quantity</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% if delivery_details %}
+      {% for detail in delivery_details %}
+      <tr>
+        <td>{{ detail.item_group }}</td>
+        <td>{{ detail.item }}</td>
+        <td>{{ detail.acc_size }}</td>
+        <td>{{ detail.acc_quality }}</td>
+        <td>{{ detail.style }}</td>
+        <td>{{ detail.size }}</td>
+        <td>{{ detail.uom }}</td>
+        <td align="right">{{ detail.quantity|floatformat:3 }}</td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="8" align="center">No delivery data available</td></tr>
+    {% endif %}
+  </tbody>
+
+  <tfoot>
+    <tr>
+      <td colspan="7" align="right"><strong>Total Quantity</strong></td>
+      <td align="right"><strong>{{ total_quantity|floatformat:3 }}</strong></td>
+    </tr>
+  </tfoot>
+</table>
+
+
+
+
+
+      <footer id="page-footer">
+        <table width="100%">
+          <tr>
+            <td width="50%"></td>
+            <td width="50%" align="right"><strong>For MIRRA GARMENTS PVT LTD</strong></td>
+          </tr>
+          <tr><td colspan="2"><br><br></td></tr>
+          <tr>
+            <td align="left"><strong>Party's Signature</strong></td>
+            <td align="right"><strong>Authorized Signature</strong></td>
+          </tr>
+        </table>
+      </footer>
+    </section>
+  </body>
+</html>

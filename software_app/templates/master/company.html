@@ -1,0 +1,294 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<div class="pcoded-main-container">
+	<div class="pcoded-wrapper">
+		<div class="pcoded-content">
+			<div class="pcoded-inner-content">
+				<div class="main-body">
+					<div class="page-wrapper">						
+						<div class="row">
+						    <div class="col-sm-12">
+						        <div class="card">
+						            <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                             <div class="page-header-title">
+                                                <h4>Company</h4>
+                                            </div>
+                                            
+                                        </div> 
+                                        <ul class="breadcrumb mt-1">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Masters</li>
+                                            <li class="breadcrumb-item"><a href="/company">Company</a></li>
+                                        </ul>
+						                
+						                <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>						               
+						            </div>
+						            <div class="card-body">                                        
+						                 <form class="row g-3" id="edit_form" enctype="multipart/form-data">
+                                            {% csrf_token %}                                                         
+                                           <div class="col-md-4 mb-1">
+                                                <label for="name" class="form-label"><span style="color: red;">*</span> Company Name </label>
+                                                <input type="text" class="form-control" name="name" id="name" value="{{company.name}}" readonly>
+                                            </div>
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="prefix" class="form-label"><span style="color: red;">*</span> Prefix </label>
+                                                <input type="text" class="form-control" id="prefix" name="prefix" value="{{company.prefix}}">
+                                            </div>
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="email" class="form-label"><span style="color: red;">*</span> Email</label>
+                                                <input type="text" class="form-control" id="email" name="email" value="{{company.email}}">
+                                            </div>
+
+
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="gstin" class="form-label"><span style="color: red;">*</span> GSTIN</label>
+                                                <input type="text" class="form-control" id="gstin" name="gstin" value="{{company.gstin}}" required>
+                                            </div>
+
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="state_code" class="form-label">CIN No.</label>
+                                                <input type="text" class="form-control" id="cin_no" name="cin_no" value="{{company.cin_no}}">
+                                            </div>
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="state_code" class="form-label">Udyam No.</label>
+                                                <input type="text" class="form-control" id="udyam_no" name="udyam_no" value="{{company.udyam_no}}">
+                                            </div>
+
+
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="state_code" class="form-label">State Code</label>
+                                                <input type="text" class="form-control" id="state_code" name="state_code" value="{{company.state_code}}">
+                                            </div>
+
+
+
+                                            <div class="col-md-4 mb-1">
+                                                <label for="address1" class="form-label"><span style="color: red;">*</span> Address Line 1</label>
+                                                <textarea class="form-control" id="address_line1" placeholder="Address..." rows="3" name="address_line1" required>{{company.address_line1}}</textarea>
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="address2" class="form-label">Address Line 2</label>
+                                                <textarea class="form-control" id="address_line2" placeholder="Address..." rows="3" name="address_line2">{{company.address_line2}}</textarea>
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="city" class="form-label"><span style="color: red;">*</span> City</label>
+                                                <input type="text" class="form-control" id="city" name="city" value="{{company.city}}" required>
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="state" class="form-label"><span style="color: red;">*</span> State</label>
+                                                <input type="text" class="form-control" id="state" name="state" value="{{company.state}}" required>
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="country" class="form-label">Country</label>
+                                                <input type="text" class="form-control" id="country" name="country" value="{{company.country}}">
+                                            </div>
+                                           
+                                            
+                                            <div class="col-md-4 mb-1">
+                                                <label for="phone" class="form-label">Phone</label>
+                                                <input type="text" class="form-control" id="phone" name="phone" value="{{company.phone}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="mobile" class="form-label"><span style="color: red;">*</span>Mobile</label>
+                                                <input type="text" class="form-control" id="mobile" name="mobile" value="{{company.mobile}}" required>
+                                            </div>
+                                           
+                                            <!-- <div class="col-md-4 mb-1">
+                                                <label for="fax" class="form-label">Fax</label>
+                                                <input type="text" class="form-control" id="fax" name="fax" value="{{company.fax}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="tax_id" class="form-label">Tax ID</label>
+                                                <input type="text" class="form-control" id="tax_id" name="tax_id" value="{{company.tax_id}}">
+                                            </div> -->
+                                            <div class="col-md-4 mb-1">
+                                                <label for="contact_person" class="form-label">Contact Person</label>
+                                                <input type="text" class="form-control" id="contact_person" name="contact_person" value="{{company.contact_person}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="cp_phone" class="form-label">Contact Person Phone</label>
+                                                <input type="text" class="form-control" id="cp_phone" name="cp_phone" value="{{company.cp_phone}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="cp_mobile" class="form-label">Contact Person Mobile</label>
+                                                <input type="text" class="form-control" id="cp_mobile" name="cp_mobile" value="{{company.cp_mobile}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="cp_email" class="form-label">Contact Person Email</label>
+                                                <input type="text" class="form-control" id="cp_email" name="cp_email" value="{{company.cp_email}}">
+                                            </div>
+                                            <!-- <div class="col-md-4 mb-1">
+                                                <label for="report_email" class="form-label">Report Email</label>
+                                                <input type="text" class="form-control" id="report_email" name="report_email" value="{{company.report_email}}">
+                                            </div> -->
+                                            
+                                            
+                                            <div class="col-md-4 mb-1">
+                                                <label for="logo" class="form-label">Logo</label>
+                                                <input type="file" class="form-control" id="logo" name="logo" value="{{company.logo}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="logo_small" class="form-label">Logo Small</label>
+                                                <input type="file" class="form-control" id="logo_small" name="logo_small" value="{{company.logo_small}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="logo_invoice" class="form-label">Logo Invoice</label> 
+                                                <input type="file" class="form-control" id="logo_invoice" name="logo_invoice" value="{{company.logo_invoice}}">
+                                            </div>
+                                            <!-- <div class="col-md-4 mb-1">
+                                                <label for="opening_balance" class="form-label">Opening Balance</label>
+                                                <input type="number" class="form-control" id="opening_balance" name="opening_balance" value="{{company.opening_balance}}">
+                                            </div>
+                                            
+                                            <div class="col-md-4 mb-1">
+                                                <label for="latitude" class="form-label">Latitude</label>
+                                                <input type="text" class="form-control" id="latitude" name="latitude" value="{{company.latitude}}">
+                                            </div>
+                                            <div class="col-md-4 mb-1">
+                                                <label for="longitude" class="form-label">Longitude</label>
+                                                <input type="text" class="form-control" id="longitude" name="longitude" value="{{company.longitude}}">
+                                            </div> -->
+                                            <div class="col-12 d-flex justify-content-end"> 
+                                                <input type="hidden" name="company_code" id="company_code" value="{{ company.id }}">
+                                                <input type="hidden" name="id" id="edit_id" value="{{ company.id }}">
+                                                <button class="btn btn-danger me-2" type="reset" onclick="history.back()">Clear</button> 
+                                                <button class="btn btn-success" type="button" id="updateBtn">Update</button>
+                                            </div>
+                                        </form>
+						            </div>
+						        </div>                                      
+						    </div>
+						</div>	
+					</div> 
+				</div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+{% include 'includes/footer.html' %}
+
+
+
+
+
+<script type="text/javascript">
+  
+
+$(document).ready(function() { 
+    $('#updateBtn').on('click', function(event) {
+        event.preventDefault();
+
+        let isValid = true;
+        let requiredFields = ['prefix', 'address_line1', 'city', 'state', 'country', 'state_code','cin_no','udyam_no','gstin', 'email']; // Excluding 'name' and 'gstin'
+        let missingFields = [];
+
+        requiredFields.forEach(function(field) {
+            let value = $(`[name="${field}"]`).val().trim();
+            if (!value) {
+                missingFields.push(field);
+                $(`[name="${field}"]`).css('border', '2px solid red'); // Highlight missing fields
+                isValid = false;
+            } else {
+                $(`[name="${field}"]`).css('border', ''); // Reset border if filled
+            }
+        });
+
+        if (!isValid) {
+            notifier.show('Error!', `Please fill out the required fields: ${missingFields.join(', ')}`,
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                
+                );
+            return;
+        }
+
+
+
+        var formData = new FormData($('#edit_form')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/update_company/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+            if (response.message === 'success') {
+                notifier.show(
+                    'Well Done!', 
+                    'Company details updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+            } else if (response.error_message) {
+                // Show the error message from the response
+                notifier.show(
+                    'Access Denied!', 
+                    'You do not have permission to update company details',  // Use the error message from the server
+                    'danger', 
+                    "{% static 'assets/images/notification/medium_priority-48.png' %}", 
+                    4000
+                );
+            } else {
+                notifier.show(
+                    'Error!', 
+                    'Failed to update company details.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+

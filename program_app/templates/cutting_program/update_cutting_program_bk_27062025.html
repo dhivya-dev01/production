@@ -1,0 +1,1763 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+   <!-- Sidebar CSS (Updated) -->
+   <style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: -350px; /* Initially hidden */ 
+        width: 300px;
+        height: 100%;
+        background: #fff;
+        box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+        transition: right 0.3s ease-in-out;
+        z-index: 1050;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* 🔹 Scrollable Content */
+    .sidebar-body {
+        overflow-y: auto;
+        max-height: calc(100vh - 120px); /* Adjust to fit within viewport */
+        flex-grow: 1;
+        padding-right: 5px; /* Avoid scrollbar overlapping */
+    }
+
+    /* Optional: Custom Scrollbar */
+    .sidebar-body::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .sidebar-body::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+
+    .sidebar-footer {
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        background: #fff;
+    }
+
+    .size-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+
+     
+    .table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+
+    .table body th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+    
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    /* input[type=number] {
+    -moz-appearance: textfield;
+    } */
+
+     #purchaseTable{
+        padding: 4px !important;
+     }
+</style>
+
+
+
+ <!-- Edit Modal -->
+ <div class="modal fade" id="edit_UpdateModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Cutting Program</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <!-- Hidden fields -->
+        <input type="hidden" id="edit_id">
+        <input type="hidden" id="update_tm_id">
+        
+        <div class="mb-3">
+            <label for="size_id" class="form-label">Size</label>
+
+            <select id="edit_size_id" name="edit_size_id" class="form-control single-select" disabled> 
+
+                {% for k in size %}
+            <option value="{{ k.id }}" data-size="{{k.name}}">{{ k.name }}</option> 
+            {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="color_id" class="form-label">Color</label>
+            <select id="edit_color_id" name="color_id" class="form-control single-select">
+            <!-- Options loaded dynamically or from backend -->
+             <option>Select</option>
+            {% for k in color %}
+            <option value="{{ k.id }}">{{ k.name }}</option> 
+            {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="edit_quantity" class="form-label">Quantity</label>
+            <input type="number" id="edit_quantity" class="form-control" value="1" min="1">
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveQtyUpdatedRow()">Save Changes</button>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+             <!-- ``````````` debit note modal ``````````````````````````` -->
+
+             <div id="debit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLiveLabel">Debit Note</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="debit_note_form">
+                            <div class="modal-body">
+                                {% csrf_token %}                                            
+                                <div class="row">
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="edit_name" class="form-label">Supplier</label>
+                                        <input class="form-control" type="text" id="supplier_name" name="supplier_id">
+                                    </div>
+
+
+                                    <div class="col-md-12 mb-3">
+                                        <label for="edit_name" class="form-label">Amount</label>
+                                        <input class="form-control" type="text" id="debit_amount" name="amount">
+                                    </div>
+
+
+
+                                    <div class="col-md-12">
+                                        <label for="remark" class="form-label">Remarks</label>
+                                        <textarea class="form-control" rows="2" id="remarks" name="remarks"></textarea>
+                                    </div>
+                                    
+                                    
+                                                                                                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="id" id="edit_id">
+                                <input class="form-control" type="hidden" id="debit_po" name="po_id">
+                                
+                                <input type="hidden" id="process_type" name="process_type" value="Yarn">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+
+
+
+            
+            <div id="colorSidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <h4>Select Colors</h4>
+                    <button onclick="closeColorSidebar()">×</button>
+                </div>
+            
+                <!-- Scrollable Body -->
+                <div class="sidebar-body">
+                    <div id="colorModalBody"></div>
+                </div>
+            
+                <div class="sidebar-footer">
+                    <button type="button" class="btn btn-success" onclick="updatesaveColorSelection()">+ Add Colors</button>
+                </div>
+            </div>
+
+<!-- ``````````````````````````````````````````````````` end modal  ``````````````````````````````````````````````````` -->
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Cutting Program Update</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/cutting-program">Cutting Program </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    <!-- <div class="card"> -->
+  
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                                
+                                                <div class="row">
+
+
+
+                                                    
+
+
+                                                    <!-- `````````````````````````` tm update ```````````````````````` -->
+                                                    <!-- <div class="col-9" style="border-left: 1px solid #dee1e4; padding-left: 10px;"> -->
+                                                    <div class="col-md-9">
+                                                        <!-- <h2>{{material_instance.id}}</h2> -->
+                                                           
+                    
+                                                        <form id="update_tm_form">
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                            
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Program No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.cutting_no}}" disabled>
+                                                                </div>
+                                                                
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="program_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Work Order No.</label>
+                                                                    <input class="form-control" type="text" name="work_order_no" id="work_order_no" required value="{{parent_stock_instance.work_order_no}}">
+                                                                </div>
+                                                                <!--
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Party  </label>
+                                                                    <select id="party_id" name="party_id" class="form-control form-select single-select"  disabled>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+                                                                 -->
+                                                                
+                                                               
+
+                                                               
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="order_date" class="form-label">Remarks</label>
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" rows="2" >{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-4">
+                                                                  
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+
+                                                                    <button type="submit" id="update" class="btn btn-primary mt-3">Update</button>
+
+                                                                </div>
+                                                          
+                                                            <!-- <div class="col-md-2 mt-3">
+                                                                <button type="update" class="btn btn-primary mt-4">Update</button>
+                                                            </div> -->
+                                                        </div>
+                                                        </form>
+
+                                                         
+                                                        <!-- ```````````````` tx update ``````````````````````` --> 
+
+                                                        <form id="update_tx">
+                                                            {% csrf_token %}
+                                                            <div class="row mt-2"> 
+                                                             
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select"  disabled>
+                                                                        <!-- <select id="quality_id" name="quality_id" class="form-control single-select"onchange="LoadStyle()" disabled> -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" disabled >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+ 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div> 
+
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Color</label>
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" >
+
+                                                                        {% for k in color %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div> -->
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quantity</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" id="update_tm_id" name="update_tm_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="process" name="process" value="{{stage.tolerance}}">
+                                                                    <button type="submit" class="btn btn-primary mt-4">Save</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                    
+ 
+                                                    </div>
+
+                                                    <div class="col-md-3 ">
+                                                        <div class="">            
+                                                            <table id="summaryTable" class="table table-striped table-bordered w-100 ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" >Summary Table</th>
+                                                                    </tr>  
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Total Quantity</td>
+                                                                        <td align="end" style="background-color: #428bca;" colspan="2" id="qty_total_placeholder">0</td>
+                                                                    </tr>
+
+                                                                    <!-- <tr> 
+                                                                        <td>Gross Total</td>
+                                                                        <td style="background-color: #428bca; color: black; font-size: 18px" align="end" colspan="2" id="gross_total_placeholder">0.00</td>
+                                                                    </tr> -->
+                                                                   
+                                                                </tbody>
+                                                            </table>     
+                                                        </div> 
+
+
+                                                    <div>
+ 
+
+
+                                                </div>
+                                            </div>
+
+                                                  
+                                            <!-- </div>  -->
+                                            <hr>
+                                          
+                                           
+
+
+                                            <div class="">
+                                                {% csrf_token %}
+                                                <div class="dt-responsive  table-hover">
+                                                    
+                                                    <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+
+                                                    <table id="datatable" class="table table-striped table-bordered wrap">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th>id</th> 
+                                                                <!-- <th style="display: none;">Tm Id</th> -->
+                                                                <th>Action</th>
+                                                                <th>Size</th>
+                                                                <th>Color</th> 
+                                                                <th>Quantity</th>
+        
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>                            
+                                                        </tbody>
+                                                    </table>                                        
+                                                </div>
+        
+                                                
+                                            </div>
+                                     
+                           
+                                        </div>
+
+                                            
+                                    </div> 
+                                </div>
+
+                       
+
+                                    
+                                 
+
+                                    <div style="text-align: center;">
+                                        <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                        <button type="submit" id="update_local_storage" class="btn btn-primary">Update</button>
+                                    </div>
+                                    
+                                    <!-- <div class="" style="text-align: center;">
+                                        <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                        <button type="submit" id="update_local_storage" class="btn btn-primary" onclick="Update_Table()">Update</button>
+                                    </div>
+ -->
+
+                                
+
+                                <!-- </div> -->
+                            
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+
+
+
+    // function loadColors() {
+    //     var size_id = $('#size_id').val();
+    //     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    //     if (!size_id) {
+    //         console.warn("Size not selected");
+    //         return;
+    //     }
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/get_color_list/', 
+    //         data: {
+    //             'size_id': size_id,
+    //             'csrfmiddlewaretoken': csrfToken
+    //         },
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             console.log('Received Colors:', data);
+    //             $('#colorModalBody').empty();
+
+    //             let selectedColors = JSON.parse(localStorage.getItem('selectedColors')) || [];
+
+    //             if (data.colors && Array.isArray(data.colors)) {
+    //                 data.colors.forEach(function (color) {
+    //                     let existingEntry = selectedColors.find(item => item.size_id === size_id && item.color_id === color.id);
+    //                     let quantity = existingEntry ? existingEntry.quantity : 0;
+
+                
+
+    //                     $('#colorModalBody').append(`
+    //                         <div class="color-row d-flex justify-content-between align-items-center mb-2">
+    //                             <span class="color-name flex-grow-1">${color.name}</span>
+    //                             <div class="d-flex align-items-center">
+    //                                 <button type="button" class="btn btn-sm btn-danger" onclick="decreaseColorQuantity('${color.id}')">-</button>
+    //                                 <input type="number" id="color_qty_${color.id}" class="form-control text-center mx-2" value="${quantity}" min="0" style="width: 60px;">
+    //                                 <button type="button" class="btn btn-sm btn-success" onclick="increaseColorQuantity('${color.id}')">+</button>
+    //                             </div>
+    //                         </div>
+    //                     `);
+
+
+    //                 });
+
+    //                 openColorSidebar();
+    //             }
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('Error loading colors:', error);
+    //         }
+    //     });
+    // }
+
+
+
+$('#update_tm_form').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_id', $('#tm_id').val());
+    formData.append('work_order_no', $('#work_order_no').val());
+    formData.append('program_date', $('#program_date').val());
+    formData.append('remarks', $('#remarks').val());
+
+    $.ajax({
+        url: '/cutting-prg-details-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                location.reload();
+               
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+
+
+
+$('#size_id').on('change', function () {
+    loadColors();
+});
+
+
+
+
+    function loadColors() {
+    // If the edit modal is open, do not load the color sidebar.
+    if ($("#edit_UpdateModal").is(":visible")) {
+        console.log("Edit modal is open. Skipping loadColors().");
+        return;
+    }
+
+    var size_id = $('#size_id').val();
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!size_id) {
+        console.warn("Size not selected");
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_color_list/', 
+        data: {
+            'size_id': size_id,
+            'csrfmiddlewaretoken': csrfToken
+        }, 
+        dataType: 'json',
+        success: function (data) {
+            console.log('Received Colors:', data);
+            $('#colorModalBody').empty();
+
+            let selectedColors = JSON.parse(localStorage.getItem('selectedColors')) || [];
+
+            if (data.colors && Array.isArray(data.colors)) {
+                data.colors.forEach(function (color) {
+                    let existingEntry = selectedColors.find(item => item.size_id === size_id && item.color_id === color.id);
+                    let quantity = existingEntry ? existingEntry.quantity : 0;
+
+                    $('#colorModalBody').append(`
+                        <div class="color-row d-flex justify-content-between align-items-center mb-2">
+                            <span class="color-name flex-grow-1">${color.name}</span>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-sm btn-danger" onclick="decreaseColorQuantity('${color.id}')">-</button>
+                                <input type="number" id="color_qty_${color.id}" class="form-control text-center mx-2" value="${quantity}" min="0" style="width: 60px;">
+                                <button type="button" class="btn btn-sm btn-success" onclick="increaseColorQuantity('${color.id}')">+</button>
+                            </div>
+                        </div>
+                    `);
+                });
+
+                openColorSidebar();
+            } 
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading colors:', error);
+        }
+    });
+}
+
+
+
+    // Sidebar functions
+    function openColorSidebar() {
+        document.getElementById('colorSidebar').style.right = "0";
+    }
+
+    function closeColorSidebar() {
+        document.getElementById('colorSidebar').style.right = "-350px";
+    }
+    
+    // Increase/decrease quantity functions
+    function increaseColorQuantity(color_id) {
+        let input = document.getElementById(`color_qty_${color_id}`);
+        input.value = parseInt(input.value) + 1;
+    }
+
+    function decreaseColorQuantity(color_id) {
+        let input = document.getElementById(`color_qty_${color_id}`);
+        if (parseInt(input.value) > 0) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+
+// ````````````````````````````````````````` test end  `````````````````````````````````````
+    
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            // console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            $('#style_id').empty().append('<option value="">Select </option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            // $('#color_id').empty().append('<option value="">Select Color</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);  
+        } 
+    });
+}
+    
+    if ("{{ parent_stock_instance.date }}" && "{{ parent_stock_instance.date }}" !== "") {
+        var purchaseDate = "{{ parent_stock_instance.date }}";
+        // Ensure it's in the correct format (YYYY-MM-DD)
+        var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+        $('#program_date').val(formattedDate).trigger("change");
+    }
+
+ 
+
+
+    if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+        $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change"); 
+    }
+     if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+        $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change"); 
+    }
+    
+
+    if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+        $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change"); 
+    }
+   
+    
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var table = $('#datatable').DataTable({
+        "language": {
+            "message": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+      
+
+        "columns": [
+            { "data": "table_id", "title": "ID" },
+            { "data": "action", "title": "Action" },
+            { "data": "size_name", "title": "Size" },
+            { "data": "color_name", "title": "Color" },
+            { "data": "quantity", "title": "Quantity" }
+        ],
+
+        "ajax": {
+            "url": '/update-cutting-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.tm_id = id;  // Use validated id
+            },
+            "dataSrc": function(json) {
+                updateSummary({
+                    total_quantity: json.total_quantity
+                });
+                
+                if (json.message === "error") {
+                    notifier.show(
+                        'Error!',
+                        json.error_message,
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+                    return []; // Return an empty array if there's an error
+                }
+                
+        
+let activeData = json.data.filter(function(item) {
+    console.log("Checking item:", item); // Debugging
+
+    let isAddCheck = Number(item.is_add) === 1; 
+    let isActiveCheck = (item.status && item.status.toLowerCase().includes("active"));
+
+    console.log(`is_add: ${item.is_add} (${isAddCheck}), status: ${item.status} (${isActiveCheck})`);
+
+    return isAddCheck || isActiveCheck;
+});
+
+console.log("Filtered Data:", activeData); // Debugging
+
+// Store the filtered data in localStorage
+localStorage.setItem("myDataList", JSON.stringify(activeData));
+
+return activeData;
+
+                
+
+//                 let activeData = json.data.filter(function(item) {
+//     return (Number(item.is_active) === 1 || Number(item.is_add) === 1);
+// });
+
+                // // Store the active data in localStorage under the key "myDataList"
+                // localStorage.setItem("myDataList", JSON.stringify(activeData));
+                
+                // return activeData; // Return the filtered data array to DataTable
+            }
+        }
+    });
+} else {
+    console.error("Invalid id:", id);
+}
+
+function updateSummary(data) {
+    console.log("Updating summary with data:", data);
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+}
+
+
+
+
+function refresh_data()
+{
+    table.ajax.reload();
+}
+
+
+
+
+
+
+function cut_prg_edit(id) {
+    // Retrieve the record from localStorage to get the quantity, if available.
+    let dataList = JSON.parse(localStorage.getItem("myDataList")) || [];
+    let localRecord = dataList.find(item => parseInt(item.id) === parseInt(id));
+    let localQuantity = localRecord ? localRecord.quantity : null;
+
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/cutting-prg-detail-edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        // Populate modal fields with server response
+        $('#edit_id').val(res.id);
+        $('#update_tm_id').val(res.tm_id);
+        $('#edit_size_id').val(res.size_id).trigger("change");
+        $('#edit_color_id').val(res.color_id).trigger("change");
+
+        // Use localStorage quantity if available; otherwise, use the server value.
+        $('#edit_quantity').val(localQuantity !== null ? localQuantity : res.quantity);
+        
+        // Optionally update any display fields with the names from the server dropdowns
+        $('#edit_size_name').text($('#size_id option:selected').text());
+        $('#edit_color_name').text($('#color_id option:selected').text());
+
+        // Unbind the change event on the size dropdown to prevent auto-loading colors during edit
+        $('#size_id').off('change');
+        closeColorSidebar();
+
+        // Open the edit modal
+        $("#edit_UpdateModal").modal("show");
+    });
+}
+
+
+
+
+
+
+
+function saveUpdatedRow() {
+    // Gather updated values from the edit modal
+    var master_id = $('#edit_id').val();
+    var tm_id = $('#update_tm_id').val();
+    var size_id = $('#size_id').val();
+    var color_id = $('#color_id').val(); 
+    var quantity = $('#edit_quantity').val();
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+
+    // Validate that quantity is greater than 0
+    if (parseInt(quantity) <= 0) {
+        alert("Quantity must be greater than 0");
+        return;
+    }
+
+
+
+    // Prepare FormData
+    var formData = new FormData();
+    formData.append('id', master_id);
+    formData.append('tm_id', tm_id);
+    formData.append('size_id', size_id);
+    formData.append('color_id', color_id);
+    formData.append('quantity', quantity);
+    formData.append('csrfmiddlewaretoken', csrfToken);
+
+    // Send updated data to the server
+    $.ajax({
+        url: '/add_or_update_cutting_program/',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            // Optional: disable save button or show loading indicator
+            $('#editModal button.btn-primary').attr('disabled', true).text('Saving...');
+        },
+        success: function(response) {
+            // Re-enable the save button
+            $('#editModal button.btn-primary').attr('disabled', false).text('Save Changes');
+
+            if (response.success) {
+                notifier.show(
+                    'Well Done!',
+                    master_id ? 'Updated successfully.' : 'Added successfully.',
+                    'success',
+                    "{% static 'assets/images/notification/ok-48.png' %}",
+                    4000
+                );
+                // Optionally refresh your data table or update your UI accordingly
+                refresh_data();
+                // Close the edit modal
+                $("#edit_UpdateModal").modal("hide");
+            } else {
+                notifier.show(
+                    'Error!',
+                    response.error_message || 'Failed to process request.',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error);
+            notifier.show(
+                'Error!',
+                'Error processing the request.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+            // Re-enable save button
+            $('#editModal button.btn-primary').attr('disabled', false).text('Save Changes');
+        }
+    });
+}
+
+
+function saveQtyUpdatedRow() {
+    // Gather updated values from the edit modal
+    var master_id   = $('#edit_id').val();
+    var tm_id       = $('#update_tm_id').val();
+    var size_id     = $('#edit_size_id').val();
+    var color_id    = $('#edit_color_id').val();
+    var quantity    = $('#edit_quantity').val();
+    
+    // Get the selected option texts (names)
+    // Since your option has data-size attribute, you can use .data('size')
+    // or simply use .text() if the option text is the name.
+    var size_name   = $('#edit_size_id option:selected').text();
+    console.log('size-name:',size_name);
+    var color_name  = $('#edit_color_id option:selected').text();
+
+    // Validate that quantity is greater than 0
+    if (parseInt(quantity) <= 0) {
+        alert("Quantity must be greater than 0");
+        return;
+    }
+    
+    // Retrieve the current list from localStorage (using "myDataList")
+    let dataList = JSON.parse(localStorage.getItem("myDataList")) || [];
+    console.log("Before update in localStorage:", dataList);
+
+    // Update the record in the list by matching the master_id
+    dataList = dataList.map(function(item) {
+        if (parseInt(item.id) === parseInt(master_id)) {
+            // Update fields with both id and name for size and color
+            item.size_id    = size_id;
+            item.size_name  = size_name;
+            item.color_id   = color_id;
+            item.color_name = color_name;
+            item.quantity   = quantity;
+            // Mark record as active
+            item.is_active  = 1;
+            item.is_update  = 1;
+            item.status     = '<span class="badge bg-success">active</span>';
+        }
+        return item;
+    });
+
+    // Save the updated list back into localStorage
+    localStorage.setItem("myDataList", JSON.stringify(dataList));
+    console.log("After update in localStorage:", dataList);
+
+    // Show a success notification
+    notifier.show(
+        'Well Done!',
+        'Record updated successfully.',
+        'success',
+        "{% static 'assets/images/notification/ok-48.png' %}",
+        4000
+    );
+
+    // Refresh the DataTable (assuming refresh_data_local() reads from localStorage)
+    refresh_data_local();
+
+    // Close the edit modal
+    $("#edit_UpdateModal").modal("hide");
+}
+
+
+
+
+
+
+// ````````````````````````````````````````````  update in local storage `````````````````````````````````````````````
+$('#update_tx').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var tm_id = $('#update_tm_id').val();
+    var master_id = $('#edit_id').val(); 
+    var size_id = $('#size_id').val();
+    var color_id = $('#color_id').val();
+
+    formData.append('tm_id', tm_id);
+    formData.append('id', master_id);
+
+    // Check if the same size and color exist for the selected TM ID
+    $.ajax({
+        url: '/check_existing_cutting_program/',  // New API to check existing entry
+        type: 'POST',
+        data: { tm_id: tm_id, size_id: size_id, color_id: color_id },
+        headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+        success: function(response) {
+            if (response.exists) {
+                notifier.show(
+                    'Warning!',
+                    'This size and color already exist for the selected TM ID.', 
+                    'warning',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                return; // Stop further execution
+            } else {
+                // Proceed with adding or updating
+                if (confirm(master_id ? 'Are you sure you want to update?' : 'Are you sure you want to add?')) {
+                    $.ajax({
+                        url: '/add_or_update_cutting_program/',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                notifier.show(
+                                    'Well Done!',
+                                    master_id ? 'Updated successfully.' : 'Added successfully.',
+                                    'success',
+                                    "{% static 'assets/images/notification/ok-48.png' %}",
+                                    4000
+                                );
+
+                                // Refresh DataTable
+                                refresh_data();
+                                $('#update_tx').trigger('reset');
+
+                                $('#size_id').val('').trigger("change");
+                                $('#color_id').val('').trigger("change");
+                                $('#edit_id').val('');
+                                $('#quantity').val('1');
+
+                            } else {
+                                notifier.show(
+                                    'Error!',
+                                    'Failed to process request: ' + response.error_message,
+                                    'danger',
+                                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                                    4000
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Request Failed:', error);
+                            notifier.show(
+                                'Error!',
+                                'Error in processing the request.',
+                                'danger',
+                                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                                4000
+                            );
+                        }
+                    });
+                } 
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error);
+            notifier.show(
+                'Error!',
+                'Error checking existing records.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+        }
+    });
+});
+ 
+
+
+// ```````````````````````````````15-03-2025````````````````````````````````
+function updatesaveColorSelection() {
+    let size_id = $('#size_id').val();
+    let tm_id = $('#tm_id').val();
+    let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // ✅ Get CSRF token
+
+    if (!size_id) {
+        notifier.show('Warning!', 'Please select a size first.', 'warning', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    let formData = new FormData();  // ✅ Use FormData for proper encoding
+    formData.append('csrfmiddlewaretoken', csrfToken);
+    formData.append('tm_id', tm_id);
+    formData.append('size_id', size_id);
+
+    let colorAdded = false;
+
+    $('#colorModalBody .color-row').each(function () {
+        let color_id = $(this).find('input[type="number"]').attr('id').replace('color_qty_', '');
+        let quantity = parseInt($(this).find('input[type="number"]').val()) || 0;
+
+        if (quantity > 0) {
+            formData.append('color_id', color_id);
+            formData.append('quantity', quantity);
+            formData.append('is_add', 1);
+            formData.append('status', "active");
+            colorAdded = true;
+        }
+    });
+
+    if (!colorAdded) {
+        notifier.show('Warning!', 'No colors selected.', 'warning', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    // 🔹 Send new items to the backend via AJAX
+    $.ajax({
+        url: '/add_or_update_cutting_program/',
+        type: 'POST',
+        data: formData,
+        processData: false,  // ✅ Prevent jQuery from processing FormData
+        contentType: false,  // ✅ Ensure proper form encoding
+        success: function (response) {
+            if (response.success) {
+                notifier.show('Success!', 'New colors added to the database.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+                
+                $('#datatable').DataTable().ajax.reload();
+            } else {
+                notifier.show('Error!', response.message || 'Something went wrong.', 'error', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+            }
+        },
+        error: function () {
+            notifier.show('Error!', 'Failed to add colors. Try again.', 'error', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        }
+    });
+
+    closeColorSidebar();
+}
+
+
+
+// $('#update_tx').on('submit', function(e) {
+//     e.preventDefault();
+
+//     // Create FormData object from form
+//     var formData = new FormData(this);
+//     var tm_id = $('#update_tm_id').val();
+//     var master_id = $('#edit_id').val(); // might be empty if new
+//     var size_id = $('#size_id').val();
+//     var color_id = $('#color_id').val();
+
+//     formData.append('tm_id', tm_id);
+//     formData.append('id', master_id);
+
+//     // First, check if the same size and color exist for the selected TM ID
+//     $.ajax({
+//         url: '/check_existing_cutting_program/',
+//         type: 'POST',
+//         data: { tm_id: tm_id, size_id: size_id, color_id: color_id },
+//         headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+//         success: function(response) {
+//             if (response.exists) {
+//                 // Instead of showing an alert, set the master_id to the existing record's id
+//                 formData.set('id', response.id);
+//             }
+//             // Ask for confirmation whether adding or updating
+//             var confirmMessage = master_id || response.exists ? 
+//                 'Are you sure you want to update the quantity?' : 
+//                 'Are you sure you want to add?';
+//             if (confirm(confirmMessage)) {
+//                 $.ajax({
+//                     url: '/add_or_update_cutting_program/',
+//                     type: 'POST',
+//                     data: formData,
+//                     processData: false,
+//                     contentType: false,
+//                     success: function(response) {
+//                         if (response.success) {
+//                             notifier.show(
+//                                 'Well Done!',
+//                                 master_id || response.exists ? 'Updated successfully.' : 'Added successfully.',
+//                                 'success',
+//                                 "{% static 'assets/images/notification/ok-48.png' %}",
+//                                 4000
+//                             );
+
+//                             // Refresh DataTable and reset the form
+//                             refresh_data();
+//                             $('#update_tx').trigger('reset');
+
+//                             $('#size_id').val('').trigger("change");
+//                             $('#color_id').val('').trigger("change");
+//                             $('#edit_id').val('');
+//                             $('#quantity').val('1');
+//                         } else {
+//                             notifier.show(
+//                                 'Error!',
+//                                 'Failed to process request: ' + response.error_message,
+//                                 'danger',
+//                                 "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                                 4000
+//                             );
+//                         }
+//                     },
+//                     error: function(xhr, status, error) {
+//                         console.error('Request Failed:', error);
+//                         notifier.show(
+//                             'Error!',
+//                             'Error in processing the request.',
+//                             'danger',
+//                             "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                             4000
+//                         );
+//                     }
+//                 });
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Request Failed:', error);
+//             notifier.show(
+//                 'Error!',
+//                 'Error checking existing records.',
+//                 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                 4000
+//             );
+//         }
+//     });
+// });
+
+
+// $('#update_tx').on('submit', function(e) {
+//     e.preventDefault();
+
+//     var formData = new FormData(this);
+//     var tm_id = $('#update_tm_id').val();
+//     var master_id = $('#edit_id').val(); // This will be empty for new entries
+
+//     formData.append('tm_id', tm_id);
+//     formData.append('id', master_id); // If empty, it means new entry
+
+//     if (confirm(master_id ? 'Are you sure you want to update?' : 'Are you sure you want to add?')) {
+//         $.ajax({
+//             url: '/add_or_update_cutting_program/', 
+//             type: 'POST',
+//             data: formData,
+//             processData: false,
+//             contentType: false, 
+//             success: function(response) {
+//                 if (response.success) {
+//                     notifier.show(
+//                         'Well Done!', 
+//                         master_id ? 'Updated successfully.' : 'Added successfully.',
+//                         'success',
+//                         "{% static 'assets/images/notification/ok-48.png' %}",
+//                         4000
+//                     );
+
+//                     // Refresh DataTable
+//                     refresh_data();
+//                     $('#update_tx').trigger('reset');
+
+//                     $('#size_id').val('').trigger("change");
+//                         $('#color_id').val('').trigger("change");
+//                         $('#edit_id').val('').trigger("change");
+//                         $('#quantity').val('1');
+
+//                     // Clear Form Fields (if adding new record)
+//                     if (!master_id) {
+//                         $('#size_id').val('').trigger("change");
+//                         $('#color_id').val('').trigger("change");
+//                         $('#update_tm_id').val('').trigger("change");
+//                         $('#quantity').val('1');
+//                     }
+//                 } else {
+//                     notifier.show(
+//                         'Error!', 
+//                         'Failed to process request: ' + response.error_message, 
+//                         'danger',
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                         4000
+//                     );
+//                 }
+//             }, 
+//             error: function(xhr, status, error) {
+//                 console.error('Request Failed:', error);
+//                 notifier.show(
+//                     'Error!', 
+//                     'Error in processing the request.', 
+//                     'danger',
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                     4000
+//                 );
+//             }
+//         });
+//     }
+// });
+
+
+function tx_cutting_prg_delete(id) {
+    console.log('delete-id:',id);
+    if (confirm('Are you sure you want to delete this data?')) {
+        // Retrieve the current list from localStorage; default to empty array if not found
+        let dataList = JSON.parse(localStorage.getItem("myDataList")) || [];
+        console.log("Before deletion:", dataList);
+        
+        // Convert the passed id to a number
+        let deleteId = parseInt(id, 10);
+        
+        // Update the record with the matching id: mark as inactive
+        dataList = dataList.map(function(item) {
+            if (parseInt(item.id, 10) === deleteId) {
+                item.is_active = 0; // Mark as inactive
+                item.is_delete  = 1;
+
+                // Update status to display as inactive (ensure it does not contain the word "active")
+                item.status = '<span class="badge bg-danger">inactive</span>';
+            }
+            return item;
+        }); 
+        
+        console.log("After deletion:", dataList);
+        localStorage.setItem("myDataList", JSON.stringify(dataList));
+        
+        notifier.show(
+            'Well Done!',
+            'Record deleted successfully.',
+            'success',
+            "{% static 'assets/images/notification/ok-48.png' %}",
+            4000
+        );
+        
+        // Refresh the table to display only active records
+        refresh_data_local();
+    }
+}
+
+
+// function tx_cutting_prg_delete(id) {
+//     if (confirm('Are you sure you want to delete this data?')) {
+//         // Retrieve the current list from localStorage; use an empty array if not set
+//         let dataList = JSON.parse(localStorage.getItem("myDataList")) || [];
+//         console.log("Before deletion:", dataList);
+        
+//         // Loop through each record and update status if the record id matches the button's id
+//         dataList = dataList.map(function(item) {
+//             // Compare the record's id with the button id (convert to numbers if needed)
+//             if (parseInt(item.id) === parseInt(id)) {
+//                 // Update status fields when ids match
+//                 item.is_active = 0;
+//                 item.status = '<span class="badge bg-danger">inactive</span>';
+//             }
+//             return item;
+//         });
+        
+//         console.log("After deletion:", dataList);
+//         // Save the updated list back to localStorage
+//         localStorage.setItem("myDataList", JSON.stringify(dataList));
+        
+//         // Optionally, display a success notification
+//         notifier.show(
+//             'Well Done!',
+//             'Record deleted successfully.',
+//             'success',
+//             "{% static 'assets/images/notification/ok-48.png' %}",
+//             4000
+//         );
+        
+//         // Refresh your table so that inactive records are no longer displayed
+//         refresh_data_local();
+//     }
+// }
+
+
+function refresh_data_local() { 
+    // Retrieve updated list from localStorage
+    let data = JSON.parse(localStorage.getItem("myDataList")) || [];
+    console.log("Data from localStorage in refresh_data_local:", data); 
+    
+    // Filter to return only records that are active
+    let activeData = data.filter(function(item) {
+        // If is_active is undefined, assume active; otherwise, ensure it is not 0
+        let isActive = (typeof item.is_active === 'undefined') ? 1 : item.is_active;
+        return (isActive == 1) && item.status.toLowerCase().indexOf("active") !== -1;
+    });
+    console.log("Active Data:", activeData);
+    
+    var table = $('#datatable').DataTable();
+    table.clear().rows.add(activeData).draw();
+}
+
+
+
+
+// function tx_cutting_prg_delete(id) {
+//     if (confirm('Are you sure you want to delete this data?')) {
+//     $.ajax({
+//         url: "/tx-cutting-prg-delete/",
+//         method: "POST",
+//         data: {
+//             id: id,
+//             // tm_id: $("#tm_id").val(),
+//             csrfmiddlewaretoken: '{{ csrf_token }}'
+//         },
+//         dataType: "json",
+//         success: function(data) {
+//             if (data.message === 'yes') {
+//                 notifier.show(
+//                     'Well Done!', 
+//                     'Cutting Program successfully.', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 );
+//                 // alert('success');
+//                 refresh_data();
+//             } else {
+                
+//                 notifier.show(
+//                     'Error!', 
+//                     'Failes to delete!.', 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 );
+//                 // alert('Failed');
+//                 }
+//             },
+//         });
+
+//     }
+// }
+
+
+
+ 
+$('.single-select').select2();
+$('.select').select2();
+
+
+
+
+
+function Update_Table() {
+    // Retrieve data from local storage
+    var storedData = JSON.parse(localStorage.getItem('myDataList')) || [];  
+
+    // var storeAddData = JSON.parse(localStorage.getItem('selectedColors')) || [];
+
+    if (storedData.length === 0) {
+        notifier.show('Warning!', 'No data found in local storage.', 'warning', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    var addPromises = [];
+    var updatePromises = [];
+    var deletePromises = [];
+
+    storedData.forEach(function(item) {
+        var formData = new FormData();
+        formData.append('tm_id', $('#tm_id').val());
+        formData.append('size_id', item.size_id);
+        formData.append('color_id', item.color_id);
+        formData.append('quantity', item.quantity || 1);
+
+        if (item.is_add === 1) {
+            // ✅ ADD NEW RECORD
+            addPromises.push(
+                $.ajax({
+                    url: '/add_or_update_cutting_program/',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+                }).done(function(response) {
+                    if (response.success) {
+                        notifier.show('Success!', 'Added successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+                        item.is_add = 0; // ✅ Mark as processed
+                        item.is_update = 1; // ✅ Now it's an update item
+                        item.id = response.new_id; // ✅ Store new ID from server
+                    } else {
+                        notifier.show('Error!', 'Failed to add: ' + response.error_message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                    }
+                }).fail(function(xhr) {
+                    console.error('Add Error:', xhr.responseText);
+                    notifier.show('Error!', 'Add request failed.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                })
+            );
+        }
+
+        if (item.is_update === 1) {
+            // ✅ UPDATE EXISTING RECORD
+            formData.append('id', item.id);
+            updatePromises.push(
+                $.ajax({
+                    url: '/add_or_update_cutting_program/',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+                }).done(function(response) {
+                    if (response.success) {
+                        notifier.show('Success!', 'Updated successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+                    } else {
+                        notifier.show('Error!', 'Failed to update: ' + response.error_message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                    }
+                }).fail(function(xhr) {
+                    console.error('Update Error:', xhr.responseText);
+                    notifier.show('Error!', 'Update request failed.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                })
+            );
+        }
+
+        if (item.is_delete === 1) {
+            // ✅ DELETE RECORD
+            formData.append('id', item.id);
+            deletePromises.push(
+                $.ajax({
+                    url: "/tx-cutting-prg-delete/",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+                }).done(function(response) {
+                    if (response.success) {
+                        notifier.show('Success!', 'Deleted successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+                    } else {
+                        notifier.show('Error!', 'Failed to delete: ' + response.error_message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                    }
+                }).fail(function(xhr) {
+                    console.error('Delete Error:', xhr.responseText);
+                    notifier.show('Error!', 'Delete request failed.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                })
+            );
+        }
+    });
+
+    // Wait for all AJAX calls to complete
+    Promise.all([...addPromises, ...updatePromises, ...deletePromises]).then(() => {
+        // ✅ Remove processed items from Local Storage
+        storedData = storedData.filter(item => item.is_add !== 1 && item.is_delete !== 1);
+        localStorage.setItem('myDataList', JSON.stringify(storedData));
+
+        // ✅ Refresh UI and reset inputs
+        refresh_data();
+        $('#update_tx').trigger('reset');
+        $('#size_id').val('').trigger("change");
+        $('#color_id').val('').trigger("change");
+        $('#edit_id').val('');
+        $('#quantity').val('1');
+
+        console.log('Success!', 'All updates processed successfully.');
+        // notifier.show('Success!', 'All updates processed successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+    });
+}
+
+// Attach event to the update button
+$('#update_local_storage').on('click', function(e) {
+    e.preventDefault();
+    Update_Table();
+});
+
+
+
+// function Update_Table() {
+//     // Retrieve data from local storage
+//     var storedData = JSON.parse(localStorage.getItem('myDataList')) || [];  // ✅ FIX: Use correct key
+
+//     if (storedData.length === 0) {
+//         notifier.show('Warning!', 'No data found in local storage.', 'warning', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//         return;
+//     }
+
+//     var updatePromises = [];
+//     var deletePromises = [];
+
+//     storedData.forEach(function(item) {
+//         var formData = new FormData();
+//         formData.append('tm_id', $('#tm_id').val());   // Assuming 'table_id' is the TM ID
+//         formData.append('size_id', item.size_id);
+//         formData.append('color_id', item.color_id);
+//         formData.append('quantity', item.quantity || 1);
+
+//         if (item.is_update === 1) {
+//             // Updating the record
+//             formData.append('id', item.id);
+//             updatePromises.push(
+//                 $.ajax({
+//                     url: '/add_or_update_cutting_program/',
+//                     type: 'POST',
+//                     data: formData,
+//                     processData: false,
+//                     contentType: false,
+//                     headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+//                 }).done(function(response) {
+//                     if (response.success) {
+//                         notifier.show('Success!', 'Updated successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+//                     } else {
+//                         notifier.show('Error!', 'Failed to update: ' + response.error_message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//                     }
+//                 }).fail(function(xhr) {
+//                     console.error('Update Error:', xhr.responseText);
+//                     notifier.show('Error!', 'Update request failed.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//                 })
+//             );
+//         }
+
+//         if (item.is_delete === 1) {
+//             // Deleting the record
+//             formData.append('id', item.id);
+//             deletePromises.push(
+//                 $.ajax({
+//                     url: "/tx-cutting-prg-delete/",
+//                     type: "POST",
+//                     data: formData,
+//                     processData: false,
+//                     contentType: false,
+//                     headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+//                 }).done(function(response) {
+//                     if (response.success) {
+//                         notifier.show('Success!', 'Deleted successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+//                     } else {
+//                         notifier.show('Error!', 'Failed to delete: ' + response.error_message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//                     }
+//                 }).fail(function(xhr) {
+//                     console.error('Delete Error:', xhr.responseText);
+//                     notifier.show('Error!', 'Delete request failed.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//                 })
+//             );
+//         }
+//     });
+
+//     // Wait for all requests to complete
+//     Promise.all([...updatePromises, ...deletePromises]).then(() => {
+//         // Clear updated/deleted items from local storage
+//         storedData = storedData.filter(item => item.is_update !== 1 && item.is_delete !== 1);
+//         localStorage.setItem('myDataList', JSON.stringify(storedData));
+
+//         // Refresh UI
+//         refresh_data();
+//         $('#update_tx').trigger('reset');
+//         $('#size_id').val('').trigger("change");
+//         $('#color_id').val('').trigger("change");
+//         $('#edit_id').val('');
+//         $('#quantity').val('1');
+
+//         notifier.show('Success!', 'All updates processed successfully.', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+//     });
+// }
+
+
+// // Attach event to the update button
+// $('#update_local_storage').on('click', function(e) {
+//     e.preventDefault();
+//     Update_Table();
+// });
+
+
+ </script>

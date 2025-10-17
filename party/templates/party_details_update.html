@@ -1,0 +1,1055 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">                       
+                        
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <div class="page-header-title">
+                                                <h4 class="m-b-10 me-1">Party</h4>
+                                            </div>
+                                            <!-- <button type="button" class="btn btn-gradient-primary btn-sm" data-bs-toggle="modal" data-bs-target="#add_modal">Add</button> -->
+                                            <!-- <button type="button" class="btn btn-gradient-success btn-sm" onclick="refresh_data()">Refresh</button> -->
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/admin"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Masters</li>
+                                            <li class="breadcrumb-item"><a href="/party">Party</a></li>
+                                        </ul>
+                                        <!-- <h5>Unit Of Measurement</h5> -->
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+									{% csrf_token %}
+
+
+
+									<div class="card">
+										<div class="card-body">
+											<div class="row">
+												<div class="col-xl-12">
+												<section class="hk-sec-wrapper">    
+													
+													<input type="hidden" id="customer_id" value="{{customer.id}}">
+
+													<form id="update_form" method="POST"> 
+														{% csrf_token %}
+														<div class="row "> 
+															<div class="col-md-6">
+																<h5 style="text-decoration: underline;">Party  Details:</h5>
+																<div class="row">
+																	<div class="row mt-2">
+
+																	
+																		<div class="col-md-3 mb-2">
+																			<label for="name" class="form-label"> Prefix</label> 
+																			<input class="form-control" id="prefix" name="prefix" type="text" placeholder="" value="{{customer.prefix}}" >
+																		</div>
+																 
+																		<div class="col-md-6 mb-2">
+																			<label for="name" class="form-label"><span style="color: red;">*</span> Company  Name</label>
+																			<input class="form-control" id="name" name="name" type="text" placeholder=""  value="{{customer.name}}" required>
+																		</div>
+																		<!-- <div class="col-md-3 mb-2">
+																			<label for="name" class="form-label "><span style="color: red;">*</span> Party Code</label>
+																			<input class="form-control" id="party_code" name="party_code" type="text" placeholder="" value="{{customer.party_code}}" required>
+																		</div> -->
+
+																		<div class="col-md-3 mb-2">
+																			<label for="name" class="form-label">Nick  Name</label>
+																			<input class="form-control" id="nick_name" name="nick_name" type="text" placeholder="" value="{{customer.nick_name}}">
+																		</div>
+																		<div class="col-md-3 ">
+																			<label for="name" class="form-label"> Mobile Number</label>
+																			<!-- <input class="form-control" id="mobile" name="number" type="text" placeholder="" required> -->
+
+																			<input class="form-control " type="text" id="mobile" name="mobile"  value="{{customer.mobile}}" placeholder="Enter mobile number" >&nbsp;&nbsp;
+																													   
+																		</div>
+																	<div class="col-md-3 mb-2">
+																		<label for="email" class="form-label">Email</label>
+																		<input class="form-control" id="email" name="email"  type="email" placeholder=""  style="text-transform: lowercase;"  value="{{customer.email}}" >
+																	</div>
+
+																	<div class="col-md-3 ">
+																		<label for="name" class="form-label"> Phone Number</label>
+																		<!-- <input class="form-control" id="mobile" name="number" type="text" placeholder="" required> -->
+
+																		<input class="form-control " type="text" id="phone_number" name="phone"  value="{{customer.phone}}" placeholder="Enter mobile number">&nbsp;&nbsp;
+
+																	</div> 
+																	
+																  
+
+
+																   
+																	<div class="col-md-3 mb-2">
+																		<label for="state_code" class="form-label">State Code</label>
+																		<input class="form-control" id="state_code" name="state_code" type="text" placeholder="" >
+																	</div>
+
+
+
+																	<div class="col-md-6 mb-2">
+																		<label for="mobile" class="form-label"> Address</label>
+																		<textarea class="form-control" id="address" name="address" type="text" rows="2" placeholder="" >{{customer.address}}</textarea>
+																	</div>
+
+																	<div class="col-md-3 mb-2">
+																		<label for="mobile" class="form-label"> City</label>
+																		<input class="form-control" id="city" name="city" type="text" placeholder=""  value="{{customer.city}}" >
+																	</div>
+
+																	<div class="col-md-3 mb-2">
+																		<label for="mobile" class="form-label"> State</label>
+																		<input class="form-control" id="state" name="state" type="text" value="Tamil Nadu" placeholder="" value="{{customer.state}}" >
+																	</div>
+
+																	
+																	
+																  
+
+																	<div class="col-md-3 mb-2">
+																		<label for="mobile" class="form-label"> Pincode</label>
+																		<input class="form-control" id="pincode" name="pincode" type="number" placeholder=""  value="{{customer.pincode}}" >
+																	</div>
+
+
+																	 
+																	   <div class="col-md-3 mb-2">
+																		<label for="gstin" class="form-label">GSTIN</label>
+																		<input class="form-control" id="gstin" name="gstin" type="text" placeholder=""  value="{{customer.gstin}}">
+																	</div>
+
+
+																	<div class="col-md-3 mb-2">
+																		<label for="latitude" class="form-label">Latitude</label>
+																		<input class="form-control" id="latitude" name="latitude" type="text" placeholder="" value="{{customer.latitude}}">
+																	</div>
+
+																	<div class="col-md-3 mb-2">
+																		<label for="longitude" class="form-label">Longitude</label>
+																		<input class="form-control" id="longitude" name="longitude" type="text" placeholder="" value="{{customer.longitude}}">
+																	</div>
+																	
+																		<div class="col-md-3 mb-1">
+																			<label for="state_code" class="form-label">Udyam No.</label>
+																			<input type="text" class="form-control" id="udyam_no" name="udyam_no" value="{{customer.udyam_no}}" >
+																		</div>
+
+                                                                        <div class="col-md-3 mb-1">
+                                                                            <label for="price_list" class="form-label">Price List</label>
+                                                                            <select id="price_list" name="price_list" class="form-control single-select" required>
+                                                                                <option>Select</option>
+                                                                                {% for p in price_list %}
+                                                                                <option value="{{p.id}}">{{p.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>  
+
+																		 
+																	<div class="col-md-6 mb-2">
+																		<label for="remarks" class="form-label">Remarks</label>
+																		<textarea class="form-control" id="description" name="description" rows="2" type="text" placeholder="">{{customer.remarks}}</textarea>
+																	</div>
+																</div>
+																<div class="mt-5" style="text-align: end; margin-left: 10px;">
+																	<button type="button" class="btn btn-secondary" onclick="history.back()">Close</button>
+																	<input type="hidden" id="customer_id" name="customer_id" value="{{customer.id}}">
+									
+																	<button type="submit" id="submit" class="btn btn-primary">Save</button>
+																</div>
+																
+
+																 
+							 
+																</div>
+															</div>
+
+															<div class="col-md-2">
+																<h5 style="text-decoration: underline;">Party Type</h5>
+																<section class="mt-2"> 
+																	<div class="">
+
+																										
+																	<div class="row mb-3 mt-3">
+																	   
+																		
+
+																		<div class="col-md-6  mt-3 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_mill" name="is_mill"
+																				{% if customer.is_mill == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_mill"> Mill?</label>
+																		</div>
+																   
+																		<div class="col-md-6  mt-2 mb-2">
+
+
+																			<input class="form-check-input" type="checkbox" id="is_trader" name="is_trader"
+																				{% if customer.is_trader == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_trader"> Trader?</label>
+																		</div>
+
+
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_knitting" name="is_knitting"
+																				{% if customer.is_knitting == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_knitting"> Knitting?</label>
+																		</div>
+
+																   
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_b_d" name="is_b_d" 
+																				{% if customer.is_process == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_bleaching"> Process?</label>
+																		</div>
+
+																	
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_compacting" name="is_compacting"
+																				{% if customer.is_compacting == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_compacting"> Compacting?</label>
+																		</div>
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_supplier" name="is_supplier"
+																				{% if customer.is_supplier == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_supplier"> Supplier?</label>
+																		</div>
+
+
+																		
+																		 
+							 
+																		<!-- <div class="col-md-12" id="supply_items_div" style="display: none;">
+																			<label class="form-label">Supply Items</label>
+																			<select class="form-control select2" id="supply_id" name="supply_id" multiple>
+																				{% for k in supply %}
+																				<option value="{{ k.id }}">{{ k.name }}</option> 
+																				{% endfor %} 
+																			</select>
+																		</div>  -->
+
+
+
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_cutting" name="is_cutting"
+																				{% if customer.is_cutting == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_cutting"> Cutting?</label>
+																		</div>
+
+																
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_stiching" name="is_stiching"
+																				{% if customer.is_stiching == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_stiching"> Stiching?</label>
+																		</div>
+
+																		<div class="col-md-6  mt-2 mb-2">
+																			<input class="form-check-input" type="checkbox" id="is_ironing" name="is_ironing"
+																				{% if customer.is_ironing == 1 %}checked{% endif %}>
+																			<label class="form-label" for="is_ironing"> Iron & Pack?</label>
+																		</div>
+							 
+																		<div class="col-md-12 mt-2" id="supply_items_div" style="display: none;">
+																			<label class="form-label">Supply Items</label>
+																			<select class="form-control select2" id="supply_id" name="supply_id" multiple>
+																				{% for k in supply %}
+																				<option value="{{ k.id }}" {% if k.id in selected_supply_ids %}selected{% endif %}>{{ k.name }}</option> 
+																				{% endfor %}
+																			</select>
+																		</div> 
+																		
+																	
+																	</div>
+
+												   
+
+
+
+																  </div>
+																</section>
+
+															</div>
+                               
+
+															   
+															<div class="col-md-4">   
+																<h5 style="text-decoration:underline">Contact Person Details:</h5>
+																<section class="hk-sec-wrapper">
+																	<div class="row">
+																		<div class="row">
+																			<div class="col-md-6 mt-2 ">
+																				<label for="ph_name" class="form-label"><sub class="text-red" style="color: red;">*</sub> Name</label>
+																				<input class="form-control" id="ph_name" name="ph_name" type="text" placeholder="Name" >
+																			</div>
+																			<div class="col-md-6 mb-2">
+																				<label for="ph_email" class="form-label">Email</label>
+																				<input class="form-control" id="ph_email" name="ph_email"  style="text-transform: lowercase;" type="text" placeholder="Email" >
+																			</div>
+																		</div>
+																		<div class="row mt-3">
+																			<div class="col-md-6 mb-2">
+																				<label for="ph_phone" class="form-label">Mobile</label>
+																				<input class="form-control" id="ph_phone" name="ph_phone" type="number" placeholder="Phone">
+																			</div>
+																			<div class="col-md-6 mb-2">
+																				<label for="dob" class="form-label">Designation</label>
+																				<input class="form-control" id="designation" name="designation" type="text" placeholder="Designation">
+																			</div>
+																		</div>
+																			<!-- <div class="row"> -->
+																		<div class="col-md-12 mb-3 mt-2">
+																			<button type="button" id="add_update_btn" class="btn btn-primary mt-3" onclick="addContact()">+</button>
+
+																			<!-- <button type="button" class="btn btn-primary mt-3" onclick="addContact()">+</button> -->
+																		</div>
+																		  <!-- </div> --> 
+																		<div class="row mt-4">   
+																			<div class="col-sm">
+																				<div class="dt-responsive table-responsive table-hover">
+																					<table id="contact_table"  class="table table-striped table-bordered nowrap w-100">
+																					  
+																						<thead>
+																							<tr>
+																								<th>Action</th>
+																								<th>Name</th>
+																								<th>Email</th>  
+																								<th>Mobile</th>
+																								<th>Designation</th>
+																							</tr>
+																						</thead>
+																				 
+
+							 
+																						<tbody>
+																							{% for contact in contacts %}
+																							<tr id="row_{{ contact.id }}">
+																								<td>
+																									<!-- <button class="btn btn-primary btn-xs" id="edit_contact" onclick="editContact({{ contact.id }})">
+																										<i class="feather icon-edit"></i>
+																									</button> -->
+																									<button class="btn btn-primary btn-xs" id="edit_contact_{{ contact.id }}" type="button" onclick="editContact({{ contact.id }})">
+																										<i class="feather icon-edit"></i>
+																									</button>
+																									
+
+																									
+
+																									<a onclick="deleteContact({{ contact.id }})" class="btn btn-danger btn-xs" href="javascript:void(0)">
+																										<i class="feather icon-trash-2"></i>
+																									</a>
+																								</td>
+																								<td style="display: none;">{{ contact.party_id }}</td>
+																								<td id="name_{{ contact.id }}">{{ contact.cp_name }}</td>
+																								<td id="email_{{ contact.id }}">{{ contact.cp_email }}</td>
+																								<td id="phone_{{ contact.id }}">{{ contact.cp_mobile }}</td>
+																								<td id="designation_{{ contact.id }}">{{ contact.designation }}</td>
+																							</tr>
+																							{% endfor %}
+																						</tbody>
+
+																						
+
+																						
+
+
+																					</table>
+																				</div>
+																			</div> 
+																		</div>
+							  
+																		<hr> 
+																
+																		
+																		<h5>Party Photos</h5> 
+
+																		<div class="row">
+																			<!-- Photo Input -->
+																			<div class="col-md-6 mt-2">
+																				<label for="photo" class="form-label">
+																					<sub class="text-red" style="color: red;">*</sub> Photo
+																				</label>
+																				<input class="form-control" id="photo" name="photo" type="file" placeholder="Photos">
+																				<img id="photo_preview" src="" alt="Selected Photo" style="width: 100px; height: auto; display: none;">
+																			</div>
+																		
+																			<!-- Remarks Input -->
+																			<div class="col-md-6 mt-2">
+																				<label for="remarks" class="form-label">Remarks</label>
+																				<input class="form-control" id="remarks" name="remarks" type="text">
+																			</div>
+																		</div>
+																		
+																		<!-- Add/Update Button -->
+																		<div align="right" class="col-md-12 mb-3 mt-2">
+																			{% csrf_token %}
+																			<input type="hidden" id="party_id" name="party_id" value="{{customer.id}}">
+																			<button type="button" id="add_photo_btn" class="btn btn-primary mt-3" onclick="addPhoto()">Add</button>
+																		</div>
+
+																		
+
+
+																		<div class="row mt-4">
+																			<div class="col-sm">
+																				<div class="dt-responsive table-responsive table-hover">
+																					<table id="photo_table" class="table table-striped table-bordered nowrap">
+																						<thead>
+																							<tr>
+																								<th>#</th>
+																								<th>Photo</th>
+																								<th>Remarks</th>
+																							</tr> 
+																						</thead>
+																						<tbody> 
+																							{% for photo in photos %} 
+																							<tr id="row_{{ photo.id }}">
+																								<td>
+
+																									<a onclick="editPhoto({{ photo.id }})" class="btn btn-primary btn-xs" href="javascript:void(0)">
+																										<i class="feather icon-edit"></i>
+																									</a>
+
+
+																									<a onclick="deletePhoto({{ photo.id }})" class="btn btn-danger btn-xs" href="javascript:void(0)">
+																										<i class="feather icon-trash-2"></i>
+																									</a>
+																								</td>
+																								<td>
+																									<img src="{{ photo.photo.url }}" alt="Photo" style="width: 60px; height: auto;">
+																								</td>
+																								<td contenteditable="true" onblur="editPhotoRemarks({{ photo.id }}, this)">{{ photo.remarks }}</td>
+																							</tr>
+																							{% endfor %}
+																						</tbody>
+																					</table>
+																				</div>
+																			</div>
+																		</div>
+																	  
+
+
+
+
+
+																</section>
+																
+															</div>
+														
+														<br>
+														
+													</form>
+												</section>
+											</div>
+											</div>
+										</div>
+									</div>
+        
+		
+		
+		
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+    
+	</div>
+</div>
+{% include 'includes/footer.html' %}
+
+ 
+<script type="text/javascript">
+    $('.select2').select2();
+</script>
+<!-- Include jQuery UI JS -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-4.5.0/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<script>
+
+
+
+$(document).ready(function () {
+    // Check if the supplier checkbox is checked on page load
+    if ($("#is_supplier").prop("checked")) {
+        $("#supply_items_div").show();
+    } else {
+        $("#supply_items_div").hide();
+    }
+
+    // Convert the comma-separated string to an array and preselect values
+    let supplyItemsStr = "{{ customer.supply_items }}";  // Example: "1,3,5"
+    if (supplyItemsStr) {
+        let selectedSupplyItems = supplyItemsStr.split(",").map(item => item.trim());  // Convert to array
+        $("#supply_id").val(selectedSupplyItems).trigger("change");
+    }
+
+    // Toggle visibility of supply items div on checkbox change
+    $("#is_supplier").change(function () {
+        if ($(this).prop("checked")) {
+            $("#supply_items_div").fadeIn();
+        } else {
+            $("#supply_items_div").fadeOut();
+        } 
+    });
+});
+
+
+if ("{{customer.company_id}}" && "{{customer.company_id}}" !== "") {
+    $('#company_id').val("{{customer.company_id}}").trigger("change");
+}
+
+
+
+
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Check if the cookie string begins with the name we want
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// ``````````````````````` end update photo `````````````````````````````````````````
+
+function showToast(type, message) {
+		const options = {
+			positionClass: 'toast-top-right',
+			timeOut: 5000,
+			closeButton: true
+		};
+	
+		switch (type) {
+			case 'success':
+				toastr.success(message, 'Success', options);
+				break;
+			case 'error':
+				toastr.error(message, 'Error', options);
+				break;
+			case 'info':
+				toastr.info(message, 'Info', options);
+				break;
+			case 'warning':
+				toastr.warning(message, 'Warning', options);
+				break;
+			default:    
+				console.warn('Unknown toast type:', type);
+		}
+	}
+	
+	
+
+
+
+var first = true;
+
+function remove_row(mrow) {
+    $(mrow).closest('tr').remove();
+}
+
+
+    
+function storeTblValues() {
+    var TableData = [];
+    $('#contact_table tbody tr').each(function() {
+        TableData.push({
+            "ph_name": $(this).find('td:eq(1)').text(),
+            "ph_email": $(this).find('td:eq(2)').text(),
+            "ph_phone": $(this).find('td:eq(3)').text(),
+            "designation": $(this).find('td:eq(4)').text()
+        });
+    });
+    console.log('table-data:',TableData);
+    return TableData;
+}
+
+
+
+
+
+
+
+// Function to get the CSRF token from the cookie
+function getCSRFToken() {
+    var csrfToken = null;
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith('csrftoken=')) {
+            csrfToken = cookie.substring('csrftoken='.length, cookie.length);
+            break;
+        }
+    }
+    return csrfToken;
+}
+
+
+
+
+$('#update_form').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var TableData = storeTblValues();
+
+    var mdata = new FormData(this);
+
+    // Get selected working days as a comma-separated string
+    // var selectedWorkingDays = $('#working_days').val().join(',');
+    // mdata.append('working_days', selectedWorkingDays); // Append the working_days string
+
+    mdata.append('contact_data', JSON.stringify(TableData)); // Append contact data
+
+    $.ajax({
+        type: "POST",
+        url: "/party_detail_update/",
+        data: mdata,
+        processData: false,
+        contentType: false,
+        headers: {
+            'X-CSRFToken': getCSRFToken() // Add CSRF token to the request headers
+        },
+        beforeSend: function() {
+            $('#submit').attr('disabled', true).text('Processing...');
+        },
+
+        success: function(response) {
+            console.log(response); // Log the response for debugging
+
+            var object = typeof response === 'object' ? response : JSON.parse(response);
+            console.log('response:', object);
+            if (object.result === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Party details updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // showToast('success', 'Customer details updated successfully.');
+                setTimeout(() => window.location.reload(), 2000);
+            } else {
+                notifier.show(
+                    'Access Denied!', 
+                    'You do not have permission to update Party details',  // Use the error message from the server
+                    'danger', 
+                    "{% static 'assets/images/notification/medium_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+
+        error: function(xhr, status, error) {
+            notifier.show(
+                'Error!',  
+                'Failed to update party details.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });  
+}); 
+
+ 
+
+// ``````````````````````````````````````````````````````````````````
+
+$(document).on("blur", "#contact_table td[contenteditable='true']", function() {
+    var contactId = $(this).closest("tr").attr("id").split("_")[1]; 
+    var field = $(this).index();  
+    var newValue = $(this).text().trim();
+
+    var dataFields = ["cp_name", "cp_email", "cp_mobile", "designation"];
+    var fieldName = dataFields[field - 1]; 
+
+    $.ajax({
+        url: "/update-contact/" + contactId + "/",  
+        type: "POST",
+        data: {
+            field: fieldName,
+            value: newValue,
+            csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        success: function(response) {
+            console.log("Contact updated successfully.");
+        },
+        error: function() {
+            alert("Error updating contact.");
+        }
+    });
+});
+
+
+
+
+var selectedContactId = null;
+var originalValues = {}; // Store original values
+
+function editContact(contactId) {
+    selectedContactId = contactId;
+
+    // Select the row dynamically using the ID
+    var row = $("#row_" + contactId);
+
+    // Get values from the row
+    var name = row.find("#name_" + contactId).text().trim();
+    var email = row.find("#email_" + contactId).text().trim();
+    var phone = row.find("#phone_" + contactId).text().trim();
+    var designation = row.find("#designation_" + contactId).text().trim();
+
+    // Populate the form
+    $("#ph_name").val(name);
+    $("#ph_email").val(email);
+    $("#ph_phone").val(phone);
+    $("#designation").val(designation);
+
+    // Store original values for comparison
+    originalValues = { name, email, phone, designation };
+
+    // Change the button to "Update"
+    $("#add_update_btn").text("Update").attr("onclick", "updateContact()");
+}
+
+function updateContact() {
+    if (!selectedContactId) {
+        alert("No contact selected for update.");
+        return;
+    }
+
+    // Get updated values from the form
+    var name = $("#ph_name").val().trim();
+    var email = $("#ph_email").val().trim();
+    var phone = $("#ph_phone").val().trim();
+    var designation = $("#designation").val().trim();
+
+    // Check if values have changed
+    if (
+        name === originalValues.name &&
+        email === originalValues.email &&
+        phone === originalValues.phone &&
+        designation === originalValues.designation
+    ) {
+        alert("No changes detected.");
+        return;
+    }
+
+    var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+    $.ajax({
+        url: "/update-contact/" + selectedContactId + "/",
+        type: "POST",
+        data: {
+            name: name,
+            email: email,
+            phone: phone,
+            designation: designation,
+            csrfmiddlewaretoken: csrfToken
+        },
+        success: function(response) {
+            if (response.status === "success") {
+                // Update the table row with new values
+                var row = $("#row_" + selectedContactId);
+                row.find("#name_" + selectedContactId).text(name);
+                row.find("#email_" + selectedContactId).text(email);
+                row.find("#phone_" + selectedContactId).text(phone);
+                row.find("#designation_" + selectedContactId).text(designation);
+
+                // Reset form
+                resetForm();
+            } else {
+                alert("Error updating contact.");
+            }
+        },
+        error: function() {
+            alert("Error updating contact.");
+        }
+    });
+}
+
+function resetForm() {
+    $("#ph_name, #ph_email, #ph_phone, #designation").val("");
+    $("#add_update_btn").text("+").attr("onclick", "addContact()");
+    selectedContactId = null;
+    originalValues = {};
+}
+
+
+
+
+function addContact() {
+        var name = $('#ph_name').val();
+        var email = $('#ph_email').val();
+        var phone = $('#ph_phone').val();
+        var designation = $('#designation').val();
+        var customer_id = $('#party_id').val();  
+
+        if (name !== '') {
+            $.ajax({
+                url: "{% url 'add_contact' %}", 
+                type: "POST", 
+                data: {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    designation: designation,
+                    customer_id :customer_id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"     
+                },
+               
+					success: function(response) {
+						notifier.show( 
+							'Well Done!', 
+							'Contact details added successfully.', 
+							'success',  
+							"{% static 'assets/images/notification/ok-48.png' %}", 
+							4000
+						); 
+                    $('#contact_table tbody').append(
+                        "<tr id='row_" + response.id + "'>" +
+                        "<td><a onclick='editContact(" + response.id + ")' class='btn btn-primary btn-xs' href='javascript:void(0)'><i class='feather icon-edit'></i></a>    <a onclick='deleteContact(" + response.id + ")' class='btn btn-danger btn-xs' href='javascript:void(0)'><i class='feather icon-trash-2'></i></a> </td>" +
+                        "<td contenteditable='true'>" + response.name + "</td>" +
+                        "<td contenteditable='true'>" + response.email + "</td>" +
+                        "<td contenteditable='true'>" + response.phone + "</td>" +
+                        "<td contenteditable='true'>" + response.designation + "</td>" +
+                        "</tr>"
+                    );
+
+                    $('#ph_name').val('');
+                    $('#ph_email').val('');
+                    $('#ph_phone').val('');
+                    $('#designation').val('');
+                },
+                error: function() {
+                    alert('Error adding contact.');
+                }
+            });
+        } else {
+            alert('Name is required.');
+        }
+    }
+
+    function deleteContact(contactId) {
+        $.ajax({
+            url: "/delete-contact/" + contactId + "/",
+            type: "POST",
+            data: { csrfmiddlewaretoken: "{{ csrf_token }}" },
+            success: function() {
+                $('#row_' + contactId).remove();
+            },
+            error: function() {
+                alert('Error deleting contact.');
+            }
+        });
+    }
+ 
+
+
+
+// `````````````````````````````````` add &  edit party photo ``````````````````````````````````````````
+
+
+var editPhotoId = null; // Track which photo is being edited
+
+function editPhoto(photoId) {
+    editPhotoId = photoId; // Store ID for update
+
+    // Fetch existing values from the table
+    var photoSrc = $("#row_" + photoId + " img").attr("src");
+    var remarksText = $("#row_" + photoId + " td:nth-child(3)").text().trim();
+
+    // Fill form fields
+    $("#photo_preview").attr("src", photoSrc).show();
+    $("#remarks").val(remarksText);
+
+    // Change button text to "Update"
+    $("#add_photo_btn").text("Update");
+}
+
+document.getElementById("add_photo_btn").addEventListener("click", function () {
+    const photoInput = document.getElementById("photo");
+    const remarksInput = document.getElementById("remarks");
+    const partyIdInput = document.getElementById("party_id");
+    const photoFile = photoInput.files[0];
+    const remarks = remarksInput.value.trim();
+    const party_id = partyIdInput.value.trim();
+
+    if (!remarks) {
+        alert("Please provide remarks.");
+        return;
+    }
+    if (!party_id) {
+        alert("Party ID is required.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("remarks", remarks);
+    formData.append("party_id", party_id);
+    formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+    // If updating an existing photo
+    if (editPhotoId) {
+        if (photoFile) {
+            formData.append("photo", photoFile); // Update photo only if a new one is selected
+        }
+
+        fetch(`/update-photo/${editPhotoId}/`, {
+            method: "POST",
+            body: formData,
+            headers: { "X-CSRFToken": getCookie("csrftoken") },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update table row dynamically
+                $("#row_" + editPhotoId + " td:nth-child(3)").text(remarks);
+
+                if (data.photo_url) {
+                    $("#row_" + editPhotoId + " img").attr("src", data.photo_url);
+                }
+
+                resetForm();
+            } else {
+                alert("Failed to update photo.");
+            }
+        })
+        .catch(error => {
+            console.error("Error updating:", error);
+        });
+
+    } else {
+        // If adding a new photo
+        if (!photoFile) {
+            alert("Please upload a photo.");
+            return;
+        }
+        formData.append("photo", photoFile);
+
+        fetch("/add_party_photo/", {
+            method: "POST",
+            body: formData,
+            headers: { "X-CSRFToken": getCookie("csrftoken") },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "Success") {
+                // Append new row to table
+                $("#photo_table tbody").append(`
+                    <tr id="row_${data.photo_id}">
+                        <td>
+                            <a onclick="editPhoto(${data.photo_id})" class="btn btn-primary btn-xs" href="javascript:void(0)">
+                                <i class="feather icon-edit"></i>
+                            </a>
+                            <a onclick="deletePhoto(${data.photo_id})" class="btn btn-danger btn-xs" href="javascript:void(0)">
+                                <i class="feather icon-trash-2"></i>
+                            </a>
+                        </td>
+                        <td><img src="${data.photo_url}" alt="Photo" style="width: 100px; height: auto;"></td>
+                        <td contenteditable="true">${remarks}</td>
+                    </tr>
+                `);
+
+                resetForm();
+            } else {
+                alert("Failed to add photo.");
+            }
+        })
+        .catch(error => {
+            console.error("Error adding:", error);
+        });
+    }
+});
+
+function resetForm() {
+    $("#photo").val("");
+    $("#remarks").val("");
+    $("#photo_preview").hide();
+    $("#add_photo_btn").text("Add"); // Reset button text
+    editPhotoId = null; // Clear edit mode
+}
+
+
+    
+
+
+
+    
+
+// Helper function to remove rows
+function remove_row(button) {
+    const row = button.closest("tr");
+    row.remove();
+}
+
+
+
+
+
+
+    function deletePhoto(photoId) {
+        $.ajax({
+            url: "/delete-photo/" + photoId + "/",
+            type: "POST",
+            data: { csrfmiddlewaretoken: "{{ csrf_token }}" },
+            success: function(response) {
+                $('#row_' + photoId).remove();
+            },
+            error: function() {
+                alert('Error deleting photo.');
+            }
+        });
+    }
+
+</script>
+

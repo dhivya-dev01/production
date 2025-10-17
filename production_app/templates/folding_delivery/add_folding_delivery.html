@@ -1,0 +1,858 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    </style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Folding Delivery  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/folding-delivery"> Folding Delivery</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li> 
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+
+
+                                    <!-- `````````````````````````````````````````````````````````  modal  `````````````````````````````````````````````````````````` -->
+
+
+
+                                    <div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">Cutting Entry</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="add_form">
+                                                        <div class="modal-body">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                        <table id="purchaseTable" class="table table-bordered table-striped w-100">
+                                                                            <thead></thead>
+                                                                            <tbody></tbody>
+                                                                            <!-- <tfoot> will be appended dynamically -->
+                                                                        </table>
+
+                                                                    </div>                                                       
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- ``````````````````````````````````````````````````` end modal ```````````````````````````````````````````````````````````````` -->
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Folding No.</label>
+                                                                    <input type="text" class="form-control" value="{{folding_no}}" readonly>
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Folding Date</label>
+                                                                    <input class="form-control" type="date" name="folding_date" id="folding_date" required>
+                                                                </div>
+ 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadEntry()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option>  
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                           
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="product_id" class="form-label">Stitching Delivery</label>
+                                                                        <select id="entry_id" name="entry_id" class="form-control form-select single-select" onchange="LoadQualityStyle(); setWorkOrderNo()">
+                                                                    <!-- <select id="entry_id" name="entry_id" class="form-control form-select single-select" onchange="LoadEntryDetail()"> -->
+                                                                         <option value="">Select</option>
+                                                                            {% for s in stitching %}
+                                                                            <option value="{{s.id}}">{{s.outward_no}} - {{s.work_order_no}}</option>
+                                                                            {% endfor %} 
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="lot_no" class="form-label">Lot No.</label>
+                                                                    <select id="lot_no" name="lot_no" class="form-control form-select single-select" >
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        {% for l in lot %}
+                                                                        <option value="{{l.lot_no}}">{{l.lot_no}}</option>
+                                                                        {% endfor %}
+                                                                   
+                                                                    </select>
+
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for l in fabric %}
+                                                                        <option value="{{l.fabric_id}}">{{l.name}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+ 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quality_id" class="form-label">Quality </label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+
+                                                                </div> 
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="style_id" class="form-label">Style </label>
+                                                                    <select id="style_id" name="style_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+                                                                    <button class="btn btn-primary mt-3" type="button" id="load_button" onchange="LoadEntryDetail()">+ Load</button>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div> 
+                                                        
+
+                                                        
+                                                            
+                                                        <div class="">
+                                                            <div class="table-responsive table-desi">
+
+
+
+                                                                <table id="foldingProgramTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Color</th>
+                                                                            <th>Total Weight</th>
+                                                                            <th>Already Delivered</th>
+                                                                            <th style="display:none;">Balance Wt</th>
+                                                                            <th>Outward WT</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th>Total</th>
+                                                                            <th id="totalWeight">0</th>
+                                                                            <th id="totalDelivered">0</th>
+                                                                            <th style="display:none;" id="totalBalance">0</th>
+                                                                            <th id="totalOutward">0</th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+
+                                                           
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                                </div>
+
+                        
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                                <style>
+                                                                    .summary-container {
+                                                                        max-width: 500px;
+                                                                        margin: 20px auto;
+                                                                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                                                                        color: white;
+                                                                        padding: 15px;
+                                                                        border-radius: 10px;
+                                                                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                                                                    }
+                                                                
+                                                                    .summary-table {
+                                                                        width: 100%;
+                                                                        background: white;
+                                                                        color: black;
+                                                                        border-radius: 10px;
+                                                                        overflow: hidden;
+                                                                        padding: 10px;
+                                                                    }
+                                                                
+                                                                    .summary-table th {
+                                                                        /* background: white; */
+                                                                        color: black    ;
+                                                                        padding: 10px;
+                                                                        text-align: center;
+                                                                    }
+                                                                
+                                                                    .summary-table td {
+                                                                        padding: 8px;
+                                                                        font-weight: bold;
+                                                                    }
+                                                                
+                                                                    .highlight {
+                                                                        background: #428bca;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                        text-align: right;
+                                                                    }
+                                                                
+                                                                    .transparent-input {
+                                                                        width: 100%;
+                                                                        border: none;
+                                                                        outline: none;
+                                                                        background: transparent;
+                                                                        text-align: right;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                        color: black;
+                                                                    }
+                                                                
+                                                                    .transparent-input:focus {
+                                                                        border-bottom: 2px solid #428bca;
+                                                                    }
+                                                                </style>
+                                                               
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %} 
+
+
+<script>
+
+function LoadEntry() {
+    var party_id = $('#party_id').val(); 
+    $('#entry_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', party_id); // Adjusted for clarity
+
+    $.ajax({ 
+        type: 'POST',  // Change to POST 
+        // url: '/get_st_delivery_list/',
+
+        url:'/get_st_folding_available_list/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+        success: function(data) {
+            console.log('Full data response:', data);
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) { 
+                    console.log('entry_id:', po.entry_id);
+                    $('#entry_id').append('<option value="' + po.entry_id + '">' + po.outward_no + ' - ' + po.work_order_no + '</option>');
+                });
+            } else {
+                console.log('No orders received or empty orders list');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        }
+
+    });
+}
+
+function setWorkOrderNo() {
+    var selectedText = $('#entry_id option:selected').text();
+    
+    if (selectedText.includes(' - ')) {
+        var parts = selectedText.split(' - ');
+        var workOrderNo = parts[1].trim();
+        $('#work_order_no').val(workOrderNo);
+    } else {
+        $('#work_order_no').val('');
+    }
+}
+
+
+function LoadEntryDetail() {
+    const entryId = $('#entry_id').val();
+    if (!entryId) return;
+
+    $.ajax({
+        // url: '/get_entry_details/', // 👉 Create this Django view
+        url: '/get_st_delivery_details/', // 👉 Create this Django view
+        type: 'POST',
+        data: { entry_id: entryId },
+        success: function (response) {
+            // Load Lot No options
+            const lotOptions = response.lot_numbers.map(lot =>
+                `<option value="${lot}">${lot}</option>`
+            ).join('');
+            $('#lot_no').html(`<option value="">Select</option>` + lotOptions);
+
+            // Default select first Lot No
+            if (response.lot_numbers.length > 0) {
+                $('#lot_no').val(response.lot_numbers[0]);
+            }
+
+            // Default Fabric from that lot
+            // $('#fabric_id').html(`<option value="${response.default_fabric}">${response.default_fabric}</option>`);
+            $('#fabric_id').val(response.default_fabric);
+
+            // Set work_order_no if needed
+            $('#work_order_no').val(response.work_order_no);
+
+            // ✅ Now call to load table
+            // loadFo   ldingTable(entryId, response.default_fabric, response.lot_numbers[0]);
+        }
+    });
+}
+
+
+
+
+
+function LoadQualityStyle() {
+    var entry_id = $('#entry_id').val(); 
+    console.log('Entry ID:', entry_id);
+    var lot = $('#lot_no').trigger('change');
+
+    $.ajax({
+        type: 'POST',
+        // url: '/get_cutting_entry_quality_style_list/',
+        url: '/get_st_delivery_quality_style_list/',
+        data: {
+            'entry_id': entry_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+        success: function(data) {
+            // Clear old options and add default
+            $('#quality_id').empty().append('');
+            $('#style_id').empty().append('');
+            $('#lot_no').empty().append('');
+            $('#fabric_id').empty().append('');
+
+            // Append quality if available
+            if (data.quality) {
+                $('#quality_id').append(
+                    '<option value="' + data.quality.id + '">' + data.quality.name + '</option>'
+                );
+                console.log('Quality:', data.quality.id, data.quality.name);
+            }
+
+            // Append style if available
+            if (data.style) {
+                $('#style_id').append(
+                    '<option value="' + data.style.id + '">' + data.style.name + '</option>'
+                );
+                console.log('Style:', data.style.id, data.style.name);
+            }
+
+              // Append style if available
+            if (data.fabric) {
+                $('#fabric_id').append(
+                    '<option value="' + data.fabric.id + '">' + data.fabric.name + '</option>'
+                );
+                console.log('fabric:', data.fabric.id, data.fabric.name);
+            }
+              // Append style if available
+            if (data.lot_no) {
+                $('#lot_no').append(
+                    '<option value="' + data.lot_no + '">' + data.lot_no + '</option>'
+                );
+                console.log('lot_no:', data.lot_no, data.lot_no);
+            }
+
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading quality/style:', error);
+        }
+    });
+}
+
+
+
+
+
+
+//  $('#entry_id').on('change', function () {
+ $('#load_button').on('click', function () {
+    const entryId = $('#entry_id').val();
+    if (entryId) {
+        loadFoldingProgramDetails(entryId);
+    }
+});
+
+
+function loadFoldingProgramDetails_id(entryId) {
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_entry_folding_details/',
+        data: {
+            'entry_id': entryId,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status !== 'success') {
+                alert('Failed to load data.');
+                return;
+            }
+
+            // Populate dropdowns (unchanged)
+            const { fabric, quality, style } = response;
+            if (fabric && typeof fabric === 'object') {
+                $('#fabric_id').empty().append(`<option selected value="${fabric.id}">${fabric.name}</option>`);
+            }
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(`<option selected value="${quality.id}">${quality.name}</option>`);
+            }
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(`<option selected value="${style.id}">${style.name}</option>`);
+            }
+
+            const tableBody = $('#foldingProgramTable tbody');
+            tableBody.empty();
+
+            // Create an object to group data by color ID
+            const groupedData = {};
+
+            // Aggregate data by color ID
+            response.data.forEach(row => {
+                const colorId = row.color_id;
+                if (!groupedData[colorId]) {
+                    // If this is the first time we've seen this color,
+                    // initialize the object with its values.
+                    groupedData[colorId] = {
+                        color_name: row.color_name,
+                        quality_name: row.quality_name,
+                        style_name: row.style_name,
+                        cutting_wt: 0,
+                        total_folding_program_wt: 0,
+                        delivered_wt: 0,
+                        balance_wt: 0
+                    };
+                }
+
+                // Add the values from the current row to the grouped values
+                groupedData[colorId].cutting_wt += parseFloat(row.cutting_wt || 0);
+                groupedData[colorId].total_folding_program_wt += parseFloat(row.total_folding_program_wt || 0);
+                groupedData[colorId].delivered_wt += parseFloat(row.delivered_wt || 0);
+                groupedData[colorId].balance_wt += parseFloat(row.balance_wt || 0);
+            });
+
+            // Iterate over the grouped data and create a single row for each color
+            for (const colorId in groupedData) {
+                const row = groupedData[colorId];
+
+                const programWt = row.total_folding_program_wt;
+                const deliveredWt = row.delivered_wt;
+                const balanceWt = row.balance_wt;
+                const cutting_wt = row.cutting_wt;
+
+                const newRow = `
+                    <tr>
+                        <td>${row.color_name}</td>
+                        <td style="display:none;">${row.quality_name}</td>
+                        <td style="display:none;">${row.style_name}</td>
+                        <td>${cutting_wt.toFixed(2)}</td>
+                        <td style="display:none;">${programWt.toFixed(2)}</td>
+                        <td>${deliveredWt.toFixed(2)}</td>
+                        <td style="display:none;">${balanceWt.toFixed(2)}</td>
+                        <td>
+                            <input type="number" value="${balanceWt.toFixed(2)}" class="form-control" style="border:none;">
+                        </td>
+                        <td style="display:none;">${colorId}</td>
+                    </tr>
+                `;
+                tableBody.append(newRow);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading folding details:', error);
+        }
+    });
+}
+
+
+
+
+function loadFoldingProgramDetails(entryId) {
+    $.ajax({
+        type: 'POST',
+        url: '/get_st_delivery_folding_details/',
+        data: { 
+            'entry_id': entryId,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status !== 'success') {
+                alert('Failed to load data.');
+                return;
+            }
+
+            const { fabric, quality, style } = response;
+
+            // Populate dropdowns
+            if (fabric && typeof fabric === 'object') {
+                $('#fabric_id').empty().append(`<option selected value="${fabric.id}">${fabric.name}</option>`);
+            }
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(`<option selected value="${quality.id}">${quality.name}</option>`);
+            }
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(`<option selected value="${style.id}">${style.name}</option>`);
+            }
+
+            const tableBody = $('#foldingProgramTable tbody');
+            const tableFoot = $('#foldingProgramTable tfoot');
+            tableBody.empty();
+            tableFoot.empty();
+
+            // Group by color_id
+            const groupedData = {};
+            response.data.forEach(row => {
+                const colorId = row.color_id;
+
+                if (!groupedData[colorId]) {
+                    groupedData[colorId] = {
+                        color_name: row.color_name,
+                        final_quantity: parseFloat(row.final_qty || 0),
+                        delivered_wt: parseFloat(row.delivered_wt || 0),
+                        available_balance: parseFloat(row.available_balance || 0),
+                    };
+                } else {
+                    groupedData[colorId].final_quantity += parseFloat(row.final_qty || 0);
+                    groupedData[colorId].delivered_wt += parseFloat(row.delivered_wt || 0);
+                    groupedData[colorId].available_balance += parseFloat(row.available_balance || 0);
+                }
+            });
+
+            // Totals
+            let totalFinalQty = 0;
+            let totalDelivered = 0;
+            let totalOutward = 0;
+
+            // Render rows
+            for (const colorId in groupedData) {
+                const row = groupedData[colorId];
+
+                totalFinalQty += row.final_quantity;
+                totalDelivered += row.delivered_wt;
+                totalOutward += row.available_balance;
+
+                const newRow = `
+                    <tr>
+                        <td>${row.color_name}</td>
+                        <td style="text-align:right;" >${row.final_quantity.toFixed(3)}</td>
+                        <td style="text-align:right;" >${row.delivered_wt.toFixed(3)}</td>
+                        <td>
+                            <input type="number" value="${row.available_balance.toFixed(3)}" 
+                                   class="form-control outward-input" style="border:none; text-align:right;">
+                        </td>
+                    </tr>
+                `; 
+
+                tableBody.append(newRow);
+            }
+
+            // Add totals row
+            const totalRow = `
+                <tr style="font-weight:bold; background:#f9f9f9;">
+                    <td style="text-align:right;">TOTAL</td>
+                    <td style="text-align:right;" >${totalFinalQty.toFixed(3)}</td>
+                    <td style="text-align:right;" >${totalDelivered.toFixed(3)}</td>
+                    <td style="text-align:right;" id="totalOutward">${totalOutward.toFixed(3)}</td>
+                </tr>
+            `;
+            tableFoot.append(totalRow);
+
+            // Update outward total dynamically
+            $('#foldingProgramTable').on('input', '.outward-input', function () {
+                let outwardSum = 0;
+                $('.outward-input').each(function () {
+                    outwardSum += parseFloat($(this).val() || 0);
+                });
+                $('#totalOutward').text(outwardSum.toFixed(3));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading folding details:', error);
+        }
+    });
+}
+
+
+
+function storeTblValues() {
+    const TableData = [];
+
+    $('#foldingProgramTable tbody tr').each(function(index) {
+        const $row = $(this);
+
+        const color_id = $row.find('td:eq(9)').text().trim(); // Assuming color_id is in 9th <td>
+        const outward_wt = $row.find('td:eq(8) input').val()?.trim() || '0'; // Input inside 8th <td>
+
+        console.log(`Row ${index + 1} - Data:`, { color_id, outward_wt });
+
+        if (color_id) { 
+            TableData.push({
+                'color_id': color_id,
+                'outward_wt': parseFloat(outward_wt) || 0
+            });
+        } else {
+            console.warn(`Row ${index + 1}: Missing color_id, skipping...`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+    
+}
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+
+
+        $.ajax({
+            type: "POST",  
+            url: "/add-folding-outward/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+             success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {
+                    notifier.show( 
+                        'Well Done!', 
+                        data.message || 'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+					location.reload();
+
+
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        }); 
+    }
+});
+
+
+
+// ````````````````````````````````````````````
+    $('.single-select').select2(); 
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+
+    // Set default values for date and time fields
+    document.getElementById('folding_date').value = currentDateString;
+
+
+</script>

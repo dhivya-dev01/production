@@ -1,0 +1,2570 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+
+ 
+<style>
+/* Remove spinner arrows for number fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  border: none;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+table td input.form-control {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Table inputs */
+#purchaseTable td input.form-control {
+  padding: 0.50rem 0.5rem;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Table cells */
+#purchaseTable td {
+  padding: 1px !important;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Specific input types */
+#purchaseTable input[type="number"] {
+  margin: 0 auto;
+  display: block;
+  border: none;
+}
+
+/* Fixed column widths for neatness */
+#purchaseTable tbody td {
+  width: 90px;
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+/* Header */
+.table thead th {
+  border-bottom: 1px solid #e2e5e8;
+  font-size: 13px;
+  color: #111;
+  background: #eff3f6;
+  text-transform: uppercase;
+  padding: 4px;
+  text-align: center;
+}
+
+/* Footer */
+.footer {
+  padding: 1px !important;
+  vertical-align: middle;
+  text-align: center;
+}
+</style>
+
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    </style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Packing Received Update </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/packing-received"> Packing Received</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li> 
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+
+
+                                    <!-- `````````````````````` loose pcs modal ````````````````````````````` -->
+                                    
+                                    
+<!-- Add Loose Pieces Modal -->
+<div class="modal fade" id="loose_pcs_modal" tabindex="-1" role="dialog" aria-labelledby="loosePcsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <form id="loosePcsForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loosePcsModalLabel">Add Loose Pieces</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+        </div>
+        <div class="modal-body">
+          <h5 id="modal_size_name">Size</h5>
+          <div class="row">
+            <div class="col-md-4">
+              <label for="color_ids">Color</label>
+              <select class="form-control select" id="color_ids" name="color_id">
+                <option value="">Select</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="modal_available_qty">Available Quantity</label>
+              <input type="number" id="modal_available_qty" readonly class="form-control" />
+            </div>
+            <div class="col-md-4">
+              <label for="modal_add_qty">Add Quantity</label>
+              <input type="number" id="modal_add_qty" min="1" class="form-control" required />
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <input type="hidden" id="size_id" name="size_id" />
+            <button type="submit" id="add_loose_pcs" class="btn btn-primary">+ Add</button>
+          </div>
+          <div class="row mt-4">
+            <div class="col-md-12">
+              <table id="loose_pcs_table" class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Color</th>
+                    <th>Quantity</th>
+                    <th style="display:none;" class="size_id">Size ID</th>
+                    <th style="display:none;" class="color_id">Color ID</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+                                    <!-- `````````````````````````````````````````````````````````````````` -->
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="update_tm" >
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Inward No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.inward_no}}" readonly>
+                                                                    <input type="hidden" class="form-control" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                </div>  
+                                                                 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Inward Date</label>
+                                                                    <input class="form-control" type="date" name="inward_date" id="inward_date" required>
+                                                                </div>
+                                                                 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="dc_no" class="form-lebel">Party DC No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.dc_no}}" id="dc_no" name="dc_no">
+                                                                </div>  
+                                                                 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="dc_date" class="form-label">Party DC Date</label>
+                                                                    <input class="form-control" type="date" name="dc_date" id="dc_date" required>
+                                                                </div>
+
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadEntry()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>  --> 
+
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn btn-primary mt-3" onclick="update_master()">Update</button>
+                                                                </div>
+                                                                 
+
+                                                            </div>
+                                                        </form>
+                                                        <form id="add_new">
+                                                            <div class="row">
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="party_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadParty_Outward()" disabled >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div> 
+   
+                                                            
+                                                                
+                                                                <div class="col-md-2 mt-3"> 
+                                                                    <label for="delivery_id" class="form-label">Packing Delivery </label>
+                                                                    <select id="delivery_id" name="delivery_id" class="form-control form-select single-select" disabled>
+                                                                        <!-- <option value="">Select</option>
+                                                                       
+                                                                         {% for k in combined_outward %}
+                                                                            <option value="{{ k.id }}">
+                                                                                {{ k.outward_no }} ({{ k.type }}) - [{{ k.work_order_no }} - {{ k.total_quantity }}.wt]
+                                                                            </option>
+                                                                        {% endfor %} -->
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" readonly onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                    <!-- <button id="load_data" class="btn btn-primary mt-3" type="button" onclick="LoadData()">+ Load</button> -->
+
+                                                                </div>
+
+                                                                 
+                                                                
+                                                            </div>
+
+ 
+
+                                                            <div class="row">
+
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                            
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Box</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1" required>
+                                                                </div> -->
+
+                                                            
+
+
+                                                          
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+
+                                                                    <!-- <button class="btn btn-primary mt-3" type="button" onclick="addManualRow()">+ Add</button> -->
+
+                                                                </div>
+
+                                                            </div>
+                                                    
+                                                        </div> 
+
+
+                                                        
+                                                            
+                                                        <div class="col-md-8">
+                                                            <div class="table-responsive table-desi">
+
+                                                               <table id="purchaseTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Size</th>
+                                                                            <th>Delivered Qty</th>
+                                                                            <th>Already Received</th>
+                                                                            <th>Box </th>
+                                                                            <th>Pcs Per Box</th>
+                                                                            <th>Box Pcs</th>
+                                                                            <th>Loose Pcs </th>  
+                                                                            <th>Seconds Pcs </th>
+                                                                            <th>Shortage Pcs</th>
+                                                                            <th>Total Pcs </th>
+                                                                            <th >Balance Pcs</th>
+                                                                            <th style="display: none;">Size id</th>
+
+                                                                            <th style="display: none;">Original Qty</th>
+
+                                                                            <th>Actions</th> 
+
+                                                                        </tr>
+                                                                    </thead> 
+                                                                    <tbody></tbody>  
+
+                                                                    <tfoot>
+                                                                        <th>Total</th>
+                                                                        <th style="text-align:center;" id="total_delivered_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_already_rec_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_boxes"></th>
+                                                                        <th style="text-align:center;" id="pcs_per_box">0</th>
+                                                                        <th style="text-align:center;" id="total_box_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_loose_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_seconds_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_shortage_pcs"></th>
+                                                                        <th style="text-align:center;" id="total_pieces"></th>
+                                                                        <th style="text-align:center;" id="balance_pieces"></th> 
+                                                                    </tfoot>
+
+                                                                </table>
+
+
+                                                            
+                                                            
+                                                            </div> 
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                                    <table id="summary_table" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="3" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th>  <!-- Empty cell for left-side labels -->
+                                                                                <th>Pcs / Boxes</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Total(pcs)</td>
+                                                                                <td class="highlight"><span id="delivered_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total Boxes</td>
+                                                                                <td class="highlight"><span id="total_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Box Pcs</td>
+                                                                                <td class="highlight"><span id="box_piece">0</span></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Loose(pcs)</td>
+                                                                                <td class="highlight"><span id="loose_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <tr>
+                                                                                <td>Seconds(pcs)</td>
+                                                                                <td class="highlight"><span id="seconds_pcs">0</span></td>
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
+                                                                                <td>Shortage(pcs)</td>
+                                                                                <td class="highlight"><span id="shortage_pcs">0</span></td>
+                                                                            </tr> 
+
+                                                                            <tr>
+                                                                                <td>Balance(pcs)</td>
+                                                                                <td class="highlight"><span id="balance_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <!-- <tr>
+                                                                                <td> Total</td>
+                                                                                <td class="highlight"><span id="grand_total">0</span></td>
+                                                                            </tr> -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+                                                        <div class="row">
+                                                             <!-- <div class="col-md-6 mt-2">
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                                </div> -->
+
+                                                            <div class="col-md-1"></div>
+
+
+                                                            <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks">{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+
+                                                         
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id">
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                                <style>
+                                                                    .summary-container {
+                                                                        max-width: 500px;
+                                                                        margin: 20px auto;
+                                                                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                                                                        color: white;
+                                                                        padding: 15px;
+                                                                        border-radius: 10px;
+                                                                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                                                                    }
+                                                                
+                                                                    .summary-table {
+                                                                        width: 100%;
+                                                                        background: white;
+                                                                        color: black;
+                                                                        border-radius: 10px;
+                                                                        overflow: hidden;
+                                                                        padding: 10px;
+                                                                    }
+                                                                
+                                                                    .summary-table th {
+                                                                        /* background: white; */
+                                                                        color: black    ;
+                                                                        padding: 10px;
+                                                                        text-align: center;
+                                                                    }
+                                                                
+                                                                    .summary-table td {
+                                                                        padding: 8px;
+                                                                        font-weight: bold;
+                                                                    }
+                                                                
+                                                                    .highlight {
+                                                                        background: #428bca;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                        text-align: right;
+                                                                    }
+                                                                
+                                                                    .transparent-input {
+                                                                        width: 100%;
+                                                                        border: none;
+                                                                        outline: none;
+                                                                        background: transparent;
+                                                                        text-align: right;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                        color: black;
+                                                                    }
+                                                                
+                                                                    .transparent-input:focus {
+                                                                        border-bottom: 2px solid #428bca;
+                                                                    }
+                                                                </style>
+                                                               
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+$("#delivery_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "12345 - [WO-5678- 250.wt]"
+
+    const match = prgText.match(/\[(.*?)-/);  // Extract work_order_no
+    if (match) {
+        $("#work_order_no").val(match[1].trim());
+    } else {
+        $("#work_order_no").val('');
+    }
+    
+    const qtyMatch = prgText.match(/-\s*(\d+(\.\d+)?)\.wt\]/);  // Extract program quantity
+    if (qtyMatch) {
+        $("#prg_quantity").val(qtyMatch[1]);
+    } else {
+        $("#prg_quantity").val('');
+    }
+}); 
+
+
+
+if ("{{ parent_stock_instance.inward_date }}" && "{{ parent_stock_instance.inward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.inward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#inward_date').val(formattedDate).trigger("change");
+}
+
+if ("{{ parent_stock_instance.dc_date }}" && "{{ parent_stock_instance.dc_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.dc_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#dc_date').val(formattedDate).trigger("change");
+}
+
+
+if ("{{parent_stock_instance.outward_id}}" && "{{parent_stock_instance.outward_id}}" !== "") {
+    $('#delivery_id').val("{{parent_stock_instance.outward_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+    LoadParty_Outward();
+}
+
+
+
+
+
+
+function LoadParty_Outward() {
+    var party_id = $('#party_id').val(); 
+    console.log('Party-ID:', party_id); // Debugging output
+
+    if (!party_id) {
+        console.warn("No Party ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+ 
+    // ✅ Preserve po_quantity value
+    // let currentPoQuantity = $('#po_quantity').val();
+    // console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+    $('#delivery_id').empty().append('<option value="">Select</option>');
+ 
+    
+    $.ajax({
+        type: 'POST',   
+        url: '/get_party_outward_available_lists/',
+
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+
+        dataType: 'json',
+        success: function(data) {
+
+            $('#delivery_id').empty().append('<option value="">Select</option>');
+
+            if (data.outward && Array.isArray(data.outward)) {
+                data.outward.forEach(function(item) {
+                    // const label = `${item.outward_no} (${item.type}) - [${item.work_order_no} - ${item.total_quantity}.wt]`;
+                    const label = `${item.outward_no} (${item.type}) - [WO:  ${item.work_order_no}]`;
+                    $('#delivery_id').append(`<option value="${item.id}">${label}</option>`);
+                });
+
+            } else { 
+                $('#delivery_id').append('<option>No outwards found</option>');
+            }
+
+            if ("{{parent_stock_instance.outward_id}}" && "{{parent_stock_instance.outward_id}}" !== "") {
+                $('#delivery_id').val("{{parent_stock_instance.outward_id}}").trigger("change");
+            }
+
+        }, 
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+ 
+
+$('#delivery_id').on('change', function () {
+    const prg_id = $(this).val();
+    if (prg_id) {
+        sizeColorMap = {}; // 🧹 Clear previous tracking map
+        LoadProgramData();  // Load dropdown values
+        // loadProgramDetails(prg_id); // Load and auto-add rows
+    }
+}); 
+
+
+if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+    $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+}
+
+if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+    $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+}
+
+
+
+function update_master(){
+    
+    $('#update_tm').on('submit', function(e) { 
+        e.preventDefault();
+
+        var formData = new FormData(this); 
+    
+        const tm_id = $('#tm_id').val();  
+        // const isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';  // ✅ Correct value: 1 or 0
+        // console.log('checked-data:', isPackingChecked); // Log the correct value (1 or 0)
+
+        
+
+        formData.append('inward_date', $('#inward_date').val());
+        formData.append('dc_date', $('#dc_date').val());
+        formData.append('dc_no',$('#dc_no').val());
+        // formData.append('is_packing',isPackingChecked);  // ← This line fixed
+    
+        $.ajax({
+            url: '/packing-received-master-update/', // Adjust URL as needed
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) { 
+                    notifier.show( 
+                        'Well Done!',  
+                        'Updated successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+                    // Refresh DataTable
+                    refresh_data(); 
+                    
+
+                    // Update Summary
+                    // updateSummary(response);
+
+                    // Clear Form Fields
+                    $('#name').val('');
+                    $('#inward_date').val('');
+                     
+                } else {
+                    // alert(response.error_message || 'An error occurred. Please try again.');
+                    notifier.show(
+                        'Error!',  
+                        'Failed to update po:'+response.error_message, 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Request Failed:', error);  
+                // alert('Error in processing the request');
+                notifier.show(
+                    'Error!', 
+                    'Error in processing the request.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        });
+    });
+}
+
+
+
+// ````````````````````````````````````````````
+
+// 🔁 Declare globally at the top of your script
+let sizeColorMap = {};
+
+
+function LoadProgramData(url) {
+    console.log('packing-data-called');
+    var prg_id = $('#delivery_id').val(); 
+    var tm_id = $('#tm_id').val(); 
+    console.log('Product-ID:', prg_id); // Debugging output
+
+    if (!prg_id) {
+        console.warn("No Product ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    // ✅ Preserve po_quantity value
+    let currentPoQuantity = $('#po_quantity').val();
+    console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+
+    $.ajax({
+        type: 'POST',
+        url: url, // Use the URL passed as a parameter
+        data: { 
+            'prg_id': prg_id,
+            'tm_id': tm_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Do NOT clear po_quantity
+            // $('#quality_id').empty();
+            // $('#style_id').empty();
+            $('#size_id').empty(); 
+            $('#color_id').empty();
+
+            // Populate dropdowns only if data exists
+            if (data.quality) {
+                $('#quality_id').html('<option value="' + data.quality.id + '">' + data.quality.name + '</option>');
+            }
+
+            if (data.style) {
+                $('#style_id').html('<option value="' + data.style.id + '">' + data.style.name + '</option>');
+            }
+
+            // Populate dropdown with the saved `parent_stock_instance` values
+            if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+                $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+            } 
+
+            if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+                $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+            }
+
+            Loadfabric();
+
+            // Populate the sizes dropdown
+            if (data.sizes && Array.isArray(data.sizes)) {
+                data.sizes.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            // Ensure that focus goes to the box element (if needed)
+            $('#box').focus();
+
+            // ✅ Restore po_quantity value (if necessary)
+            $('#po_quantity').val(currentPoQuantity);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            // Reset all relevant dropdowns
+            $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            $('#fabric_id').empty().append('<option value="">Select</option>');
+
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+
+            
+            if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+                $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+            }
+
+
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+
+            
+
+            // Optionally auto-load fabrics after loading styles/sizes
+            // Loadfabric();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading style/size list:', error);
+        } 
+    });
+}
+
+
+
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+$(document).ready(function () {
+    // After selecting color, focus quantity
+    $('#size_id').on('change', function () {
+        $('#box').focus(); 
+    });
+
+      // Enter in quantity → focus wt
+    $('#size_id').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#box').focus();
+        }
+    });
+
+ 
+    // Enter in cutter → focus Add button
+    $('#box').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#add_button').focus(); 
+        }
+    });
+
+    // Enter in Add button → trigger row add
+    $('#add_button').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addManualRow(); // Call your wrapper
+        }
+    });
+    });
+
+
+
+
+$('#prg_id').on('change', function() {
+    var selectedOptions = $(this).find('option:selected');
+    console.log('selected-prgId:',selectedOptions); 
+    if (selectedOptions.length <= 1) return; // no problem with 0 or 1 selection
+
+    // Gather qualities and styles of selected options
+    let qualities = new Set();
+    let styles = new Set();
+
+    selectedOptions.each(function() {
+        qualities.add($(this).data('quality'));
+        styles.add($(this).data('style'));
+    });
+
+    // Check if all selected options share same quality and style
+    if (qualities.size > 1 || styles.size > 1) {
+        alert('You can only multi-select options with the same Quality and Style.');
+
+        // Keep only the last selected option and deselect others
+        let lastSelected = selectedOptions.last();
+        $(this).val(lastSelected.val());
+    }
+});
+
+
+function LoadData() {
+    const prg_id = $("#delivery_id").val();
+    console.log('prg-id:',prg_id);
+
+    if (!prg_id) {
+        notifier.show(
+            'Warning!',
+            'Please select a packing outward before loading.',
+            'warning',
+            "{% static 'assets/images/notification/medium_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // Call your original function
+    loadProgramDetail(prg_id);
+}
+
+
+
+
+function loadProgramDetail(prg_id) {
+    var tm_id = $('#tm_id').val();
+    // Get the selected option's text to detect type (P or SP)
+    let selectedText = $('#delivery_id option:selected').text().trim();
+    console.log('Selected Inward:', selectedText);
+
+    // Extract type from the text, e.g., (P) or (SP) 
+    let typeMatch = selectedText.match(/\((.*?)\)/);  // Matches text inside parentheses
+    let inwardType = typeMatch ? typeMatch[1] : null;
+
+    // Determine the URL based on type
+    let url = '';
+    if (inwardType === 'P') {
+        url = '/get-packing-delivery-lists/';
+    } else if (inwardType === 'SP') {
+        url = '/get-stiching-delivery-data/';
+    } else {
+        console.warn('Unknown type. Cannot determine URL.');
+        return; 
+    }
+
+    $.ajax({ 
+        type: 'POST',
+        url: url,
+        data: {
+            'prg_id': prg_id,
+            'tm_id':tm_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty(); // Clear existing rows 
+
+            if (data.length > 0) {
+      
+                data.forEach(function (item) {
+                    let per_box = parseInt(item.per_box) || 0;   // from backend
+
+                    let alreadyOut = parseFloat(item.already_out_qty) || 0;
+                    let alreadyReceived = parseFloat(item.already_received_qty) || 0;
+
+                    // ✅ Balance = Out - Received
+                    let qty = alreadyOut - alreadyReceived;
+
+                    // Break into boxes + loose pieces
+                    let box = (per_box > 0) ? Math.floor(qty / per_box) : 0;
+                    let loose_pcs = (per_box > 0) ? qty % per_box : qty;
+
+                    // addRow(
+                    //     item.size_name,
+                    //     item.color_name,
+                    //     item.size_id,
+                    //     item.color_id,
+                    //     per_box,   // per box capacity
+                    //     alreadyOut,   // other param
+                    //     alreadyReceived,
+                    //     box,
+                    //     loose_pcs,
+                    //     0, // seconds_pcs
+                    //     0, // shortage
+                    //     qty, // ✅ total balance qty
+                        
+                    // );
+
+                    addRow(
+                        item.size_name,
+                        item.color_name,
+                        item.size_id,
+                        item.color_id,
+                        box,
+                        per_box,   // per box capacity
+                        box_pcs,
+                        alreadyOut,   // other param
+                        alreadyReceived,
+                        box,
+                        loose_pcs,
+                        seconds_pcs, // seconds_pcs
+                        shortage_pcs, // shortage
+                        qty, // ✅ total balance qty
+                        
+                    );
+
+
+                });
+
+
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    });
+}
+
+
+$(document).ready(function () {
+    $('#delivery_id').on('change', function () {
+        const prg_id = $(this).val(); // Get the selected prg_id
+        const inwardText = $('#delivery_id option:selected').text().trim(); // Get the selected text
+        
+        if (prg_id) {
+            sizeColorMap = {};  // Clear the size-color map
+
+            // Extract inward type (P or SP) from the selected option
+            let inwardType = null;
+            const match = inwardText.match(/\((.*?)\)/);
+            if (match) {
+                inwardType = match[1]; // e.g., "P" or "SP"
+            }
+
+            console.log("Inward Type:", inwardType);
+
+            // Determine which URL to use based on the inward type (P or SP)
+            let url = '';
+            if (inwardType === 'P') {
+                // url = '/get_packing_delivery_list/'; // URL for P
+                url="/get_packing_delivery_update_list/";
+            } else if (inwardType === 'SP') {
+                url = '/get_stiching_delivery_update_list/'; // URL for SP
+                // url = '/get_stiching_packing_delivery_list/'; // URL for SP
+            } else {
+                console.warn("Invalid inward type:", inwardType);
+                return; // If it's not P or SP, don't make the call
+            }
+
+            // Call the function to load program data with the correct URL
+            LoadProgramData(url);
+
+            // Call the function to load program details with the selected prg_id
+            loadProgramDetails(prg_id, url); // Pass the correct URL for AJAX call
+        }
+    });
+
+    // ✅ Trigger only after handler is bound
+    const outwardId = "{{ parent_stock_instance.outward_id }}";
+    if (outwardId && outwardId !== "") {
+        $('#delivery_id').val(outwardId).trigger("change");
+    }
+});
+
+// Function to load program details, using the correct URL for the AJAX request
+function loadProgramDetails(prg_id, url) {
+    var tm_id = $('#tm_id').val(); // Get tm_id value from the form or DOM
+
+    $.ajax({
+        type: 'POST',
+        url: url, // Use the passed URL based on inward type (P or SP)
+        data: {
+            'prg_id': prg_id,
+            'tm_id': tm_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // CSRF token for security
+        },
+        success: function (data) {
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty(); // Clear existing rows
+
+            if (data.length > 0) {
+                data.forEach(function (item) {
+                    // Add row to table with the data received
+                    addRow(
+                        item.size_name,
+                        item.color_name,
+                        item.size_id,
+                        item.color_id,
+                        item.box,
+                        item.per_box,   // per box capacity
+                        item.box_pcs,
+                        item.delivered_pcs,   // other param
+                        item.already_rec,
+                        item.available_pcs,
+                        item.loose_pcs, 
+                        item.seconds_pcs, // seconds_pcs
+                        item.shortage_pcs, // shortage
+                        0
+                    );
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    });
+}
+
+
+
+
+function loadProgramDetails_bk_4_9(prg_id) {
+    var tm_id = $('#tm_id').val(); 
+ 
+    $.ajax({
+        type: 'POST',
+        // url: '/get-packing-delivery-list/',   
+        url: '/get_packing_delivery_update_list/',
+        data: {
+            'prg_id': prg_id,
+            'tm_id':tm_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty(); // Clear existing rows
+
+            if (data.length > 0) {
+                data.forEach(function (item) {
+               
+                    addRow(
+                        item.size_name,
+                        item.color_name,
+                        item.size_id,
+                        item.color_id,
+                        item.box,
+                        item.per_box,   // per box capacity
+                        item.box_pcs,
+                        item.delivered_pcs,   // other param
+                        item.already_rec,
+                        item.available_pcs,
+                        item.loose_pcs, 
+                        item.seconds_pcs, // seconds_pcs
+                        item.shortage_pcs, // shortage
+                        0
+                        
+                    );
+
+
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    }); 
+}
+
+
+
+
+
+function addRow(size, color, sizeId, colorId, box, per_box, box_pcs, delivered_pcs, already_rec, available_pcs, loose_pcs, seconds_pcs, shortage_pcs) {
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    if (!tableBody) return console.error("Table body not found!");
+
+    const key = `${sizeId}`;
+    let existingRow = tableBody.querySelector(`tr[data-key="${key}"]`);
+
+    let total_pcs = (box * per_box) + loose_pcs + seconds_pcs + shortage_pcs;
+
+    if (existingRow) {
+        let currentBox = parseInt(existingRow.querySelector("input.box-input").value) || 0;
+        let currentLoose = parseInt(existingRow.querySelector("input.loose-pcs-input").value) || 0;
+        let currentSeconds = parseInt(existingRow.querySelector("input.seconds-input").value) || 0;
+        let currentShortage = parseInt(existingRow.querySelector("input.shortage-input").value) || 0;
+
+        const newBox = currentBox + box;
+        const newLoose = currentLoose + loose_pcs;
+        const newSeconds = currentSeconds + seconds_pcs;
+        const newShortage = currentShortage + shortage_pcs;
+
+        const newTotalPcs = (newBox * per_box) + newLoose + newSeconds + newShortage;
+        const balance = (delivered_pcs - already_rec) - newTotalPcs;
+
+        existingRow.querySelector("input.box-input").value = newBox;
+        existingRow.querySelector("input.loose-pcs-input").value = newLoose;
+        existingRow.querySelector("input.seconds-input").value = newSeconds;
+        existingRow.querySelector("input.shortage-input").value = newShortage;
+        existingRow.querySelector("input.total-pcs-input").value = newTotalPcs;
+        existingRow.querySelector("input.box-pcs-input").value = newBox * per_box;
+        existingRow.querySelector("input.balance-pcs-input").value = balance >= 0 ? balance : 0;
+
+        calculateTotalValue();
+        calculateSummaryTotalValue();
+        return;
+    }
+
+    const calculatedBoxPcs = box * per_box;
+    const balance_qty = (delivered_pcs - already_rec) - total_pcs;
+
+    const newRow = document.createElement("tr");
+    newRow.dataset.key = key;
+
+    newRow.innerHTML = `
+        <td>${size}</td>
+        <td><input type="number" class="form-control delivered-qty" readonly style="border:none;background:#d4f1f1;" value="${delivered_pcs||toFixed(0)}"></td>
+        <td><input type="number" class="form-control already-rec" readonly style="border:none;background:#eff3f6;" value="${already_rec}"></td>
+        <td><input type="number" class="form-control box-input" style="border:none;width:50px;" value="${box}"></td>
+        <td><input type="number" class="form-control per-box-input" readonly style="border:none;background:#eff3f6;" value="${per_box}"></td>
+        <td><input type="number" class="form-control box-pcs-input" readonly style="border:none;background:#FAF6D7;" value="${calculatedBoxPcs}"></td>
+        
+        <td class="loose_pcs">
+            <a href="#loose_pcs_modal" class="form-control open-modal"  
+                data-toggle="modal" 
+                data-size-id="${sizeId}" 
+                data-color-id="${colorId}"  
+                data-size-name="${size}" 
+                data-color-name="${color}" 
+                data-available="${loose_pcs}"  
+                style="border:none; text-decoration:underline; cursor:pointer;">
+                ${loose_pcs}
+            </a>
+            <input type="number" class="form-control loose-pcs-input" value="${loose_pcs}" style="display:none;" />
+        </td>
+
+        <td><input type="number" class="form-control seconds-input" style="border:none;" value="${seconds_pcs}"></td>
+        <td><input type="number" class="form-control shortage-input" style="border:none;" value="${shortage_pcs}"></td>
+        <td><input type="number" class="form-control total-pcs-input" readonly style="border:none;background:#d4f1f1;" value="${total_pcs}"></td>
+        <td><input type="number" class="form-control balance-pcs-input" readonly style="border:none;background:#eff3f6;" value="${balance_qty >= 0 ? balance_qty : 0}"></td>
+
+        <td class="size_id" style="display:none">${sizeId}</td>
+        <td class="color_id" style="display:none">${colorId}</td>
+        <td class="avl_qty" style="display:none">${available_pcs}</td>
+        <td><button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button></td>
+    `;
+
+    tableBody.appendChild(newRow);
+
+    // Remove row on delete
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+        newRow.remove();
+        calculateTotalValue();
+        calculateSummaryTotalValue();
+    });
+
+    // Recalculate on any input change
+    newRow.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => {
+            const boxVal = parseInt(newRow.querySelector("input.box-input").value) || 0;
+            const perBoxVal = parseInt(newRow.querySelector("input.per-box-input").value) || 0;
+            const looseVal = parseInt(newRow.querySelector("input.loose-pcs-input").value) || 0;
+            const secondsVal = parseInt(newRow.querySelector("input.seconds-input").value) || 0;
+            const shortageVal = parseInt(newRow.querySelector("input.shortage-input").value) || 0;
+
+            const updatedBoxPcs = boxVal * perBoxVal;
+            const updatedTotalPcs = updatedBoxPcs + looseVal + secondsVal + shortageVal;
+
+            const availableQty = parseInt(newRow.querySelector(".avl_qty").textContent.trim()) || 0;
+            if (updatedTotalPcs > availableQty) {
+                alert(`Cannot exceed available quantity (${availableQty}). Current total is ${updatedTotalPcs}.`);
+                input.value = 0;
+                return;
+            }
+
+            const alreadyOut = parseInt(newRow.querySelector("input.delivered-qty").value) || 0;
+            const alreadyReceived = parseInt(newRow.querySelector("input.already-rec").value) || 0;
+            const updatedBalance = (alreadyOut - alreadyReceived) - updatedTotalPcs;
+
+            newRow.querySelector("input.box-pcs-input").value = updatedBoxPcs;
+            newRow.querySelector("input.total-pcs-input").value = updatedTotalPcs;
+            newRow.querySelector("input.balance-pcs-input").value = updatedBalance >= 0 ? updatedBalance : 0;
+
+            calculateTotalValue();
+            calculateSummaryTotalValue();
+        });
+    });
+
+    calculateTotalValue();
+    calculateSummaryTotalValue();
+}
+
+// function addRow(size, color, sizeId, colorId, box, per_box, box_pcs, delivered_pcs, already_rec, available_pcs, loose_pcs, seconds_pcs, shortage_pcs) {
+//     const tableBody = document.querySelector("#purchaseTable tbody");
+//     if (!tableBody) {
+//         console.error("Table body not found!");
+//         return;
+//     }
+
+//     const key = `${sizeId}`;
+//     let existingRow = document.querySelector(`#purchaseTable tbody tr[data-key="${key}"]`);
+
+//     let total_pcs = (box * per_box) + loose_pcs + seconds_pcs + shortage_pcs;
+
+//     if (existingRow) {
+//         let currentBox = parseInt(existingRow.querySelector(".box input").value) || 0;
+//         let currentLoose = parseInt(existingRow.querySelector(".loose-pcs-input").value) || 0;
+//         let currentSeconds = parseInt(existingRow.querySelector(".seconds_pcs input").value) || 0;
+//         let currentShortage = parseInt(existingRow.querySelector(".shortages input").value) || 0;
+
+//         const newBox = currentBox + box;
+//         const newLoose = currentLoose + loose_pcs;
+//         const newSeconds = currentSeconds + seconds_pcs;
+//         const newShortage = currentShortage + shortage_pcs;
+
+//         const newTotalPcs = (newBox * per_box) + newLoose + newSeconds + newShortage;
+//         const balance = (delivered_pcs - already_rec) - newTotalPcs;
+
+//         existingRow.querySelector(".box input").value = newBox;
+//         existingRow.querySelector(".loose-pcs-input").value = newLoose;
+//         existingRow.querySelector(".seconds_pcs input").value = newSeconds;
+//         existingRow.querySelector(".shortage input").value = newShortage;
+//         existingRow.querySelector(".total_pcs input").value = newTotalPcs;
+//         existingRow.querySelector(".box_pcs input").value = newBox * per_box;
+//         existingRow.querySelector(".balance_pieces input").value = balance >= 0 ? balance : 0;
+
+//         calculateTotalValue();
+//         calculateSummaryTotalValue();
+//         return;
+//     }
+
+//     const calculatedBoxPcs = box * per_box;
+//     const balance_qty = (delivered_pcs - already_rec) - total_pcs;
+
+//     const newRow = document.createElement("tr");
+//     newRow.dataset.key = key;
+
+//     newRow.innerHTML = `
+//         <td>${size}</td>
+//         <td class="alr_out"><input type="number" data-size_id="${sizeId}" class="form-control delivered_qty" readonly style="border:none;background:#d4f1f1" value="${delivered_pcs}"></td>
+//         <td class="alr_rec"><input type="number" data-size_id="${sizeId}" class="form-control alr_rec" readonly style="border:none;background:#eff3f6" value="${already_rec}"></td>
+//         <td><input type="number" data-size_id="${sizeId}" class="form-control box" style="border:none;width:50px;" value="${box}"></td>
+//         <td class="pcs_per_box"><input type="number" data-size_id="${sizeId}" class="form-control pcs_per_box" readonly style="border:none;background:#eff3f6;" value="${per_box}"></td>
+//         <td class="box_piece"><input type="number" data-size_id="${sizeId}" class="form-control box_pcs" readonly style="border:none;background:#FAF6D7;" value="${calculatedBoxPcs}"></td>
+        
+//         <td class="loose_pcs">
+//             <a href="#loose_pcs_modal" 
+//                 class="form-control open-modal"  
+//                 data-toggle="modal" 
+//                 data-size-id="${sizeId}" 
+//                 data-color-id="${colorId}"  
+//                 data-size-name="${size}" 
+//                 data-color-name="${color}" 
+//                 data-available="${loose_pcs}"  
+//                 style="border:none; text-decoration:underline; cursor:pointer;">
+//                 ${loose_pcs}
+//             </a>
+//             <input type="number" class="form-control loose-pcs-input" value="${loose_pcs}" style="display:none;" />
+//         </td>
+
+//         <td class="seconds_pcs"><input type="number" data-size_id="${sizeId}" class="form-control seconds_pcs" style="border:none;" value="${seconds_pcs}"></td>
+//         <td class="shortages"><input type="number" data-size_id="${sizeId}" class="form-control shortage" style="border:none;" value="${shortage_pcs}"></td>
+//         <td class="total_piece"><input type="number" data-size_id="${sizeId}" class="form-control total_pcs" readonly style="border:none;background:#d4f1f1;" value="${total_pcs}"></td>
+//         <td class="balance"><input type="number" data-size_id="${sizeId}" class="form-control balance_pieces" readonly style="border:none;background:#eff3f6;" value="${balance_qty >= 0 ? balance_qty : 0}"></td>
+//         <td class="size_id" style="display:none">${sizeId}</td>
+//         <td class="color_id" style="display:none">${colorId}</td>
+//         <td class="avl_qty" style="display:none">${available_pcs}</td>
+//         <td><button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button></td>
+//     `;
+
+//     tableBody.appendChild(newRow);
+
+//     newRow.querySelector(".remove-row").addEventListener("click", function () {
+//         newRow.remove();
+//         calculateTotalValue();
+//         calculateSummaryTotalValue();
+//     });
+
+//     newRow.querySelectorAll("input").forEach(input => {
+//         input.addEventListener("input", () => {
+//             const boxVal = parseInt(newRow.querySelector(".box input").value) || 0;
+//             const perBoxVal = parseInt(newRow.querySelector(".pcs_per_box input").value) || 0;
+//             const looseVal = parseInt(newRow.querySelector(".loose-pcs-input").value) || 0;
+//             const secondsVal = parseInt(newRow.querySelector(".seconds_pcs input").value) || 0;
+//             const shortageVal = parseInt(newRow.querySelector(".shortage").value) || 0;
+
+//             const updatedBoxPcs = boxVal * perBoxVal;
+//             const updatedTotalPcs = updatedBoxPcs + looseVal + secondsVal + shortageVal;
+
+//             const availableQty = parseInt(newRow.querySelector(".avl_qty").textContent.trim()) || 0;
+//             if (updatedTotalPcs > availableQty) {
+//                 alert(`Cannot exceed available quantity (${availableQty}). Current total is ${updatedTotalPcs}.`);
+//                 input.value = 0;
+//                 return;
+//             }
+
+//             const alreadyOut = parseInt(newRow.querySelector(".alr_out input").value) || 0;
+//             const alreadyReceived = parseInt(newRow.querySelector(".alr_rec input").value) || 0;
+//             const updatedBalance = (alreadyOut - alreadyReceived) - updatedTotalPcs;
+
+//             newRow.querySelector(".box_pcs input").value = updatedBoxPcs;
+//             newRow.querySelector(".total_pcs input").value = updatedTotalPcs;
+//             newRow.querySelector(".balance_pieces input").value = updatedBalance >= 0 ? updatedBalance : 0;
+
+//             calculateTotalValue();
+//             calculateSummaryTotalValue();
+//         });
+//     });
+
+//     calculateTotalValue();
+//     calculateSummaryTotalValue();
+// }
+
+
+
+
+// function calculateSummaryTotalValue() {
+//     let totalBox = 0;
+//     let loose_pcs = 0;
+//     let seconds_pcs = 0;
+//     let shortage_pcs = 0;
+//     let totalDeliveredPcs = 0;
+//     let totalBalancePcs = 0; // 🔧 New accumulator
+//     const perBox = 10;
+
+//     $('#purchaseTable tbody > tr').each(function () { 
+//         const $row = $(this);
+//         const box = parseInt($row.find('.boxs ').val()) || 0;
+//         const loose = parseInt($row.find('.loose_pcs input').val()) || 0;
+//         const seconds = parseInt($row.find('.seconds_pcs input').val()) || 0;
+//         const shortage = parseInt($row.find('.shortages input').val()) || 0;
+//         const balance_val = parseInt($row.find('.balance_pieces').text()) || 0;
+
+//         const total = (box * perBox) + loose + seconds + shortage;
+//         totalDeliveredPcs += total;
+//         totalBox += box;
+//         loose_pcs += loose;
+//         seconds_pcs += seconds;
+//         shortage_pcs += shortage;
+//         totalBalancePcs += balance_val; // ✅ Sum instead of overwriting
+
+//         // Optional: update row values if needed
+//         $row.find('.total_pcs input').val(total); // Only if it's an <input>
+//     });
+
+//     // Update summary totals
+//     $('#delivered_pcs').text(totalDeliveredPcs);
+//     $('#loose_pcs').text(loose_pcs);
+//     $('#seconds_pcs').text(seconds_pcs);
+//     $('#shortage_pcs').text(shortage_pcs);
+//     $('#total_box').text(totalBox);
+//     $('#per_box').text(perBox);
+
+//     // ✅ Show total balance in summary
+//     $('#balance_pieces').text(totalBalancePcs);
+//     $('#balance_pcs').text(totalBalancePcs);
+// }
+
+
+
+
+// function calculateTotalValue() {
+//   let totalDelivered = 0;
+//   let totalAlreadyRec = 0;
+//   let totalBoxes = 0;
+//   let totalBoxPcs = 0;
+//   let totalLoosePcs = 0;
+//   let totalSecondsPcs = 0;
+//   let totalShortagePcs = 0;
+//   let totalPcs = 0;
+//   let balancePcs = 0;
+
+//   document.querySelectorAll("#purchaseTable tbody tr").forEach(row => {
+//     totalDelivered     += parseInt(row.querySelector(".delivered_qty")?.value) || 0;
+//     totalAlreadyRec    += parseInt(row.querySelector(".alr_rec input")?.value) || 0;
+//     totalBoxes         += parseInt(row.querySelector(".box input")?.value) || 0;
+//     totalBoxPcs        += parseInt(row.querySelector(".box_pcs input")?.value) || 0;
+//     totalLoosePcs      += parseInt(row.querySelector(".loose_pcs input")?.value) || 0;
+//     totalSecondsPcs    += parseInt(row.querySelector(".seconds_pcs input")?.value) || 0;
+//     totalShortagePcs   += parseInt(row.querySelector(".shortages input")?.value) || 0;
+//     totalPcs           += parseInt(row.querySelector(".total_pcs input")?.value) || 0;
+//     balancePcs         += parseInt(row.querySelector(".balance input")?.value) || 0;
+//   });
+
+//   // Update the footer cells
+//   document.getElementById("total_delivered_pcs").textContent = totalDelivered; 
+//   document.getElementById("total_already_rec_pcs").textContent = totalAlreadyRec;
+//   document.getElementById("total_boxes").textContent = totalBoxes;
+//   document.getElementById("total_box_pcs").textContent = totalBoxPcs;
+//   document.getElementById("total_loose_pcs").textContent = totalLoosePcs;
+//   document.getElementById("total_seconds_pcs").textContent = totalSecondsPcs;
+//   document.getElementById("total_shortage_pcs").textContent = totalShortagePcs;
+//   document.getElementById("total_pieces").textContent = totalPcs;
+//   document.getElementById("balance_pieces").textContent = balancePcs;
+// }
+
+
+
+function calculateSummaryTotalValue() {
+    let totalBox = 0;
+    let loose_pcs = 0;
+    let seconds_pcs = 0;
+    let shortage_pcs = 0;
+    let totalDeliveredPcs = 0;
+    let totalBalancePcs = 0;
+
+    // Assuming perBox is dynamic, better to read from one of the rows or pass it as a param
+    const firstRowPerBox = parseInt($('#purchaseTable tbody tr:first .per-box-input').val()) || 10;
+    const perBox = firstRowPerBox;
+
+    $('#purchaseTable tbody > tr').each(function () {
+        const $row = $(this);
+
+        const box = parseInt($row.find('.box-input').val()) || 0;
+        const loose = parseInt($row.find('.loose-pcs-input').val()) || 0;
+        const seconds = parseInt($row.find('.seconds-input').val()) || 0;
+        const shortage = parseInt($row.find('.shortage-input').val()) || 0;
+        const balance_val = parseInt($row.find('.balance-pcs-input').val()) || 0;
+
+        const total = (box * perBox) + loose + seconds + shortage;
+
+        totalDeliveredPcs += total;
+        totalBox += box;
+        loose_pcs += loose;
+        seconds_pcs += seconds;
+        shortage_pcs += shortage;
+        totalBalancePcs += balance_val;
+
+        $row.find('.total-pcs-input').val(total);
+        $row.find('.box-pcs-input').val(box * perBox); // Also keep box_pcs updated here
+    });
+
+    $('#delivered_pcs').text(totalDeliveredPcs);
+    $('#loose_pcs').text(loose_pcs);
+    $('#seconds_pcs').text(seconds_pcs);
+    $('#shortage_pcs').text(shortage_pcs);
+    $('#total_box').text(totalBox);
+    $('#per_box').text(perBox);
+    $('#balance_pieces').text(totalBalancePcs);
+    $('#balance_pcs').text(totalBalancePcs);
+}
+function calculateTotalValue() {
+    let totalDelivered = 0;
+    let totalAlreadyRec = 0;
+    let totalBoxes = 0;
+    let totalBoxPcs = 0;
+    let totalLoosePcs = 0;
+    let totalSecondsPcs = 0;
+    let totalShortagePcs = 0;
+    let totalPcs = 0;
+    let balancePcs = 0;
+
+    document.querySelectorAll("#purchaseTable tbody tr").forEach(row => {
+        totalDelivered += parseInt(row.querySelector(".delivered-qty")?.value) || 0;
+        totalAlreadyRec += parseInt(row.querySelector(".already-rec")?.value) || 0;
+        totalBoxes += parseInt(row.querySelector(".box-input")?.value) || 0;
+        // Instead of reading box_pcs input, calculate dynamically:
+        const boxVal = parseInt(row.querySelector(".box-input")?.value) || 0;
+        const perBoxVal = parseInt(row.querySelector(".per-box-input")?.value) || 10;
+        totalBoxPcs += boxVal * perBoxVal;
+
+        totalLoosePcs += parseInt(row.querySelector(".loose-pcs-input")?.value) || 0;
+        totalSecondsPcs += parseInt(row.querySelector(".seconds-input")?.value) || 0;
+        totalShortagePcs += parseInt(row.querySelector(".shortage-input")?.value) || 0;
+        totalPcs += parseInt(row.querySelector(".total-pcs-input")?.value) || 0;
+        balancePcs += parseInt(row.querySelector(".balance-pcs-input")?.value) || 0;
+    });
+
+    document.getElementById("total_delivered_pcs").textContent = totalDelivered;
+    document.getElementById("total_already_rec_pcs").textContent = totalAlreadyRec;
+    document.getElementById("total_boxes").textContent = totalBoxes;
+    document.getElementById("total_box_pcs").textContent = totalBoxPcs;
+    document.getElementById("total_loose_pcs").textContent = totalLoosePcs;
+    document.getElementById("total_seconds_pcs").textContent = totalSecondsPcs;
+    document.getElementById("total_shortage_pcs").textContent = totalShortagePcs;
+    document.getElementById("total_pieces").textContent = totalPcs;
+    document.getElementById("balance_pieces").textContent = balancePcs;
+}
+
+
+
+// function calculateSummaryTotalValue() {
+//     let totalBox = 0;
+//     let loose_pcs = 0;
+//     let seconds_pcs = 0;
+//     let shortage_pcs = 0;
+//     let totalDeliveredPcs = 0;
+//     let totalBalancePcs = 0;
+//     const perBox = 10;
+
+//     $('#purchaseTable tbody > tr').each(function () {
+//         const $row = $(this);
+//         const box = parseInt($row.find('.box input').val()) || 0;
+//         const loose = parseInt($row.find('.loose-pcs-input').val()) || 0;
+//         const seconds = parseInt($row.find('.seconds_pcs input').val()) || 0;
+//         const shortage = parseInt($row.find('.shortage').val()) || 0;
+//         const balance_val = parseInt($row.find('.balance_pieces input').val()) || 0;
+
+//         const total = (box * perBox) + loose + seconds + shortage;
+//         totalDeliveredPcs += total;
+//         totalBox += box;
+//         loose_pcs += loose;
+//         seconds_pcs += seconds;
+//         shortage_pcs += shortage;
+//         totalBalancePcs += balance_val;
+
+//         $row.find('.total_pcs input').val(total);
+//     });
+
+//     $('#delivered_pcs').text(totalDeliveredPcs);
+//     $('#loose_pcs').text(loose_pcs);
+//     $('#seconds_pcs').text(seconds_pcs);
+//     $('#shortage_pcs').text(shortage_pcs);
+//     $('#total_box').text(totalBox);
+//     $('#per_box').text(perBox);
+//     $('#balance_pieces').text(totalBalancePcs);
+//     $('#balance_pcs').text(totalBalancePcs);
+// }
+
+
+
+// function calculateTotalValue() {
+//     let totalDelivered = 0;
+//     let totalAlreadyRec = 0;
+//     let totalBoxes = 0;
+//     let totalBoxPcs = 0;
+//     let totalLoosePcs = 0;
+//     let totalSecondsPcs = 0;
+//     let totalShortagePcs = 0;
+//     let totalPcs = 0;
+//     let balancePcs = 0;
+
+//     document.querySelectorAll("#purchaseTable tbody tr").forEach(row => {
+//         totalDelivered += parseInt(row.querySelector(".delivered_qty")?.value) || 0;
+//         totalAlreadyRec += parseInt(row.querySelector(".alr_rec input")?.value) || 0;
+//         totalBoxes += parseInt(row.querySelector(".box input")?.value) || 0;
+//         totalBoxPcs += parseInt(row.querySelector(".box_pcs input")?.value) || 0;
+//         totalLoosePcs += parseInt(row.querySelector(".loose-pcs-input")?.value) || 0;
+//         totalSecondsPcs += parseInt(row.querySelector(".seconds_pcs input")?.value) || 0;
+//         totalShortagePcs += parseInt(row.querySelector(".shortage")?.value) || 0;
+//         totalPcs += parseInt(row.querySelector(".total_pcs input")?.value) || 0;
+//         balancePcs += parseInt(row.querySelector(".balance_pieces input")?.value) || 0;
+//     });
+
+//     document.getElementById("total_delivered_pcs").textContent = totalDelivered;
+//     document.getElementById("total_already_rec_pcs").textContent = totalAlreadyRec;
+//     document.getElementById("total_boxes").textContent = totalBoxes;
+//     document.getElementById("total_box_pcs").textContent = totalBoxPcs;
+//     document.getElementById("total_loose_pcs").textContent = totalLoosePcs;
+//     document.getElementById("total_seconds_pcs").textContent = totalSecondsPcs;
+//     document.getElementById("total_shortage_pcs").textContent = totalShortagePcs;
+//     document.getElementById("total_pieces").textContent = totalPcs;
+//     document.getElementById("balance_pieces").textContent = balancePcs; 
+// }
+
+
+const loosePcsGroupedData = {};  // key: sizeId_colorId, value: { size_id, color_id, quantity }
+
+
+$(document).ready(function () {
+
+    $('#add_loose_pcs').on('click', addSize); 
+
+
+
+function addSize(event) {
+    event.preventDefault();
+
+    const sizeId = $('#size_id').val();
+    const colorId = $('#color_ids').val();  
+    const quantity = parseInt($('#modal_add_qty').val());
+    const available_qty = parseInt($('#modal_available_qty').val()) || 0;
+    const colorName = $('#color_ids option:selected').text();
+
+    // 🔒 Validation
+    if (!sizeId || !colorId || isNaN(quantity) || quantity <= 0) {
+        notifier.show('Error!', 'Please select a valid size, color and quantity.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    if (quantity > available_qty) {
+        notifier.show('Error!', 'Given Quantity is greater than available quantity!', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    const key = `${sizeId}_${colorId}`;
+    let rowUpdated = false;
+
+    // 🔁 Update quantity in modal table if row already exists
+    $('#loose_pcs_table tbody tr').each(function () {
+        const existingColorId = $(this).find('td:eq(3)').text().trim();
+        const existingSizeId = $(this).find('td:eq(2)').text().trim();
+
+        if (existingColorId === colorId && existingSizeId === sizeId) {
+            $(this).find('td:eq(1)').text(quantity);
+            rowUpdated = true;
+            return false;
+        }
+    });
+
+    //  If not found, add a new row
+    if (!rowUpdated) {
+        const row = $('<tr>');
+        row.append('<td>' + colorName + '</td>');               // Color Name
+        row.append('<td>' + quantity||toFixed(0) + '</td>');                // Quantity
+        row.append('<td style="display: none;">' + sizeId + '</td>');   // Size ID
+        row.append('<td style="display: none;">' + colorId + '</td>');  // Color ID
+
+        const deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+        deleteButton.on('click', function () {
+            row.remove();
+            delete loosePcsGroupedData[key]; // 🗑 Remove from memory
+            updateMainTableLoosePcs(sizeId);
+        });
+
+        const deleteCell = $('<td>').append(deleteButton);
+        row.append(deleteCell);
+        $('#loose_pcs_table tbody').prepend(row);
+    }
+
+    // ✅ Always update grouped data in memory
+    loosePcsGroupedData[key] = {
+        tm_id: '',  // or dynamic if needed
+        size_id: sizeId,
+        color_id: colorId,
+        quantity: quantity
+    };
+
+    // 🔃 Sync with main table
+    updateMainTableLoosePcs(sizeId);
+
+    // Reset modal inputs
+    $('#modal_add_qty').val(''); 
+    $('#color_ids').val('').trigger("change");
+
+    console.log("📦 loosePcsGroupedData:", loosePcsGroupedData);
+}
+
+
+
+    function addDeleteButton(row) {
+        var deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+        deleteButton.on('click', function () {
+            row.remove();
+        });
+
+        var deleteCell = $('<td>');
+        deleteCell.append(deleteButton);
+        row.append(deleteCell); 
+    }
+});
+
+
+
+
+function updateMainTableLoosePcs(sizeId) {
+    let totalLoosePcs = 0;
+
+    // Step 1: Sum all loose pcs from modal table
+    $('#loose_pcs_table tbody tr').each(function () {
+        const rowSizeId = $(this).find('td:eq(2)').text().trim();
+        if (rowSizeId === sizeId) {
+            const qty = parseInt($(this).find('td:eq(1)').text()) || 0;
+            totalLoosePcs += qty;
+        }
+    });
+
+    // Step 2: Update corresponding row in #purchaseTable
+    $('#purchaseTable tbody tr').each(function () {
+        const rowSizeId = $(this).find('.size_id').text().trim();
+
+        if (rowSizeId === sizeId) {
+            const $row = $(this);
+            
+            // Update the hidden loose pcs input
+            $row.find('.loose-pcs-input').val(totalLoosePcs).trigger('input');
+
+            // Update <a> text
+            $row.find('.loose_pcs a').text(totalLoosePcs);
+
+            // Get available quantity from hidden .avl_qty cell
+            const availableQty = parseInt($row.find('.avl_qty').text().trim()) || 0;
+
+            // Calculate new balance
+            const newBalance = availableQty - totalLoosePcs;
+            $row.find('.balance_pieces').text(newBalance >= 0 ? newBalance : 0);
+
+            // Recalculate total_pcs and box pcs too if needed
+            const box = parseInt($row.find('.box input').val()) || 0;
+            const perBox = parseInt($row.find('.pcs_per_box input').val()) || 0;
+            const boxPcs = box * perBox;
+
+            const seconds = parseInt($row.find('.seconds_pcs input').val()) || 0;
+            const shortage = parseInt($row.find('.shortages input').val()) || 0;
+
+            const totalPcs = boxPcs + totalLoosePcs + seconds + shortage;
+            $row.find('.total_pcs').text(totalPcs);
+            $row.find('.box_pcs').text(boxPcs);
+        }
+    });
+
+    calculateSummaryTotalValue();
+    calculateTotalValue(); // Optional: if needed
+}
+
+
+
+
+$(document).ready(function () {
+    let currentRow = null;
+
+
+
+    // $('#purchaseTable').on('click', '.loose_pcs .open-modal', function (e) {
+    //     e.preventDefault();
+    //     currentRow = $(this).closest('tr');
+
+    //     const anchor = $(this);
+    //     const sizeIds = anchor.data('size-id');
+    //     console.log('size-ids:',sizeIds);
+    //     const colorId = anchor.data('color-id'); 
+    //     console.log('color:',colorId);
+    //     const sizeName = anchor.data('size-name');
+    //     const colorName = anchor.data('color-name');
+    //     const available = anchor.data('available');
+    //     console.log('avl-qty:',available);
+
+    //     // Clear modal inputs
+    //     $('#modal_size_name').text('');
+    //     $('#modal_available_qty').val('');
+    //     $('#size_id').val('');  // <-- Use val() here
+    //     $('#modal_add_qty').val('');
+    //     $('#color_ids').empty().append('<option value="">Select</option>');
+
+    //     const prg_id = $('#delivery_id').val();
+    //     const selectedText = $('#delivery_id option:selected').text().trim();
+    //     const typeMatch = selectedText.match(/\((.*?)\)/);
+    //     const inwardType = typeMatch ? typeMatch[1] : null;
+
+    //     let url = '';
+    //     if (inwardType === 'P') {
+    //         url = '/get-packing-delivery-color-list/';
+    //     } else if (inwardType === 'SP') {
+    //         url = '/get-stiching-delivery-color-list/';
+    //     } else {
+    //         console.warn('Unknown inward type');
+    //         return;
+    //     }
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: url,
+    //         data: {
+    //         'prg_id[]': prg_id,
+    //         'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+    //         },
+    //         success: function (data) {
+    //         $('#modal_size_name').text(sizeName);
+    //         $('#size_id').val(sizeIds);  // <-- Here val()
+            
+    //         console.log('size-id:',sizeIds);
+
+        
+            
+
+    //         const colorSelect = $('#color_ids');
+    //         (data.color_list || []).forEach(color => {
+    //             colorSelect.append(`<option value="${color.id}">${color.name}</option>`);
+    //         });
+
+    //         colorSelect.off('change').on('change', function () {
+    //             const selectedColorId = $(this).val();
+    //             const sizeObj = (data.size_list || []).find(sz => sz.name == sizeName);
+    //             const sizeId = sizeObj ? sizeObj.id : null;
+
+    //             if (!selectedColorId || !sizeId) {
+    //             $('#modal_available_qty').val(''); 
+    //             return;
+    //             }
+                
+    //             const match = (data.data || []).find(item =>
+    //                 item.size_id == sizeId
+    //             );
+
+    //             if (match) {
+    //                 $('#modal_available_qty').val(match.quantity);
+    //                 $('#modal_available_qty').closest('.col-md-4').show();
+    //             } else {
+    //                 $('#modal_available_qty').val('');
+    //                 $('#modal_available_qty').closest('.col-md-4').hide();
+    //             }
+    //         });
+
+    //         $('#loose_pcs_modal').modal('show');
+
+    //         for (const key in loosePcsGroupedData) {
+    //             $('#loose_pcs_table tbody').empty();
+
+    //             const entry = loosePcsGroupedData[key];
+                
+    //             if (entry.size_id === sizeIds.toString()) {
+    //                 // Check if already present in the table
+    //                 const exists = $('#loose_pcs_table tbody tr').filter(function () {
+    //                     return $(this).find('.size_id').text() === entry.size_id &&
+    //                         $(this).find('.color_id').text() === entry.color_id;
+    //                 }).length > 0; 
+
+    //                 if (!exists) {
+    //                     const colorName = $('#color_ids option[value="' + entry.color_id + '"]').text() || `Color ${entry.color_id}`;
+                        
+    //                     const row = $('<tr>');
+    //                     row.append('<td>' + colorName + '</td>');                         // Color Name
+    //                     row.append('<td>' + entry.quantity + '</td>');                   // Quantity
+    //                     row.append('<td class="size_id" style="display: none;">' + entry.size_id + '</td>');   // Size ID
+    //                     row.append('<td class="color_id" style="display: none;">' + entry.color_id + '</td>'); // Color ID
+
+    //                     const deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+    //                     deleteButton.on('click', function () {
+    //                         row.remove();
+    //                         delete loosePcsGroupedData[key]; // Remove from memory
+    //                         updateMainTableLoosePcs(entry.size_id);
+    //                     });
+
+    //                     const deleteCell = $('<td>').append(deleteButton);
+    //                     row.append(deleteCell);
+
+    //                     $('#loose_pcs_table tbody').append(row);
+    //                 }
+    //             }
+    //         }
+
+
+
+
+    //         // 🔍 Fetch existing loose PCS if already stored (size+color+tm_id)
+    //         const tm_id = $('#tm_id').val();  // Assuming this is stored somewhere
+    //         console.log('exists');
+
+
+            
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: '/get-existing-loose-pcs/',
+    //             data: {
+    //                 'size_id': sizeIds,
+    //                 'tm_id': tm_id,
+    //                 'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+    //             },
+    //             success: function (response) {
+    //                 if (response.status === 'ok' && Array.isArray(response.data)) {
+    //                     const sizeId = $('#size_id').val();
+
+    //                     // Clear existing rows for this size (optional if you want to reload fresh)
+    //                     $('#loose_pcs_table tbody tr').each(function () {
+    //                         if ($(this).find('.size_id').text() === sizeId) {
+    //                             $(this).remove();
+    //                         }
+    //                     });
+
+    //                     response.data.forEach(entry => {
+    //                         const colorId = entry.color_id;
+    //                         const quantity = parseFloat(entry.quantity);
+    //                         const colorName = entry.color_name;
+
+    //                         // Check if the row already exists
+    //                         const existingRow = $('#loose_pcs_table tbody tr').filter(function () {
+    //                             return $(this).find('.size_id').text() === sizeId &&
+    //                                 $(this).find('.color_id').text() === String(colorId);
+    //                         });
+
+    //                         if (existingRow.length === 0) {
+    //                             $('#loose_pcs_table tbody').append(`
+    //                                 <tr>
+    //                                     <td>${colorName}</td>
+    //                                     <td>${quantity}</td>
+    //                                     <td class="size_id" style="display:none;">${sizeId}</td>
+    //                                     <td class="color_id" style="display:none;">${colorId}</td>
+    //                                     <td><button type="button" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button></td>
+    //                                 </tr>
+    //                             `);
+    //                         } else {
+    //                             existingRow.find('td:nth-child(2)').text(quantity);
+    //                         }
+
+    //                         // Optionally: sync to memory or main table here
+    //                         const key = `${sizeId}_${colorId}`;
+    //                         loosePcsGroupedData[key] = {
+    //                             size_id: sizeId,
+    //                             color_id: colorId,
+    //                             quantity: quantity
+    //                         };
+    //                     });
+
+    //                     // Update main table if needed
+    //                     updateMainTableLoosePcs(sizeId);
+    //                 } else {
+    //                     console.warn('No data found or invalid response structure.');
+    //                 }
+    //             },
+    //             error: function () {
+    //                 console.warn("Failed to fetch existing loose pcs quantity.");
+    //             }
+    //         });
+
+
+
+
+    //         },
+    //         error: function () {
+    //         alert('Failed to fetch data for modal.');
+    //         }
+    //     });
+    // });
+
+// const loosePcsGroupedData = {}; // Global memory store
+
+$('#purchaseTable').on('click', '.loose_pcs .open-modal', function (e) {
+    e.preventDefault();
+    const currentRow = $(this).closest('tr');
+
+    const anchor = $(this);
+    const sizeId = anchor.data('size-id');
+    const colorId = anchor.data('color-id');
+    const sizeName = anchor.data('size-name');
+    const colorName = anchor.data('color-name');
+    const available = anchor.data('available');
+
+    // Modal reset
+    $('#modal_size_name').text(sizeName);
+    $('#modal_available_qty').val('');
+    $('#size_id').val(sizeId);
+    $('#modal_add_qty').val('');
+    $('#color_ids').empty().append('<option value="">Select</option>');
+    $('#loose_pcs_table tbody').empty(); // Start fresh
+
+    const prg_id = $('#delivery_id').val();
+    const selectedText = $('#delivery_id option:selected').text().trim();
+    const typeMatch = selectedText.match(/\((.*?)\)/);
+    const inwardType = typeMatch ? typeMatch[1] : null;
+
+    let url = '';
+    if (inwardType === 'P') url = '/get-packing-delivery-color-list/';
+    else if (inwardType === 'SP') url = '/get-stiching-delivery-color-list/';
+    else return console.warn('Unknown inward type');
+
+    // First AJAX: Get colors & size info
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'prg_id[]': prg_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            const colorSelect = $('#color_ids');
+            (data.color_list || []).forEach(color => {
+                colorSelect.append(`<option value="${color.id}">${color.name}</option>`);
+            });
+
+            colorSelect.off('change').on('change', function () {
+                const selectedColorId = $(this).val();
+                const sizeObj = (data.size_list || []).find(sz => sz.name == sizeName);
+                const sizeId = sizeObj ? sizeObj.id : null;
+
+                const match = (data.data || []).find(item => item.size_id == sizeId);
+                if (match) {
+                    $('#modal_available_qty').val(match.quantity);
+                    $('#modal_available_qty').closest('.col-md-4').show();
+                } else {
+                    $('#modal_available_qty').val('');
+                    $('#modal_available_qty').closest('.col-md-4').hide();
+                }
+            });
+
+            // Merge and render data from loosePcsGroupedData
+            for (const key in loosePcsGroupedData) {
+                const entry = loosePcsGroupedData[key];
+                if (entry.size_id === sizeId.toString()) {
+                    addLoosePcsRow(entry.color_id, entry.size_id, entry.quantity);
+                }
+            }
+
+            // Show the modal
+            $('#loose_pcs_modal').modal('show');
+
+            // Second AJAX: Get saved loose pcs from server
+            const tm_id = $('#tm_id').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/get-existing-loose-pcs/',
+                data: {
+                    'size_id': sizeId,
+                    'tm_id': tm_id,
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function (response) {
+                    if (response.status === 'ok' && Array.isArray(response.data)) {
+                        // response.data.forEach(entry => {
+                        //     const key = `${entry.size_id}_${entry.color_id}`;
+                        //     // Merge or replace in memory
+                        //     loosePcsGroupedData[key] = {
+                        //         size_id: entry.size_id.toString(),
+                        //         color_id: entry.color_id.toString(),
+                        //         quantity: parseFloat(entry.quantity)
+                        //     };
+                        //     addLoosePcsRow(entry.color_id, entry.size_id, entry.quantity, entry.color_name);
+                        // });
+
+                        response.data.forEach(entry => {
+                            // if (!entry || entry.size_id === undefined || entry.color_id === undefined) {
+                            if (!entry || entry.size_id === undefined || entry.color_id === undefined) {
+                                console.warn('Skipping invalid entry:', entry);
+                                return; // skip this one
+                            }
+
+                            const key = `${entry.size_id}_${entry.color_id}`;
+
+                            loosePcsGroupedData[key] = {
+                                size_id: entry.size_id.toString(),
+                                color_id: entry.color_id.toString(),
+                                quantity: parseFloat(entry.quantity||toFixed(0))
+                            };
+
+                            addLoosePcsRow(entry.color_id, entry.size_id, entry.quantity, entry.color_name);
+                        });
+
+                        // Sync to main table
+                        updateMainTableLoosePcs(sizeId);
+                    }
+                },
+                error: function () {
+                    console.warn("Failed to fetch existing loose pcs quantity.");
+                }
+            });
+        },
+        error: function () {
+            alert('Failed to fetch data for modal.');
+        }
+    });
+});
+
+function addLoosePcsRow(colorId, sizeId, quantity, colorName = null) {
+    const key = `${sizeId}_${colorId}`;
+
+    // Check if row already exists
+    const exists = $('#loose_pcs_table tbody tr').filter(function () {
+        return $(this).find('.size_id').text() === sizeId.toString() &&
+               $(this).find('.color_id').text() === colorId.toString();
+    });
+
+    if (exists.length === 0) {
+        if (!colorName) {
+            colorName = $('#color_ids option[value="' + colorId + '"]').text() || `Color ${colorId}`;
+        }
+
+        const row = $(`
+            <tr>
+                <td>${colorName}</td>
+                <td style="text-align:right;">${quantity||toFixed(0)}</td>
+                <td class="size_id" style="display:none;">${sizeId}</td>
+                <td class="color_id" style="display:none;">${colorId}</td>
+                <td><button type="button" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button></td>
+            </tr>
+        `);
+
+        row.find('.remove-row').on('click', function () {
+            row.remove();
+            delete loosePcsGroupedData[key];
+            updateMainTableLoosePcs(sizeId);
+        });
+
+        $('#loose_pcs_table tbody').append(row);
+    } else {
+        exists.find('td:nth-child(2)').text(quantity);
+    }
+}
+
+function updateMainTableLoosePcs(sizeId) {
+    let totalLooseQty = 0;
+
+    for (const key in loosePcsGroupedData) {
+        const entry = loosePcsGroupedData[key];
+        if (entry.size_id === sizeId.toString()) {
+            totalLooseQty += parseFloat(entry.quantity);
+        }
+    }
+
+    // Find row in main table and update hidden input
+    const row = $(`#purchaseTable tbody tr[data-key="${sizeId}"]`);
+    row.find('.loose-pcs-input').val(totalLooseQty);
+    row.find('.loose_pcs .open-modal').text(totalLooseQty);
+
+    // Recalculate totals
+    row.find('input').trigger('input');
+    calculateSummaryTotalValue();
+    calculateTotalValue();
+}
+
+
+});
+
+
+
+
+
+
+// ```````````````````````````
+
+// function storeTblValues() {
+//     const TableData = [];
+//     let hasInvalidBox = false;
+
+//     $('#purchaseTable tbody tr').each(function () {
+//         const $row = $(this);
+
+//         const size = $row.find('td:eq(0)').text().trim();
+//         const sizeId = $row.find('.size_id').text().trim();
+//         // const colorId = $row.find('.color_id').text().trim();
+//         const pcs_per_box = parseFloat($row.find('.pcs_per_box input').val()) || 0;
+
+//         const box = parseFloat($row.find('.box input').val()) || 0;
+//         const box_pcs = parseFloat($row.find('.box_pcs input').val()) || 0;
+//         const loose_pcs = parseFloat($row.find('.loose_pcs input').val()) || 0;
+//         const seconds_pcs = parseFloat($row.find('.seconds_pcs input').val()) || 0;
+//         const shortage = parseFloat($row.find('.shortages input').val()) || 0;
+//         const total_pcs = parseFloat($row.find('.total_pcs input').val()) || 0;
+//         const balance = parseFloat($row.find('.balance input').val()) || 0;
+
+//         // if (box <= 0) {
+//         //     hasInvalidBox = true;
+//         // }
+
+//         if (size ) {
+//         // if (size && box > 0) {
+//             TableData.push({
+//                 size,
+//                 size_id: sizeId,
+//                 // color_id: colorId,
+//                 box,
+//                 box_pcs, 
+//                 pcs_per_box,
+//                 loose_pcs,
+//                 seconds_pcs, 
+//                 shortage,
+//                 total_pcs,
+//                 balance
+//             });
+//         }
+//     });
+
+//     if (hasInvalidBox) {
+//         console.warn('⚠️ Some rows have box <= 0. Please fix before submission.');
+//         return [];
+//     }
+
+//     console.log('✅ TABLE DATA:', TableData);
+//     return TableData;
+// }
+
+
+
+function storeTblValues() {
+    const TableData = [];
+    let hasInvalidBox = false;
+
+    $('#purchaseTable tbody tr').each(function () {
+        const $row = $(this);
+
+        const size = $row.find('td:eq(0)').text().trim();
+        const sizeId = $row.find('.size_id').text().trim();
+
+        const pcs_per_box = parseFloat($row.find('.per-box-input').val()) || 0;
+        const box = parseFloat($row.find('.box-input').val()) || 0;
+
+        // Calculate box_pcs dynamically to ensure correctness
+        const box_pcs = box * pcs_per_box;
+
+        const loose_pcs = parseFloat($row.find('.loose-pcs-input').val()) || 0;
+        const seconds_pcs = parseFloat($row.find('.seconds-input').val()) || 0;
+        const shortage = parseFloat($row.find('.shortage-input').val()) || 0;
+        const total_pcs = parseFloat($row.find('.total-pcs-input').val()) || 0;
+        const balance = parseFloat($row.find('.balance-pcs-input').val()) || 0;
+
+        if (size) {
+            TableData.push({
+                size,
+                size_id: sizeId,
+                box,
+                pcs_per_box,
+                box_pcs,
+                loose_pcs,
+                seconds_pcs,
+                shortage,
+                total_pcs,
+                balance
+            });
+        }
+    });
+
+    if (hasInvalidBox) {
+        console.warn('⚠️ Some rows have box <= 0. Please fix before submission.');
+        return [];
+    }
+
+    console.log('✅ TABLE DATA:', TableData);
+    return TableData;
+}
+
+
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked");
+    var fab_id = $('#fabric_id').val();
+    var delivery_id = $('#delivery_id').val();
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+
+    var LoosePcsTableData = loosePcsGroupedData;
+
+    console.log('loose-pcs-data:',LoosePcsTableData);
+
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Some rows have Weight (Wt)  <= 0. Please correct them before submitting.',
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+        return; // 🚨 Stop form submission if invalid
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('received_data', TableData);
+
+        var delivered_pcs = $('#delivered_pcs').text();
+        var total_box = $('#total_box').text();
+
+        var per_box = $('#box_piece').text();  // 🔹 Fixed `.text()` to `.text()`
+        var balance_pcs = $('#balance_pcs').text();
+        var loose_pcs = $('#loose_pcs').text();
+        var seconds_pcs = $('#seconds_pcs').text();
+        var shortage_pcs = $('#shortage_pcs').text();
+
+        // alert('q-id:', quality_id);
+        mdata.append('total_box', total_box);
+        mdata.append('delivered_pcs', delivered_pcs);
+        mdata.append('per_box', per_box) || 0;
+        mdata.append('loose_pcs', loose_pcs) || 0;
+        mdata.append('seconds_pcs', seconds_pcs) || 0;
+        mdata.append('shortage_pcs', shortage_pcs) || 0;
+        mdata.append('balance_pcs', balance_pcs) || 0;
+        
+
+
+        LoosePcsTableData = JSON.stringify(LoosePcsTableData); 
+
+        // Append custom data
+        mdata.append('loose_pcs_data', LoosePcsTableData);  
+
+
+
+
+        mdata.append('fab_id',fab_id);
+        $.ajax({
+            type: "POST", 
+            url: "/update-packing-received/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+           
+
+            success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.success) {
+                    notifier.show(
+                        'Well Done!', 
+                        data.message || 'Packing Received Added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );  
+                    $('#add_new').trigger('reset');
+                    
+                    $('#quality_id').val('').trigger("change");
+                    $('#prg_id').val('').trigger("change");
+                    $('#style_id').val('').trigger("change");
+                    $('#size_id').val('').trigger("change");
+
+                    $('#purchaseTable tbody').empty();      
+                    $('#summary_table tbody').empty();     
+
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        data.error_message || 'Failed to add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+
+
+
+
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });  
+    }
+});
+
+
+
+
+// ````````````````````````````````````````````
+    $('.single-select').select2(); 
+
+
+</script>

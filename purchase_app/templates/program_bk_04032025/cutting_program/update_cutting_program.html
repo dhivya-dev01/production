@@ -1,0 +1,805 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Cutting Program</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/purchase/cutting-program">Cutting Program </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    <div class="card">
+  
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                                
+                                                <div class="row">
+
+
+
+                                                    
+
+
+                                                    <!-- `````````````````````````` tm update ```````````````````````` -->
+                                                    <!-- <div class="col-9" style="border-left: 1px solid #dee1e4; padding-left: 10px;"> -->
+                                                    <div class="col-md-9">
+                                                        <!-- <h2>{{material_instance.id}}</h2> -->
+                                                           
+                    
+                                                        <form id="update_tm_form">
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                                <!-- <div class="col-md-3 mt-2">
+                                                                    <label for="product_id" class="form-label">Supplier </label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div> -->
+
+                                                                <!-- <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">PO List</label>
+                                                                    <select id="po_id" name="po_id" class="form-control form-select single-select" multiple  required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in po %}
+                                                                        <option value="{{ k.id }}">{{ k.po_number }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div> --> 
+                                                                
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Program No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="program_date" required>
+                                                                </div>
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Party  </label>
+                                                                    <select id="party_id" name="party_id" class="form-control form-select single-select"  disabled>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+ 
+                                                                
+                                                               
+
+                                                               
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="order_date" class="form-label">Remarks</label>
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" rows="2" >{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+                                                          
+                                                            <!-- <div class="col-md-2 mt-3">
+                                                                <button type="update" class="btn btn-primary mt-4">Update</button>
+                                                            </div> -->
+                                                        </div>
+                                                        </form>
+
+                                                        
+                                                        <!-- ```````````````` tx update ``````````````````````` -->
+
+                                                        <form id="update_tx">
+                                                            {% csrf_token %}
+                                                            <div class="row mt-2"> 
+                                                             
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" onchange="LoadStyle()" disabled>
+                                                                        <!-- <select id="quality_id" name="quality_id" class="form-control single-select" disabled> -->
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" disabled >
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" >
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Color</label>
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" >
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        {% for k in color %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quantity</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" value="1">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" id="update_tm_id" name="update_tm_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="process" name="process" value="{{stage.tolerance}}">
+                                                                    <button type="submit" class="btn btn-primary mt-4">Save</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                    
+ 
+                                                    </div>
+
+                                                    <div class="col-md-3 ">
+                                                        <div class="">            
+                                                            <table id="summaryTable" class="table table-striped table-bordered w-100 ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" >Summary Table</th>
+                                                                    </tr>  
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Total Quantity</td>
+                                                                        <td align="end" style="background-color: #428bca;" colspan="2" id="qty_total_placeholder">0</td>
+                                                                    </tr>
+
+                                                                    <!-- <tr> 
+                                                                        <td>Gross Total</td>
+                                                                        <td style="background-color: #428bca; color: black; font-size: 18px" align="end" colspan="2" id="gross_total_placeholder">0.00</td>
+                                                                    </tr> -->
+                                                                   
+                                                                </tbody>
+                                                            </table>     
+                                                        </div> 
+
+
+                                                    <div>
+ 
+
+
+                                                </div>
+                                            </div>
+
+                                                  
+                                        <!-- </div>  -->
+                                        <hr>
+                                          
+                                           
+
+
+                                                    <div class="">
+                                                        {% csrf_token %}
+                                                        <div class="dt-responsive  table-hover">
+                                                            
+                                                            <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+
+                                                            <table id="datatable" class="table table-striped table-bordered wrap">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>id</th> 
+                                                                        <th>Action</th>
+                                                                       <th>Size</th>
+                                                                       <th>Color</th> 
+                                                                       <th>Quantity</th>
+                
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>                            
+                                                                </tbody>
+                                                            </table>                                        
+                                                        </div>
+                
+                                                        
+                                                    </div>
+                                     
+                           
+                                            </div>
+
+                                               
+                                        </div> 
+                                    </div>
+
+                                    <!-- ``````````` debit note modal ``````````````````````````` -->
+
+                                    <div id="debit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Debit Note</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="debit_note_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}                                            
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_name" class="form-label">Supplier</label>
+                                                                <input class="form-control" type="text" id="supplier_name" name="supplier_id">
+                                                            </div>
+    
+    
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_name" class="form-label">Amount</label>
+                                                                <input class="form-control" type="text" id="debit_amount" name="amount">
+                                                            </div>
+
+
+
+                                                            <div class="col-md-12">
+                                                                <label for="remark" class="form-label">Remarks</label>
+                                                                <textarea class="form-control" rows="2" id="remarks" name="remarks"></textarea>
+                                                            </div>
+                                                            <!-- <div class="col-md-12 mb-3">
+                                                                <label for="edit_is_active" class="form-label">Status</label> 
+                                                                <select class=" form-control edit" id="edit_is_active" name="is_active">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Inactive</option>                 
+                                                                </select> 
+                                                            </div> -->
+                                                                                                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="id" id="edit_id">
+                                                        <input class="form-control" type="hidden" id="debit_po" name="po_id">
+                                                        
+                                                        <input type="hidden" id="process_type" name="process_type" value="Yarn">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Create</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> 
+
+
+                                    
+
+                                </div>
+                                
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+
+    
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/purchase/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            $('#style_id').empty().append('');
+            $('#size_id').empty().append('');
+            // $('#color_id').empty().append('<option value="">Select Color</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+    
+    if ("{{ parent_stock_instance.date }}" && "{{ parent_stock_instance.date }}" !== "") {
+        var purchaseDate = "{{ parent_stock_instance.date }}";
+        // Ensure it's in the correct format (YYYY-MM-DD)
+        var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+        $('#program_date').val(formattedDate).trigger("change");
+    }
+
+
+
+
+    if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+        $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change"); 
+    }
+    
+    if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+        $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change"); 
+    }
+    if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+        $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change"); 
+    }
+    
+
+
+var id = $('#tm_id').val();
+console.log('tm-id:',id);
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var table = $('#datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [], 
+    
+        
+        "columns": [
+            { "data": "id", "title": "ID" },
+            { "data": "action", "title": "Action"},
+            { "data": "size_id", "title": "Size  " },
+            { "data": "color_id", "title": "Color" },
+            { "data": "quantity", "title": "Quantity" }
+
+            
+          
+// ,"className": "text-end"
+        ],
+        "ajax": {
+            "url": '/purchase/update-cutting-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.tm_id = id;  // Use validated id
+                
+            },
+            "dataSrc": function(json) {
+                console.log("Received JSON data:", json);
+
+                // // Use json.total_quantity directly for the summary update
+                updateSummary({
+                    total_quantity: json.total_quantity,
+                    // total_amount: json.total_amount,
+                    // tax_total: json.tax_total,
+                    // round_off: json.round_off,
+                    // grand_total: json.grand_total
+                });
+
+
+
+            if (json.message === "error") {
+                // Display error message in an alert
+                notifier.show(
+                    'Error!', 
+                    json.error_message, 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+
+                return []; // Return an empty data array for DataTable
+            }
+            return json.data; // Return the data if no error 
+        }
+        }
+    });
+} else {
+    // console.error("Invalid id:", id);
+    // Handle the case where id is invalid or empty
+}
+
+ 
+function updateSummary(data) {
+    console.log("Updating summary with data:", data); // Debugging summary update
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    // $('#gross_total_placeholder').text(data.gross_total || 0);
+}
+
+
+
+
+function refresh_data()
+{
+    table.ajax.reload();
+}
+
+
+
+function cut_prg_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/purchase/cutting-prg-detail-edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.id); // Populate tm_id with the item's id
+        $('#update_tm_id').val(res.tm_id); // Populate tm_id with the item's id
+        $('#quantity').val(res.quantity);
+        
+        $('#size_id').val(res.size_id).trigger("change"); 
+        $('#color_id').val(res.color_id).trigger("change"); 
+
+    });
+} 
+
+
+
+
+// $('#update_tx').on('submit', function(e) {
+//     alert('test')
+//     e.preventDefault();
+
+//     var formData = new FormData(this);
+//     formData.append('tm_id', $('#update_tm_id').val());
+//     formData.append('id', $('#edit_id').val());
+
+//     if (confirm('Are you sure you want to update?')) {
+//     $.ajax({
+//         url: '/purchase/add_or_update_cutting_program/', // Adjust URL as needed
+//         type: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false, 
+//         success: function(response) {
+//             if (response.success) {
+//                 notifier.show( 
+//                     'Well Done!', 
+//                     ' Updated successfully.', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 );
+//                 // Refresh DataTable
+//                 refresh_data();
+
+//                 // Update Summary
+//                 // updateSummary(response);
+
+//                 // Clear Form Fields
+//                 $('#size_id').val('').trigger("change");
+//                 $('#color_id').val('').trigger("change");
+              
+//                 $('#quantity').val('1');
+//                 // $('#update_flag').val('false');
+//                 // $('#update').text('Add');
+//             } else {
+//                 // alert(response.error_message || 'An error occurred. Please try again.');
+//                 notifier.show(
+//                     'Error!', 
+//                     'Failed to update knitting deliver:'+response.error_message, 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 );
+//             }
+//         }, 
+//         error: function(xhr, status, error) {
+//             console.error('Request Failed:', error); 
+//             // alert('Error in processing the request');
+//             notifier.show(
+//                     'Error!', 
+//                     'Error in processing the request.', 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 );
+//         }
+//     });
+// }
+// });
+
+
+
+
+$('#update_tx').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var tm_id = $('#update_tm_id').val();
+    var master_id = $('#edit_id').val();
+    var size_id = $('#size_id').val();
+    var color_id = $('#color_id').val();
+
+    formData.append('tm_id', tm_id);
+    formData.append('id', master_id);
+
+    // Check if the same size and color exist for the selected TM ID
+    $.ajax({
+        url: '/purchase/check_existing_cutting_program/',  // New API to check existing entry
+        type: 'POST',
+        data: { tm_id: tm_id, size_id: size_id, color_id: color_id },
+        headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+        success: function(response) {
+            if (response.exists) {
+                notifier.show(
+                    'Warning!',
+                    'This size and color already exist for the selected TM ID.', 
+                    'warning',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                return; // Stop further execution
+            } else {
+                // Proceed with adding or updating
+                if (confirm(master_id ? 'Are you sure you want to update?' : 'Are you sure you want to add?')) {
+                    $.ajax({
+                        url: '/purchase/add_or_update_cutting_program/',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                notifier.show(
+                                    'Well Done!',
+                                    master_id ? 'Updated successfully.' : 'Added successfully.',
+                                    'success',
+                                    "{% static 'assets/images/notification/ok-48.png' %}",
+                                    4000
+                                );
+
+                                // Refresh DataTable
+                                refresh_data();
+                                $('#update_tx').trigger('reset');
+
+                                $('#size_id').val('').trigger("change");
+                                $('#color_id').val('').trigger("change");
+                                $('#edit_id').val('');
+                                $('#quantity').val('1');
+
+                            } else {
+                                notifier.show(
+                                    'Error!',
+                                    'Failed to process request: ' + response.error_message,
+                                    'danger',
+                                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                                    4000
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Request Failed:', error);
+                            notifier.show(
+                                'Error!',
+                                'Error in processing the request.',
+                                'danger',
+                                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                                4000
+                            );
+                        }
+                    });
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error);
+            notifier.show(
+                'Error!',
+                'Error checking existing records.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+        }
+    });
+});
+
+
+// $('#update_tx').on('submit', function(e) {
+//     e.preventDefault();
+
+//     var formData = new FormData(this);
+//     var tm_id = $('#update_tm_id').val();
+//     var master_id = $('#edit_id').val(); // This will be empty for new entries
+
+//     formData.append('tm_id', tm_id);
+//     formData.append('id', master_id); // If empty, it means new entry
+
+//     if (confirm(master_id ? 'Are you sure you want to update?' : 'Are you sure you want to add?')) {
+//         $.ajax({
+//             url: '/purchase/add_or_update_cutting_program/', 
+//             type: 'POST',
+//             data: formData,
+//             processData: false,
+//             contentType: false, 
+//             success: function(response) {
+//                 if (response.success) {
+//                     notifier.show(
+//                         'Well Done!', 
+//                         master_id ? 'Updated successfully.' : 'Added successfully.',
+//                         'success',
+//                         "{% static 'assets/images/notification/ok-48.png' %}",
+//                         4000
+//                     );
+
+//                     // Refresh DataTable
+//                     refresh_data();
+//                     $('#update_tx').trigger('reset');
+
+//                     $('#size_id').val('').trigger("change");
+//                         $('#color_id').val('').trigger("change");
+//                         $('#edit_id').val('').trigger("change");
+//                         $('#quantity').val('1');
+
+//                     // Clear Form Fields (if adding new record)
+//                     if (!master_id) {
+//                         $('#size_id').val('').trigger("change");
+//                         $('#color_id').val('').trigger("change");
+//                         $('#update_tm_id').val('').trigger("change");
+//                         $('#quantity').val('1');
+//                     }
+//                 } else {
+//                     notifier.show(
+//                         'Error!', 
+//                         'Failed to process request: ' + response.error_message, 
+//                         'danger',
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                         4000
+//                     );
+//                 }
+//             }, 
+//             error: function(xhr, status, error) {
+//                 console.error('Request Failed:', error);
+//                 notifier.show(
+//                     'Error!', 
+//                     'Error in processing the request.', 
+//                     'danger',
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                     4000
+//                 );
+//             }
+//         });
+//     }
+// });
+
+
+
+function tx_cutting_prg_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/purchase/tx-cutting-prg-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            // tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Cutting Program successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+
+
+
+
+
+ 
+$('.single-select').select2();
+
+
+
+
+ </script>

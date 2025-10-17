@@ -1,0 +1,338 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header"> 
+                                        <div class="col-12 p-0 d-flex flex-wrap">
+                                            <a href="/party-add">
+                                                <button type="button" class="btn btn-gradient-primary btn-sm">Add Party</button>
+                                            </a>
+                                            <a href="/employee">
+                                                <button type="button" class="btn btn-gradient-primary btn-sm">Add Employee</button>
+                                            </a>
+                                            <!-- <a href="/task">
+                                                <button type="button" class="btn btn-gradient-primary btn-sm">Add Task</button>
+                                            </a>
+                                           -->
+                                        </div>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- counts -->
+                                    <div class="card-body">
+                                        <div class="col-xl-12 col-md-12 mt-4">
+                                            <div class="row">
+                                                <div class="col-md-3" id="fade">
+                                                    <div class="card bg-c-yellow order-card">
+
+                                                        <div class="card-body">
+                                                            <h6 class="m-b-20">Party</h6>
+                                                            <h2 class="text-start"><span>{{vendor}}</span>
+                                                            <i class="feather icon-user float-end"></i></h2>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" id="fade">
+                                                    <div class="card bg-c-red order-card">
+                                                        <div class="card-body">
+                                                            <h6 class="m-b-20">Products</h6>
+                                                            <h2 class="text-start"><span>{{project2}}</span>
+                                                            <i class="feather icon-layout float-end"></i></h2>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" id="fade">
+                                                    <div class="card bg-c-green order-card">
+                                                        <div class="card-body">
+                                                            <h6 class="m-b-20">Pending Task</h6>
+                                                            <h2 class="text-start"><span>{{completed}}</span>
+                                                            <i class="feather icon-layout float-end"></i></h2>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" id="fade">
+                                                    <div class="card bg-c-purple order-card">
+                                                        <div class="card-body">
+                                                            <h6 class="m-b-20">Completed Delivery</h6>
+                                                            <h2 class="text-start"><span>{{pending}}</span>
+                                                            <i class="feather icon-layout float-end"></i></h2>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+
+
+                                
+
+                                
+
+
+                                <div class="row">
+
+                                    <!-- <div class="col-xl-4 col-md-6">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5> Status Overview</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="type-chart" style="height:180px;"></div>
+                                                <div class="status-description">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <span><i class="fas fa-circle" style="color:#624fc6;"></i>Pending</span>
+                                                            <span><i class="fas fa-circle" style="color:#10a87b;"></i>Completed</span>
+                                                            <span><i class="fas fa-circle" style="color:#dc67ce;"></i>Hold</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span><i class="fas fa-circle" style="color:#f7c6c7;"></i>Partial</span>
+                                                            <span><i class="fas fa-circle" style="color:#f7e0b1;"></i>Cancelled</span>
+                                                            <span><i class="fas fa-circle" style="color:#ff8c54;"></i>Opened</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    -->
+
+                                    <!-- project assigned -->
+                                                                 
+
+                                </div>
+
+
+
+                            
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+{% include 'includes/footer.html' %}
+
+
+<style>
+
+ #fade :hover {
+    transform: scale(1.05); 
+    transition: transform 0.3s ease; 
+}
+
+.order-card{
+    height: 80%;
+}
+
+ #type-chart {
+            height: 180px;
+        }
+        .status-description {
+            margin-top: 1rem;
+        }
+        .status-description span {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .status-description i {
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+
+body {
+    overflow-x: hidden;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-md-2, .col-md-3 {
+    padding-left: 1;
+    padding-right: 1    ;
+}
+
+.order-card {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+    
+
+.new-scroll {
+    height: 350px;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+
+.new-scroll {
+    height: 350px; /* Ensure this height fits the content appropriately */
+    position: relative;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-y: auto; /* Enable vertical scrollbar */
+    border: 1px solid #ced4da; /* Add border to the scroll container */
+    border-radius: 4px; /* Optional: Add border-radius for rounded corners */
+    padding: 10px; /* Optional: Add padding inside the scroll container */
+}
+
+.table {
+    border-collapse: collapse; /* Ensures borders are displayed correctly */
+    width: 100%; /* Ensures the table takes the full width of the container */
+    margin-bottom: 0; /* Remove any default margin below the table */
+}
+
+.table th, .table td {
+    border: 1px solid #dee2e6; /* Add border to table cells */
+    padding: 8px; /* Add padding to table cells for spacing */
+    text-align: left; /* Align text to the left */
+}
+
+.table thead th {
+    background-color: #f8f9fa; /* Light background for table headers */
+    font-weight: bold; /* Bold text for table headers */
+}
+
+.card-body {
+    padding-bottom: 0; /* Remove any extra padding at the bottom */
+}
+
+.user-scroll {
+    height: 350px; 
+    position: relative;
+    overflow-x: hidden; 
+    overflow-y: auto; 
+/*    border: 1px solid #ced4da; */
+    border-radius: 4px;
+    padding: 10px; 
+}
+
+.table {
+    border-collapse: collapse; 
+    width: 100%; 
+}
+
+.table th, .table td {
+/*    border: 1px solid #dee2e6; */
+    padding: 8px; 
+    text-align: left; 
+}
+
+.table thead th {
+    background-color: #f8f9fa; 
+    font-weight: bold; 
+}
+
+</style>
+
+<script>
+    $(document).ready(function() {
+    am4core.useTheme(am4themes_animated);
+
+    var chart = am4core.create("type-chart", am4charts.PieChart);
+
+    console.log("Initializing Pie Chart");
+
+    // Add data
+    chart.data = [
+        { "status": "Pending", "count": {{ status_counts.pending|default:"0" }} },
+        { "status": "Completed", "count": {{ status_counts.completed|default:"0" }} },
+        { "status": "Hold", "count": {{ status_counts.hold|default:"0" }} },
+        { "status": "Partial", "count": {{ status_counts.partial|default:"0" }} },
+        { "status": "Cancelled", "count": {{ status_counts.cancelled|default:"0" }} },
+        { "status": "Opened", "count": {{ status_counts.open|default:"0" }} }
+    ];
+
+    // Log the data to check if it's correctly passed
+    console.log("Chart Data:", chart.data);
+
+    // Add label
+    chart.innerRadius = 35;
+
+    // Add and configure Series
+    var pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = "count";  
+    pieSeries.dataFields.category = "status";
+    pieSeries.labels.template.disabled = true;
+    pieSeries.ticks.template.disabled = true;
+
+    // Set custom colors for each category
+    pieSeries.slices.template.propertyFields.fill = "color";
+
+    // Add custom colors to data
+    chart.data = [
+        { "status": "Pending", "count": {{ status_counts.pending|default:"0" }}, "color": am4core.color("#624fc6") },
+        { "status": "Completed", "count": {{ status_counts.completed|default:"0" }}, "color": am4core.color("#10a87b") },
+        { "status": "Hold", "count": {{ status_counts.hold|default:"0" }}, "color": am4core.color("#dc67ce") },
+        { "status": "Partial", "count": {{ status_counts.partial|default:"0" }}, "color": am4core.color("#f7c6c7") },
+        { "status": "Cancelled", "count": {{ status_counts.cancelled|default:"0" }}, "color": am4core.color("#f7e0b1") },
+        { "status": "Opened", "count": {{ status_counts.open|default:"0" }}, "color": am4core.color("#ff8c54") }
+    ];
+
+    // Additional scripts for other functionalities
+    $('#example-1to10').barrating('show', {
+        theme: 'bars-1to10',
+        readonly: true,
+        showSelectedRating: false
+    });
+
+    var px = new PerfectScrollbar('.new-scroll', {
+        wheelSpeed: .5,
+        swipeEasing: 0,
+        wheelPropagation: 1,
+        minScrollbarLength: 40,
+    });
+
+    var px = new PerfectScrollbar('.user-scroll', {
+        wheelSpeed: .5,
+        swipeEasing: 0,
+        wheelPropagation: 1,
+        minScrollbarLength: 40,
+    });
+
+    // Log to check if PerfectScrollbar is initialized
+    console.log("PerfectScrollbar initialized");
+});
+
+</script>
+
+    

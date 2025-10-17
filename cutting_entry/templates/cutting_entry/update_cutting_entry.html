@@ -1,0 +1,1595 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+<style>
+
+    .transparent-input {
+        background: transparent;
+        border: none;
+        text-align: right;
+        width: 100%;
+        font-weight: bold;
+    }
+    .transparent-input:focus {
+        outline: none;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    
+    
+    .summary-container {
+        max-width: 500px;
+        margin: 20px auto;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .summary-table {
+        width: 100%;
+        background: white;
+        color: black;
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .summary-table th {
+        /* background: white; */
+        color: black    ;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .summary-table td {
+        padding: 8px;
+        font-weight: bold;
+    }
+
+    .highlight {
+        background: #428bca;
+        color: white;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .transparent-input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        text-align: right;
+        font-weight: bold;
+        font-size: 16px;
+        color: black;
+    }
+
+    .transparent-input:focus {
+        border-bottom: 2px solid #428bca;
+    }
+
+    /* .transparent-input {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+}
+.transparent-input:focus {
+    outline: none;
+    border-bottom: 1px solid #aaa;
+}
+.highlight {
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+ */
+
+</style>
+
+
+
+<!-- `````````````````````````````````````````````````````````````````````````` -->
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Cutting Entry Update</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/cutting-entry"> Cutting Entry</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                <!-- <a href="/cutting/barcode-detail/?barcode=FY2025-1543-20-26-8-20-GOPI-5">View</a>
+                                                                <a href="/CUTTING/BARCODE-DETAIL/?BARCODE=FY2025-1543-20-26-8-20-GOPI-5">VIEW</a> -->
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Inward No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.cutting_no}}" readonly>
+                                                                    <input type="hidden" class="form-control" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Inward Date</label>
+                                                                    <input class="form-control" type="date" name="inward_date" id="inward_date" required>
+                                                                </div>
+
+                                                           
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="product_id" class="form-label">Cutting program </label>
+                                                                    <select id="prg_id" name="prg_id" class="form-control form-select single-select" onchange="LoadProgramData()" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in cutting_program %}
+                                                                        <option value="{{ k.id }}">{{ k.cutting_no }} - [{{k.work_order_no}}- {{k.total_quantity}}.wt]</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="prg_quantity" id="prg_quantity" readonly>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+
+                                                                
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="lot_no" class="form-label">Lot No./Lot Name</label>
+                                                                    <select id="lot_no" name="lot_no" class="form-control single-select">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in lot_no %}
+                                                                            <option value="{{ k.lot_no }}">
+                                                                                <!-- {{ k.lot_no }} (Avl: {{ k.available_wt|floatformat:2 }} kg) -->
+                                                                                {{ k.lot_no }} 
+                                                                            </option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                    <input type="hidden" id="available_wt" value="0">
+
+
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn btn-primary mt-3" onclick="update_master()">Update</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quality_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" disabled onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" disabled>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                               
+                                                            </div>
+                                                        </form>
+
+                                                        <form id="update_tx">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                      
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Color</label>
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in color %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quantity (pcs)</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity"  required oninput="validateInteger(this)" >
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3"> 
+                                                                    <label for="wt" class="form-label">Wt. (kg)</label> 
+                                                                    
+                                                                    <input type="number" class="form-control" step="0.001" min="0"  id="wt" name="wt" oninput="validateDecimal(this, 3)" >
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="cutter" class="form-label">Cutter</label> 
+                                                                    
+                                                                    <input type="text" class="form-control" id="cutter" name="cutter"  oninput="allowOnlyLetters(this)">
+                                                                </div>
+
+ 
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <!-- <input type="hidden" id="edit_balance_qty" name="balance_qty"> -->
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id" value="">
+
+                                                                    <input type="hidden" id="update_tm_id" name="update_tm_id" value="{{parent_stock_instance.id}}">
+                                                                    <button type="submit" class="btn btn-primary mt-4">Save</button>
+                                                                </div>
+
+                                                                <!--                                                           
+                                                                    <div class="col-md-2 mt-4">
+                                                                        <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                        <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                        {% csrf_token %}
+
+                                                                        <button id="add_button" class="btn btn-primary mt-3" type="button" onclick="addManualRow()">+ Add</button>
+
+                                                                    </div> -->
+
+                                                            </div>
+                                                        </form>
+                                                    
+                                                            </div> 
+
+
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                        <!-- <table id="datatable" class="table table-striped table-bordered nowrap w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Id</th>
+                                                                                    <th>Actions</th>
+
+                                                                                    <th>Size</th>
+                                                                                    <th>Color</th>
+                                                                                    <th>Quantity (pcs)</th>
+                                                                                 
+                                                                                    <th>Wt (kg)</th>
+
+                                                                                    <th>Cutter</th>
+
+
+                                                                                </tr>
+                                                                            </thead> 
+                                                                            <tbody></tbody> 
+                                                                        </table> -->
+
+                                                                        <table id="datatable" class="table table-striped table-bordered nowrap w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Id</th>
+                                                                                    <th>Actions</th>
+                                                                                    <th>Size</th>
+                                                                                    <th>Color</th>
+                                                                                    <th>Quantity (pcs)</th>
+                                                                                    <th>Wt (kg)</th>
+                                                                                    <th>Cutter</th>
+                                                                                </tr>
+                                                                                <tr class="table-secondary">
+                                                                                    <th colspan="4" class="text-end">Total:</th>
+                                                                                    <th id="totalQuantityHeader" class="text-center fw-bold text-primary"></th>
+                                                                                    <th id="totalWtHeader" class="text-center fw-bold text-primary"></th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody></tbody>
+                                                                            <tfoot>
+                                                                                <tr>
+                                                                                    <th colspan="4" class="text-end">Total:</th>
+                                                                                    <th id="totalQuantityFooter" class="text-center fw-bold"></th>
+                                                                                    <th id="totalWtFooter" class="text-center fw-bold"></th>
+                                                                                    <th></th>
+                                                                                </tr>
+                                                                            </tfoot>
+                                                                        </table>
+
+
+                                                                    </div>
+                                                                </div>
+                                                             
+                                                                <div class="col-md-4 mt-5">
+                                                                    <form id="update_summary">
+                                                                        {% csrf_token %}
+                                                                    <table id="summary_table mt-4" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="2" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th>  
+                                                                                <th style="text-align: end;">Wt</th> 
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                           
+                                                                            <tr>
+                                                                                <td>Total Bundles </td>
+                                                                                <td class="highlight"><span id="total_bundles">0</span></td>
+                                                                            </tr>
+                                                                              <tr>
+                                                                                <td>Total Pieces</td>
+                                                                                <td class="highlight"><span id="total_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            
+                                                                            <tr>
+                                                                                <td>Total Dozen</td>
+                                                                                <td class="highlight"><span id="total_dozen">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Bundle Wt</td>
+                                                                                <td class="highlight"><span id="bundle_wt">0</span></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Cutting Waste</td>
+                                                                                <td><input style="text-decoration: none; border: none; outline: none; background: transparent;"
+
+                                                                                id="cutting_waste" value="0" class="transparent-input" step="0.01"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Malai Waste</td>
+                                                                                <td><input style="text-decoration: none; border: none; outline: none; background: transparent;"
+
+                                                                                id="malai_waste" value="0" class="transparent-input" step="0.01"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Damage</td>
+                                                                                
+                                                                                <td><input style="text-decoration: none; border: none; outline: none; background: transparent;"
+
+                                                                                id="damage" value="0" class="transparent-input" step="0.01"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Folding Waste</td>
+                                                                                <td><input style="text-decoration: none; border: none; outline: none; background: transparent;"
+
+                                                                                id="folding_waste" value="0" class="transparent-input" step="0.01"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>AirLoss</td>
+                                                                                <td><input style="text-decoration: none; border: none; outline: none; background: transparent;"
+
+                                                                                id="air_loss" value="0" class="transparent-input" step="0.01"></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total</td>
+                                                                                <td class="highlight"><span id="total_wt">0</span></td>
+                                                                            </tr>
+                                                                            <!-- <tr>
+                                                                                <td>Balance</td>
+                                                                                <td class="highlight"><span id="b_qty_total_placeholder">0</span></td>
+                                                                            </tr> -->
+                                                                          
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12" align="center">
+                                                                            <input type="hidden" id="update_id" name="update_id" value="{{parent_stock_instance.id}}">
+
+                                                                            <button type="submit" class="btn btn-primary mt-4">Update</button>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                    </form>
+                                                                </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks">{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+
+                        
+                                                            <!-- <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div> -->
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+
+
+
+if ("{{ parent_stock_instance.inward_date }}" && "{{ parent_stock_instance.inward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.inward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#inward_date').val(formattedDate).trigger("change");
+}
+
+
+  function validateInteger(input) {
+    // Remove decimal if user types it
+    input.value = input.value.replace(/\D/g, '');
+  }
+
+  function validateDecimal(input, maxDecimalPlaces) {
+    const value = input.value;
+    if (value.includes('.')) {
+      const [intPart, decimalPart] = value.split('.');
+      if (decimalPart.length > maxDecimalPlaces) {
+        input.value = parseFloat(value).toFixed(maxDecimalPlaces);
+      }
+    }
+  }
+
+ function allowOnlyLetters(input) {
+    input.value = input.value.replace(/[^a-zA-Z\s]/g, ''); // allows letters and spaces only
+  }
+
+
+
+  
+function update_master(){
+    
+$('#add_new').on('submit', function(e) { 
+    e.preventDefault();
+
+    var formData = new FormData(this); 
+   
+    const tm_id = $('#tm_id').val();  
+    // const isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';  // ✅ Correct value: 1 or 0
+    // console.log('checked-data:', isPackingChecked); // Log the correct value (1 or 0)
+
+    
+
+    formData.append('inward_date', $('#inward_date').val());
+    formData.append('prg_id', $('#prg_id').val());
+    formData.append('lot_no', $('#lot_no').val());
+    // formData.append('is_packing',isPackingChecked);  // ← This line fixed
+   
+    $.ajax({
+        url: '/cutting-entry-tm-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data(); 
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#lot_no').val('');
+                $('#inward_date').val('');
+                
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+}
+
+  
+
+function calculateTotalValues() {
+    console.log('calculations');
+
+    let totalWeight = 0;
+    let totalQuantity = 0;
+
+    // Loop through table rows and sum quantity + weight
+    $('#datatable tbody > tr').each(function () {
+        const weight = parseFloat($(this).find('.wt').text()) || 0;
+        const quantity = parseFloat($(this).find('.quantity').text()) || 0;
+
+        totalWeight += weight;
+        totalQuantity += quantity;
+    });
+
+    // ✅ Count number of rows = total bundles
+    let total_bundle = $('#datatable tbody > tr').length;
+
+    // ✅ Update UI
+    $('#bundle_wt_total').text(totalWeight.toFixed(2));
+    $('#total_pcs').text(totalQuantity.toFixed(0));
+    $('#total_bundles').text(total_bundle);
+
+    // ✅ Waste values
+    let cutting = parseFloat($('#cutting_waste').val()) || 0;
+    let malai = parseFloat($('#malai_waste').val()) || 0;
+    let damage = parseFloat($('#damage').val()) || 0;
+    let folding = parseFloat($('#folding_waste').val()) || 0;
+    let air = parseFloat($('#air_loss').val()) || 0;
+
+    let totalWaste = cutting + malai + damage + folding + air + totalWeight;
+    $('#total_wt').text(totalWaste.toFixed(2));
+}
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {
+    var table = $('#datatable').DataTable({
+        language: {
+            message: "Master purchase does not hold any data related to child table!"
+        },
+        processing: true,
+        pageLength: 100,
+        destroy: true,
+        order: [],
+        columns: [
+            { data: "id", title: "Id" },
+            { data: "action", title: "Action" },
+            { data: "size", title: "Size" },
+            { data: "color", title: "Color" },
+            {
+                data: "quantity",
+                title: "Quantity (pcs)",
+                className: "text-center",
+                render: function (data, type, row) {
+                    const originalQty = row.original_quantity || data;
+                    return `<span class="quantity" data-original-quantity="${originalQty}">${parseFloat(data)}</span>`;
+                }
+            },
+            {
+                data: "wt",
+                title: "Wt (kg)",
+                className: "text-center",
+                render: function (data) {
+                    return `<span class="wt">${parseFloat(data).toFixed(3)}</span>`;
+                }
+            },
+            {
+                data: "cutter",
+                title: "Cutter",
+                className: "text-center",
+                render: function (data) {
+                    return `<span class="cutter">${data}</span>`;
+                }
+            }
+        ],
+        ajax: {
+            url: '/cutting-entry-ajax-report/',
+            type: 'POST',
+            data: function (data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;
+            },
+            dataSrc: function (json) {
+                console.log("Received JSON data:", json);
+
+                updateSummary({
+                    bundle_wt: json.bundle_wt,
+                    cutting_waste: json.cutting_waste,
+                    malai_waste: json.malai_waste,
+                    folding_waste: json.folding_waste,
+                    damages: json.damages,
+                    total_dozen: json.total_dozen,
+                    air_loss: json.air_loss,
+                    total_wt: json.total_wt,
+                });
+
+                if (json.message === "error") {
+                    alert(json.error_message);
+                    return [];
+                }
+                return json.data;
+            }
+        },
+        drawCallback: function () {
+            // ✅ Auto recalculate after table reload
+            calculateTotalValues();
+        },
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+
+            function parseValue(val) {
+                return parseFloat(val) || 0;
+            }
+
+            // Total quantity
+            var totalQty = api
+                .column(4, { page: 'current' })
+                .nodes()
+                .reduce(function (sum, cell) {
+                    return sum + parseValue($(cell).find('span.quantity').text());
+                }, 0);
+
+            // Total weight
+            var totalWt = api
+                .column(5, { page: 'current' })
+                .nodes()
+                .reduce(function (sum, cell) {
+                    return sum + parseValue($(cell).find('span.wt').text());
+                }, 0);
+
+            // Update in footer
+            $('#totalQuantityFooter').html(totalQty.toFixed(0));
+            $('#totalWtFooter').html(totalWt.toFixed(3));
+
+            // Update in header (if needed)
+            $('#totalQuantityHeader').html(totalQty.toFixed(0));
+            $('#totalWtHeader').html(totalWt.toFixed(3));
+        }
+    });
+}
+
+
+var id = $('#tm_id').val();
+
+
+
+
+
+function updateSummary(data) {
+        calculateTotalValue();
+
+    console.log("Updating summary with data:", data);
+
+    // Input fields
+    // $('#bundle_wt').val(data.bundle_wt || 0);
+    $('#cutting_waste').val(parseFloat(data.cutting_waste || 0).toFixed(3));
+    $('#malai_waste').val(data.malai_waste || 0);
+    $('#damage').val(parseFloat(data.damages || 0).toFixed(3)); 
+    $('#air_loss').val(parseFloat(data.air_loss || 0).toFixed(3));
+    $('#total_dozen').val(parseFloat(data.total_dozen || 0).toFixed(3));
+    $('#folding_waste').val(parseFloat(data.folding_waste || 0).toFixed(3));
+
+    // Output summary spans
+    $('#bundle_wt').text(parseFloat(data.bundle_wt || 0).toFixed(3));
+    $('#total_wt').text(parseFloat(data.total_wt || 0).toFixed(3));
+  
+}
+
+
+// Helper function to format currency with ₹ symbol and comma separators
+function formatCurrency(value) {
+    let num = parseFloat(value) || 0;
+    return `₹ ${num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+
+
+function cut_entry_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/cutting-entry-detail-edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.id); // Populate tm_id with the item's id
+        $('#update_tm_id').val(res.tm_id); // Populate tm_id with the item's id
+        $('#quantity').val(res.quantity); 
+        $('#wt').val(res.wt);
+        $('#cutter').val(res.cutter);
+        
+        $('#size_id').val(res.size_id).trigger("change"); 
+        $('#color_id').val(res.color_id).trigger("change"); 
+
+    });
+} 
+
+
+
+
+
+
+$('#update_tx').on('submit', function(e) {
+    
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var tm_id = $('#update_tm_id').val();
+    var master_id = $('#edit_id').val();
+    var size_id = $('#size_id').val();
+    var color_id = $('#color_id').val();
+    var party_id = $('#party_id').val();
+    var fabric_id = $('#fabric_id').val();
+    var prg_id = $('#prg_id').val();
+
+    var lot_no = $('#lot_no').val();    
+    var work_order_no = $('#work_order_no').val();    
+    console.log('log:',lot_no);
+    var inward_date = $('#inward_date').val();
+    console.log('inw-date:',inward_date);
+
+    formData.append('tm_id', tm_id);
+    formData.append('lot_no', lot_no);
+    formData.append('work_order_no', work_order_no);
+    formData.append('inward_date', inward_date);
+    formData.append('id', master_id);
+    console.log('form-data:',formData);  
+
+    // Check if an entry with the same TM ID, size, and color exists
+    $.ajax({
+        url: '/check_existing_cutting_entry/',
+        type: 'POST',
+        data: { tm_id: tm_id, size_id: size_id, color_id: color_id },
+        headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+        
+        success: function(response) {
+            // if (response.exists) {
+            //     if (confirm('This size and color already exist. Do you want to update it?')) {
+            //         formData.append('id', response.existing_id);  // Set the existing entry ID for update
+            //     } else {
+            //         return; // Stop execution if user cancels update
+            //     }
+            // }
+
+            // Proceed with adding or updating
+            $.ajax({
+                url: '/update-cutting-entry-details/',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        notifier.show(
+                            'Well Done!',
+                            response.updated ? 'Updated successfully.' : 'Added successfully.',
+                            'success',
+                            "{% static 'assets/images/notification/ok-48.png' %}",
+                            4000
+                        );
+
+                        // // /// Refresh DataTable 
+                        refresh_data();
+                        calculateTotalValue();
+                        $('#update_tx').trigger('reset');
+ 
+                        $('#edit_id').val('').trigger("change");
+                        // $('#size_id').val('').trigger("change");
+                        // $('#color_id').val('').trigger("change");
+                        $('#edit_id').val('');
+                        $('#quantity').val('1');
+                        // $('#cutter').val('');
+
+                    } else {
+                        notifier.show(
+                            'Error!',
+                            'Failed to process request: ' + response.error_message,
+                            'danger',
+                            "{% static 'assets/images/notification/high_priority-48.png' %}",
+                            4000
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Request Failed:', error); 
+                    notifier.show(
+                        'Error!',
+                        'Error in processing the request.',
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error);
+            notifier.show(
+                'Error!', 
+                'Error checking existing records.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000 
+            );
+        }
+    });
+});
+
+
+
+
+// ````````````````````update summary table ``````````````````````````````````````````
+
+
+
+
+
+$('#update_summary').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var tm_id = $('#update_id').val();
+    var cutting_waste = $('#cutting_waste').val();
+    var air_loss = $('#air_loss').val();
+    var malai_waste = $('#malai_waste').val();
+    var damage = $('#damage').val();
+    var folding_waste = $('#folding_waste').val();
+    // var total_wt = $('#total_wt').val();
+    // var total_pcs = $('#total_pcs').val();
+    // var total_bundles = $('#total_bundles').val();
+
+
+    var total_wt = $('#total_wt').text();  
+    var total_pcs = $('#total_pcs').text();
+    var total_bundles = $('#total_bundles').text();
+
+
+    formData.append('tm_id', tm_id);
+    formData.append('cutting_waste', cutting_waste);
+    formData.append('air_loss', air_loss);
+    formData.append('malai_waste', malai_waste);
+    formData.append('folding_waste', folding_waste);
+    formData.append('damage', damage);
+    formData.append('total_wt', total_wt);
+    formData.append('total_pcs', total_pcs);
+    formData.append('total_bundles', total_bundles);
+
+
+    $.ajax({
+        url: '/update-cutting-entry-summary/',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!',
+                    response.updated ? 'Updated successfully.' : 'Added successfully.',
+                    'success',
+                    "{% static 'assets/images/notification/ok-48.png' %}",
+                    4000
+                );
+
+                // Refresh DataTable
+                refresh_data();
+
+                
+ 
+            } else {
+                notifier.show(
+                    'Error!',
+                    'Failed to process request: ' + response.error_message,
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            notifier.show(
+                'Error!',
+                'Error in processing the request.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+        }
+    });
+      
+});
+
+
+
+// `````````````````````````````````````````````````````````````````
+
+// function calculateTotalValue() {
+
+//     console.log('calculations');
+ 
+//     let totalWeight = 0;
+//     let totalQuantity = 0;
+
+//     $('#datatable tbody > tr').each(function () {
+//         const weight = parseFloat($(this).find('.wt').text()) || 0;
+//         const quantity = parseFloat($(this).find('.quantity').text()) || 0;
+//         totalWeight += weight;
+//         totalQuantity += quantity;
+        
+//     });
+
+//     // ✅ Set Bundle Wt 
+//     $('#bundle_wt_total').text(totalWeight.toFixed(2));
+//     $('#total_pcs').text(totalQuantity.toFixed(0));
+//          console.log('tot-qty:',totalQuantity);
+
+
+//     // ✅ Get all waste inputs (convert input values to float)
+//     let cutting = parseFloat($('#cutting_waste').val()) || 0;
+//     let malai = parseFloat($('#malai_waste').val()) || 0;
+//     let damage = parseFloat($('#damage').val()) || 0;
+//     let folding = parseFloat($('#folding_waste').val()) || 0;
+//     let air = parseFloat($('#air_loss').val()) || 0;
+
+
+//     // ✅ Total Waste
+//     let totalWaste = cutting + malai + damage + folding + air + totalWeight;
+//     let total_bundle = totalQuantity;
+
+//     // ✅ Balance = bundle - waste
+//     // let balance = totalWeight - totalWaste;
+
+//     // ✅ Update Summary
+//     $('#total_wt').text(totalWaste.toFixed(2));
+//     $('#total_bundles').text(total_bundle.toFixed(0));
+//     // $('#b_qty_total_placeholder').text(balance.toFixed(2));
+// }
+
+
+ 
+function calculateTotalValue() {
+    let totalWeight = 0;
+    let totalQuantity = 0;
+
+    $('#datatable tbody > tr').each(function () {
+        const weight = parseFloat($(this).find('.wt').text()) || 0;
+        const quantity = parseFloat($(this).find('.quantity').text()) || 0;
+        totalWeight += weight;
+        totalQuantity += quantity;
+    });
+
+
+    let total_bundle = $('#datatable tbody > tr').length;
+
+    // Update header
+    $('#totalQuantityHeader').text(totalQuantity.toFixed(0));
+    $('#totalWtHeader').text(totalWeight.toFixed(3)); 
+
+    // Update footer
+    $('#totalQuantityFooter').text(totalQuantity.toFixed(0));
+    $('#totalWtFooter').text(totalWeight.toFixed(3));
+
+    // Set calculated values in UI
+    $('#bundle_wt_total').text(totalWeight.toFixed(3));
+    $('#total_pcs').text(totalQuantity.toFixed(0));
+
+    // Calculate total dozens and excess pieces
+    let total_dozen = Math.floor(totalQuantity / 12);
+    let excess_pcs = totalQuantity % 12; 
+
+    // Display the result in the desired format
+    $('#total_dozen').text(`${total_dozen} dozen ${excess_pcs} pcs`);
+
+    console.log('dozen:', total_dozen, 'excess:', excess_pcs);
+    $('#total_bundles').text(total_bundle);
+
+    // Get all waste inputs
+    let cutting = parseFloat($('#cutting_waste').val()) || 0;
+    let malai = parseFloat($('#malai_waste').val()) || 0;
+    let damage = parseFloat($('#damage').val()) || 0;
+    let folding = parseFloat($('#folding_waste').val()) || 0;
+    let air = parseFloat($('#air_loss').val()) || 0;
+
+    // Total Waste
+    let totalWaste = cutting + malai + damage + folding + air + totalWeight;
+
+    // Update total waste in UI
+    $('#qty_total_placeholder').text(totalWaste.toFixed(2));
+}
+// function calculateTotalValue() {
+//     console.log('calculations');
+
+//     let totalWeight = 0;
+//     let totalQuantity = 0;
+
+//     $('#datatable tbody > tr').each(function () {
+//         const weight = parseFloat($(this).find('.wt').text()) || 0;
+//         const quantity = parseFloat($(this).find('.quantity').text()) ;
+
+//         totalWeight += weight;
+//         totalQuantity += quantity;
+//     }); 
+
+//     // ✅ Get total number of visible rows = total bundles
+//     let total_bundle = $('#datatable tbody > tr').length;
+
+//     // ✅ Set calculated totals in UI
+//     $('#bundle_wt_total').text(totalWeight.toFixed(2));
+//     $('#total_pcs').text(totalQuantity.toFixed(0));
+//     $('#total_bundles').text(total_bundle);  // Show number of rows as bundle count
+//     let total_dozen = Math.floor(totalQuantity / 12);
+//     $('#total_dozen').text(total_dozen);
+
+//     console.log('dozen:',total_dozen);
+//     // ✅ Get waste values
+//     let cutting = parseFloat($('#cutting_waste').val()) || 0;
+//     let malai = parseFloat($('#malai_waste').val()) || 0;
+//     let damage = parseFloat($('#damage').val()) || 0;
+//     let folding = parseFloat($('#folding_waste').val()) || 0;
+//     let air = parseFloat($('#air_loss').val()) || 0;
+
+//     // ✅ Calculate total waste
+//     let totalWaste = cutting + malai + damage + folding + air + totalWeight;
+//     $('#total_wt').text(totalWaste.toFixed(2));
+// }
+
+
+// function calculateTotalValue() {
+//     console.log('calculations');
+
+//     let totalWeight = 0;
+//     let totalQuantity = 0;
+//     let totalBundles = 0;
+
+//     $('#datatable tbody > tr').each(function () {
+//         // Get text or input values 
+//         const weight = $(this).find('.wt');
+//         const quantity = $(this).find('.quantity');
+
+//         // Handle either plain text or input fields
+//         // const weight = parseFloat(weightElem.is('input') ? weightElem.val() : weightElem.text()) || 0;
+//         // const quantity = parseFloat(quantityElem.is('input') ? quantityElem.val() : quantityElem.text()) || 0;
+
+//         totalWeight += weight;
+//         totalQuantity += quantity;
+//         totalBundles += 1;
+
+//         console.log('Row -> Wt:', weight, 'Qty:', quantity);
+//     });
+
+//     // ✅ Set values
+//     $('#bundle_wt_total').text(totalWeight.toFixed(2));
+//     $('#total_pcs').text(totalQuantity);         // total pcs
+//     $('#total_bundles').text(totalBundles);      // total rows
+
+//     // ✅ Get waste inputs
+//     let cutting = parseFloat($('#cutting_waste').val()) || 0;
+//     let malai = parseFloat($('#malai_waste').val()) || 0; 
+//     let damage = parseFloat($('#damage').val()) || 0;
+//     let folding = parseFloat($('#folding_waste').val()) || 0;
+//     let air = parseFloat($('#air_loss').val()) || 0;
+
+//     let totalWaste = cutting + malai + damage + folding + air + totalWeight;
+//     $('#total_wt').text(totalWaste.toFixed(2));
+// }
+
+
+// ✅ Trigger calculation on waste input change
+$('#cutting_waste, #malai_waste, #damage, #folding_waste, #air_loss').on('input', function () {
+    calculateTotalValue();
+});
+ 
+
+
+
+// $('#cutting_waste, #malai_waste, #damage, #folding_waste, #air_loss').on('input', function () {
+//     calculateTotalValue();
+// });
+
+
+
+function tx_cutting_entry_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/tx-cutting-entry-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            // tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Cutting Program successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+ 
+    function refresh_data()
+    {
+        table.ajax.reload();
+    }
+ 
+// `````````````````````````````````````````````````````````````````````````````````
+$("#prg_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "12345 - [WO-5678- 250.wt]"
+
+    const match = prgText.match(/\[(.*?)-/);  // Extract work_order_no
+    if (match) {
+        $("#work_order_no").val(match[1].trim());
+    } else {
+        $("#work_order_no").val('');
+    }
+
+    const qtyMatch = prgText.match(/-\s*(\d+(\.\d+)?)\.wt\]/);  // Extract program quantity
+    if (qtyMatch) {
+        $("#prg_quantity").val(qtyMatch[1]);
+    } else {
+        $("#prg_quantity").val('');
+    }
+});
+
+
+
+$(document).ready(function () {
+    // Load programs when party is selected
+    $('#party_id').change(function () {
+        LoadProgram();
+    });
+
+});
+
+
+
+// ````````````````````````````````````````````````````````
+
+
+
+if ("{{parent_stock_instance.tm_cutting_prg_id}}" && "{{parent_stock_instance.tm_cutting_prg_id}}" !== "") {
+    $('#prg_id').val("{{parent_stock_instance.tm_cutting_prg_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.lot_no}}" && "{{parent_stock_instance.lot_no}}" !== "") {
+    $('#lot_no').val("{{parent_stock_instance.lot_no}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+    $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+}
+
+// if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+//     $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+// }
+
+
+// ````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+// 🔁 Declare globally at the top of your script
+let sizeColorMap = {};
+
+function LoadProgramData() {
+    var prg_id = $('#prg_id').val(); 
+    console.log('Product-ID:', prg_id); // Debugging output
+
+    if (!prg_id) {
+        console.warn("No Product ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    // ✅ Preserve po_quantity value
+    let currentPoQuantity = $('#po_quantity').val();
+    console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+
+    $.ajax({
+        type: 'POST',   
+        url: '/get_cutting_program_list/',
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Do NOT clear po_quantity
+            $('#quality_id').empty();
+            $('#style_id').empty();
+            $('#size_id').empty(); 
+            $('#color_id').empty();
+
+            // Populate dropdowns only if data exists
+            if (data.quality) {
+                // console.log('quality:',quality);
+                $('#quality_id').html('<option selected value="' + data.quality.id + '">' + data.quality.name + '</option>');
+            }
+
+         
+
+            if (data.style) {
+                $('#style_id').html('<option  value="' + data.style.id + '">' + data.style.name + '</option>');
+            }
+            if (data.sizes && Array.isArray(data.sizes)) {
+                data.sizes.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            
+            if (data.colors && Array.isArray(data.colors)) {
+                data.colors.forEach(function(item) {
+                    
+                    $('#color_id').append('<option  value="' + item.id + '">' + item.name + '</option>');
+                            $('#quantity').focus();
+
+                });
+            }
+
+
+            // ✅ Restore po_quantity value
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+$(document).ready(function () {
+    // After selecting color, focus quantity
+    $('#color_id').on('change', function () {
+        $('#quantity').focus();
+    });
+
+      // Enter in quantity → focus wt
+    $('#color_id').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#quantity    ').focus();
+        }
+    });
+
+    // Enter in quantity → focus wt
+    $('#quantity').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#wt').focus();
+        }
+    });
+
+
+
+
+    // Enter in wt → focus cutter
+    $('#wt').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#cutter').focus();
+        }
+    });
+
+    // Enter in cutter → focus Add button
+    $('#cutter').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#submit').focus();
+        }
+    });
+
+    // // Enter in Add button → trigger row add
+    // $('#save_button').on('keydown', function (e) {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         addManualRow(); // Call your wrapper
+    //     }
+    // });
+});
+
+
+
+
+// ```````````````````````````
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            // $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            // $('#color_id').empty().append('<option value="">Select Color</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option selected value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+                $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+            }
+            Loadfabric();
+
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+
+// // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+
+$("#lot_no").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const lotText = selectedOption.text(); // example: LOT123 (Avl: 150.00 kg)
+
+    const match = lotText.match(/\(Avl:\s*([\d.]+)\s*kg\)/);
+    if (match) {
+        const availableWt = parseFloat(match[1]);
+        $("#available_wt").val(availableWt);
+    } else {
+        $("#available_wt").val(0);
+    }
+});
+
+
+// ```````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+
+function calculateRow(event) {
+    const row = event.target.closest("tr");
+
+    const rate = parseFloat($(row).find('.rate').val()) || 0;
+    const quantity = parseFloat($(row).find('.quantity').text()) || 0;
+
+    const amount = (rate * quantity).toFixed(2);
+    $(row).find('.amount').text(amount);
+
+    calculateTotalValue();
+}
+
+
+
+// `````````````````````````````````````````````````````````````````````
+
+
+$('.single-select').select2();
+
+
+
+</script>

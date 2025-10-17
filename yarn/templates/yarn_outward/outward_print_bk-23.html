@@ -1,0 +1,284 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>MIRRA GARMENTS - YARN OUTWARD</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>MIRRA GARMENTS - YARN PO</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <!-- Normalize or reset CSS with your favorite library -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+      <!-- Load paper.css for happy printing -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
+      <!-- Set page size here: A5, A4 or A3 -->
+      <!-- Set also "landscape" if you need -->
+       <style>
+         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+      </style>
+      <style>
+         /* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
+
+         @page {
+            size: A4;
+            margin: 2cm;
+         }
+         /* .clearfix:after {
+         content: "";
+         display: table;
+         clear: both;
+         } */
+        /* 
+         body {
+            width: 100%; 
+            margin: 0;
+            padding: 0;
+            color: #001028;
+            background: #FFFFFF;
+            font-family: 'Roboto', sans-serif;
+            font-size: 12px;
+        }
+        */
+
+
+         a {
+         color: #5D6975;
+         text-decoration: underline;
+         }
+         body {
+         position: relative;
+         /* width: 14.8cm;   */
+         width: 100%;
+         height: 21cm; 
+         margin: 0 auto; 
+         color: #001028;
+         background: #FFFFFF; 
+         font-family: Roboto, sans-serif; 
+         font-size: 12px; 
+         font-family: Arial;
+         }
+         header {
+         padding: 10px 0;
+         margin-bottom: 30px;
+         }
+
+         .sheet { 
+            width: 100%;
+            /* max-width: 18.7cm; */
+
+            margin: 0 auto;
+         }
+ 
+       
+
+        * {margin:0; padding:0; text-indent:0; }
+         a { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 8pt; }
+         h1 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13.5pt; }
+         h4 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; }
+         p { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; margin:0pt; }
+
+         table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+         }
+
+         td, th {
+            vertical-align: top;
+            padding: 4px;
+        }
+
+         hr {
+            margin: 10px 0;
+            border: none;
+            border-top: 1px solid #000;
+         }
+         
+ 
+      </style>
+  
+   </head>
+   <body>
+    <section class="sheet" style="padding:20px">
+
+        
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td width="35%" style="vertical-align: top;"><img  width="140" height="70" src="{{ image_url }}"/></td>
+                </td>
+                
+               <td width="65%" align="right">
+                  <h4><big><b><strong>{{ company.name.upper }}</strong><b></big></h4>
+                    <!-- </td> -->
+
+                  <div class="-mt-5">
+                     <p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+                     <p>Cell: {{ company.mobile }} | Phone: {{ company.phone }}</p>
+                     <p>Email: {{ company.email }}</p>
+                     <p>GSTIN: {{ company.gstin }} </p>
+
+                     </div>
+                
+               </td>
+            </tr>   
+    
+      
+            <!-- <tr> -->
+                <!-- <td align="right" colspan="2"> -->
+                    <!-- <p>GSTIN: {{ company.gstin }} </p> -->
+                <!-- </td> -->
+            <!-- </tr> -->
+        </table>
+
+        <hr style="margin:6px">
+					
+
+					
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+               <td align="center" colspan="3"> 
+                  <p ><strong>FABRICATION DELIVERY NOTE</strong></p>
+               </td> 
+            </tr>
+            <tr>
+               <td align="left"><p><strong>OUTWARD NO:</strong> {{ program.knitting_number }}</p></td>
+               <td align="center"><p><strong>OUTWARD DATE:</strong> {{ program.program_date|date:"d-m-Y" }}</p></td>
+               <!-- <td align="right"><p>PREVIOUS NO: {{ previous_no }}</p></td> -->
+            </tr>
+           
+            
+         </table>
+
+
+         <table width="100%" border="1" cellspacing="0" cellpadding="0" >
+
+               <tr>
+                  <td colspan="8" align="center"><p><strong> DELIVERY INFORMATION </strong></p></td>
+               </tr>
+			   <tr>
+					<td colspan="8" align="center"><p>PREVIOUS NO: {{ previous_no }}</p></td>
+			   
+			   </tr>
+               <tr>
+                  <td><p><strong>Outward No.</strong></p></td>
+                  <td><p><strong>Outward Date</strong></p></td>
+                  <td><p><strong>Knitting</strong></p></td>
+                  <td><p><strong>Yarn Count</strong></p></td>
+                  <td><p><strong>Bag</strong></p></td>
+                  <td><p><strong>Bag Wt</strong></p></td>
+                  <td align="right" ><p><strong>Quantity</strong></p></td>
+                  <td align="right" ><p><strong>Gross Quantity</strong></p></td>
+               </tr>
+            <tbody>
+               {% for item in delivery_details %}
+               <tr>
+                  <td><p>{{ item.do_number }}</p></td>
+                  <td><p>{{ item.do_date|date:"d-m-Y" }}</p></td>
+                  <td><p>
+                     {{ item.mill }}<br>
+                     LOT NO: {{ item.lot_no }}
+                  </p></td>
+                  <td><p>{{ item.name }}</p></td>
+                  <td><p>{{ item.bag }}</p></td>
+                  <td><p>{{ item.per_bag }}</p></td>
+                  <td align="right" ><p>{{ item.quantity|floatformat:3 }}</p></td>
+                  <td align="right"><p>{{ item.gross_quantity|floatformat:3 }}</p></td>
+               </tr>
+               {% endfor %}
+            </tbody> 
+          
+         </table>  
+         {% if remarks %}
+         <table>
+
+              <tr>
+               <td><p>REMARKS:   {{remarks}}</p></td>
+            </tr>
+         </table>
+         {% endif %}
+
+
+         <br>
+
+             <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+               <td align="center" colspan="2"> 
+                  <p ><strong>PROGRAM DETAILS</strong></p>
+               </td>
+            </tr>
+            <tr>
+               <td><p><strong>PROGRAM NO:</strong> {{ program.knitting_number }}</p></td>
+               <td align="right"><p><strong>PROGRAM DATE:</strong> {{ program.program_date|date:"d-m-Y" }}</p></td>
+            </tr>
+         </table>
+
+         <table width="100%" border="1" cellspacing="0" cellpadding="0"> 
+                <tr>
+                  <td><p><strong>Yarn Count</strong></p></td>
+                  <td><p><strong>Fabric</strong></p></td> 
+                  <td><p><strong>Gauge</strong></p></td> 
+                  <td><p><strong>TEX</strong></p></td>
+                  <td><p><strong>GSM</strong></p></td>
+                  <td><p><strong>DIA</strong></p></td>
+                   <td><p><strong>Roll</strong></p></td> 
+                   <td align="right" ><p><strong>Roll Wt.</strong></p></td>
+                    <td align="right" ><p><strong>Weight</strong></p></td> 
+                  </tr> 
+               <tbody> 
+                  
+                  {% for item in program_details %}
+                   <tr> 
+                     <td><p>{{ item.name }}</p></td>
+                     <td><p>{{ item.fabric }}</p></td>
+                     <td><p>{{ item.gauge }}</p></td> 
+                     <td><p>{{ item.tex }}</p></td> 
+                     <td><p>{{ item.gsm }}</p></td> 
+                     <td><p>{{ item.dia }}</p></td> 
+                     <td><p>{{ item.roll }}</p></td> 
+                     <!-- <td><p>{{ item.wt_per_roll }}</p></td>  -->
+                     <!-- <td><p>{{ item.quantity }}</p></td>  -->
+					 <td align="right"><p>{{ item.wt_per_roll|floatformat:3 }}</p></td> 
+					 <td align="right"><p>{{ item.quantity|floatformat:3 }}</p></td> 
+                  </tr> {% endfor %} 
+               </tbody> 
+              <tfoot>
+                  <tr> 
+                     <td colspan="6"><p  align=""><strong>Total</strong></p></td> 
+                     <td><p><strong>{{ total_roll }}</strong></p></td> 
+                     <td></td> 
+                     <td align="right"><p><strong>{{ total_quantity|floatformat:3 }}</strong></p></td>
+                  </tr> 
+               </tfoot>
+
+         </table>
+
+         <br>
+
+   
+
+         <table>
+            <tbody>
+               <tr>
+                  <td></td>
+                  <td align="right"><p><strong>For MIRRA GARMENTS PVT LTD</strong></p></td>
+               </tr>
+               <tr><td colspan="2"><br><br><br></td></tr>
+               <tr>
+                  <td align="left"><p><strong>Party's Signature</strong></p></td> 
+                  <td align="right"><p><strong>Authorized Signature</strong></p></td>
+               </tr>
+            </tbody>
+      
+         </table>
+
+      </section>
+   </body>
+</html>

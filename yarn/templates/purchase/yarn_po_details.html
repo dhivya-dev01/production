@@ -1,0 +1,980 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Yarn PO</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Yarn</a></li>
+                                            <li class="breadcrumb-item"><a href="/yarn-po">Yarn PO Update </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    <div class="card">
+ 
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                    
+                                                        {% for po in po %}
+                                                        <h2>{{po.purchase_date}}</h2>
+                                                        {% endfor %}
+                    
+                    
+                                                        <form id="add_new">
+                                                               <div class="row">
+                                                                    <div class="col-md-3 mt-2">
+                                                                        <input class="form-control col-1" type="text" name="po_number" value="{{parent_stock_instance.po_number}}" id="po_number" disabled>
+                                                                    </div>
+                                                                    <!-- <div class="col-md-2 mt-2">
+                                                                        <input type="hidden" name="is_delivery" value="0">
+                                                                        <input class="form-check-input" type="checkbox" id="is_delivery" name="is_delivery" value="1"
+                                                                            {% if parent_stock_instance.is_delivery %}checked{% endif %}>
+
+                                                                        <label class="form-label" for="is_delivery">Is Delivery</label>
+                                                                    </div> -->
+
+                                                                </div>
+                                                            
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+
+                                                                <!-- <div class="col-md-3 mt-2">
+                                                                    <label for="order_date" class="form-label">PO No.</label>
+                                                                    <input class="form-control" type="number" name="po_no" id="po_no" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div> -->
+
+                                                                <!-- <div class="col-md-3 mt-2">
+                                                                    <label for="order_date" class="form-label"><span style="color: red;">*</span> PO Name</label>
+                                                                    <input class="form-control" type="text" name="name" id="name" value="{{parent_stock_instance.name}}" >
+                                                                </div> -->
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="order_date" class="form-label"><span style="color: red;">*</span> Lot Name</label>
+                                                                    <!-- <input class="form-control" type="text" name="name" id="name" required> -->
+                                                                    <input class="form-control" id="fabricName" dir="ltr" style="position: relative;width: 240px; vertical-align: top; background-color: transparent;" 
+                                                                        name="name" type="text" value="{{parent_stock_instance.name}}">
+
+                                                                </div>
+
+
+    
+                                                                 <div class="col-md-3 mt-2">
+                                                                     <label for="order_date" class="form-label">PO Date</label>
+                                                                     <input class="form-control" type="date" name="purchase_date" id="purchase_date" disabled>
+                                                                 </div>
+
+                                                                 <div class="col-md-3 mt-2">
+                                                                    <label for="product_id" class="form-label">Party </label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" disabled>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-3 mt-2"> 
+                                                                    <label for="product_id" class="form-label"><span style="color: red;">*</span> Mill </label>
+                                                                    <select id="through_id" name="through_id" class="form-control form-select single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                    </select>
+                                                                </div>
+                                                              
+                                                                 
+                                                            </div>
+                                                       
+                                                            <div class="row ">
+                                                      
+                    
+                                                                <div class="col-md-3 mt-3">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id" class="form-label"><span style="color: red;">*</span> Yarn Count</label>
+                                                                        <select id="product_id" name="product_id" class="form-control form-select single-select" >
+                                                                            <!-- onchange="uom_load()" -->
+                                                                            <option value="">Select</option>
+                                                                            {% for k in count %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                 
+
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="bag" class="form-label"><span style="color: red;">*</span> Bags</label>
+                                                                    <input type="number" class="form-control" id="bag" name="bag"  value="{{parent_stock_instance.bag}}" required>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="per_bag" class="form-label"><span style="color: red;">*</span> per Bag Wt. (kg) </label>
+
+                                                                    <input type="number" class="form-control" id="per_bag" name="per_bag"  value="{{parent_stock_instance.per_bag}}" oninput=" updateDeliverPerBag(this)" required> 
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3 mt-3 ">
+                                                                    <label for="quantity" class="form-label"><span style="color: red;">*</span> Quantity (kg)</label>
+                                                                    <input type="number" class="form-control" name="quantity" id="quantity" value="{{parent_stock_instance.quantity}}"  readonly required>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="row">
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rate" class="form-label"> <span style="color: red;">*</span> Price (Incl.GST)</label>
+                                                                    <input type="number" class="form-control" id="price" name="price" value="{{parent_stock_instance.rate}}" step="0.01" oninput="validateDecimal2(this)" required>
+                                                                </div>
+                                                            
+                                                              
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rate" class="form-label"><span style="color: red;">*</span> Discount (&#8377;)</label>
+                                                                    <input type="number" class="form-control" id="discount" value="{{parent_stock_instance.discount}}" step="0.01" name="discount" oninput="validateDecimal2(this)" >
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="rate" class="form-label"><span style="color: red;">*</span> Net Price (Incl.GST)</label>
+                                                                    <input type="number" class="form-control" id="rate" name="rate" value="{{parent_stock_instance.net_rate}}" step="0.01" oninput="validateDecimal2(this)" required>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="amount" class="form-label"><span style="color: red;">*</span>  Amount</label>
+                                                                    <input type="number" step="0.001" class="form-control" id="amount" name="amount" value="{{parent_stock_instance.amount}}" readonly oninput="validateDecimal3(this)">
+                                                                 </div>
+                                                            </div>
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-6 mt-2 ">
+                                                                    <label for="price_list" class="form-label">Remarks </label>
+                                                                    <textarea type="text" class="form-control" name="remarks" id="remarks" rows="2">{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" id="edit_id" name="edit_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="tm_po_id" name="tm_po_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="update" class="btn btn-primary mt-3">Update</button>
+
+                                                                </div>
+
+                                                            </div> 
+
+                                                        </form>
+                                                    
+                                                    </div> 
+													
+                                                    <div class="col-md-4"  > 
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <input type="hidden" name="is_delivery" value="0">
+
+                                                                <!-- Single, properly controlled checkbox -->
+                                                                <input class="form-check-input" type="checkbox" id="is_delivery" name="is_delivery" value="1"
+                                                                    {% if parent_stock_instance.is_delivery %}checked{% endif %}>
+
+                                                                <label class="form-label" for="is_delivery">Delivery Information</label>
+                                                            </div>
+                                                        </div>
+
+
+                                                            <div class="row mt-4" >
+                                                                
+                                                                <div class="col-md-6 mt-2">
+                                                                    <label for="knitting" class="form-label"><span style="color: red;">*</span>  Knitting</label>
+                                                                    <select id="knitting" name="knitting" class="form-control single-select">
+                                                                        <option value="company">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{k.id}}">{{k.name}}</option>
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+
+                                                                <div class="col-md-6 ">
+                                                                    <label for="ph_email" class="form-label"><span style="color: red;">*</span> Delivery Date</label>
+                                                                    <input class="form-control" id="deliver_date" name="deliver_date" type="date">
+                                                                </div>
+
+                                                                <div class="col-md-6 mt-2"> 
+                                                                    <label for="bag" class="form-label"><span style="color: red;">*</span> Bag</label>
+                                                                    <input class="form-control" id="deliver_bags" name="deliver_bags" type="number" >
+                                                                </div>
+
+                                                                <div class="col-md-6 mt-2">
+                                                                    <label for="per_bag" class="form-label"> <span style="color: red;">*</span> per Bag Wt.(kg) </label>
+                                                                    <input type="number" class="form-control" id="deliver_per_bag" name="deliver_per_bag"  value="{{parent_stock_instance.per_bag}}" readonly>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-7 mt-4"  style="text-align: end;">
+                                                                    <input class="form-control" id="delivery_bag_wt" name="delivery_bag_wt" type="hidden" >
+                                                                    <input class="form-control" id="delivery_amount" name="delivery_amount" type="hidden" >
+                                                                    <input class="form-control" id="delivery_quantity" name="delivery_quantity" type="hidden" >
+                                                                    <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+ 
+                                                                    <button type="button" align="center" class="btn btn-raised btn-primary mt-3 " id="deliver_update" onclick="addDeliveryRow()">+</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="table-responsive table-hover">
+                                                                
+
+                                                                <!-- <table id="delivery_datatable" class="table table-striped table-bordered w-100"> -->
+                                                                <table id="delivery_datatable" class="table table-striped table-bordered nowrap w-100">
+
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <!-- <th>id</th> -->
+                                                                            <th>Action</th> 
+                                                                            <th>Knitting</th>
+                                                                            <th>Delivery Date</th>
+                                                                            <th>Bag</th>
+                                                                            <th>per Bag Wt.(kg)</th>
+                                                                            <!-- <th>Amount</th> -->
+                                                                            
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <!-- Rows will be dynamically added here -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <!-- end delivery -->
+
+                                                    </div>
+
+                                                </div> 
+
+                                                <hr>
+                                                
+                                               
+                                            </div> 
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include 'includes/footer.html' %}
+
+
+<script>
+<!-- function validateDecimal2(input) { -->
+    <!-- const value = parseFloat(input.value); -->
+    <!-- if (!isNaN(value)) { -->
+        <!-- input.value = value.toFixed(2); -->
+    <!-- } -->
+<!-- } -->
+
+    
+// typeaheadcall footer js
+
+// ```````````````````` delivery part ``````````````````````````
+    $(document).ready(function () {
+        function toggleFields() {
+            const isChecked = $('#is_delivery').is(':checked');
+            $('#knitting, #deliver_date, #deliver_bags, #deliver_per_bag').prop('disabled', !isChecked);
+        }
+
+        // Run on page load
+        toggleFields();
+
+        // Run on checkbox change
+        $('#is_delivery').change(function () {
+            toggleFields();
+        });
+    });
+
+
+// ````````````````````````````````````````````````````````````````
+
+    function updateDeliverPerBag(input) {
+        const value = input.value;
+        document.getElementById('deliver_per_bag').value = value;
+    }
+    
+
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var table = $('#delivery_datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [], 
+        
+        "columns": [
+            { "data": "action", "title": "Action"},  
+            { "data": "knitting", "title": "Knitting" },
+            { "data": "delivery_date", "title": "Deliver Date" ,"className":"text-center"},
+            { "data": "bag", "title": "Bag","className":"text-center" },
+            { "data": "bag_wt", "title": "per Bag Wt.(kg)","className":"text-end" ,"render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                } 
+
+            },
+        ],
+        "ajax": {
+            "url": '/ypo-delivery/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;  // Use validated id
+                
+            },
+        
+        }
+    });
+} else {
+    console.error("Invalid id:", id);
+    // Handle the case where id is invalid or empty
+}
+
+
+if ("{{ parent_stock_instance.po_date }}" && "{{ parent_stock_instance.po_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.po_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#purchase_date').val(formattedDate).trigger("change");
+}
+
+if ("{{ parent_stock_instance.delivery_date }}" && "{{ parent_stock_instance.delivery_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.delivery_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#delivery_date').val(formattedDate).trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#supplier_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.mill_id}}" && "{{parent_stock_instance.mill_id}}" !== "") {
+    $('#through_id').val("{{parent_stock_instance.mill_id}}").trigger("change");
+}
+
+
+if ("{{material_instance.yarn_count_id}}" && "{{material_instance.yarn_count_id}}" !== "") {
+    $('#product_id').val("{{material_instance.yarn_count_id}}").trigger("change");
+}
+
+
+
+function purchase_order_detail_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+        $.ajax({
+            url: "/delete-yarn-po-outward/",
+            method: "POST",
+            data: { 
+                id: id, 
+                csrfmiddlewaretoken: '{{ csrf_token }}' 
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.message === 'yes') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Yarn PO Outward deleted successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+                    location.reload();
+                    refresh_data();
+                } else {
+                    notifier.show(
+                        'Action Blocked!', 
+                        data.message || 'Failed to delete Yarn PO.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                notifier.show(
+                    'Server Error!', 
+                    'Something went wrong while processing your request.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                console.error("AJAX error:", error);
+            }
+        });
+    }
+}
+
+
+function addDeliveryRow() {
+    const tm_id = $('#tm_id').val();
+    const knitting = $('#knitting');
+    const yarn_count = $('#product_id');
+    const knittingText = knitting.find('option:selected').text();
+    const knittingValue = knitting.val();
+    const deliver_date = $('#deliver_date').val();
+    const deliver_bags = parseInt($('#deliver_bags').val());
+
+    const rate = parseFloat($('#rate').val());
+    const discount = parseFloat($('#discount').val());
+    const per_bag = parseFloat($('#per_bag').val());
+
+    if (!deliver_bags || deliver_bags <= 0) {
+        // alert("Enter a valid bag count");
+        notifier.show(
+            'Error!', 
+            `Enter a valid bag count`, 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+
+
+    var qty= getCurrentTotalBags();
+    $.get(`/get-allowed-bags/`, { tm_id: tm_id, knitting_id: knittingValue }, function(data) {
+        const allowedBags = data.allowed_bags;
+        const currentTableBags = getCurrentTotalBags();
+
+        const remainingBags = allowedBags - currentTableBags;
+
+        if (deliver_bags > remainingBags) {
+            notifier.show(
+                'Error!', 
+                `Only ${remainingBags} bags can be added. You're exceeding the allowed limit.`, 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            return;
+        }
+
+        // Proceed with delivery
+        $.ajax({
+            url: '/add-deliver/',
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCSRFToken() },
+            contentType: 'application/json',
+            data: JSON.stringify({
+                tm_id: tm_id,
+                yarn_count:yarn_count,
+                knitting_id: knittingValue,
+                deliver_date: deliver_date,
+                deliver_bags: deliver_bags,
+                per_bag: per_bag,
+                rate: rate,
+                discount: discount
+            }),
+            success: function(response) {
+                // if (response.success) {
+                //     refresh_data();
+                //     location.reload();
+                // } else {
+
+                if (response.success) {
+                    refresh_data();
+                    location.reload();
+                } else {
+                    notifier.show(
+                        'Error!',
+                        response.message || 'Something went wrong while saving to server.',
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+
+                    // alert("Something went wrong while saving to server.");
+                // }
+            }
+        });
+    });
+
+
+}
+
+function getCurrentTotalBags() {
+    let total = 0;
+    const rows = document.querySelectorAll("#delivery_datatable tbody tr");
+    rows.forEach(row => {
+        const bagInput = row.querySelector("input[name='delivery_bags[]']");
+        if (bagInput) {
+            const bagValue = parseInt(bagInput.value);
+            total += isNaN(bagValue) ? 0 : bagValue;
+        }
+    });
+    return total;
+}
+
+// Helper to get CSRF token from cookie
+function getCSRFToken() {
+    const name = "csrftoken";
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [key, value] = cookie.trim().split('=');
+        if (key === name) return value;
+    }
+    return '';
+}
+
+
+
+
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var table = $('#datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        columnDefs: [
+        {
+            targets: [6,7], // Ensure this matches the "Amount" column index
+            render: function (data, type, row) {
+                return new Intl.NumberFormat('en-IN', { 
+                    style: 'currency', 
+                    currency: 'INR' 
+                }).format(data);
+            },
+            className: "text-end" // Aligns currency values to the right
+        }
+    ],
+        
+        "columns": [
+            { "data": "id", "title": "ID" },
+            { "data": "action", "title": "Action"}, 
+            { "data": "product", "title": " Yarn Count " },
+            { "data": "bag", "title": "Bags" },
+            { "data": "per_bag", "title": "per Bag Wt.(kg)" },
+            { "data": "quantity", "title": "Quantity (kg)" },
+            { "data": "rate", "title": "Rate" ,"className": "text-end"},
+            { "data": "amount", "title": "Amount" ,"className": "text-end"},
+          
+            
+        ],
+        "ajax": {
+            "url": '/update_po_lists/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;  // Use validated id
+                
+            },
+            "dataSrc": function(json) {
+                console.log("Received JSON data:", json);
+
+                // Use json.total_quantity directly for the summary update
+                updateSummary({
+                    total_quantity: json.total_quantity,
+                    total_amount: json.total_amount,
+                    tax_total: json.tax_total,
+                    round_off: json.round_off,
+                    grand_total: json.grand_total
+                });
+
+
+
+            if (json.message === "error") {
+                // Display error message in an alert 
+                showToast('error',json.error_message);
+                return []; // Return an empty data array for DataTable
+            }
+            return json.data; // Return the data if no error
+        }
+        }
+    });
+} else {
+    console.error("Invalid id:", id);
+    // Handle the case where id is invalid or empty
+}
+
+ 
+function updateSummary(data) {
+    //console.log("Updating summary with data:", data); // Debugging summary update
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    $('#sub_total_placeholder').text(parseFloat(data.total_amount || 0).toFixed(2));
+    $('#tax_placeholder').text(parseFloat(data.tax_total || 0).toFixed(2));
+    $('#round_off').text(parseFloat(data.round_off || 0).toFixed(2));
+    $('#total_payable').text(parseFloat(data.grand_total || 0).toFixed(2));
+}
+
+
+
+
+function refresh_data()
+{
+    table.ajax.reload();
+}
+
+
+
+<!-- document.addEventListener("DOMContentLoaded", function () { -->
+    <!-- // Attach event listeners for real-time calculations -->
+    <!-- document.getElementById("bag").addEventListener("input", calculateQuantity); -->
+    <!-- document.getElementById("per_bag").addEventListener("input", calculateQuantity); -->
+    <!-- document.getElementById("rate").addEventListener("input", calculateAmount); -->
+    <!-- document.getElementById("price").addEventListener("input", calculateAmount); -->
+    <!-- document.getElementById("discount").addEventListener("input", calculateAmount); -->
+<!-- }); -->
+
+<!-- function calculateQuantity() { -->
+    <!-- var bag = parseFloat(document.getElementById("bag").value) || 0; -->
+    <!-- var perBag = parseFloat(document.getElementById("per_bag").value) || 0; -->
+    <!-- var quantity = bag * perBag; -->
+
+    <!-- document.getElementById("quantity").value = quantity; -->
+
+    <!-- // Update amount based on new quantity -->
+    <!-- calculateAmount(); -->
+<!-- } -->
+
+<!-- function calculateAmount() { -->
+    <!-- var quantity = parseFloat(document.getElementById("quantity").value) || 0; -->
+    <!-- var rate = parseFloat(document.getElementById("rate").value) || 0; -->
+    <!-- var price = parseFloat(document.getElementById("price").value) || 0; -->
+    <!-- var discount = parseFloat(document.getElementById("discount").value) || 0; -->
+
+    <!-- var discountedRate = rate - discount; -->
+    <!-- var amount = quantity * discountedRate; -->
+
+    <!-- document.getElementById("amount").value = amount.toFixed(2); -->
+<!-- } -->
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Event listeners for quantity
+    document.getElementById("bag").addEventListener("input", calculateQuantity);
+    document.getElementById("per_bag").addEventListener("input", calculateQuantity);
+
+    // Event listeners for price and discount
+    document.getElementById("price").addEventListener("input", updateNetRate);
+    document.getElementById("discount").addEventListener("input", updateNetRate);
+
+    // Event listener for rate (net price)
+    document.getElementById("rate").addEventListener("input", calculateAmount);
+
+    // Also re-calculate amount when discount changes
+    document.getElementById("discount").addEventListener("input", calculateAmount);
+});
+
+function calculateQuantity() {
+    var bag = parseFloat(document.getElementById("bag").value) || 0;
+    var perBag = parseFloat(document.getElementById("per_bag").value) || 0;
+    var quantity = bag * perBag;
+
+    document.getElementById("quantity").value = quantity.toFixed(2);
+
+    calculateAmount(); // recalculate based on new quantity
+} 
+
+function updateNetRate() {
+    var price = parseFloat(document.getElementById("price").value) || 0;
+    var discount = parseFloat(document.getElementById("discount").value) || 0;
+
+    var netRate = price - discount;
+    document.getElementById("rate").value = netRate.toFixed(2);
+
+    calculateAmount(); // update amount after recalculating rate
+}
+
+function calculateAmount() {
+    var quantity = parseFloat(document.getElementById("quantity").value) || 0;
+    var rate = parseFloat(document.getElementById("rate").value) || 0;
+
+    var amount = quantity * rate;
+    document.getElementById("amount").value = amount.toFixed(2);
+}
+
+
+function po_detail_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/edit-yarn-po/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        // $('#tm_po_id').val(res.tm_po_id); // Populate tm_id with the item's id
+        $('#deliver_bags').val(res.bag);
+        $('#deliver_date').val(res.delivery_date);
+        $('#deliver_per_bag').val(res.bag_wt);
+
+        $('#knitting').val(res.party_id).trigger("change");    
+
+        // Set the update flag to true to indicate we are editing
+        // $('#update_flag').val('true');
+
+        // Optionally show a message or change button text
+        $('#deliver_update').text('Update'); // Change button text to 'Update' for clarity
+    });
+}
+
+
+
+
+function updateSummary(data) {
+    console.log("Updating summary with data:", data);
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    $('#sub_total_placeholder').text(parseFloat(data.total_amount || 0).toFixed(2));
+    $('#tax_placeholder').text(parseFloat(data.tax_total || 0).toFixed(2));
+    $('#round_off').text(parseFloat(data.round_off || 0).toFixed(2));
+    $('#total_payable').text(parseFloat(data.grand_total || 0).toFixed(2));
+}
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_id', $('#tm_po_id').val());
+
+    $.ajax({
+        url: '/ypo-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'PO updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                
+
+                // Update Summary
+                updateSummary(response);
+				location.reload();
+                // Clear Form Fields
+                <!-- $('#product_id').val('').trigger("change"); -->
+                <!-- $('#bag').val(''); -->
+                <!-- $('#per_bag').val(''); -->
+                <!-- $('#quantity').val(''); -->
+                <!-- $('#rate').val(''); -->
+                <!-- $('#amount').val(''); -->
+                $('#update_flag').val('false');
+                $('#update').text('Add');
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+
+
+
+function po_detail_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/ypo-delivery-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                showToast('success', 'Purchase Order Deleted!.');
+                // alert('success');
+                refresh_data();
+            } else {
+                notifier.show(
+                    'Error!', 
+                    // 'Failed To delete , Try again later!', 
+                    data.message || 'Failed to delete PO.', 
+
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+
+
+function calculateTotal() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#datatable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseInt($(this).find('td:eq(3)').text()) || 0; // Quantity
+        const rate = parseFloat($(this).find('td:eq(4)').text()) || 0; // Rate
+        const amount = parseFloat($(this).find('td:eq(5)').text()) || 0; // Amount
+       
+        // Calculate tax amount as 5% of the amount
+        const taxAmount = (amount * taxRate) / 100;
+
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += amount;
+        totalTax += taxAmount;  // Adding calculated tax to total tax
+
+        // Update tax summary (if any tax logic is needed)
+        if (taxAmount > 0) {
+            if (!taxSummary[taxRate]) {
+                taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+            }
+            // Assuming SGST and CGST split equally for simplicity
+            const sgstAmount = taxAmount / 2;
+            taxSummary[taxRate].sgst += sgstAmount;
+            taxSummary[taxRate].cgst += sgstAmount;
+            taxSummary[taxRate].totalTax += taxAmount;
+        }
+    });
+
+    // Calculate round-off value and grand total
+    const totalAmount = subTotal + totalTax;
+    const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+
+    // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+    const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+    $('#tax_placeholder').text(totalTax.toFixed(2));
+    $('#round_off').text(adjustedRoundOff.toFixed(2));
+    $('#total_payable').text(grandTotal);
+
+    // Update tax summary table (if needed)
+    $('#tax_summary_body').empty();
+    for (const [rate, data] of Object.entries(taxSummary)) {
+        $('#tax_summary_body').append(`
+            <tr>
+                <td>${rate}%</td>
+                <td>${data.sgst.toFixed(2)}</td>
+                <td>${data.cgst.toFixed(2)}</td>
+                <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+                <td>${data.totalTax.toFixed(2)}</td>
+            </tr>
+        `);
+    }
+}
+ 
+$('.single-select').select2();
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+ </script>

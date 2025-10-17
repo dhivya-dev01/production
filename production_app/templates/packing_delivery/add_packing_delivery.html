@@ -1,0 +1,1247 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+        
+
+        /* Firefox */
+        input[type=number] {
+        -moz-appearance: textfield;
+        }
+
+    </style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Packing Delivery  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/packing-delivery"> Packing Delivery</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li> 
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Delivery No.</label>
+                                                                    <input type="text" class="form-control" value="{{delivery_no}}" readonly>
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Delivery Date</label>
+                                                                    <input class="form-control" type="date" name="outward_date" id="outward_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadEntry()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div> 
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="product_id" class="form-label">Stiching Received </label>
+                                                                    <select id="inward_id" name="inward_id" class="form-control form-select single-select" multiple onchange="LoadInward_QualtityStyle()">
+                                                                        <option value="">Select</option>
+                                                                     
+                                                                        
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" readonly onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                          
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+
+                                                                    <button class="btn btn-primary mt-3" type="button" onclick="LoadInward_Data()">+ Load</button>
+
+                                                                </div>
+
+                                                            </div>
+                                                    
+                                                        </div> 
+
+                                                        <div class="">
+                                                            <div class="table-responsive table-desi">
+
+                                                               <table id="purchaseTable" class="table table-bordered table-striped w-100">
+                                                                    <thead></thead>
+                                                                    <tbody></tbody>
+                                                                    <!-- <tfoot> will be appended dynamically -->
+                                                                </table>
+
+                                                            
+                                                            
+                                                            </div> 
+                                                        </div>
+                                                        
+                                                        <br>
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-md-2">
+ 
+                                                            </div> 
+
+                                                            <div class="col-md-4 mt-4">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                            </div>
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id">
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                                <style>
+                                                                    .summary-container {
+                                                                        max-width: 500px;
+                                                                        margin: 20px auto;
+                                                                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                                                                        color: white;
+                                                                        padding: 15px;
+                                                                        border-radius: 10px;
+                                                                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                                                                    }
+                                                                
+                                                                    .summary-table {
+                                                                        width: 100%;
+                                                                        background: white;
+                                                                        color: black;
+                                                                        border-radius: 10px;
+                                                                        overflow: hidden;
+                                                                        padding: 10px;
+                                                                    }
+                                                                
+                                                                    .summary-table th {
+                                                                        /* background: white; */
+                                                                        color: black    ;
+                                                                        padding: 10px;
+                                                                        text-align: center;
+                                                                    }
+                                                                
+                                                                    .summary-table td {
+                                                                        padding: 8px;
+                                                                        font-weight: bold;
+                                                                    }
+                                                                
+                                                                    .highlight {
+                                                                        background: #428bca;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                        text-align: right;
+                                                                    }
+                                                                
+                                                                    .transparent-input {
+                                                                        width: 100%;
+                                                                        border: none;
+                                                                        outline: none;
+                                                                        background: transparent;
+                                                                        text-align: right;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                        color: black;
+                                                                    }
+                                                                
+                                                                    .transparent-input:focus {
+                                                                        border-bottom: 2px solid #428bca;
+                                                                    }
+                                                                </style>
+                                                               
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+function LoadEntry() {
+    var party_id = $('#party_id').val(); 
+    $('#inward_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', party_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST  
+        url: '/get_stiching_received_list/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(data) {
+            // $('#po_list').empty().append('<option value="">Select</option>');
+        
+
+            
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#inward_id').append('<option value="' + po.id + '">' + po.inward_no + ' - ' +( po.work_order_no) + '</option>');
+
+                
+                });
+            }
+             
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+$("#inward_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "CN123 - WO5678"
+
+    if (prgText.includes(" - ")) {
+        const parts = prgText.split(" - ");
+        $("#work_order_no").val(parts[1].trim());  // set only work_order_no
+    } else {
+        $("#work_order_no").val('');
+    }
+});
+
+
+$(document).ready(function () {
+    function toggleFields() {
+        const isChecked = $('#is_packing').is(':checked');
+
+        // Enable if checked, disable if not
+        $(' #deliver_to').prop('disabled', !isChecked);
+    }
+
+    // Call on page load
+    toggleFields();
+
+    // Call when checkbox changes
+    $('#is_packing').change(function () {
+        toggleFields();
+    });
+});
+
+
+
+
+function LoadInward_QualtityStyle() {
+    const inward_id = $("#inward_id").val();
+
+    
+    $.ajax({
+        type: 'POST',  // Change to POST    
+        url: '/get_stiching_summary_stock/',
+        data: {
+            'inward_id': inward_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(response) {
+         
+  
+            
+            const summaryData = response.data || [];
+            const quality = response.quality;
+            const style = response.style;
+            const fabric = response.fabric;  // ✅ This is a single object, not an array
+
+            // Set quality
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(
+                    '<option selected value="' + quality.id + '">' + quality.name + '</option>'
+                );
+            }
+
+            // Set style
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(
+                    '<option selected value="' + style.id + '">' + style.name + '</option>'
+                );
+            } 
+
+             
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+// function LoadInward_QualtityStyle() {
+//     const inward_id = $("#inward_id").val();
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_stiching_summary_stock/',
+//         data: {
+//             'inward_id': inward_id,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+//         success: function(response) {
+//             const summaryData = response.data || [];
+
+//             const quality = response.quality;
+//             const style = response.style;
+//             const fabric = response.fabric;
+
+//             // Check for multiple entries with same quality & style in summaryData
+//             const duplicateMap = {};
+
+//             summaryData.forEach(item => {
+//                 const key = `${item.quality_id}_${item.style_id}`;
+//                 duplicateMap[key] = (duplicateMap[key] || 0) + 1;
+//             });
+
+//             const duplicates = Object.entries(duplicateMap).filter(([key, count]) => count > 1);
+
+//             if (duplicates.length > 0) {
+//                 alert("Multiple entries found with the same Quality & Style. Please check the data.");
+//                 // Optional: reset quality/style fields
+//                 $('#quality_id').empty().append('<option value="">Select</option>');
+//                 $('#style_id').empty().append('<option value="">Select</option>');
+//                 return; // Don't proceed
+//             }
+
+//             // Set quality
+//             if (quality && typeof quality === 'object') {
+//                 $('#quality_id').empty().append(
+//                     '<option selected value="' + quality.id + '">' + quality.name + '</option>'
+//                 );
+//             }
+ 
+//             // Set style
+//             if (style && typeof style === 'object') {
+//                 $('#style_id').empty().append(
+//                     '<option selected value="' + style.id + '">' + style.name + '</option>'
+//                 );
+//             }
+//         },   
+//         error: function(xhr, status, error) {
+//             console.error('Error loading PO lists:', error);
+//         }
+//     });
+// }
+ 
+
+
+// function LoadInward_QualtityStyle() {
+//     const inward_id = $("#inward_id").val();
+
+//     if (!inward_id) {
+//         alert("Please select a valid Inward entry.");
+//         return;
+//     }
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_stiching_summary_stock/',
+//         data: {
+//             'inward_id': inward_id,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+//         success: function(response) {
+//             const summaryData = response.data || [];
+//             const quality = response.quality;
+//             const style = response.style;
+
+//             // Check for multiple entries with same Quality & Style combination
+//             const comboCount = {};
+
+//             summaryData.forEach(item => {
+//                 const key = `${item.quality_id}_${item.style_id}`;
+//                 comboCount[key] = (comboCount[key] || 0) + 1;
+//             });
+
+//             // Find duplicates (more than one entry with same quality + style)
+//             const duplicateCombos = Object.entries(comboCount).filter(([_, count]) => count > 1);
+
+//             if (duplicateCombos.length > 0) {
+//                 alert("⚠️ Multiple entries found with the same Quality & Style. Selection is not allowed.");
+                
+//                 // Reset dropdowns
+//                 $('#quality_id').empty().append('<option value="">Select</option>');
+//                 $('#style_id').empty().append('<option value="">Select</option>');
+
+//                 return; // Stop further execution
+//             }
+
+//             // ✅ No duplicates found — set Quality and Style
+//             if (quality && typeof quality === 'object') {
+//                 $('#quality_id').empty().append(
+//                     `<option selected value="${quality.id}">${quality.name}</option>`
+//                 );
+//             } else {
+//                 $('#quality_id').empty().append('<option value="">Select</option>');
+//             }
+
+//             if (style && typeof style === 'object') {
+//                 $('#style_id').empty().append(
+//                     `<option selected value="${style.id}">${style.name}</option>`
+//                 );
+//             } else {
+//                 $('#style_id').empty().append('<option value="">Select</option>');
+//             }
+//         },
+
+//         error: function(xhr, status, error) {
+//             console.error('Error loading stitching summary stock:', error);
+//             alert("An error occurred while loading data.");
+//         }
+//     });
+// }
+
+
+
+
+function LoadInward_Data() {
+    const inward_ids = $('#inward_id').val(); // Multiple values (array)
+
+    if (!inward_ids || inward_ids.length === 0) {
+        alert("Please select at least one Inward entry.");
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_stiching_summary_stock/',
+        data: {
+            inward_id: inward_ids, // This will be sent as an array (make sure Django handles it)
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        traditional: true, // ✅ This ensures array is sent as repeated parameters: ?inward_id=1&inward_id=2
+        success: function (response) {
+            const summaryData = response.data || [];
+            const quality = response.quality;
+            const style = response.style;
+            const fabric = response.fabric;
+
+            // ==== 🔍 Check for multiple Quality/Style combinations ====
+            const uniqueCombinations = new Set();
+
+            summaryData.forEach(row => {
+                if (row.quality_id && row.style_id) {
+                    const key = `${row.quality_id}_${row.style_id}`;
+                    uniqueCombinations.add(key);
+                }
+            });
+
+            if (uniqueCombinations.size > 1) {
+                alert("❌ Cannot proceed: Selected entries have different Quality and Style.");
+                $('#purchaseTable thead').empty();
+                $('#purchaseTable tbody').empty();
+                $('#purchaseTable tfoot').remove();
+                $('#quality_id').empty().append('<option value="">Select</option>');
+                $('#style_id').empty().append('<option value="">Select</option>');
+                return;
+            }
+
+            // ==== ✅ Proceed if only 1 unique quality/style combination ====
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(
+                    `<option selected value="${quality.id}">${quality.name}</option>`
+                );
+            }
+
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(
+                    `<option selected value="${style.id}">${style.name}</option>`
+                );
+            }
+
+            if (fabric && typeof fabric === 'object') {
+                $('#fabric_id').val(fabric.id);
+            } else {
+                $('#fabric_id').val('');
+            }
+
+            // 🧱 CONTINUE with your table build logic here...
+            // Build table using summaryData as you already did (no changes needed)
+             $("#purchaseTable thead").empty();
+            $("#purchaseTable tbody").empty();
+            $("#purchaseTable tfoot").remove();
+
+
+
+            const sizeSet = new Set();
+            const colorMap = {};
+
+            summaryData.forEach(row => {
+                const colorName = row.color_name;
+                const sizeName = row.size_name;
+                const sizeId = row.size_id;
+                const colorId = row.color_id;
+
+                const deliveredQty = parseFloat(row.total_out_quantity) || 0;
+                const alreadyReceivedQty = parseFloat(row.total_received_quantity) || 0;
+                const receivedQty = parseFloat(row.available_stock_quantity) || 0;
+
+                sizeSet.add(sizeName);
+
+                if (!colorMap[colorName]) {
+                    colorMap[colorName] = {
+                        colorId,
+                        sizes: {},
+                    };
+                }
+
+                colorMap[colorName].sizes[sizeName] = {
+                    deliveredQty,
+                    alreadyReceivedQty,
+                    receivedQty,
+                    sizeId,
+                    inwardId: row.inward_id // ✅ Add this line
+
+                };
+            });
+
+            const sizes = Array.from(sizeSet);
+
+            // ===== Table Header =====
+            let thead = `
+                <tr>
+                    <th>Color</th>
+                    ${sizes.map(size => `<th class="text-center">${size}</th>`).join('')}
+                    <th class="text-center"> Total</th>
+                </tr>
+            `;
+            $("#purchaseTable thead").html(thead);
+
+            // ===== Table Body =====
+            let tbody = '';
+            let totalPerSize = {};
+            sizes.forEach(size => totalPerSize[size] = 0);
+            let grandTotal = 0;
+
+            for (const [colorName, data] of Object.entries(colorMap)) {
+                let rowTotal = 0;
+                tbody += `<tr><td>${colorName}</td>`;
+
+                sizes.forEach(size => {
+                    const cell = data.sizes[size];
+                    if (cell) {
+                        const qty = cell.receivedQty.toFixed(0);
+                        rowTotal += cell.receivedQty;
+                        totalPerSize[size] += cell.receivedQty;
+                        grandTotal += cell.receivedQty;
+
+                        tbody += `
+                            <td>
+                                <input type="number" class="form-control form-control-sm received-qty" 
+                                    value="${qty}" min="0" step="0.01"
+                                    style=" border: none; text-align:right;"
+                                    data-color-id="${data.colorId}" 
+                                    data-size-id="${cell.sizeId}" 
+                                    data-inward-id="${cell.inwardId}">
+                            </td>
+                            <td style="display:none" class="color_id">${data.colorId}</td>
+                            <td style="display:none" class="size_id">${cell.sizeId} </td>
+                        `;
+                    } else {
+                        tbody += `<td>-</td>`;
+                    }
+                });
+
+                tbody += `<td class="row-total" style="text-align:right;">${rowTotal.toFixed(0)}</td></tr>`;
+            }
+            $("#purchaseTable tbody").html(tbody);
+
+            // ===== Table Footer (Total Received per Size) + Grand Total =====
+            let tfoot = `
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        ${sizes.map(size => `<th class="footer-in-qty" style="text-align:right;">${totalPerSize[size].toFixed(0)}</th>`).join('')}
+                        <th class="footer-grand-total" style="text-align:right;">${grandTotal.toFixed(0)}</th>
+                    </tr>
+                </tfoot>
+            `;
+            $("#purchaseTable").append(tfoot);
+
+            // ===== Input Event Handling for Live Total Update =====
+            $("#purchaseTable").off("input").on("input", ".received-qty", function () {
+                const newTotals = {};
+                sizes.forEach(size => newTotals[size] = 0);
+                let newGrandTotal = 0;
+
+                $("#purchaseTable tbody tr").each(function () {
+                    let rowTotal = 0;
+
+                    $(this).find("input.received-qty").each(function () {
+                        const colIndex = $(this).closest('td').index();
+                        const value = parseFloat($(this).val()) || 0;
+                        const size = sizes[colIndex - 1]; // -1 because of color column
+
+                        newTotals[size] += value;
+                        rowTotal += value;
+                        newGrandTotal += value;
+                    });
+
+                    $(this).find(".row-total").text(rowTotal.toFixed(0));
+                });
+
+                // Update footer
+                $("#purchaseTable tfoot tr th.footer-in-qty").each(function (index) {
+                    const size = sizes[index];
+                    $(this).text(newTotals[size].toFixed(3));
+                });
+
+                $(".footer-grand-total").text(newGrandTotal.toFixed(0));
+            });
+
+            // buildPurchaseTable(summaryData, inward_ids);
+
+
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching cutting stock summary:", error);
+            $("#purchaseTable thead").empty();
+            $("#purchaseTable tbody").empty();
+            $("#purchaseTable tfoot").remove();
+        }
+    });
+}
+
+
+
+function LoadInward_Data_test_1(){
+// $('#inward_id').on('change', function () {
+    const party_id = $("#party_id").val();
+    const work_order_no = $("#work_order_no").val();
+    const inward_id = $('#inward_id').val();
+    const color_text = $('#inward_id option:selected').text().trim();
+    const deliver_to = $("#deliver_to option:selected").text() || '-';
+    const deliver_id = $("#deliver_to").val() || 0;
+    // const deliver_to = (deliver_to && deliver_to !== "Select") ? deliver_to : '';
+   
+    
+    const isInward = $("#is_packing").is(":checked") ? 1 : 0;
+
+   
+    $.ajax({
+        type: 'POST',
+        url: '/get_stiching_summary_stock/',
+        data: {
+            inward_id, 
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+       
+        success: function (response) {
+        
+
+            const summaryData = response.data || [];
+            const quality = response.quality;
+            const style = response.style;
+            const fabric = response.fabric;  // ✅ This is a single object, not an array
+
+            // Set quality
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(
+                    '<option selected value="' + quality.id + '">' + quality.name + '</option>'
+                );
+            }
+
+            // Set style
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(
+                    '<option selected value="' + style.id + '">' + style.name + '</option>'
+                );
+            } 
+
+            // Set fabric_id in hidden input
+            if (fabric && typeof fabric === 'object') {
+                $('#fabric_id').val(fabric.id); // Hidden input
+                // $('#fabric_name_display').text(fabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                // $('#fabric_name_display').text('');
+                console.warn("No fabric data available");
+            }
+
+
+            $("#purchaseTable thead").empty();
+            $("#purchaseTable tbody").empty();
+            $("#purchaseTable tfoot").remove();
+
+
+
+            const sizeSet = new Set();
+            const colorMap = {};
+
+            summaryData.forEach(row => {
+                const colorName = row.color_name;
+                const sizeName = row.size_name;
+                const sizeId = row.size_id;
+                const colorId = row.color_id;
+
+                const deliveredQty = parseFloat(row.total_out_quantity) || 0;
+                const alreadyReceivedQty = parseFloat(row.total_received_quantity) || 0;
+                const receivedQty = parseFloat(row.available_stock_quantity) || 0;
+
+                sizeSet.add(sizeName);
+
+                if (!colorMap[colorName]) {
+                    colorMap[colorName] = {
+                        colorId,
+                        sizes: {},
+                    };
+                }
+
+                colorMap[colorName].sizes[sizeName] = {
+                    deliveredQty,
+                    alreadyReceivedQty,
+                    receivedQty,
+                    sizeId,
+                };
+            });
+
+            const sizes = Array.from(sizeSet);
+
+            // ===== Table Header =====
+            let thead = `
+                <tr>
+                    <th>Color</th>
+                    ${sizes.map(size => `<th class="text-center">${size}</th>`).join('')}
+                    <th class="text-center"> Total</th>
+                </tr>
+            `;
+            $("#purchaseTable thead").html(thead);
+
+            // ===== Table Body =====
+            let tbody = '';
+            let totalPerSize = {};
+            sizes.forEach(size => totalPerSize[size] = 0);
+            let grandTotal = 0;
+
+            for (const [colorName, data] of Object.entries(colorMap)) {
+                let rowTotal = 0;
+                tbody += `<tr><td>${colorName}</td>`;
+
+                sizes.forEach(size => {
+                    const cell = data.sizes[size];
+                    if (cell) {
+                        const qty = cell.receivedQty.toFixed(0);
+                        rowTotal += cell.receivedQty;
+                        totalPerSize[size] += cell.receivedQty;
+                        grandTotal += cell.receivedQty;
+
+                        tbody += `
+                            <td>
+                                <input type="number" class="form-control form-control-sm received-qty" 
+                                    value="${qty}" min="0" step="0.01"
+                                    style=" border: none; text-align:right;"
+                                    data-color-id="${data.colorId}" 
+                                    data-size-id="${cell.sizeId}" 
+                                    data-inward-id="${inward_id}">
+                            </td>
+                            <td style="display:none" class="color_id">${data.colorId}</td>
+                            <td style="display:none" class="size_id">${cell.sizeId} </td>
+                        `;
+                    } else {
+                        tbody += `<td>-</td>`;
+                    }
+                });
+
+                tbody += `<td class="row-total" style="text-align:right;">${rowTotal.toFixed(0)}</td></tr>`;
+            }
+            $("#purchaseTable tbody").html(tbody);
+
+            // ===== Table Footer (Total Received per Size) + Grand Total =====
+            let tfoot = `
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        ${sizes.map(size => `<th class="footer-in-qty" style="text-align:right;">${totalPerSize[size].toFixed(0)}</th>`).join('')}
+                        <th class="footer-grand-total" style="text-align:right;">${grandTotal.toFixed(0)}</th>
+                    </tr>
+                </tfoot>
+            `;
+            $("#purchaseTable").append(tfoot);
+
+            // ===== Input Event Handling for Live Total Update =====
+            $("#purchaseTable").off("input").on("input", ".received-qty", function () {
+                const newTotals = {};
+                sizes.forEach(size => newTotals[size] = 0);
+                let newGrandTotal = 0;
+
+                $("#purchaseTable tbody tr").each(function () {
+                    let rowTotal = 0;
+
+                    $(this).find("input.received-qty").each(function () {
+                        const colIndex = $(this).closest('td').index();
+                        const value = parseFloat($(this).val()) || 0;
+                        const size = sizes[colIndex - 1]; // -1 because of color column
+
+                        newTotals[size] += value;
+                        rowTotal += value;
+                        newGrandTotal += value;
+                    });
+
+                    $(this).find(".row-total").text(rowTotal.toFixed(0));
+                });
+
+                // Update footer
+                $("#purchaseTable tfoot tr th.footer-in-qty").each(function (index) {
+                    const size = sizes[index];
+                    $(this).text(newTotals[size].toFixed(3));
+                });
+
+                $(".footer-grand-total").text(newGrandTotal.toFixed(0));
+            });
+
+
+
+ 
+
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching cutting stock summary:", error);
+            $("#purchaseTable thead").empty();
+            $("#purchaseTable tbody").empty();
+            $("#purchaseTable tfoot").remove();
+        }
+    });
+// });
+
+}
+
+
+// function storeTblValues() {
+//     const TableData = [];
+
+//     $('#purchaseTable tbody tr').each(function () {
+//         const $row = $(this);
+
+//         const size = $row.find('td:eq(0)').text().trim();
+//         const color = $row.find('td:eq(1)').text().trim();
+
+//         const prg_qty = parseFloat($row.find('td:eq(2)').text().trim()) || 0;
+
+//         const stock_qty = parseFloat($row.find('td:eq(3)').text().trim()) || 0;
+
+//         const quantity = parseFloat($row.find('td:eq(4) input').val()) || 0;
+
+//         // Fetch hidden values using .text() or data attributes
+//         const color_id = $row.find('.color_id').text().trim() || '';
+//         const size_id = $row.find('.size_id').text().trim() || '';
+//         const is_packing = $row.find('.is_packing').text().trim() || '';
+     
+
+//         const isValid = quantity && size_id && color_id;
+
+//         // Optional validation — you can skip invalid rows
+//         // if (!isValid) return;
+
+//         TableData.push({
+           
+//             quantity: quantity.toFixed(2),
+//             quality_id,
+//             style_id,
+//             size_id,
+//             color_id,
+//             is_packing,
+//         });
+//     });
+
+//     console.log("TABLE-DATA:", TableData);
+//     return TableData;
+// }
+
+
+
+
+ 
+ function storeTblValues() {
+    const TableData = [];
+
+    // Get all sizes from the header (if needed)
+    const sizes = [];
+    $("#purchaseTable thead tr th").each(function () {
+        const sizeName = $(this).text().trim();
+        if (sizeName && sizeName !== 'Color' && sizeName !== 'Row Total') {
+            sizes.push(sizeName);
+        }
+    });
+ 
+    // Loop through each row (each color)
+    $("#purchaseTable tbody tr").each(function () {
+        const $row = $(this);
+        const colorName = $row.find("td:first").text().trim(); // First <td> is color
+
+        $row.find("input.received-qty").each(function () {
+            const $input = $(this);
+            const qty = parseFloat($input.val()) || 0;
+
+            // Only store if quantity > 0
+            if (qty > 0) {
+                const color_id = $input.data("color-id");
+                const size_id = $input.data("size-id");
+                const inward_id = $input.data("inward-id");
+
+                TableData.push({
+                    size_id, 
+                    color_id,
+                    quantity: qty.toFixed(2),
+                    inward_id
+                });
+            }
+        });
+    });
+
+    console.log("Stitching-table-DATA:", TableData);
+    return TableData;
+}
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+        var isPackingChecked = $('#is_packing').is(':checked') ? '1' : '0';
+        mdata.append('is_packing', isPackingChecked);
+
+        var do_no = $('#outward_no').val();
+        mdata.append('do_number', do_no);
+       
+
+        $.ajax({
+            type: "POST",  
+            url: "/add-packing-outward/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+
+             success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {
+                    notifier.show( 
+                        'Well Done!', 
+                        data.message || 'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+
+                    // Optionally reset form or redirect
+                    $('#add_new').trigger('reset');
+                    location.href='/packing-delivery-add';
+
+                } else {
+                    notifier.show( 
+                        'Error!', 
+                        data.message || 'Failed to add data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("❌ AJAX Error:", error);
+                $('#submit').attr('disabled', false).text('Save');
+                notifier.show(
+                    'Server Error!', 
+                    'Something went wrong. Please try again.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        }); 
+    }
+});
+
+
+
+// `````````````````````````````````````````````````````````````````````````````
+
+
+
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            // $('#color_id').empty().append('<option value="">Select Color</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');     
+
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+// ````````````````````````````````````````````
+    $('.single-select').select2(); 
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('outward_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+</script>

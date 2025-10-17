@@ -1,0 +1,831 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Email Settings  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Settings</a></li>
+                                            <li class="breadcrumb-item"><a href="/email-settings">Email Settings </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                    <!-- <div class=""> -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="">
+                                                    <div class="">
+                                                        <!-- Tabs for selecting different forms -->
+
+                                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active text-uppercase" id="process-tab" data-bs-toggle="tab"
+                                                                    href="#process" role="tab" aria-controls="process" aria-selected="true">Process</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-uppercase" id="email-tab" data-bs-toggle="tab"
+                                                                    href="#email" role="tab" aria-controls="email"
+                                                                    aria-selected="false">Email</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link text-uppercase" id="sms-tab" data-bs-toggle="tab"
+                                                                    href="#sms" role="tab" aria-controls="sms"
+                                                                    aria-selected="false">SMS</a>
+                                                            </li>
+                                                        </ul>
+
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="">
+                                                    <div class="">
+                                                        <div class="tab-content" id="myTabContent">
+                                                            <!-- Email Form -->
+                                                            <div class="tab-pane fade " id="email" role="tabpanel" aria-labelledby="email-tab">
+                                                                <h5 class="ms-3"><b>EMAIL KEYS:</b></h5>
+                                                                <form id="email_add_form">
+                                                                    {% for email in email %}
+                                                                   
+                                                                    {% csrf_token %}
+                                                                    <div class="row ms-2">
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_host" class="col-form-label">Email Host</label>
+                                                                            <input class="form-control" type="text" name="email_host" id="email_host" value="{{email.email_host}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_port" class="col-form-label">Email Port</label>
+                                                                            <input class="form-control" type="text" name="email_port" id="email_port" value="{{email.email_port}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_user" class="col-form-label">Email Host User</label>
+                                                                            <input class="form-control" type="text" name="email_host_user" id="email_user" value="{{email.email_host_user}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_password" class="col-form-label">Email Host Password</label>
+                                                                            <input type="text" class="form-control" name="email_password" id="email_password" value="{{email.email_password}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="default_email" class="col-form-label">Default From Email</label>
+                                                                            <input type="text" class="form-control" name="default_email" id="default_email" value="{{email.default_email}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_description" class="col-form-label">Description</label>
+                                                                            <textarea rows="3" class="form-control" name="description" id="email_description" required>{{email.description}}</textarea>
+                                                                        </div>
+                                                                        <div class="modal-footer mt-2">
+                                                                            <input type="hidden" id="edit_id" name="edit_id">
+                                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                            <button type="submits" id="edit_button" class=" btn btn-primary">Update</button>
+                                                                            <!-- <button type="submits" id="edit_button" class=" btn btn-primary">Add</button> -->
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+ 
+                                                                    {% endfor %}
+
+                                                                    <!-- email list table -->
+
+                                                                    <!-- 
+                                                                        <div class="card-body">
+                                                                            {% csrf_token %}
+                                                                            <div class="dt-responsive table-responsive table-hover">
+                                                                                <table id="email-datatable" class="table table-striped table-bordered nowrap">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>ID #</th>
+                                                                                            <th> Default Email</th>      
+                                                                                            <th>Email port</th>
+                                                                                            <th>Email Host</th>
+                                                                                            <th>Email User</th>                                                  
+                                                                                            <th>Active</th>
+                                    
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>                            
+                                                                                    </tbody>
+                                                                                </table>                                        
+                                                                            </div>
+                                                                        </div> -->
+
+                                                            </div>
+                        
+
+
+
+                                                            <div class="tab-pane fade show active" id="process" role="tabpanel" aria-labelledby="process-tab">
+                                                                <h5 class="ms-3"><b>Process</b></h5>
+                                                                <!-- <form id="process_form">
+                                                                    {% for email in email %}
+                                                                   
+                                                                    {% csrf_token %}
+                                                                    <div class="row ms-2">
+                                                                        <div class="col-md-4">
+                                                                            <label for="knitting" class="col-form-label">Knitting</label>
+                                                                            <input class="form-control" type="text" name="knitting" id="knitting" value="{{email.knitting}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="email_port" class="col-form-label">Bleaching</label>
+                                                                            <input class="form-control" type="text" name="bleaching" id="bleaching" value="{{email.bleaching}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="dyeing" class="col-form-label">Dyeing</label>
+                                                                            <input class="form-control" type="text" name="dyeing" id="dyeing" value="{{email.dyeing}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="compacting" class="col-form-label">Compacting</label>
+                                                                            <input type="text" class="form-control" name="compacting" id="compacting" value="{{email.compacting}}">
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <label for="cutting" class="col-form-label">Cutting</label>
+                                                                            <input type="text" class="form-control" name="cutting" id="cutting" value="{{email.cutting}}">
+                                                                        </div>
+                                                                        
+                                                                        <div class="modal-footer mt-2">
+                                                                            <input type="hidden" id="edit_id" name="edit_id">
+                                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                            <button type="submits" id="edit_button" class=" btn btn-primary">Update</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                                    {% endfor %}  -->
+
+
+                                                                    <form id="process_form" method="POST" >
+
+                                                                        {% csrf_token %}
+                                                                        
+
+                                                                       
+                                                                        <!-- <h2>{{process.stage}}</h2> -->
+                                                                        <div class="row align-items-center mb-3">
+                                                                            <!-- Knitting --> {% for process in process %}
+                                                                            <div class="col-md-2">
+                                                                                <label for="knitting" class="col-form-label"><b>{{ process.stage }}</b></label>
+                                                                                <input class="form-control" type="number" name="tolerance_{{ process.stage_name|lower }}" 
+                                                                                id="Tollerance_{{ process.stage_name|lower }}" 
+                                                                                value="{{ process.tolerance }}">
+                                                                         
+                                                                            </div>
+                                                                     
+                                                                            <!-- Dispatch Percentage -->
+                                                                            <!-- <div class="col-md-3">
+                                                                                <label for="dispatch_percentage" class="col-form-label">Dispatch %</label>
+                                                                                <input class="form-control" type="number" name="dispatch_percentage_{{ process.stage_name|lower }}" 
+                                                                                       id="dispatch_percentage_{{ process.stage_name|lower }}" 
+                                                                                       value="{{ process.weight_loss }}">
+                                                                            </div> -->
+                                                                    
+                                                                            <!-- Allowance -->
+                                                                            <!-- <div class="col-md-2">
+                                                                                <label for="allowance" class="col-form-label">Tolerance</label>
+                                                                                <input class="form-control" type="number" name="tolerance_{{ process.stage_name|lower }}" 
+                                                                                       id="Tollerance_{{ process.stage_name|lower }}" 
+                                                                                       value="{{ process.tolerance }}">
+                                                                            </div>                                                                        -->
+
+                                                                       {% endfor %}  
+                                                                    </div>
+                                                                    
+                                                                        <!-- Footer -->
+                                                                        <div class="modal-footer mt-2">
+                                                                            <button type="submit" id="edit_button" class="btn btn-primary">Update</button>
+                                                                        </div>
+                                                                    </form>
+                                                                    
+                                                                    
+                                                                    
+
+                                                            </div>
+                                                            <!-- SMS Form -->
+                                                            <div class="tab-pane fade" id="sms" role="tabpanel" aria-labelledby="sms-tab">
+                                                                <h5><b>SMS</b></h5>
+                                                                <form id="sms_form">
+                                                                    {% csrf_token %}
+                                                                    <div class="row ">
+                                                                        {% for sms in sms %}
+                                                                        <div class="col-3 mb-3">
+                                                                            <label for="email_host" class="col-form-label">SMS API Key</label>
+                                                                            <input class="form-control" type="text" name="sms_api_key" id="sms_api_key" required value="{{sms.sms_api_key}}">
+                                                                        </div>
+                                                                       
+                                                                        <div class="col-md-3 mb-3">
+                                                                            <label for="number" class="col-form-label">Support Phone Number</label>
+                                                                            <input type="number" maxlength="12" class="form-control" name="support_number" id="support_number" required value="{{sms.support_number}}">
+                                                                        </div>
+                                                                        <div class="col-md-4 mb-3">
+                                                                            <label for="email_description" class="col-form-label">Description</label>
+                                                                            <textarea rows="3" class="form-control" name="description" id="description" >{{sms.description}}</textarea>
+                                                                        </div>
+                                                                        
+                                                                        <div class="col-md-2 mt-5">
+                                                                            <input type="hidden" id="edit_id" name="edit_id" value="{{sms.id}}">
+                                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </form>
+                                                                <!-- SMS form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- Telegram Form -->
+                                                            <div class="tab-pane fade" id="telegram" role="tabpanel" aria-labelledby="telegram-tab">
+                                                                <!-- Telegram form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- WhatsApp Form -->
+                                                            <div class="tab-pane fade" id="whatsapp" role="tabpanel" aria-labelledby="whatsapp-tab">
+                                                                <!-- WhatsApp form fields go here -->
+                                                            </div>
+                        
+                                                            <!-- Payment Form -->
+                                                            <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                                                                <!-- Test Keys -->
+                                                                <h5><b>Test Keys</b></h5>
+                                                                <form id="add_test_payment">
+                                                                    {% csrf_token %}
+                                                                    <div class="row ms-2">
+                                                                        <div class="col-md-3">
+                                                                            <label for="test_key_id" class="col-form-label">Razorpay Key ID (Test)</label>
+                                                                            <input class="form-control" type="text" name="test_key_id" id="test_key_id" value="{{about.test_key_id}}">
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="test_key_secret" class="col-form-label">Razorpay Key Secret (Test)</label>
+                                                                            <input class="form-control" type="text" name="test_key_secret" id="test_key_secret" value="{{about.test_key_secret}}">
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="test_merchant_id" class="col-form-label">Merchant ID (Test)</label>
+                                                                            <input class="form-control" type="text" name="test_merchant_id" id="test_merchant_id" value="{{about.test_merchant_id}}">
+                                                                        </div>
+                                                                        <div class="col-md-3 mt-5">
+                                                                            <input type="hidden" name="company_id" id="company_id" value="{{ about.company_id }}">
+                                                                            <input type="hidden" name="id" id="edit_id" value="{{ about.id }}">
+                                                                            <button type="submit" id="update_test_payment" class="btn btn-primary">Update Test Keys </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form> 
+                        
+                                                                <!-- Live Keys -->
+                                                                <h5 class="mt-5"><b>Live Keys</b></h5>
+                                                                <form id="add_live_payment">
+                                                                    {% csrf_token %}
+                                                                    <div class="row ms-2">
+                                                                        <div class="col-md-3">
+                                                                            <label for="live_key_id" class="col-form-label">Razorpay Key ID (Live)</label>
+                                                                            <input class="form-control" type="text" name="live_key_id" id="live_key_id" value="{{about.live_key_id}}">
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="live_key_secret" class="col-form-label">Razorpay Key Secret (Live)</label>
+                                                                            <input class="form-control" type="text" name="live_key_secret" id="live_key_secret" value="{{about.live_key_secret}}">
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <label for="live_merchant_id" class="col-form-label">Merchant ID (Live)</label>
+                                                                            <input class="form-control" type="text" name="live_merchant_id" id="live_merchant_id" value="{{about.live_merchant_id}}">
+                                                                        </div>
+                                                                        <div class="col-md-3 mt-5">
+                                                                            <input type="hidden" name="company_id" id="company_id" value="{{ about.company_id }}">
+                                                                            <input type="hidden" name="id" id="edit_id" value="{{ about.id }}">
+                                                                            <button type="submit" id="update_live_payment" class="btn btn-primary">Update Live Keys</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+
+
+
+                                            <div id="edit_email_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLiveLabel">Edit Email Settings</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form id="edit_form">
+                                                            <div class="modal-body">
+                                                                {% csrf_token %}                                            
+                                                                <div class="row">
+                                                                  
+                                                                    <div class="col-md-4">
+                                                                        <label for="email_host" class="col-form-label">Email Host</label>
+                                                                        <input class="form-control" type="text" name="email_host" id="edit_email_host">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label for="email_port" class="col-form-label">Email Port</label>
+                                                                        <input class="form-control" type="text" name="email_port" id="edit_email_port">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label for="email_user" class="col-form-label">Email Host User</label>
+                                                                        <input class="form-control" type="text" name="email_host_user" id="edit_email_host_user">
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label for="email_password" class="col-form-label">Email Host Password</label>
+                                                                        <input type="text" class="form-control" name="email_password" id="edit_email_password" required>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label for="default_email" class="col-form-label">Default From Email</label>
+                                                                        <input type="text" class="form-control" name="default_email" id="edit_default_email" required>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="email_description" class="col-form-label">Description</label>
+                                                                        <textarea rows="3" class="form-control" name="description" id="edit_description" required></textarea>
+                                                                    </div>
+                                                                    <div class="col-md-2 mt-5">
+                                                                        <input type="hidden" id="edit_id" name="edit_id">
+                                                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                        <button type="submits" class="btn btn-primary">Add</button>
+                                                                    </div>
+         
+         
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <label for="edit_is_active" class="form-label">Status</label> 
+                                                                        <select class=" form-control edit" id="edit_is_active" name="is_active">
+                                                                            <option value="1">Active</option>
+                                                                            <option value="0">Inactive</option>                 
+                                                                        </select> 
+                                                                    </div> 
+                                                                                                                                                 
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <input type="hidden" name="id" id="edit_id">
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-success">Update</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div> 
+        
+        
+
+
+                                                    <!-- <div class="card-body">
+                                                        <div class="table-responsive table-desi">
+                                                            <table class="table all-package" id="datatable">
+                                                                {% csrf_token %}
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div> -->
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- </div> -->
+
+
+                                    <!-- <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th> UOM</th>                                                        
+                                                        <th>Active</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+                                    </div> -->
+
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+<script>
+
+
+ 
+     $('.edit').select2({
+        dropdownParent: $('#edit_modal')
+    });
+ 
+
+
+    
+
+    
+    var table = $('#email-datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        "columns": [
+            { "data": "action", "title": "Action" },            
+            { "data": "default_email", "title": "Default Email " },
+            { "data": "email_port", "title": "Email Port" },
+            { "data": "email_host", "title": "Email Host" },
+            { "data": "email_host_user", "title": "Email User" },
+            { "data": "status", "title": "Status" }
+        ],
+        "ajax": {
+            "url": '/email-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            }
+        }
+    });
+
+    function refresh_data(){
+        table.ajax.reload();
+    }
+
+
+
+
+    
+// $("#email_add_form").submit(function (e) {
+//         e.preventDefault();
+//         $.ajax({
+//             type: 'POST',
+//             url: '/email-add/',
+//             data: $(this).serialize(),
+//             success: function (response) {
+//                 if (response.data === 'Success') {
+//                     notifier.show(
+//                     'Well Done!', 
+//                     'Email details added successfully.', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 ); 
+ 
+//                     $('#email_add_form').trigger('reset'); 
+//                     refresh_data(); 
+//                 } else {
+//                     notifier.show(
+//               'Error!', 
+//               'Failed to add email details.', 
+//               'danger', 
+//               "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//               4000
+//           );                }
+//             },
+//             error: function(xhr, status, error) {
+//                 sweetalert('error', 'Failed to add uom. An error occurred.'); 
+//             }
+//         });
+//     });
+
+
+
+
+
+$(document).ready(function() {
+    $('#update_test_payment').on('click', function(event) {
+        event.preventDefault();
+        var formData = new FormData($('#add_test_payment')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/update-payment-keys/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.message === 'success') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Payment details updated successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to update payment details.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+
+    $('#update_live_payment').on('click', function(event) {
+        event.preventDefault();
+        var formData = new FormData($('#add_live_payment')[0]);
+        $.ajax({
+            type: 'POST',
+            url: '/update-payment-key-live/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.message === 'success') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Payment details Updated successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                } else {
+
+                    notifier.show(
+                        'Error!', 
+                        'Failed to update payment details.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+
+
+                  
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }); 
+});
+
+// ```````````````````````` edit email ``````````````````````````````````
+
+// function email_edit(id) {
+//         var tkn= document.getElementsByName("csrfmiddlewaretoken")[0].value;
+//         $.post('/email-edit/', {id:id, csrfmiddlewaretoken:tkn }, function(res) {
+//             $('#edit_id').val(res.id); 
+
+//             $('#edit_default_email').val(res.default_email);
+//             $('#edit_email_host').val(res.email_host);
+//             $('#edit_email_port').val(res.email_port);
+//             $('#edit_email_host_user').val(res.email_host_user);
+//             $('#edit_email_password').val(res.email_password);
+//             $('#edit_description').val(res.description);
+         
+//             $('#edit_is_active').val(res.is_active).trigger("change");    
+//             console.log('active',res.is_active);      
+//             $('#edit_email_modal').modal('show');
+//         });
+//     }  
+ 
+ 
+
+function email_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/email-edit/', {id: id, csrfmiddlewaretoken: tkn}, function(res) {
+        // Populating the form fields directly with the response data
+        $('#edit_id').val(res.id);
+        $('#email_host').val(res.email_host);
+        $('#email_port').val(res.email_port);
+        $('#email_user').val(res.email_host_user);
+        $('#email_password').val(res.email_password);
+        $('#default_email').val(res.default_email);
+        $('#email_description').val(res.description);
+
+        // Update the button text to "Update"
+        $('#edit_button').text('Update');
+
+        // Optionally, update the button type to 'submit' if needed
+        $('#edit_button').attr('type', 'submit'); 
+
+        // If you want to set a field to be active, you can add it here
+        if (res.is_active !== undefined) {
+            $('#is_active').prop('checked', res.is_active);  // Adjust for checkbox
+        }
+
+        // Optional: Log the response if needed
+        console.log('Email details edited: ', res);
+    });
+}
+
+
+
+
+    $("#edit_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+ 
+        var dataArray = [];
+        for (var pair of formData.entries()) {
+            dataArray.push(pair);
+        }
+ 
+        var serializedData = {};
+ 
+        dataArray.forEach(function(pair) {
+            serializedData[pair[0]] = pair[1];
+        });
+ 
+        $.ajax({
+            type: 'POST',
+            url: '/uom-update/',
+            data:  serializedData,
+            success: function (response) { 
+                if (response.message === 'success') {
+                    
+                notifier.show(
+                  'Well Done!', 
+                  'UOM  updated successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+              $('#edit_modal').modal('hide');
+              $('#edit_form').trigger('reset');
+              refresh_data();
+                } 
+                else {
+                    notifier.show(
+              'Error!', 
+              'Failed to update uom .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                }
+                $('#edit_modal').modal('hide');
+                $('#edit_form').trigger('reset');
+                refresh_data();
+            },
+            error: function(xhr, errmsg, err){
+                notifier.show(
+              'Error!', 
+              'Failed to update uom .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                $('#edit_modal').modal('hide');
+            }
+        });
+    });
+ 
+ 
+    function email_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/email-delete/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.message === 'yes') {
+                       
+                notifier.show(
+                  'Well Done!', 
+                  'Email Deleted successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+                        refresh_data(); 
+                    } else {
+                        notifier.show(
+                        'Error!', 
+                        'Failed to delete email.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                    }
+                },
+            });
+ 
+        }
+    }
+ 
+// ```````````````````````````````sms````````````````````````````````
+
+$("#sms_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+ 
+        var dataArray = [];
+        for (var pair of formData.entries()) {
+            dataArray.push(pair);
+        }
+ 
+        var serializedData = {};
+ 
+        dataArray.forEach(function(pair) {
+            serializedData[pair[0]] = pair[1];
+        });
+ 
+        $.ajax({
+            type: 'POST',
+            url: '/sms-update/',
+            data:  serializedData,
+            success: function (response) { 
+                if (response.message === 'success') {
+                    
+                notifier.show(
+                  'Well Done!', 
+                  'SMS  updated successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+            //   $('#edit_modal').modal('hide');
+              $('#sms_form').trigger('reset');
+              refresh_data();
+                } 
+                else {
+                    notifier.show(
+              'Error!', 
+              'Failed to update sms .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                }
+                // $('#edit_modal').modal('hide');
+                $('#sms_form').trigger('reset');
+                refresh_data();
+            },
+            error: function(xhr, errmsg, err){
+                notifier.show(
+              'Error!', 
+              'Failed to update sms .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                $('#edit_modal').modal('hide');
+            }
+        });
+    });
+
+ </script>

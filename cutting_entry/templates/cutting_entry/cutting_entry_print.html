@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MIRRA GARMENTS - CUTTING ENTRY</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+		@media print {
+			tfoot {
+				display: table-footer-group;
+			}
+
+			/* Optional: prevent page-break inside footer rows */
+			tfoot tr {
+				page-break-inside: avoid;
+			}
+
+			.page-break {
+				page-break-after: always;
+			}
+		}
+
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+		body {
+            position: relative;
+            width: 21cm;
+            height: 29.7cm;
+            margin: 0 auto;
+            color: #001028;
+            background: #FFFFFF;
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 13pt;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        header {
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+
+        #logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #logo img {
+            width: 90px;
+        }
+
+          /* * {margin:0; padding:0; text-indent:0; }
+          a { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; } --> -->
+         h1 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13.5pt; }
+         h4 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; }
+         p { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin:0pt; }
+		 
+
+	
+		 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			padding: 4px;
+			 */
+
+
+                * {margin:0; padding:0; text-indent:0; }
+         a { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; }
+         h1 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13.5pt; }
+         h4 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 11pt; }
+         p { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 11pt; margin:0pt; }
+         
+		 
+		 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			padding: 4px;
+			
+		}
+        
+    </style>
+</head>
+<body>
+<section class="sheet" style="padding: 20px">
+
+
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="35%" style="vertical-align: top;">
+                <img width="140" height="70" src="{{ image_url }}"/>
+            </td> 
+            <td width="65%" align="right">
+                <h4><big><b><strong>{{ company.name.upper }}</strong></b></big></h4>
+                <div style="margin-top: -6px;">
+                    <p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+                    <p><b>Cell:</b> {{ company.mobile }} | <b>Phone:</b> {{ company.phone }}</p>
+                    <p><b>Email:</b> {{ company.email }}</p>
+                    <p><b>GSTIN:</b> {{ company.gstin }} </p>
+                </div>
+            </td>
+        </tr>
+    </table> 
+
+<hr>
+
+<!-- Cutting Info -->
+<table width="100%" style="margin-bottom: 10px;">
+    <tr>
+        <td><strong>Entry No.:</strong> {{ total_values.cutting_no }}</td>
+        <td align="center">
+            <div class="border-box" style="
+            border: 2px solid black;
+            text-align: center;
+            padding: 4px;
+            font-weight: bold;">CUTTING ENTRY</div>
+        </td>
+        <td align="right"><strong>Entry Date:</strong> {{ total_values.inward_date|date:"d-m-Y" }}</td>
+    </tr>
+</table>
+
+<table width="100%">
+    <tr>
+        <td><strong>Work Order No.:</strong> {{ total_values.work_order_no }}</td>
+        <td align="center"><strong>Quality:</strong> {{ quality }}</td>
+        <td align="right"><strong>Style:</strong> {{ style }}</td>
+    </tr>
+</table>
+
+
+<table class="table table-bordered table-striped" style="margin-top: 15px; border: black;">
+    <thead>
+        <tr>
+            <th>Sl. No</th>
+            <th>Color</th>
+            <th>Size</th>
+            <th style="text-align: right;">Quantity (pcs)</th>
+            <th style="text-align: right;">Wt (kg)</th>
+            <th style="text-align: right;">Cutter</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in combined_details %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ row.color }}</td>
+            <td>{{ row.size }}</td>
+            <td align="right">{{ row.quantity }}</td>
+            <td align="right">{{ row.wt|floatformat:3 }}</td>
+            <td align="right">{{ row.cutter }}</td>
+        </tr>
+        {% if forloop.counter|divisibleby:30 and not forloop.last %}
+            <tr class="page-break"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        {% endif %} 
+        {% endfor %}
+    </tbody> 
+    <tfoot>
+        <tr> 
+            <td colspan="3" align="right"><strong>Total Quantity (Pcs)</strong></td>
+            <td align="right"><strong>{{ grand_total }}</strong></td>
+            <td></td>
+            <td></td>
+        </tr> 
+
+        <tr>
+            <td colspan="3" align="right"><strong>Total Dozen</strong></td>
+            <td align="right"><strong>{{ total_dozen }} dz {% if total_pcs > 0 %}
+            {{ total_pcs }} pcs
+        {% endif %}</strong></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+
+
+<!-- Footer -->
+<br>
+<table width="100%"> 
+    <tr>
+        <td align="left"></td>
+        <td align="right"><strong>For MIRRA GARMENTS PVT LTD</strong></td>
+    </tr>
+    <tr><td colspan="2" style="height: 60px;"></td></tr>
+    <tr>
+        <td><strong>Party's Signature</strong></td>
+        <td align="right"><strong>Authorized Signature</strong></td>
+    </tr>
+</table>
+
+</section>
+</body>
+</html>

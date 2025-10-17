@@ -1,0 +1,274 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description"
+        content="Dasho Bootstrap admin template made using Bootstrap 5 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
+    <meta name="keywords"
+        content="admin templates, bootstrap admin templates, bootstrap 5, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Dasho, Dasho bootstrap admin template">
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- Favicon icon -->
+    <link rel="icon" href="{% static 'assets/images/genplus-logo-1.png' %}" type="image/x-icon">
+
+    <!-- fontawesome icon -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/fontawesome/css/fontawesome-all.min.css' %}">
+    <!-- animation css -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/animation/css/animate.min.css' %}">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+
+<style>
+    /* .logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    } */
+
+
+    /* .logo {
+    width: 200px;
+    height: 100px;
+    margin-bottom: 20px; 
+} */
+
+
+
+    .auth-wrapper {
+        /* background-image: url(/static/assets/images/background.png); */
+
+        background-image: url('{% static "assets/images/admin_bk_img.jpg" %}');
+        background-size: cover;
+        background-color: whitesmoke;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        display: flex; 
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+ 
+    .card { 
+        border-radius: 2px; 
+        background-color: white;
+        width: 50%;
+        margin-left: 25%; 
+        box-shadow: 0 0 0 1px #e2e5e8;
+        border: none;
+        margin-bottom: 30px;
+        transition: all 0.5s ease-in-out;
+        --bs-body-color: #686c71;
+    }
+
+    .auth-content {
+        width: 100%;
+        max-width: 50%;
+        padding: 2rem;
+        border-radius: 10px;
+    }
+
+    .radio-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .radio-buttons label {
+        font-size: 16px;
+    }
+
+    @media (max-width: 576px) {
+        .auth-content {
+            max-width: 90%;
+            padding: 1rem;  
+        }
+
+        .card { 
+            border-radius: 2px;
+            width: 100%;
+            margin-left: 0px;
+            box-shadow: 0 0 0 1px #a6a9ac;
+            border: none;
+            margin-bottom: 30px;
+            transition: all 0.5s ease-in-out;
+            --bs-body-color: #686c71;
+            padding: 1rem 
+        }
+    }
+
+</style>
+
+<body>
+    <div class="auth-wrapper" >
+        <div class="auth-content container">
+            <div class="card"> 
+                <div class="card-body p-5"> 
+                    <!-- Logo --> 
+                    <div class="text-center mb-2"> 
+                        <!-- Add the logo here --> 
+                        <img src="/static/assets/images/GENPLUS-logo-vertical.png" alt="Mirra Garments" class="logo"> 
+
+                        <!-- <img src="{% static 'assets/images/mira.png' %}" alt="Mirra Garments" class="logo"> -->
+                        <h4 style="text-align: center; font-weight: bold;margin-top: 5px;">PRODUCTION SOFTWARE - LOGIN </h4>
+                    </div>
+                    <!-- <form class="row g-3" method="POST" action="/login" enctype="multipart/form-data">   -->
+
+                   <form class="form-horizontal auth-form" method="POST" action="/signin" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <div class="input-group">
+                            <div class="radio-buttons">
+                                
+                                <!-- <label style="margin-right: 50px;">
+                                    <input type="radio" name="user_type" value="admin" checked> Admin
+                                </label>
+                                <label>
+                                    <input type="radio" name="user_type" value="vendor"> Vendor
+                                </label> -->
+
+                            </div>
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control mb-3 mt-4" placeholder="Email address"
+                                style="border-radius: 10px;" id="email" name="email">
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control mb-3" placeholder="Password"
+                                style="border-radius: 10px;" id="password" name="password">
+                        </div>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger" role="alert" 
+                                     style="text-align: center; 
+                                            font-weight: bold; 
+                                            color: #721c24; 
+                                            background-color: #f8d7da; 
+                                            border-color: #f5c6cb; 
+                                            border-radius: 5px; 
+                                            padding: 10px; 
+                                            margin: 15px 0;">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+
+
+                        <div class="col-12">
+                            <div class="d-grid">
+                                <button class="btn btn-primary mb-4 btf mt-3">Login</button>
+                                <!-- <h5 align="center" class="p-1">OR</h5> -->
+                            </div>
+                        </div>
+
+                        <!-- Third-party login options -->
+                        <div class="row">
+                            <!-- <div class="col-6">
+                                <a href="/auth_login" class="btn btn-googleplus mb-2 me-2 align-items-center w-100"
+                                    style="color: white;">
+                                    <i class="fab fa-google"></i> Google
+                                </a>
+                            </div>
+                            <div class="col-6" id="microsoft_buttons">
+                                <a href="#" id="auth_microsoft_button" class="btn btn-googleplus mb-2 me-2 align-items-center w-100" style="color: white;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 20px; height: 20px; margin-right: 8px; fill: white;">
+                                        <path
+                                            d="M0 32h214.6v214.6H0V32zm233.4 0H448v214.6H233.4V32zM0 265.4h214.6V480H0V265.4zm233.4 0H448V480H233.4V265.4z" />
+                                    </svg>
+                                    <span>Microsoft 365</span>
+                                </a>
+                            </div>
+ -->
+
+                        </div>
+
+                        <br>
+                        {% if error_message %}
+                        <div class="alert alert-danger" role="alert" style="text-align: center;">
+                            {{ error_message }}
+                        </div>
+                        {% endif %}
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required Js -->
+    <script src="{% static 'assets/js/vendor-all.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+   <!-- <script>
+    const radioAdmin = document.querySelector('input[name="user_type"][value="admin"]');
+    const radioVendor = document.querySelector('input[name="user_type"][value="vendor"]');
+    const microsoftButtons = document.getElementById('microsoft_buttons');
+    const authMicrosoftButton = document.getElementById('auth_microsoft_button');
+
+    function updateMicrosoftButton() {
+        const newButton = document.createElement('a');
+        newButton.classList.add('btn', 'mb-2', 'me-2', 'align-items-center', 'w-100');
+        newButton.style.display = 'flex';
+        newButton.style.alignItems = 'center';
+        newButton.style.justifyContent = 'center';
+        newButton.style.backgroundColor = '#1565c0';
+        newButton.style.color = 'white';
+        
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        svg.setAttribute('viewBox', '0 0 448 512');
+        svg.style.width = '20px';
+        svg.style.height = '20px';
+        svg.style.marginRight = '8px';
+        
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute('d', "M0 32h214.6v214.6H0V32zm233.4 0H448v214.6H233.4V32zM0 265.4h214.6V480H0V265.4zm233.4 0H448V480H233.4V265.4z");
+        
+        // Set the fill color of the icon to white
+        path.setAttribute('fill', 'white'); // Set icon color here
+        
+        svg.appendChild(path);
+        newButton.appendChild(svg);
+
+        // Add text to the button
+        const buttonText = document.createElement('span');
+        newButton.appendChild(buttonText);
+
+        // Check if admin or vendor is selected
+        if (radioAdmin.checked) {
+            buttonText.textContent = 'Microsoft 365';
+            newButton.href = '/auth_microsoft_login'; // URL for admin
+        } else if (radioVendor.checked) {
+            buttonText.textContent = 'Microsoft 365';
+            newButton.href = '/auth_microsoft_login_vendor'; // URL for vendor
+        }
+
+        // Clear existing buttons and append the new one
+        microsoftButtons.innerHTML = '';
+        microsoftButtons.appendChild(newButton);
+    }
+
+    // Add event listeners for changes in radio button selection
+    radioAdmin.addEventListener('change', updateMicrosoftButton);
+    radioVendor.addEventListener('change', updateMicrosoftButton);
+
+    // Run the function on page load to set initial button
+    updateMicrosoftButton();
+</script> -->
+
+</body>
+
+</html>

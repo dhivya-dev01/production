@@ -1,0 +1,938 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Knitting Program Update</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Knitting</a></li>
+                                            <li class="breadcrumb-item"><a href="/knitting-program">Knitting program </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+                                    
+                                    <div class="card">
+
+                                    <div class="card-body row">
+                                        <div class="col-sm-12">
+                                            
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <!-- <h3>{{parent_stock_instance.id}}</h3>
+                                                        <h2>{{material_instance.id}}</h2> -->
+                                                        {% for po in po %}
+                                                        {% endfor %}
+                        
+                    
+                                                        <form id="update_tm_form">
+                                                            {% csrf_token %}
+                                                            <div class="row "> 
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="knt_prg_no" class="form-label"> Program No.</label>
+                                                                    <input class="form-control" type="text" name="prg_number" id="prg_number" value="{{parent_stock_instance.knitting_number}}" disabled>
+                                                                    <input class="form-control" type="hidden" name="program_no" id="program_no" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_yarn" name="material_type" value="yarn"
+                                                                        {% if parent_stock_instance.is_yarn == 1 %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_yarn"> Yarn</label>  
+                                                                </div>
+
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_grey_fabric" name="material_type" value="grey"
+                                                                        {% if parent_stock_instance.is_grey_fabric == 1 %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_grey_fabric"> Grey Fabric</label>  
+                                                                </div>
+
+
+
+
+
+                                                                <div class="col-md-2 mt-2">
+
+
+                                                                    <label for="number" class="form-label">Program Name</label>
+                                                                    <input class="form-control" id="fabricName" dir="ltr" value="{{parent_stock_instance.name}}"
+																	style="position: relative;width: 240px; vertical-align: top; background-color: transparent;" name="prg_name" type="text" >
+															                                                                   </div>
+                                                                
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="prg_date" >
+                                                                </div>
+                                                                <div class="col-md-2 mt-4">
+                                                                    <!-- <input type="hidden" id="edit_id" name="edit_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="tm_po_id" name="tm_po_id" value="{{parent_stock_instance.id}}"> -->
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="update" class="btn btn-primary mt-3">Update</button>
+
+                                                                </div>
+                                                                
+                                                          
+                                                            
+                                                                <input class="form-control" type="hidden" name="lot_no" id="lot_no" value="{{parent_stock_instance.lot_no}}" disabled>
+
+                                       
+                                                               
+                                                            </div>
+                                                            
+                                                        </form>
+                                                        <hr>
+                                                        <form id="add_new">
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="bag" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" onchange="LoadFabricValues()" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in product %}
+                                                                        <option value="{{ k.id }}">{{ k.name }} - {{ k.fabric_name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                    
+                                                                <div class="col-md-2 mt-3">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id" class="form-label">Count</label>
+                                                                        <select id="count" name="count" class="form-control form-select single-select" >
+
+                                                                            <option value="">Select</option>
+                                                                            {% for k in count %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+
+
+                                                                
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="per_bag" class="form-label">Gauge</label>
+                                                                    <select id="gauge" name="gauge" class="form-control form-select single-select" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for k in gauge %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3 mb-3">
+                                                                    <label for="quantity" class="form-label">TEX/Loop Length</label>
+                                                                    <select id="tex" name="tex" class="form-control form-select single-select" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for k in tex %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3"> 
+                                                                    <label for="rate" class="form-label">GSM</label>
+                                                                    <input type="number"  class="form-control" id="gsm" name="gsm"  >
+                                                                </div>
+                                                                
+
+
+                                                            
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">DIA</label>
+                                                                    <input type="number"  class="form-control" id="dia" name="dia"  >
+                                                                </div> -->
+
+                                                            </div>
+                                                            <div class="row">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">DIA</label>
+                                                                    <!-- <input type="number"  class="form-control" id="dia" name="dia"  > -->
+                                                                     <select class="form-control single-select" id="dia" name="dia" >
+                                                                        {% for d in dia %}
+                                                                        <option value="{{d.id}}">{{d.dia}}</option>
+                                                                        {% endfor %}
+                                                                     </select>
+                                                                </div>
+                                                                
+                                                             
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rolls" class="form-label">Rolls</label> 
+                                                                    <input type="number" class="form-control" id="rolls" name="rolls">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="wt_per_roll" class="form-label">Roll Wt.</label>
+                                                                    <input type="number" step="0.01" class="form-control" id="wt_per_roll" name="wt_per_roll">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="qty" class="form-label">Qty (kg)</label>
+                                                                    <input type="number" class="form-control" id="quantity" value="1" name="quantity">
+                                                                </div>
+<!-- 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="qty" class="form-label">Rate</label>
+                                                                    <input type="number" class="form-control" id="rate" value="1" name="rate">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="qty" class="form-label">Total Amount</label>
+                                                                    <input type="number" step="0.01" class="form-control" id="total_amount" name="total_amount">
+                                                                </div> -->
+                                                                
+                                                            
+                                                            <div class="col-md-2 mt-4"> 
+                                                                    <input type="hidden" id="edit_id" name="edit_id" >
+                                                                    <input type="hidden" id="tm" name="tm">
+                                                                    <input type="hidden" id="tx_id" name="tx_id" >
+                                                                    <input type="hidden" id="tm_po_id" name="tm_po_id">
+                                                                    <input type="hidden" id="po_id" name="po_id" value="{{parent_stock_instance.po_id}}">
+                                                                    <input type="hidden" id="parent_id" name="parent_id" value="{{parent_stock_instance.id}}">
+                                                                    
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="update" class="btn btn-primary mt-3">Add +</button>
+                                                                    
+                                                            </div></div> 
+                                                        </form>
+                                                    </div>
+
+                                                </div> 
+                                           
+                                                
+                                                <!-- <form id="add_new"> -->
+                                                    <div class="mt-3">
+                                                        <div class="dt-responsive table-responsive table-hover">
+                       
+
+                                                            <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+                                                         
+                                                            <table id="datatable" class="table table-striped table-bordered w-100">
+                                                                {% csrf_token %}
+                                                                <thead>
+                                                                    <tr>
+                                                                    <th>id</th>
+                                                                    <th>Action</th>
+                                                                    <th>Counts</th>
+                                                                    <th>Fabric</th>
+                                                                    <th>Gauge</th>
+                                                                    <th>Tex</th>
+                                                                    <th>Dia</th>
+                                                                    <th>Rolls</th>
+                                                                    <th>Roll Wt.</th>
+                                                                    <th>Qty(kg)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody></tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                    <th colspan="7" class="text-end">Total:</th>
+                                                                    <th id="total_rolls"></th>
+                                                                    <th></th>
+                                                                    <th id="total_quantity"></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                                </table>
+
+                                                        </div>
+                                                    </div>
+                                     
+                                               
+                                                    
+                                            </div>
+
+                                               
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script> 
+
+
+ 
+if ("{{ parent_stock_instance.program_date }}" && "{{ parent_stock_instance.program_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.program_date|date:'Y-m-d' }}";
+    console.log('purchase-date:', purchaseDate);
+    $('#prg_date').val(purchaseDate).trigger("change");
+}
+
+
+if ("{{parent_stock_instance.knitting_id}}" && "{{parent_stock_instance.knitting_id}}" !== "") {
+    $('#supplier_id').val("{{parent_stock_instance.knitting_id}}").trigger("change");
+}
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach event listeners for real-time calculations
+    document.getElementById("rolls").addEventListener("input", calculateAmount);
+    document.getElementById("wt_per_roll").addEventListener("input", calculateAmount);
+    // document.getElementById("rate").addEventListener("input", calculateAmount);
+});
+
+
+function calculateAmount() {
+    var rolls = parseFloat(document.getElementById("rolls").value) || 0;
+    var wtPerRoll = parseFloat(document.getElementById("wt_per_roll").value) || 0;
+    // var rate = parseFloat(document.getElementById("rate").value) || 0;
+
+    // Calculate quantity
+    var quantity = rolls * wtPerRoll;
+    document.getElementById("quantity").value = quantity.toFixed(2);
+
+    // Calculate total amount
+    // var totalAmount = quantity * rate;
+    // document.getElementById("total_amount").value = totalAmount.toFixed(2);
+}
+
+
+
+
+
+
+
+// function LoadFabricValues() {
+//     var product_id = $('#fabric_id').val(); 
+//     console.log('Product-ID:', product_id); // Debugging output
+
+//     if (!product_id) {
+//         console.warn("No Product ID selected");
+//         return;
+//     }
+
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+//     // ✅ Preserve po_quantity value
+//     let currentPoQuantity = $('#po_quantity').val();
+//     console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+
+//     $.ajax({
+//         type: 'POST',   
+//         url: '/get_fabric_program_lists/',
+//         data: {
+//             'product_id': product_id,
+//             'csrfmiddlewaretoken': csrfToken
+//         },
+//         dataType: 'json',
+//         success: function(data) {
+//             console.log('Received Data:', data); // Debugging output
+//             console.log("Before updating fields, po_quantity:", $('#po_quantity').val());
+
+//             // Do NOT clear po_quantity
+//             $('#count').empty();
+//             $('#dia').empty();
+//             $('#gauge').empty(); 
+//             $('#tex').empty();
+//             $('#gsm').val('');
+
+//             // Populate dropdowns only if data exists
+//             if (data.count) {
+//                 $('#count').html('<option value="' + data.count.id + '">' + data.count.count + '</option>');
+//             }
+
+//             // ✅ Handle multiple dia values (Array)
+//             // if (data.dia) { 
+//             //     $('#dia_id').append('<option value="' + data.dia.id + '">' + data.dia.name + '</option>');
+//             // }
+
+
+            
+//             if (data.dia && Array.isArray(data.dia)) {
+//                 let diaOptions = '';
+//                 data.dia.forEach(function(dia) {
+//                     diaOptions += '<option value="' + dia.id + '">' + dia.name + '</option>';
+//                 });
+//                 $('#dia').html(diaOptions);
+//             } 
+
+
+//             if (data.gauge) {
+//                 $('#gauge').html('<option value="' + data.gauge.id + '">' + data.gauge.name + '</option>');
+//             }
+
+//             if (data.tex) {
+//                 $('#tex').html('<option value="' + data.tex.id + '">' + data.tex.name + '</option>');
+//             }
+
+//             if (data.gsm) {
+//                 $('#gsm').val(data.gsm.gray_gsm);
+//             }
+
+//             // ✅ Restore po_quantity value
+//             $('#po_quantity').val(currentPoQuantity);
+//             console.log("Restored po_quantity after AJAX:", $('#po_quantity').val());
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error loading fabric details:', error);
+//         } 
+//     });
+// }
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var table = $('#datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        
+        "columns": [
+            { "data": "id", "title": "ID" },
+            { "data": "action", "title": "Action"},
+            { "data": "count", "title": " Count " },
+            { "data": "fabric_id", "title": "Fabric" },
+            { "data": "gauge", "title": "Gauge" },
+            { "data": "tex", "title": "Tex"},
+            { "data": "dia", "title": "Dia" },
+            { "data": "rolls", "title": "Rolls",'className':'text-center' }, 
+            { "data": "wt_per_roll", "title": " per Roll Wt.(kg)",'className':'text-end',"render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                }  },
+            { "data": "quantity", "title": "Quantity (kg)",'className':'text-end',"render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                }  },
+
+        ],
+
+
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Helper to get column total
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[,]/g, '')) || 0 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Sum rolls (column 7)
+            var totalRolls = api.column(7, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Sum quantity (column 9)
+            var totalQty = api.column(9, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $('#total_rolls').html(totalRolls.toFixed(2));
+            $('#total_quantity').html(totalQty.toFixed(2));
+        },
+
+
+
+        "ajax": {
+            "url": '/update-knitting-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;  // Use validated id
+                
+            },
+            "dataSrc": function(json) {
+                console.log("Received JSON data:", json);
+
+                // // Use json.total_quantity directly for the summary update
+                updateSummary({
+                    total_quantity: json.total_quantity,
+                    total_amount: json.total_amount,
+                    tax_total: json.total_tax,
+                    round_off: json.round_off,
+                    grand_total: json.grand_total
+                });
+
+
+
+                if (json.message === "error") {
+                    // Display error message in an alert
+                    notifier.show(
+                        'Error!', 
+                        json.error_message, 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+
+                    return []; // Return an empty data array for DataTable
+                }
+                return json.data; // Return the data if no error
+            }
+        }
+    });
+} else {
+    console.error("Invalid id:", id);
+    // Handle the case where id is invalid or empty
+}
+
+ 
+
+function updateSummary(data) {
+    console.log("Updating summary with data:", data); // Debugging summary update
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    $('#sub_total_placeholder').text(formatCurrency(data.total_amount || 0));
+    $('#tax_placeholder').text(formatCurrency(data.tax_total || 0));
+    $('#round_off').text(formatCurrency(data.round_off || 0));
+    $('#total_payable').text(formatCurrency(data.grand_total || 0));
+}
+
+// Helper function to format currency with ₹ symbol and comma separators
+function formatCurrency(value) {
+    let num = parseFloat(value) || 0;
+    return `₹ ${num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+
+
+// function updateSummary(data) {
+//     console.log("Updating summary with data:", data); // Debugging summary update
+
+//     $('#qty_total_placeholder').text(data.total_quantity || 0);
+//     $('#sub_total_placeholder').text(parseFloat(data.total_amount || 0).toFixed(2));
+//     $('#tax_placeholder').text(parseFloat(data.tax_total || 0).toFixed(2));
+//     $('#round_off').text(parseFloat(data.round_off || 0).toFixed(2));
+//     $('#total_payable').text(parseFloat(data.grand_total || 0).toFixed(2));
+// }
+
+
+
+
+function refresh_data()
+{
+    table.ajax.reload();
+}
+
+
+
+
+
+function calculateTotalAmount() {
+            let rolls = parseFloat(document.getElementById("rolls").value) || 0;
+            let wtPerRoll = parseFloat(document.getElementById("wt_per_roll").value) || 0;
+            let quantity = parseFloat(document.getElementById("quantity").value) || 1;
+            let ratePerKg = 10;  // Change this to the actual rate per kg
+
+            // Total weight in kg
+            let totalWeight = (rolls * wtPerRoll) / 1000;
+
+            // Total amount
+            let totalAmount = totalWeight * quantity * ratePerKg;
+
+            // Display total amount
+            document.getElementById("total_amount").value = totalAmount.toFixed(2);
+        }
+
+        // Add event listeners to all input fields
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("rolls").addEventListener("input", calculateTotalAmount);
+            document.getElementById("wt_per_roll").addEventListener("input", calculateTotalAmount);
+            document.getElementById("quantity").addEventListener("input", calculateTotalAmount);
+        });
+    
+
+        
+
+
+
+
+// function knitting_prg_detail_edit(id) {
+//     var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+//     $.post('/tx_knitting_detail_edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+//         $('#tm').val(res.id); // Populate tm_id with the item's id
+//         $('#edit_id').val(res.id); // Populate tm_id with the item's id
+//         $('#tm_po_id').val(res.tm_po_id); // Populate tm_id with the item's id
+//         $('#tx_id').val(res.tx_id); // Populate tm_id with the item's id 
+       
+//         $('#quantity').val(res.quantity);
+//         $('#rate').val(res.rate);
+//         $('#total_amount').val(res.total_amount);
+//         $('#gsm').val(res.gsm); 
+//         $('#dia').val(res.dia);
+//         $('#rolls').val(res.rolls);
+//         $('#wt_per_roll').val(res.wt_per_roll); 
+//         // $('#serial_number').val(res.serial_number); 
+//         $('#fabric_id').val(res.fabric_id).trigger("change"); 
+//         $('#dia_id').val(res.dia).trigger("change"); 
+//         $('#count').val(res.count).trigger("change"); 
+//         $('#gauge').val(res.gauge).trigger("change"); 
+//         $('#tex').val(res.tex).trigger("change"); 
+
+//         // Set the update flag to true to indicate we are editing
+//         $('#update_flag').val('true');
+
+//         // Optionally show a message or change button text
+//         $('#update').text('Update'); // Change button text to 'Update' for clarity
+//     });
+// }
+
+function LoadFabricValues(callback = null) {
+    var product_id = $('#fabric_id').val();
+    if (!product_id) return;
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    let currentPoQuantity = $('#po_quantity').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_program_lists/',
+        data: {
+            'product_id': product_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            $('#count').empty();
+            $('#dia').empty();
+            $('#gauge').empty(); 
+            $('#tex').empty();
+            $('#gsm').val('');
+
+            if (data.count) {
+                $('#count').append('<option value="' + data.count.id + '">' + data.count.count + '</option>');
+            }
+
+            if (data.dia && Array.isArray(data.dia)) {
+                let diaOptions = '';
+                data.dia.forEach(function(dia) {
+                    diaOptions += '<option value="' + dia.id + '">' + dia.name + '</option>';
+                });
+                $('#dia').html(diaOptions);
+            }
+
+            if (data.gauge) {
+                $('#gauge').append('<option value="' + data.gauge.id + '">' + data.gauge.name + '</option>');
+            }
+
+            if (data.tex) {
+                $('#tex').append('<option value="' + data.tex.id + '">' + data.tex.name + '</option>');
+            }
+
+            if (data.gsm) {
+                $('#gsm').val(data.gsm.gray_gsm);
+            }
+
+            $('#po_quantity').val(currentPoQuantity);
+
+            // 🔁 Call callback after populating dropdowns
+            if (callback && typeof callback === 'function') {
+                callback();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+}
+
+
+
+
+function knitting_prg_detail_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    $.post('/tx_knitting_detail_edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#tm').val(res.id);
+        $('#edit_id').val(res.id);
+        $('#tm_po_id').val(res.tm_po_id);
+        $('#tx_id').val(res.tx_id);
+        
+        $('#quantity').val(res.quantity);
+        $('#rate').val(res.rate);
+        $('#total_amount').val(res.total_amount);
+        $('#gsm').val(res.gsm);
+        $('#rolls').val(res.rolls);
+        $('#wt_per_roll').val(res.wt_per_roll);
+        $('#fabric_id').val(res.fabric_id).trigger("change");
+
+        // Load all the dependent dropdowns based on fabric_id
+        LoadFabricValues();
+
+        // Use a small delay to allow dropdowns to populate first
+        setTimeout(function() {
+            $('#dia').val(res.dia).trigger("change");
+            $('#count').val(res.count).trigger("change");
+            $('#gauge').val(res.gauge).trigger("change");
+            $('#tex').val(res.tex).trigger("change");
+        }, 100);  // Adjust delay as needed
+
+        $('#update_flag').val('true');
+        $('#update').text('Update');
+    });
+}
+
+
+
+
+
+
+
+function updateSummary(data) {
+    console.log("Updating summary with data:", data);
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    $('#sub_total_placeholder').text(parseFloat(data.total_amount || 0).toFixed(2));
+    $('#tax_placeholder').text(parseFloat(data.tax_total || 0).toFixed(2));
+    $('#round_off').text(parseFloat(data.round_off || 0).toFixed(2));
+    $('#total_payable').text(parseFloat(data.grand_total || 0).toFixed(2));
+}
+
+
+$('#update_tm_form').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    // formData.append('tm_id', $('#program_no').val());
+    // formData.append('name', $('#name').val());
+    // formData.append('material_type', $('#material_type').val());
+    // formData.append('program_date', $('#prg_date').val());
+
+
+
+    formData.append('tm_id', $('#program_no').val());
+    formData.append('name', $('#name').val());
+    formData.append('material_type', $('input[name="material_type"]:checked').val());  // ← This line fixed
+    formData.append('program_date', $('#prg_date').val());
+
+
+
+
+    $.ajax({
+        url: '/knitting-details-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#name').val('');
+                $('#program_date').val('');
+                
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+
+
+// tx update ||>
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_id', $('#tm').val());
+
+    $.ajax({
+        url: '/update-knitting-program/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false, 
+        success: function(response) {
+            if (response.success) {
+                notifier.show( 
+                    'Well Done!', 
+                    'Knitting Program updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#fabric_id').val('').trigger("change");
+                $('#count').val('');
+                $('#gauge').val('');
+                $('#tex').val('');
+                $('#dia').val('');
+                $('#rolls').val('');
+                $('#wt_per_role').val('');
+                $('#quantity').val('');
+                $('#update_flag').val('false');
+                $('#update').text('Add');
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update knitting:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        }, 
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                    'Error!', 
+                    'Error in processing the request.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+        }
+    });
+});
+
+
+
+function knitting_detail_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/delete-knitting/",
+        method: "POST",
+        data: {
+            id: id,
+            tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Knitting Program successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+
+
+
+
+
+ 
+$('.single-select').select2();
+
+
+
+
+ </script>

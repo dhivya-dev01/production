@@ -1,0 +1,225 @@
+{% load static %}
+
+<body class="">
+
+	<div class="loader-bg">
+		<div class="loader-track">
+			<div class="loader-fill"></div>
+		</div> 
+	</div>
+ 
+	
+	<nav class="pcoded-navbar menupos-fixed menu-dark menu-item-icon-style6 ">
+	    <div class="navbar-wrapper ">
+	        <div class="navbar-brand header-logo">
+	            <a href="/dashboard" class="b-brand">
+	                <div> 
+	                </div>
+					<img src="{% static 'assets/images/genplus-logo-1.png' %}" alt="logo" class="logo images"   height="30px" width="30px">
+					<h4 class="text-white" style="font-weight: bold; font-size: 16px; margin-top: 5%; margin-left: 11%;">Production Software</h4>
+					<img src="{% static 'assets/images/genplus-logo-1.png' %}" alt="logo" class="logo-thumb images" height="40px" width="40px" style="border-radius: 50%;">
+				</a>
+	            <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+	        </div>
+	        <div class="navbar-content scroll-div" id="layout-sidenav">
+
+	            <ul class="nav pcoded-inner-navbar sidenav-inner">
+	                <li data-username="animations" class="nav-item"><a href="/dashboard" class="nav-link"><span class="pcoded-micon">
+							<i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+	                </li>
+	                <!-- 
+						<li class="nav-item pcoded-menu-caption">
+							<label>Master</label>
+						</li> -->
+	                <li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-menu"></i></span><span
+									class="pcoded-mtext">Masters</span></a>
+	                    <ul class="pcoded-submenu">
+							<li class=""><a href="/company" class="">Company</a></li>
+	                        <li class=""><a href="/employee" class="">Employee</a></li>
+	                        <li class=""><a href="/tax" class="">Tax</a></li> 
+
+	                        <!-- <li class=""><a href="/company-settings" class="">Company Settings</a></li> -->
+	                        <!-- <li class=""><a href="/yarn-item" class="">Yarn Item</a></li> -->
+	                        <!-- <li class=""><a href="/bag" class="">Bag</a></li>   -->
+
+							<li class=""><a href="/uom" class="">UOM</a></li>
+							<li class=""><a href="/color" class="">Colors</a></li>	 
+
+	                        <li class=""><a href="/count" class="">Yarn Count</a></li> 
+	                        <li class=""><a href="/gauge" class="">Gauge</a></li> 
+	                        <li class=""><a href="/tex" class="">Tex</a></li>  	     
+							<li class=""><a href="/dia" class="">Dia</a></li>   
+	                        <li class=""><a href="/fabric" class="">Fabric</a></li> 
+	                        <li class=""><a href="/fabric-program" class="">Fabric Setting</a></li>       
+	                        <!-- <li class=""><a href="/accessory/group" class="">Group</a></li>  -->
+
+	                        <li class=""><a href="/quality" class="">Quality</a></li> 
+							 
+							<li class=""><a href="/style" class="">Style</a></li>
+
+	                        <li class=""><a href="/size" class="">Size</a></li>  
+	                        <li class=""><a href="/quality-prg" class="">Quality Setting</a></li> 
+	                        <li class=""><a href="/price-list" class="">Price List</a></li>
+	                        <li class=""><a href="/price-list-range" class="">Price List Range</a></li>
+	                        <li class=""><a href="/item-group" class="">Item Group</a></li>
+	                        <li class=""><a href="/mx-item" class="">Item</a></li>
+	                        <!-- <li class=""><a href="/package" class="">Package</a></li> -->
+	                        <!-- <li class=""><a href="/package" class="">Package</a></li> -->
+
+							
+	                        <!-- <li class=""><a href="/user_roles" class="">User Privilege</a></li> -->
+	                    </ul>
+	                </li>   
+					<li data-username="animations" class="nav-item"><a href="/party" class="nav-link"><span class="pcoded-micon">
+							<i class="feather icon-user-plus"></i></span><span class="pcoded-mtext">Party</span></a>
+	                </li>
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-server"></i></span><span
+									class="pcoded-mtext">Purchase</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/purchase-order" class="">Purchase Order</a></li>	  
+	                        <li class=""><a href="/purchase-inward" class="">Purchase Inward</a></li>
+
+	                        <li class=""><a href="/purchase-return" class="">Purchase Return</a></li> 	                       
+	                    </ul>  
+	                </li>   
+
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-server"></i></span><span
+									class="pcoded-mtext">Sales</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/sales-order" class="">Sales Order</a></li>	  
+	                        <li class=""><a href="/sales" class="">Sales</a></li>
+
+	                        <li class=""><a href="/sales-return" class="">Sales Return</a></li>	                       
+	                    </ul> 
+	                </li>   
+
+
+ 
+
+					
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-layers"></i></span><span
+									class="pcoded-mtext">Program</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/knitting-program" class="">Knitting Program</a></li>	
+							
+							<li class=""><a href="/dyeing-program" class=""> Dyeing Program</a></li>
+							<li class=""><a href="/folding-program" class=""> Folding Program</a></li>
+							<!-- <li class=""><a href="/program/cutting-entry" class="">Cutting Entry</a></li> -->
+
+	                    </ul> 
+	                </li>    
+
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-wind"></i></span><span
+									class="pcoded-mtext">Yarn</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/yarn-po" class="">Yarn PO</a></li>	  
+							
+
+	                        <li class=""><a href="/yarn-inward" class="">Yarn Inward</a></li>
+
+	                        <li class=""><a href="/yarn-deliver" class="">Yarn Outward</a></li>
+	                        <!-- <li class=""><a href="/purchase-return" class="">YarnReturn</a></li> -->
+	                       
+	                    </ul> 
+	                </li>   
+ 
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-feather"></i></span><span
+									class="pcoded-mtext">Gray Fabric</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/grey-fab-po" class="">Gray Fabric PO</a></li>
+	                        <li class=""><a href="/grey-fab-inward" class="">Gray Fabric Inward</a></li>  
+	                        <li class=""><a href="/grey-fab-outward" class="">Gray Fabric Outward</a></li>
+
+	                        <!-- <li class=""><a href="/yarn-deliver" class="">Yarn Outward</a></li>  -->
+	                         
+	                    </ul> 
+	                </li>   
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="fas fa-feather-alt"></i></span><span
+									class="pcoded-mtext">Dyed Fabric</span></a>
+	                    <ul class="pcoded-submenu">   
+
+	                        <li class=""><a href="/dyed-fabric-po" class="">Dyed Fabric PO</a></li>
+	                        <li class=""><a href="/dyed-fabric-inward" class="">Dyed Fabric Inward</a></li>
+	                        <!-- <li class=""><a href="/yarn-deliver" class="">Yarn Outward</a></li>  -->
+	                       
+	                    </ul>  
+	                </li>   
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-grid"></i></span><span
+									class="pcoded-mtext">Accessories</span></a>
+	                    <ul class="pcoded-submenu">  
+	                        <li class=""><a href="/item-group" class="">Acc group</a></li>	
+	                        <li class=""><a href="/accessory-quality" class="">Acc Quality</a></li>	
+	                        <li class=""><a href="/accessory-size" class="">Acc Size</a></li>	
+	                        <!-- <li class=""><a href="/accessory-color" class="">Acc Color</a></li>	 -->
+							 
+							<li class=""><a href="/item" class="">Acc Item</a></li>
+							<li class=""><a href="/accessory-program" class="">Accessory Ratio Setting</a></li>
+ 
+	                        <li class=""><a href="/accessory-po" class="">Accessory PO</a></li> 
+
+	                        <li class=""><a href="/accessory-inward" class="">Accessory Inward</a></li>
+	                        <li class=""><a href="/accessory-out" class="">Accessory Outward</a></li> <!--=accessory-->
+	                       
+	                    </ul>  
+	                </li>    
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-disc"></i></span><span
+									class="pcoded-mtext">Production</span></a>
+	                    <ul class="pcoded-submenu">  
+							<li class=""><a href="/cutting-program" class=""> Cutting Program</a></li>
+							<li class=""><a href="/cutting-entry" class="">Cutting Entry</a></li>
+							<li class=""><a href="/folding-delivery" class="">Folding Delivery</a></li> 
+							<li class=""><a href="/stitching-delivery" class="">Stitching Delivery</a></li> 
+							<li class=""><a href="/stitching-received" class="">Stitching Received</a></li>
+							<li class=""><a href="/packing-delivery" class="">Packing Delivery</a></li> 
+							<li class=""><a href="/packing-received" class="">Packing Received</a></li> 
+							<li class=""><a href="/loose-pcs-delivery" class="">Loose Piece Delivery</a></li> 
+
+	                    </ul> 
+	                </li> 
+ 
+
+					<li data-username="animations" class="nav-item"><a href="/invoice" class="nav-link"><span class="pcoded-micon">
+						<i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Invoice</span></a>
+					</li> 
+					
+					
+					<li data-username="animations" class="nav-item"><a href="/voucher" class="nav-link"><span class="pcoded-micon">
+						<i class="feather icon-book"></i></span><span class="pcoded-mtext">Voucher</span></a>
+					</li> 
+
+
+					<li data-username="dashboard default ecommerce sales Helpdesk ticket CRM analytics project" class="nav-item pcoded-hasmenu">
+	                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-globe"></i></span><span
+									class="pcoded-mtext">Summary Report</span></a>
+	                    <ul class="pcoded-submenu">  
+							<li class=""><a href="/stock-summary-report" class=""> Yarn Summary</a></li>
+							<li class=""><a href="/grey-fabric-report" class="">Grey Fabric Summary</a></li>
+							<li class=""><a href="/dyed-fabric-report" class="">Dyed Fabric Summary</a></li> 
+							<li class=""><a href="/lot-summary-report" class="">Lot-Wise Report</a></li> 
+						
+
+	                    </ul> 
+	                </li>    
+
+
+					
+	            </ul>
+	        </div>
+	    </div> 
+	</nav> 

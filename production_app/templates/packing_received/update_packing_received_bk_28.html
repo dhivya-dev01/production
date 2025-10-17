@@ -1,0 +1,1644 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    </style>
+
+<style>
+    .summary-container {
+        max-width: 500px;
+        margin: 20px auto;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .summary-table {
+        width: 100%;
+        background: white;
+        color: black;
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .summary-table th {
+        /* background: white; */
+        color: black    ;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .summary-table td {
+        padding: 8px;
+        font-weight: bold;
+    }
+
+    .highlight {
+        background: #428bca;
+        color: white;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .transparent-input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        text-align: right;
+        font-weight: bold;
+        font-size: 16px;
+        color: black;
+    }
+
+    .transparent-input:focus {
+        border-bottom: 2px solid #428bca;
+    }
+</style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Packing Received Update </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/packing-received"> Packing Received</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false"> 
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Receive No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.inward_no}}" readonly>
+                                                                    <input type="hidden" class="form-control" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Receive Date</label>
+                                                                    <input class="form-control" type="date" name="inward_date" id="inward_date" required>
+                                                                </div>
+
+                                                          
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_id" class="form-label">Packing Outward</label>
+                                                                    <select id="delivery_id" name="delivery_id" class="form-control form-select single-select" onchange="LoadProgramData()" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in packing_outward %}
+                                                                        <option value="{{ k.id }}">{{ k.outward_no }} - [{{k.work_order_no}}- {{k.total_quantity}}.wt]</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="prg_quantity" id="prg_quantity" readonly>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quality_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" readonly onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                            </div>
+                                                            </form>
+
+                                                            <form id="update_tx">
+
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Size</label>
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                      
+                                                              
+ 
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Box</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="box" name="box" min="1"   required>
+                                                                </div>
+
+
+ 
+
+
+                                                          
+                                                                <div class="col-md-2 mt-4"> 
+       
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+
+                                                                    <input type="hidden" id="update_tm_id" name="update_tm_id" value="{{parent_stock_instance.id}}">
+                                                                    <button type="submit" class="btn btn-primary mt-4">Save</button>
+                                                                    <!-- <button class="btn btn-primary mt-3" type="button" onclick="addManualRow()">+ Add</button> -->
+
+                                                                </div>
+
+                                                            </div>
+                                                            </form>
+                                                    
+                                                        </div> 
+
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                       
+                                                                        <table id="datatable" class="table table-striped table-bordered nowrap w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    
+                                                                                    <th>Actions</th>
+
+                                                                                    <th>Size</th>
+                                                                                    <th>Box</th>
+                                                                                 
+
+
+
+                                                                                </tr>
+                                                                            </thead> 
+                                                                            <tbody></tbody> 
+                                                                        </table>
+
+
+                                                                    
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-4">
+                                                                    <table id="summary_table" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="3" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th>  <!-- Empty cell for left-side labels -->
+                                                                                <th>Pcs / Boxes</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+
+                                                                            <tr> 
+                                                                                <td>Total(pcs)</td>
+                                                                                <td class="highlight"><span id="delivered_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total Boxes</td>
+                                                                                <td class="highlight"><span id="total_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Pcs(per box)</td>
+                                                                                <td class="highlight"><span id="per_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Loose(pcs)</td>
+                                                                                <td class="highlight"><span id="loose_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <tr>
+                                                                                <td>Seconds(pcs)</td>
+                                                                                <td class="highlight"><span id="seconds_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <tr>
+                                                                                <td>Shortage(pcs)</td>
+                                                                                <td class="highlight"><span id="shortage_pcs">0</span></td>
+                                                                            </tr> 
+
+                                                                            <tr>
+                                                                                <td>Balance(pcs)</td>
+                                                                                <td class="highlight"><span id="balance_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <!-- <tr>
+                                                                                <td> Total</td>
+                                                                                <td class="highlight"><span id="grand_total">0</span></td>
+                                                                            </tr> -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks">{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+
+                        
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                                                                                
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <!-- <input type="hidden" id="edit_balance_qty" name="balance_qty"> -->
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id" value="">
+
+                                                                    <input type="hidden" id="update_tm_id" name="update_tm_id" value="{{parent_stock_instance.id}}">
+                                                                    
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+if ("{{ parent_stock_instance.inward_date }}" && "{{ parent_stock_instance.inward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.inward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#inward_date').val(formattedDate).trigger("change");
+} 
+
+if ("{{parent_stock_instance.outward_id}}" && "{{parent_stock_instance.outward_id}}" !== "") {
+    $('#delivery_id').val("{{parent_stock_instance.outward_id}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+    $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+}
+
+if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+    $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+}
+
+
+
+
+var id = $('#tm_id').val();
+
+if (id !== '' && !isNaN(id)) {
+    var table = $('#datatable').DataTable({
+        language: {
+            message: "Master purchase does not hold any data related to child table!"
+        },
+        processing: true,
+        pageLength: 50,
+        destroy: true,
+        order: [],
+        columns: [
+            { data: "action", title: "Action" },
+            { data: "size", title: "Size" },
+            {
+                data: "box",
+                title: "Box",
+                className: "text-center",
+                render: function (data, type, row) {
+                    const originalQty = row.original_quantity || data;
+                    return `<span class="quantity" data-original-quantity="${originalQty}">${parseFloat(data).toFixed(0 )}</span>`;
+                }
+            },
+           
+        ],
+        ajax: {
+            url: '/packing-received-detail-ajax-report/',
+            type: 'POST',
+            data: function (data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;
+            },
+       
+        "dataSrc": function(json) {
+    console.log("Received JSON data:", json);
+
+    updateSummary({
+        total_box: json.total_box,
+        delivered_pcs: json.delivered_pcs,
+        loose_pcs: json.loose_pcs,
+        seconds_pcs: json.seconds_pcs,
+        shortage_pcs: json.shortage_pcs,
+        balance_pcs: json.balance_pcs,
+        per_box: json.per_box,
+       
+    });  
+
+    if (json.message === "error") {
+        alert(json.error_message);
+        return [];
+    }
+    return json.data;
+}
+ },
+
+        // drawCallback: function () {
+        //     calculateTotalValue(); // Trigger calculation on render
+        // }
+    });
+
+    // Update summary on manual input changes
+    // $('#total_box, #balance_pcs, #delivered_pcs, #per_box').on('input', function () {
+    //     calculateTotalValue();
+    // });
+} else {
+    console.error("Invalid id:", id);
+}
+
+// function updateSummary(data) {
+//     console.log("Updating summary with data:", data);
+
+//     // Input fields
+//     $('#total_box').val(data.total_box || 0);
+//     $('#delivered_pcs').val(parseFloat(data.delivered_pcs || 0).toFixed(2));
+//     $('#loose_pcs').val(parseFloat(data.loose_pcs || 0).toFixed(2));
+//     $('#seconds_pcs').val(parseFloat(data.seconds_pcs || 0).toFixed(2));
+//     $('#shortage_pcs').val(parseFloat(data.shortage_pcs || 0).toFixed(2));
+//     $('#balance_pcs').val(data.balance_pcs || 0);
+//     $('#per_box').val(parseFloat(data.per_box || 0).toFixed(2));
+
+ 
+// }
+
+function updateSummary(data) {
+    console.log("Updating summary with data:", data);
+
+    $('#total_box').text(data.total_box || 0);
+    $('#delivered_pcs').text(parseFloat(data.delivered_pcs || 0).toFixed(2));
+    $('#loose_pcs').text(parseFloat(data.loose_pcs || 0).toFixed(2));
+    $('#seconds_pcs').text(parseFloat(data.seconds_pcs || 0).toFixed(2));
+    $('#shortage_pcs').text(parseFloat(data.shortage_pcs || 0).toFixed(2));
+    $('#balance_pcs').text(parseFloat(data.balance_pcs || 0).toFixed(2));
+    $('#per_box').text(parseFloat(data.per_box || 0).toFixed(2));
+}
+
+
+
+function packing_received_edit (id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/edit-packing-received/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.id); // Populate tm_id with the item's id
+        $('#update_tm_id').val(res.tm_id); // Populate tm_id with the item's id
+        $('#box').val(res.box);
+        
+        
+        $('#size_id').val(res.size_id).trigger("change"); 
+
+    });
+} 
+
+
+
+
+
+
+$('#update_tx').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var tm_id = $('#update_tm_id').val();
+    var master_id = $('#edit_id').val();
+    var size_id = $('#size_id').val();
+    var color_id = $('#color_id').val();
+
+    formData.append('tm_id', tm_id);
+    formData.append('id', master_id);
+
+    // Check if an entry with the same TM ID, size, and color exists
+    $.ajax({
+        url: '/check_existing_packing_received/',
+        type: 'POST',
+        data: { tm_id: tm_id, size_id: size_id, color_id: color_id },
+        headers: { "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0].value },
+        success: function(response) {
+            if (response.exists) {
+                if (confirm('This size and color already exist. Do you want to update it?')) {
+                    formData.append('id', response.existing_id);  // Set the existing entry ID for update
+                } else {
+                    return; // Stop execution if user cancels update
+                }
+            }
+
+            // Proceed with adding or updating
+            $.ajax({
+                url: '/update-packing-received/',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        notifier.show(
+                            'Well Done!',
+                            response.updated ? 'Updated successfully.' : 'Added successfully.',
+                            'success',
+                            "{% static 'assets/images/notification/ok-48.png' %}",
+                            4000
+                        );
+
+                        // Refresh DataTable
+                        refresh_data();
+                        calculateTotalValue();
+                        $('#update_tx').trigger('reset');
+
+                        $('#edit_id').val('').trigger("change");
+                        // $('#size_id').val('').trigger("change");
+                        // $('#color_id').val('').trigger("change");
+                        $('#edit_id').val('');
+                        $('#box').val('1');
+                        // $('#cutter').val('');
+
+                    } else {
+                        notifier.show(
+                            'Error!',
+                            'Failed to process request: ' + response.error_message,
+                            'danger',
+                            "{% static 'assets/images/notification/high_priority-48.png' %}",
+                            4000
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Request Failed:', error); 
+                    notifier.show(
+                        'Error!',
+                        'Error in processing the request.',
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error);
+            notifier.show(
+                'Error!',
+                'Error checking existing records.',
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+        }
+    });
+});
+
+
+
+
+
+function packing_received_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/packing-received-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            // tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Deleted successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+
+    function refresh_data()
+    {
+        table.ajax.reload();
+    }
+
+// ```````````````````````````````````````````````````````````````````````````
+$("#prg_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "12345 - [WO-5678- 250.wt]"
+
+    const match = prgText.match(/\[(.*?)-/);  // Extract work_order_no
+    if (match) {
+        $("#work_order_no").val(match[1].trim());
+    } else {
+        $("#work_order_no").val('');
+    }
+
+    const qtyMatch = prgText.match(/-\s*(\d+(\.\d+)?)\.wt\]/);  // Extract program quantity
+    if (qtyMatch) {
+        $("#prg_quantity").val(qtyMatch[1]);
+    } else {
+        $("#prg_quantity").val('');
+    }
+});
+
+
+
+$(document).ready(function () {
+    // Load programs when party is selected
+    $('#party_id').change(function () {
+        LoadProgram();
+    });
+
+
+});
+
+function LoadProgram() {
+    let prg_id = $('#prg_id').val();
+    console.log('Cutting Program-ID:', prg_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_program_lists/',
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $prg_id = $('#prg_id');
+            let $prg_quantity = $('#prg_quantity');
+            let $quality_id = $('#quality_id');
+            let $style_id = $('#style_id');
+
+            // Reset dropdowns and inputs
+            // $prg_id.empty().append('<option value="">Select</option>');
+            $prg_quantity.val('');
+            $quality_id.val('').change();
+            $style_id.val('').change();
+
+            if (data.length > 0) {
+                data.forEach(function (po) {
+                    $prg_id.append(
+                        `<option value="${po.id}" data-total="${po.total_quantity}" data-quality="${po.quality_id}" data-style="${po.style_id}">
+                            ${po.cutting_no}
+                        </option>`
+                    );
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program lists:', error);
+        }
+    });
+}
+
+function updateProgramDetails() {
+    let selectedOption = $('#prg_id').find(':selected');
+    let totalQuantity = selectedOption.data('total') || '';
+    let qualityId = selectedOption.data('quality') || '';
+    let styleId = selectedOption.data('style') || '';
+
+    console.log('Updating fields:', { totalQuantity, qualityId, styleId });
+
+    $('#prg_quantity').val(totalQuantity);
+    $('#quality_id').val(qualityId).change();
+    $('#style_id').val(styleId).change();
+}
+
+function loadProgramDetails(prg_id) {
+    $.ajax({
+        type: 'POST', 
+        url: '/get_sub_cutting_program/',
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty(); // Clear existing rows
+
+            if (data.length > 0) {
+                data.forEach(function (item) {
+                    addRow(item.size_name, item.color_name, item.size_id, item.color_id, item.quantity, 0); // Set wt as 0
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    });
+}
+
+// ````````````````````````````````````````````
+
+// 🔁 Declare globally at the top of your script
+let sizeColorMap = {};
+
+function LoadProgramData() {
+    var prg_id = $('#prg_id').val(); 
+    console.log('Product-ID:', prg_id); // Debugging output
+
+    if (!prg_id) {
+        console.warn("No Product ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+ 
+    // ✅ Preserve po_quantity value
+    let currentPoQuantity = $('#po_quantity').val();
+    console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+
+    $.ajax({
+        type: 'POST',   
+        url: '/get_packing_delivery_list/',
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Do NOT clear po_quantity
+            $('#quality_id').empty();
+            $('#style_id').empty();
+            $('#size_id').empty(); 
+            $('#color_id').empty();
+
+            // Populate dropdowns only if data exists
+            if (data.quality) {
+                // console.log('quality:',quality);
+                $('#quality_id').html('<option value="' + data.quality.id + '">' + data.quality.name + '</option>');
+            }
+
+         
+
+            if (data.style) {
+                $('#style_id').html('<option value="' + data.style.id + '">' + data.style.name + '</option>');
+            }
+            
+            Loadfabric();
+
+            if (data.sizes && Array.isArray(data.sizes)) {
+                data.sizes.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                                                $('#box').focus();
+
+                });
+            }
+
+            
+            // if (data.colors && Array.isArray(data.colors)) {
+            //     data.colors.forEach(function(item) {
+                    
+            //         $('#color_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+            //                 $('#quantity').focus();
+
+            //     });
+            // }
+
+
+            // ✅ Restore po_quantity value
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+$(document).ready(function () {
+    // After selecting color, focus quantity
+    $('#size_id').on('change', function () {
+        $('#box').focus(); 
+    });
+
+      // Enter in quantity → focus wt
+    $('#size_id').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#box').focus();
+        }
+    });
+
+ 
+    // Enter in cutter → focus Add button
+    $('#box').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#add_button').focus();
+        }
+    });
+
+    // Enter in Add button → trigger row add
+    $('#add_button').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addManualRow(); // Call your wrapper
+        }
+    });
+});
+
+
+
+
+// ```````````````````````````
+
+
+// function LoadStyle() {
+//     var quality_id = $('#quality_id').val(); 
+//     console.log('Quality-ID:', quality_id); // Debugging output
+
+    
+//     if (!quality_id) {
+//         console.warn("No Quality ID selected");
+//         return;
+//     }
+
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_quality_style_list/',
+//         data: {
+//             'quality_id': quality_id,
+//             'csrfmiddlewaretoken': csrfToken 
+//         },
+//         dataType: 'json',
+
+//         success: function(data) {
+//             console.log('Received Data:', data); // Debugging output
+
+//             // Clear and add default "Select" option
+//             $('#style_id').empty().append('<option value="">Select</option>');
+//             $('#size_id').empty().append('<option value="">Select</option>');
+//             $('#fabric_id').val();
+
+//             // Populate Styles
+//             if (data.style && Array.isArray(data.style)) {
+//                 data.style.forEach(function(item) {
+//                     $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+//                 });
+//             }
+
+//             // Loadfabric();
+
+//             if (data.size && Array.isArray(data.size)) {
+//                 data.size.forEach(function(item) {
+//                     $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+//                 });
+//             }
+
+//           $('#fabric_id').val(fabric);
+//         },
+
+//         error: function(xhr, status, error) {
+//             console.error('Error loading fabric details:', error);
+//         } 
+//     });
+// }
+
+
+
+
+
+// function Loadfabric() {
+//     var quality_id = $('#quality_id').val(); 
+//     var style_id = $('#style_id').val(); 
+
+//     if (!quality_id) {
+//         console.warn("No Quality ID selected");
+//         return;
+//     }
+
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_quality_style_fabrics_list/',
+//         data: {
+//             'quality_id': quality_id,
+//             'style_id': style_id,
+//             'csrfmiddlewaretoken': csrfToken 
+//         },
+//         dataType: 'json',
+
+//         success: function(data) {
+//             console.log('Received Data:', data); // Debugging output
+
+//             const fabrics = data.fabric || [];
+
+//             // Clear and populate the fabric dropdown
+//             const $fabricDropdown = $('#fabric_id');
+//             $fabricDropdown.empty();
+//             $fabricDropdown.append(``);
+
+//             fabrics.forEach(fabric => {
+//                 $fabricDropdown.append(
+//                     `<option value="${fabric.id}">${fabric.name}</option>`
+//                 );
+//             });
+
+//             // Optional: auto-select first item
+//             // if (fabrics.length > 0) {
+//             //     $fabricDropdown.val(fabrics[0].id).trigger('change');
+//             // }
+//         },
+
+//         error: function(xhr, status, error) {
+//             console.error('Error loading fabric details:', error);
+//         } 
+//     });
+// }
+
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            // Reset all relevant dropdowns
+            $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            $('#fabric_id').empty().append('<option value="">Select</option>');
+
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            // Optionally auto-load fabrics after loading styles/sizes
+            // Loadfabric();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading style/size list:', error);
+        } 
+    });
+}
+
+
+ $('#style_id').change(function () {
+        Loadfabric();
+    });
+
+// // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+
+function storeTblValues() {
+    var TableData = [];
+    var hasInvalidWt = false; // Flag to check if any wt <= 0 
+
+    $('#purchaseTable tbody tr').each(function () {
+        var size = $(this).find('td:eq(0)').text().trim();
+      
+    
+        var box = parseFloat($(this).find('.box').text()) || 0;
+
+        var sizeId = $(this).find('.size_id').text().trim();
+
+        // ✅ Validate Wt
+        if (box <= 0) {
+            hasInvalidWt = true;
+        }
+
+        // ✅ Add only valid rows
+        if (size && box > 0) {
+            TableData.push({
+                "size": size,
+                "box": box,
+                "size_id": sizeId,
+            });
+        }
+    });
+
+    // 🚨 If any invalid Wt exists, show alert
+    if (hasInvalidWt) {
+        console.log('Error: Some rows have Box (box) <= 0. Please correct them before submitting.');
+        return []; // Stop submission
+    }
+
+    calculateTotalValue();
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+
+// ```````````````````````````````````````````````           11-03-2025              ```````````````````````````````````````````````
+
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const box = $("#box").val() || 1;
+    let selectedSizes = $("#size_id").val();
+    // let selectedColors = $("#color_id").val();
+
+    selectedSizes = Array.isArray(selectedSizes) ? selectedSizes : [selectedSizes];
+    // selectedColors = Array.isArray(selectedColors) ? selectedColors : [selectedColors];
+
+    if (!selectedSizes[0] ) {
+        notifier.show(
+            'Error!',
+            'Please select a size.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    selectedSizes.forEach(sizeId => {
+        const sizeName = $("#size_id option[value='" + sizeId + "']").text();
+
+        // selectedColors.forEach(colorId => {
+            // const colorName = $("#color_id option[value='" + colorId + "']").text();
+
+            if (!isRowDuplicate(sizeId)) { 
+                addRow(sizeName, sizeId, box);
+            } else {
+                notifier.show(
+                    'Error!',
+                    `Size: ${sizeName} already exists in the table.`,
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            }
+        // }); 
+    });
+}
+
+function isRowDuplicate(sizeId, colorId) {
+    let isDuplicate = false;
+
+    $("#purchaseTable tbody tr").each(function () {
+        const existingSizeId = $(this).find(".size_id").text();
+        const existingColorId = $(this).find(".color_id").text();
+
+        if (existingSizeId === sizeId && existingColorId === colorId) {
+            isDuplicate = true;
+            return false;
+        }
+    });
+
+    return isDuplicate;
+}
+
+
+
+// ````````````````````````````````````````````````
+// 
+
+
+function editRow(row) {
+    const size = row.querySelector("td:nth-child(1)").innerText.trim();
+    const color = row.querySelector("td:nth-child(2)").innerText.trim();
+    const quantityCell = row.querySelector(".quantity");
+    const wtCell = row.querySelector(".wt");
+    const cutter = row.querySelector(".cutter");
+    const sizeId = row.querySelector(".size_id").innerText.trim();
+    const colorId = row.querySelector(".color_id").innerText.trim();
+
+    // Get the original quantity from the row attribute or initialize it
+    let originalQuantity = row.getAttribute("data-original-quantity");
+    if (!originalQuantity) {
+        originalQuantity = quantityCell.textContent.trim();
+        row.setAttribute("data-original-quantity", originalQuantity);
+    }
+    
+    originalQuantity = parseFloat(originalQuantity) || 0;
+    const currentQuantity = parseFloat(quantityCell.textContent.trim()) || 0;
+    const currentWt = parseFloat(wtCell.textContent.trim()) || 0;
+    const cutterName = parseFloat(cutter.textContent.trim()) || 0;
+
+    // Remove the row before updating form fields
+    row.remove();
+    calculateTotalValue();
+
+    // Append values into form fields
+    $("#size_id").val([sizeId]).trigger("change");
+    $("#color_id").val([colorId]).trigger("change");
+    $("#quantity").val(currentQuantity);
+    $("#wt").val(currentWt);
+    $("#cutter").val(cutterName);
+
+    // Store the original quantity in a hidden field for balance calculation
+    $("#original_quantity").val(originalQuantity);
+}
+
+
+// $("#lot_no").on("change", function () {
+//     const selectedOption = $(this).find("option:selected");
+//     const lotText = selectedOption.text(); // example: LOT123 (Avl: 150.00 kg)
+
+//     const match = lotText.match(/\(Avl:\s*([\d.]+)\s*kg\)/);
+//     if (match) {
+//         const availableWt = parseFloat(match[1]);
+//         $("#available_wt").val(availableWt);
+//     } else {
+//         $("#available_wt").val(0);
+//     }
+// });
+
+
+
+// function addRow(size, sizeId, box) {
+//     const tableBody = document.querySelector("#purchaseTable tbody");
+//     if (!tableBody) {
+//         console.error("Table body not found!");
+//         return;
+//     }
+
+//     const availableWt = parseFloat($("#available_wt").val()) || 0;
+
+//     if ((box) > availableWt) {
+//         notifier.show(
+//             'Error!', 
+//             `Cannot add row: total weight exceeds available lot weight (${availableWt.toFixed(2)} kg).`, 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         );
+//         return;
+//     }
+
+
+//     let originalQuantity = parseFloat($("#original_quantity").val()) || box;
+
+//     const newRow = document.createElement("tr");
+//     newRow.setAttribute("data-original-quantity", originalQuantity);
+
+//     newRow.innerHTML = `
+//         <td>${size}</td>
+//         <td class="box">${box}</td>  
+//         <td class="size_id" style="display:none">${sizeId}</td>
+//         <td>
+//             <button class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>
+//             <button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+//         </td>
+//     `;
+
+//     tableBody.prepend(newRow);
+
+//     // Reset form fields
+//     // $('#color_id').val('').trigger("change");
+//     // $('#box').val('');
+//     // $('#cutter').val('');
+//     $('#box').focus();
+//     // $('#original_quantity').val('');
+//     // $('#box').on('focus select', function() {
+//     //     // alert("Input focused or text selected"); 
+//     // });
+
+
+//     calculateTotalValue();  
+
+//     // Event listeners
+//     newRow.querySelector(".remove-row").addEventListener("click", function () {
+//         newRow.remove();
+//         calculateTotalValue();
+//         // refreshColorDropdown();
+//         // selectNextAvailableColor();
+//     });
+
+//     newRow.querySelector(".edit-row").addEventListener("click", function () {
+//         editRow(newRow);
+//     });
+
+//     // refreshColorDropdown();
+//     // selectNextAvailableColor();
+// }
+
+
+function addRow(size, sizeId, box) {
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    if (!tableBody) {
+        console.error("Table body not found!");
+        return;
+    }
+
+    // ❌ Prevent adding row when box is 0 or less
+    if (!box || parseFloat(box) <= 0) {
+        notifier.show(
+            'Error!',
+            'Cannot add row: Box value must be greater than 0.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // const availableWt = parseFloat($("#available_wt").val()) || 0;
+
+    // if (box > availableWt) {
+    //     notifier.show(
+    //         'Error!', 
+    //         `Cannot add row: total weight exceeds available lot weight (${availableWt.toFixed(2)} kg).`, 
+    //         'danger', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    let originalQuantity = parseFloat($("#original_quantity").val()) || box;
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-original-quantity", originalQuantity);
+
+    newRow.innerHTML = `
+        <td>${size}</td>
+        <td class="box">${box}</td>  
+        <td class="size_id" style="display:none">${sizeId}</td>
+        <td>
+            <button class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>
+            <button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+        </td>
+    `;
+
+    tableBody.prepend(newRow);
+
+    $('#box').focus();
+
+    calculateTotalValue();  
+
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+        newRow.remove();
+        calculateTotalValue();
+    });
+
+    newRow.querySelector(".edit-row").addEventListener("click", function () {
+        editRow(newRow);
+    });
+}
+
+
+
+// $('#size_id').on('change', function () {
+//     selectNextAvailableColor();
+// });
+
+
+function refreshColorDropdown() {
+    const selectedSizeId = $('#size_id').val();
+    if (!selectedSizeId) return;
+
+    const usedColorSizePairs = new Set();
+
+    $('#purchaseTable tbody tr').each(function () {
+        const colorId = $(this).find('.color_id').text().trim();
+        const sizeId = $(this).find('.size_id').text().trim();
+        usedColorSizePairs.add(`${sizeId}_${colorId}`);
+    });
+
+    $('#color_id option').each(function () {
+        const colorId = $(this).val();
+        const colorSizeId = $(this).data('size-id');
+
+        if (
+            colorId &&
+            colorSizeId == selectedSizeId &&
+            usedColorSizePairs.has(`${selectedSizeId}_${colorId}`)
+        ) {
+            $(this).hide();
+        } else if (colorSizeId == selectedSizeId || !colorSizeId) {
+            $(this).show();
+        } else {
+            $(this).hide(); // hide unrelated size-color
+        }
+    });
+}
+
+function selectNextAvailableColor() {
+    const selectedSizeId = $('#size_id').val();
+    if (!selectedSizeId) return;
+
+    const usedPairs = new Set();
+
+    // Collect used size+color pairs from the table
+    $('#purchaseTable tbody tr').each(function () {
+        const sizeId = $(this).find('.size_id').text().trim();
+        const colorId = $(this).find('.color_id').text().trim();
+        usedPairs.add(`${sizeId}_${colorId}`);
+    });
+
+    let nextColorId = null;
+
+    $('#color_id option').each(function () {
+        const colorId = $(this).val();
+        if (!colorId) return;  // skip 'Select'
+
+        const pairKey = `${selectedSizeId}_${colorId}`;
+        if (!usedPairs.has(pairKey)) {
+            nextColorId = colorId;
+            return false; // break loop
+        }
+    });
+
+    if (nextColorId) {
+        $('#color_id').val(nextColorId).trigger('change');
+    } else {
+        $('#color_id').val('').trigger('change'); // no colors left for this size
+    }
+}
+
+
+// ```````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+
+function calculateRow(event) {
+    const row = event.target.closest("tr");
+
+    const rate = parseFloat($(row).find('.rate').val()) || 0;
+    const quantity = parseFloat($(row).find('.quantity').text()) || 0;
+
+    const amount = (rate * quantity).toFixed(2);
+    $(row).find('.amount').text(amount);
+
+    calculateTotalValue();
+}
+
+
+
+// `````````````````````````````````````````````````````````````````````
+
+
+
+
+
+
+function calculateTotalValue() {
+    let totalBox = 0;
+    let total_pcs = 0;
+    let totalBalanceQty = 0;
+    let deli_pcs = 0;
+    let per_box = 0;
+
+    const delivery_pcs = parseFloat($('#prg_quantity').val()) || 0; // Ensure number
+    deli_pcs = delivery_pcs;
+
+    $('#purchaseTable tbody > tr').each(function () {
+        const box = parseFloat($(this).find('.box').text()) || 0;
+        const originalQuantity = parseFloat($(this).attr("data-original-quantity")) || box;
+        const balance_qty = originalQuantity - box;
+        
+        totalBox += box;
+        total_pcs = totalBox * 10;
+        per_box = 10;
+        // totalBalanceQty += balance_qty;
+        totalBalanceQty = deli_pcs - (totalBox*per_box);
+
+        // Update balance quantity in row
+        $(this).find('.balance_qty').text(balance_qty);
+    });
+
+    // Update summary
+    $('#delivered_pcs').text(deli_pcs.toFixed(2));
+    $('#total_box').text(totalBox);
+    $('#per_box').text([per_box]);  
+    $('#balance_pcs').text(totalBalanceQty);
+
+    // $('#grand_total').text(total_pcs.toFixed(2));
+}
+
+
+
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked");
+    var fab_id = $('#fabric_id').val();
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Some rows have Weight (Wt) <= 0. Please correct them before submitting.',
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+        return; // 🚨 Stop form submission if invalid
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('cutting_data', TableData);
+
+        var delivered_pcs = $('#delivered_pcs').text();
+        var total_box = $('#total_box').text();
+
+        var per_box = $('#per_box').text();  // 🔹 Fixed `.text()` to `.text()`
+        var balance_pcs = $('#balance_pcs').text();
+
+        // alert('q-id:', quality_id);
+        mdata.append('total_box', total_box);
+        mdata.append('delivered_pcs', delivered_pcs);
+        mdata.append('per_box', per_box) || 0;
+        mdata.append('balance_pcs', balance_pcs) || 0;
+        
+        mdata.append('fab_id',fab_id);
+        $.ajax({
+            type: "POST", 
+            url: "/add-packing-received/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function(data) {  // 🔹 Fixed response handling
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {  // ✅ Corrected condition
+                    notifier.show(
+                        'Well Done!', 
+                        'Packing Received Added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );  
+                    $('#add_new').trigger('reset');
+					
+					$('#quality_id').val('').trigger("change");
+					$('#prg_id').val('').trigger("change");
+					$('#style_id').val('').trigger("change");
+					$('#size_id').val('').trigger("change");
+
+					$('#purchaseTable tbody').empty();      
+					$('#summary_table tbody').empty();     
+                
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+
+$('.single-select').select2();
+
+
+</script>

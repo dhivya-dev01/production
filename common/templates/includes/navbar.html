@@ -1,0 +1,58 @@
+{% load static %}
+
+<header class="navbar pcoded-header navbar-expand-lg navbar-light headerpos-fixed">
+		
+			<div class="m-header">
+				<a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
+				<a href="/dashboard" class="b-brand">
+
+					<!-- <img src="{% static 'assets/images/mirra.ico' %}" alt="logo" class="logo images" style="margin-left: 0px;"> -->
+					<h3 class="text-white" style="font-weight: bold;">Mirra</h3>
+					<img src="{% static 'assets/images/genplus-logo-1.png' %}" alt="logo" class="logo-thumb images">
+				</a>
+			</div>
+			<a class="mobile-menu" id="mobile-header" href="#!"> 
+				<i class="feather icon-more-horizontal"></i>  
+			</a>
+			<div class="collapse navbar-collapse"> 
+				<a href="#!" class="mob-toggler"></a> 
+				<ul class="navbar-nav me-auto">
+					<li class="nav-item">
+						
+					</li>
+				</ul>
+				<ul class="navbar-nav ms-auto">
+					
+					<li>
+						<div class="dropdown drp-user">
+							<a href="#" data-bs-toggle="dropdown">
+							    <img src="{% static 'assets/images/user1.jpg' %}" alt="User Image"  style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;"> 
+							    &nbsp;<span class="hidden-xs">{{ request.session.user_username }}</span>
+							</a>
+
+							<div class="dropdown-menu dropdown-menu-end profile-notification">
+
+								<ul class="pro-body">						
+									<li style="list-style-type: none; display: flex; align-items: center;">
+							    		<div class="pull-left user-img">
+							        		<img src="{% static 'assets/images/avatar.jpg' %}" class="img-responsive" alt="User" height="30px" width="50px">
+							    		</div>
+							    		<div class="user-info" style="margin-left: 5px;">
+							        		<p class="text-left" style="margin: 0;">
+							            		{{ request.session.user_username }}
+							            		<strong style="display: block; font-size: 13px; color: gray;">{{ request.session.user_email }}</strong>
+							        		</p>
+							    		</div>
+									</li>
+									
+									<li><a href="/logout" class="dropdown-item"><i class="feather icon-user text-primary"></i> Profile</a></li>
+									<li><a href="/logout" class="dropdown-item"><i class="feather icon-power text-danger"></i> Logout</a></li>
+								</ul>
+							</div>
+							
+						</div>
+					</li>
+				</ul>
+			</div>
+			
+</header>

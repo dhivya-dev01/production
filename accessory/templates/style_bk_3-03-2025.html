@@ -1,0 +1,402 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Style  &nbsp;  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#add_modal">Add</button></h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Masters</a></li>
+                                            <li class="breadcrumb-item"><a href="/accessory/style">Style </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                    <div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Add Style</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="add_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label class="form-label"><span style="color: red;">*</span>  Group</label>
+                                                                <select class="form-control single-select" id="group_id" name="group_id">
+                                                                    <option>Select</option>
+                                                                    {% for g in group %}
+                                                                    <option value="{{g.id}}">{{g.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <label class="form-label"><span style="color: red;">*</span> Quality</label>
+                                                                <select class="form-control single-select" id="quality_id" name="quality_id">
+                                                                    <option>Select</option>
+                                                                    {% for g in quality %}
+                                                                    <option value="{{g.id}}">{{g.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3 ">
+                                                                <label class="col-form-label">Name</label>
+                                                        
+                                                                <input class="form-control" type="text" id="name" name="name" required>
+                                                            
+                                                            </div>                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success">Save</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div id="edit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Edit Style</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="edit_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}                                            
+                                                        <div class="row">
+
+                                                            <div class="col-md-12">
+                                                                <label class="form-label"><span style="color: red;">*</span>  Group</label>
+                                                                <select class="form-control edit" id="edit_group_id" name="group_id">
+                                                                    <option>Select</option>
+                                                                    {% for g in group %}
+                                                                    <option value="{{g.id}}">{{g.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>  
+
+                                                            <div class="col-md-12">
+                                                                <label class="form-label"><span style="color: red;">*</span> Quality</label>
+                                                                <select class="form-control edit" id="edit_quality_id" name="quality_id">
+                                                                    <option>Select</option>
+                                                                    {% for g in quality %}
+                                                                    <option value="{{g.id}}">{{g.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                          
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_name" class="form-label">Name</label>
+                                                                <input class="form-control" type="text" id="edit_name" name="name">
+                                                            </div>
+ 
+ 
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_is_active" class="form-label">Status</label> 
+                                                                <select class=" form-control edit" id="edit_is_active" name="is_active">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Inactive</option>                 
+                                                                </select> 
+                                                            </div>
+                                                                                                                                         
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="id" id="edit_id">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> 
+
+
+
+
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th> Group</th>                                                        
+                                                        <th> Quality</th>                                                        
+                                                        <th> Style</th>                                                        
+                                                        <th>Active</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+
+                                        
+                                    </div>
+
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+<script>
+
+$('.single-select').select2({
+        dropdownParent: $('#add_modal')
+    });
+ 
+ 
+     $('.edit').select2({
+        dropdownParent: $('#edit_modal')
+    });
+ 
+ 
+
+
+
+//    $(document).ready(function() {
+
+    var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        "columns": [
+            { "data": "action", "title": "Action" },            
+            { "data": "group", "title": "Group " },
+            { "data": "quality", "title": "Quality " },
+            { "data": "name", "title": "Style " },
+            { "data": "status", "title": "Status" }
+        ],
+        "ajax": {
+            "url": '/accessory/style-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            }
+        }
+    });
+
+// });
+
+
+function refresh_data(){
+        table.ajax.reload();
+    }
+
+
+$("#add_form").submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/accessory/style-add/',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.data === 'Success') {
+                    notifier.show(
+                    'Well Done!', 
+                    'Style details added successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                ); 
+                
+                    $('#add_form').trigger('reset'); 
+                    $('#group_id').val('').trigger("change");    
+                    $('#quality_id').val('').trigger("change");    
+
+                    $('#add_modal').modal('hide'); 
+ 
+                   
+                    refresh_data(); 
+                } else {
+                    notifier.show(
+              'Error!', 
+              'Failed to add style details.', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );                }
+            },
+            error: function(xhr, status, error) {
+                sweetalert('error', 'Failed to add uom. An error occurred.'); 
+            }
+        });
+    });
+ 
+ 
+    function style_edit(id,name) {
+        var tkn= document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $.post('/accessory/style-edit/', {id:id, csrfmiddlewaretoken:tkn }, function(res) {
+            $('#edit_id').val(res.id); 
+
+            $('#edit_name').val(res.name);
+         
+            $('#edit_is_active').val(res.is_active).trigger("change");    
+            console.log('active',res.is_active);      
+            $('#edit_modal').modal('show');
+        });
+    }  
+ 
+ 
+    $("#edit_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+ 
+        var dataArray = [];
+        for (var pair of formData.entries()) {
+            dataArray.push(pair);
+        }
+ 
+        var serializedData = {};
+ 
+        dataArray.forEach(function(pair) {
+            serializedData[pair[0]] = pair[1];
+        });
+ 
+        $.ajax({
+            type: 'POST',
+            url: '/accessory/style-update/',
+            data:  serializedData,
+            success: function (response) { 
+                if (response.message === 'success') {
+                    
+                notifier.show(
+                  'Well Done!', 
+                  'Style  updated successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+              $('#edit_modal').modal('hide');
+              $('#edit_form').trigger('reset');
+              refresh_data();
+                } 
+                else {
+                    notifier.show(
+              'Error!', 
+              'Failed to update style .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                }
+                $('#edit_modal').modal('hide');
+                $('#edit_form').trigger('reset');
+                refresh_data();
+            },
+            error: function(xhr, errmsg, err){
+                notifier.show(
+              'Error!', 
+              'Failed to update style .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                $('#edit_modal').modal('hide');
+            }
+        });
+    });
+ 
+ 
+    function style_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/style-delete/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.message === 'yes') {
+                       
+                notifier.show(
+                  'Well Done!', 
+                  'Deleted successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+                        refresh_data(); 
+                    } else {
+                        notifier.show(
+                        'Error!', 
+                        'Failed to delete.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                    }
+                },
+            });
+ 
+        }
+    }
+ 
+ 
+
+    
+</script>

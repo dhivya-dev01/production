@@ -1,0 +1,933 @@
+
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+#inwardOffcanvas {
+  width: 600px; /* adjust sidebar width as you like */
+}
+.input-group-sm .btn {
+  width: 35px;
+}
+
+</style>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Sales Order 
+                                                 <!-- &nbsp;  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#add_modal">Add</button> -->
+                                            </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Sales</a></li>
+                                            <li class="breadcrumb-item"><a href="/sales-order">Sales Order </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                                                    
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <section class="hk-sec-wrapper">
+ 
+                                                        <form id="add_new">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="chemical_data" id="chemical_data">
+
+                                                            <div class="">
+                                                                <div class="col-md-12">
+                                                                    <div class="row"> 
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="sku" class="form-label">Order No.</label> 
+                                                                            <input type="text" class="form-control" id="qt_no" name="qt_no" value="{{so_number}}" readonly>
+                                                                        </div>
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="entry_date" class="form-label">Order Date</label>
+                                                                            <input type="date" class="form-control" id="order_date" name="order_date" required>
+                                                                        </div> 
+                                                                        
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="customer_id" class="form-label">Customer</label>
+                                                                            <select class="form-control single-select" id="customer_id" name="customer_id" required onchange="LoadPacking()">
+                                                                                <option value="">Select</option>
+                                                                                {% for e in party %}
+                                                                                <option value="{{e.id}}">{{e.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>   
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="price_list" class="form-label">Price List</label> 
+                                                                            <select class="form-control single-select" id="price_list" name="price_list" disabled>
+                                                                                <option value="">Select</option>
+                                                                                <!-- Option dynamically added via server-side logic -->
+                                                                            </select>
+                                                                        </div>
+
+ 
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="packing_list" class="form-label">Packing List</label> 
+                                                                            <select class="form-control single-select" id="packing_list" name="packing_list">
+                                                                                <option value="">Select</option>
+                                                                                <!-- Option dynamically added via server-side logic -->
+                                                                            </select>
+                                                                        </div>
+  
+
+                                                                        <div class="col-md-2  mt-4">
+                                                                            <a id="load_data" class="btn btn-primary mt-3" onclick="LoadInwardData()">+ LOAD</a>
+                                                                        </div>
+                                                                        
+                                                                        <!-- <div class="col-md-2 mt-3">
+                                                                            <button class="btn btn-primary mt-4" id="load_button"> +Load </button>
+                                                                        </div> -->
+
+
+                                                                        
+                                                                    </div>
+
+                                                                    <br>
+                                                                    
+                                                                   
+                                                                    
+                                                                    <hr>
+                                                                        <!--                                      
+                                                                    <div class="">
+                                                                        <div class=""> -->
+                                                                            <div class="table-responsive">
+                                                                               
+                                                                                <table id="table_data" class="table table-bordered">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Size</th>
+                                                                                            <th>Box </th>
+                                                                                            <th>Pcs Per Box</th>
+                                                                                            <th style="display:none;">Box Pcs</th>                                                                               
+                                                                                            <th>Total Pcs </th>
+                                                                                            <th style="display: none;">Size id</th>
+                                                                                            <th>Rate</th>
+                                                                                            <th>Amount</th>
+                                                                                            <th>Actions</th> 
+
+                                                                                        </tr>
+                                                                                    </thead> 
+                                                                                    <tbody></tbody>  
+
+                                                                                    <tfoot>
+                                                                                        <th>Total</th>
+                                                                                        <th style="text-align:center;" id="total_boxes"></th>
+                                                                                        <th style="text-align:center;" id="pcs_per_box">0</th>
+                                                                                        <th style="text-align:center;display: none;" id="total_box_pcs"></th>
+                                                                                      
+                                                                                        <th style="text-align:center;" id="total_pieces"></th>
+
+                                                                                    </tfoot>
+
+                                                                                </table>
+
+
+
+                                                                            </div>
+                                                                        <!-- </div>
+                                                                    </div> -->
+                                                                        
+
+
+                                                                </div> 
+                                                            </div>
+
+
+
+                                                    <div class="row">
+                                                        <!-- Left side:  Table -->
+                                                        
+                                                        <div class="col-md-4 mt-3">
+                                                            <div class=" m-b-30">
+                                                                <div class=" table-responsive">   
+                                                                    
+                                                                     <table id="summary_table" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="3" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th> 
+                                                                                <th>Pcs / Boxes</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Total(pcs)</td>
+                                                                                <td class="highlight"><span id="delivered_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total Boxes</td>
+                                                                                <td class="highlight"><span id="total_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr style="display: none;">
+                                                                                <td>Box Pcs</td>
+                                                                                <td class="highlight"><span id="box_piece">0</span></td>
+                                                                            </tr>
+                                                                           
+                                                                           
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                        <div class="col-md-4 mt-3">
+                                                            <div class="col-md-12 ">
+
+                                                                <textarea type="text" class="form-control" id="remarks" name="remarks" rows="3" placeholder="Sales Order Remarks"></textarea>
+                                                            </div>
+                                                        </div> 
+
+                                                    </div>
+
+
+                                                    
+                                                    </div>
+                                                    
+                                                            <!-- `````````````````````````````````````````````````````` -->
+                                                            <div class="text-end">
+                                                                <input type="hidden" id="quotation_id" name="quotation_id" value="{{quotation_id}}">
+                                                                <input type="hidden" id="enquiry_id" name="enquiry_id" value="{{enquiry_id}}">
+                                                                <button type="button" class="btn btn-secondary ml-auto" onclick="history.back()">Close</button>
+                                                                <button type="submit" id="submit_inwards" class="btn btn-primary mr-auto ml-2">Save</button>
+                                                            </div>
+                                                        </form>
+                                                    </section>
+                                                    
+                                                    
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+
+
+
+<!-- Offcanvas Sidebar -->
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="inwardOffcanvas" aria-labelledby="inwardOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 id="inwardOffcanvasLabel">Packing Inward Details</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body">
+    <table class="table table-bordered" id="purchaseTable">
+      <thead class="table-light">
+        <tr>
+          <th>Size</th>
+          <th>Total Pcs</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- ✅ Add button -->
+    <div class="text-end">
+      <button type="button" class="btn btn-primary" id="addToMainTable">Add to Table</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- <div class="offcanvas offcanvas-end" tabindex="-1" id="inwardOffcanvas" aria-labelledby="inwardOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 id="inwardOffcanvasLabel">Packing Inward Details</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+
+
+    <table class="table table-bordered" id="purchaseTable">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Box Qty</th>
+          <th>Pcs/Box</th>
+          <th>Box Pcs</th>
+          <th>Total Pcs</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th id="total_boxes">0</th>
+          <th></th>
+          <th id="total_box_pcs">0</th>
+          <th id="total_pieces">0</th>
+          <th colspan="3"></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div> -->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %} 
+
+<script>
+  $('.single-select').select2({})
+
+ 
+
+
+function LoadPacking() {
+    var customer_id = $('#customer_id').val();
+    console.log('Customer-ID:', customer_id); // Adjusted for clarity
+ 
+    $.ajax({
+        type: 'POST',  // Change to POST
+        url: '/get_packing_received_list/', 
+        data: {
+            'customer_id': customer_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        success: function(data) {
+            $('#packing_list').empty().append(''); 
+            // $('#packing_list').empty().append('<option value="">Select</option>');
+
+            // Iterate over the returned data to populate the dropdown
+            if (data.inward.length > 0) {
+                data.inward.forEach(function(sales) {
+                    $('#packing_list').append('<option value="' + sales.id + '">' + sales.inward_no + '</option>');
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading Sales lists:', error);
+        }
+    });
+}
+
+
+//````````````````````````` load data in table ``````````````````````````
+
+// function LoadInwardData() {
+//     let packing_list_id = $('#packing_list').val();
+//     let party_id = $('#customer_id').val();
+
+//     if (!packing_list_id) {
+//         alert("Please select a Packing List first.");
+//         return;
+//     }
+
+//     $('#purchaseTable tbody').empty(); // clear old data
+
+//     $.ajax({
+//         url: '/get_packing_inward_list/',
+//         type: 'GET',
+//         data: {
+//             packing_list_id: packing_list_id,
+//             party_id: party_id
+//         },
+//         dataType: 'json',
+//         success: function(response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+
+//                 // ✅ Open the offcanvas sidebar
+//                 let offcanvasElement = document.getElementById('inwardOffcanvas');
+//                 let bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+//                 bsOffcanvas.show();
+
+//                 let total_boxes = 0;
+//                 let total_box_pcs = 0;
+//                 let total_pieces = 0;
+
+//                 response.data.forEach(function(item) {
+//                     let total_pcs = item.total_pcs;
+//                     let rate = item.rate;
+//                     let amount = total_pcs * rate;
+
+//                     let row = `
+//                         <tr>
+//                             <td>${item.size_name}</td>
+//                             <td style="text-align:center;">${item.box_qty}</td>
+//                             <td style="text-align:center;">${item.pcs_per_box}</td>
+//                             <td style="text-align:center;">${item.box_pcs}</td>
+//                             <td style="text-align:center;">${item.total_pcs}</td>
+//                             <td style="display:none;">${item.size_id}</td>
+//                             <td>${item.rate}</td>
+//                             <td>${amount}</td>
+//                             <td><button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                                 <i class="feather icon-trash-2"></i></button></td>
+//                         </tr>
+//                     `;
+//                     $('#purchaseTable tbody').append(row);
+
+//                     total_boxes += parseFloat(item.box_qty || 0);
+//                     total_box_pcs += parseFloat(item.box_pcs || 0);
+//                     total_pieces += parseFloat(item.total_pcs || 0);
+//                 });
+
+//                 // Update footer totals
+//                 $('#total_boxes').text(total_boxes);
+//                 $('#total_box_pcs').text(total_box_pcs);
+//                 $('#total_pieces').text(total_pieces);
+
+//             } else {
+//                 alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function() {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+
+
+
+function LoadInwardData() {
+    let packing_list_id = $('#packing_list').val();
+    let party_id = $('#customer_id').val();
+
+    if (!packing_list_id) {
+        alert("Please select a Packing List first.");
+        return;
+    }
+
+    $('#purchaseTable tbody').empty();
+
+    $.ajax({
+        url: '/get_packing_inward_list/',
+        type: 'GET',
+        data: { packing_list_id, party_id },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let offcanvasEl = document.getElementById('inwardOffcanvas');
+                let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+                bsOffcanvas.show();
+
+                response.data.forEach(function(item) {
+                    let totalPcs = item.total_pcs || 0;
+                    let rate = item.rate || 0;
+                    let row = `
+                        <tr data-sizeid="${item.size_id}" data-rate="${rate}" data-size="${item.size_name}">
+                            <td>${item.size_name}</td>
+                            <td style="text-align:center;">
+                                <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+                                    <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+                                </div>
+                            </td>
+ 
+                            <td id="box_qty" style="display:none;">${item.box_qty}</td>
+                            <td id="pcs_per_box" style="display:none;">${item.pcs_per_box}</td> 
+                            <td id="box_pcs" style="display:none;">${item.box_pcs}</td>
+                            <td id="total_pcs" style="display:none;">${item.total_pcs}</td> 
+                            <td id="size_id" style="display:none;">${item.size_id}</td> 
+
+                        </tr>
+                    `;
+                    $('#purchaseTable tbody').append(row);
+                });
+            } else {
+                alert("No data found for this Packing List.");
+            }
+        },
+        error: function() {
+            alert("Error loading inward data.");
+        }
+    });
+}
+
+
+
+// function changeValue(button, delta) {
+//     const row = button.closest('tr');
+//     const input = row.querySelector('input.total-pcs-input');
+    
+//     // Read pcs_per_box and total_pcs limit from hidden cells
+//     const pcsPerBox = parseInt(row.querySelector('#pcs_per_box').textContent) || 0;
+//     const totalPcsLimit = parseInt(row.querySelector('#total_pcs').textContent) || 0;
+
+//     let value = parseInt(input.value) || 0;
+
+//     // Each click changes by pcs_per_box
+//     value += delta * pcsPerBox;
+
+//     // ✅ Prevent going below 0 or above total available pcs
+//     if (value < 0) {
+//         value = 0;
+//     // } else if (totalPcsLimit > 0 && value > totalPcsLimit) {
+//     } else if (totalPcsLimit > 0 && value > totalPcsLimit) {
+//         value = totalPcsLimit;
+
+//         // Optional feedback flash
+//         input.classList.add('border-danger');
+//         setTimeout(() => input.classList.remove('border-danger'), 400);
+//     }
+
+//     input.value = value;
+// }
+
+
+function changeValue(button, delta) {
+    const row = button.closest('tr');
+    const input = row.querySelector('input.total-pcs-input');
+
+    // Read pcs_per_box from hidden cell
+    const pcsPerBox = parseInt(row.querySelector('#pcs_per_box').textContent) || 0;
+
+    // Current value
+    let value = parseInt(input.value) || 0;
+
+    // Change by pcs_per_box each click
+    value += delta * pcsPerBox;
+
+    // ✅ Prevent going below 0
+    if (value < 0) {
+        value = 0;
+    }
+
+    input.value = value;
+}
+
+
+// $(document).on('click', '#addToMainTable', function() {
+//     $('#purchaseTable tbody tr').each(function() {
+
+//         const size_name = $(this).data('size');
+//         const size_id = $(this).data('sizeid');
+//         const rate = parseFloat($(this).data('rate')) || 0;
+//         const total_pcs = parseFloat($(this).find('input').val()) || 0;
+//         console.log('tot-pcs:',total_pcs);  
+//         const box_qty = parseFloat($(this).find('#box_qty').text()) || 0;
+//         const pcs_per_box = parseFloat($(this).find('#pcs_per_box').text()) || 0;
+//         const box_pcs = parseFloat($(this).find('#box_pcs').text()) || 0;
+
+
+
+//         const amount = rate * total_pcs;
+
+//         if (total_pcs > 0) {
+//             const newRow = ` 
+//                 <tr>
+//                     <td>${size_name}</td>
+//                     <td style="text-align:center;">${box_qty}</td> <!-- Box -->
+//                     <td style="text-align:center;">${pcs_per_box}</td> <!-- Pcs/Box -->
+//                     <td style="text-align:center;display:none;">${box_pcs}</td> <!-- Box Pcs -->
+//                     <td style="text-align:center;">${total_pcs}</td>
+//                     <td style="display:none;">${size_id}</td>
+//                     <td>${rate}</td>
+//                     <td>${amount.toFixed(2)}</td>
+//                     <td>
+//                         <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                             <i class="feather icon-trash-2"></i>
+//                         </button>
+//                     </td>
+//                 </tr>
+//             `;
+//             $('#table_data tbody').append(newRow);
+//         }
+//     });
+
+//     // ✅ Optionally close the offcanvas after adding
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+
+//     recalculateTotals();
+//     updateTotals();
+// });
+
+
+$(document).on('click', '#addToMainTable', function() {
+    $('#purchaseTable tbody tr').each(function() {
+
+        const size_name = $(this).data('size');
+        const size_id = $(this).data('sizeid');
+        const rate = parseFloat($(this).data('rate')) || 0;
+        const total_pcs = parseFloat($(this).find('input').val()) || 0;
+        const pcs_per_box = parseFloat($(this).find('#pcs_per_box').text()) || 0;
+        const box_pcs = parseFloat($(this).find('#box_pcs').text()) || 0;
+
+        // ✅ Calculate box_qty dynamically
+        let box_qty = 0;
+        if (pcs_per_box > 0) {
+            box_qty = total_pcs / pcs_per_box;
+        }
+
+        // ✅ Optional: round to 2 decimals if needed
+        box_qty = parseFloat(box_qty.toFixed(2));
+
+        const amount = rate * total_pcs;
+
+        if (total_pcs > 0) {
+            const newRow = ` 
+                <tr>
+                    <td>${size_name}</td>
+                    <td style="text-align:center;">${box_qty}</td> <!-- Box -->
+                    <td style="text-align:center;">${pcs_per_box}</td> <!-- Pcs/Box -->
+                    <td style="text-align:center;display:none;">${box_pcs}</td> <!-- Box Pcs -->
+                    <td style="text-align:center;">${total_pcs}</td>
+                    <td style="display:none;">${size_id}</td>
+                    <td>${rate}</td>
+                    <td>${amount.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+                            <i class="feather icon-trash-2"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            $('#table_data tbody').append(newRow);
+        }
+    });
+
+    // ✅ Close offcanvas after adding
+    const offcanvasEl = document.getElementById('inwardOffcanvas');
+    const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+    bsOffcanvas.hide();
+
+    // ✅ Recalculate totals
+    recalculateTotals();
+});
+
+
+function updateTotals() {
+
+    let total_boxes = 0;
+    let total_box_pcs = 0;
+    let total_pieces = 0;
+
+    $('#table_data tbody tr').each(function() {
+
+        total_boxes += parseFloat($(this).find('td:eq(1)').text()) || 0;
+        total_box_pcs += parseFloat($(this).find('td:eq(3)').text()) || 0;
+        total_pieces += parseFloat($(this).find('td:eq(4)').text()) || 0;
+
+    });
+
+    $('#total_boxes').text(total_boxes);
+    $('#total_box_pcs').text(total_box_pcs);
+    $('#total_pieces').text(total_pieces);
+
+}
+
+
+
+// function changeValue(button, delta) {
+//     const input = button.parentElement.querySelector('input');
+//     let value = parseInt(input.value) || 0;
+//     value = Math.max(0, value + delta); // prevent negative values
+//     input.value = value;
+// }
+
+
+
+
+ 
+function LoadInwardData_not_sidebar() {
+    let packing_list_id = $('#packing_list').val();
+    let party_id = $('#customer_id').val();
+    if (!packing_list_id) {
+        alert("Please select a Packing List first.");
+        return;
+    }
+
+    $('#purchaseTable tbody').empty(); // clear old data
+
+    $.ajax({
+        url: '/get_packing_inward_list/',
+        type: 'GET',
+        data: { packing_list_id: packing_list_id,
+            party_id:party_id
+         },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let total_boxes = 0;
+                let total_box_pcs = 0;
+                let total_pieces = 0;
+
+                response.data.forEach(function(item) {
+                    var total_pcs = item.total_pcs;
+                    var rate = item.rate;
+                    var amount = total_pcs * rate ;
+                    console.log('amt:',amount);  
+
+                    let row = `  
+                        <tr>
+                            <td>${item.size_name}</td>
+                            <td style="text-align:center;">${item.box_qty}</td>
+                            <td style="text-align:center;">${item.pcs_per_box}</td> 
+                            <td style="text-align:center;">${item.box_pcs}</td>
+                            <td style="text-align:center;">${item.total_pcs}</td>
+                            <td style="display:none;">${item.size_id}</td>
+                            <td>${item.rate}</td>
+                            <td>${amount}</td>
+                            <td><button class="btn btn-xs btn-danger" onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+                        </tr>
+                    `;
+                    $('#purchaseTable tbody').append(row);
+
+                    total_boxes += parseFloat(item.box_qty || 0);
+                    total_box_pcs += parseFloat(item.box_pcs || 0);
+                    total_pieces += parseFloat(item.total_pcs || 0);
+                });
+
+                // Update footer totals
+                $('#total_boxes').text(total_boxes);
+                $('#total_box_pcs').text(total_box_pcs);
+                $('#total_pieces').text(total_pieces);
+            } else {
+                alert("No data found for this Packing List.");
+            }
+        },
+        error: function() {
+            alert("Error loading inward data.");
+        }
+    });
+}
+
+
+
+function removeRow(btn) {
+    $(btn).closest('tr').remove();
+    recalculateTotals();
+}
+
+function recalculateTotals() {
+    let total_boxes = 0;
+    let total_box_pcs = 0;
+    let total_pieces = 0;
+
+    $('#table_data tbody tr').each(function() {
+        total_boxes += parseFloat($(this).find('td:eq(1)').text()) || 0;
+        total_box_pcs += parseFloat($(this).find('td:eq(3)').text()) || 0;
+        total_pieces += parseFloat($(this).find('td:eq(4)').text()) || 0;
+    });
+
+    // ✅ Update footer totals
+    $('#total_boxes').text(total_boxes);
+    $('#total_box_pcs').text(total_box_pcs);
+    $('#total_pieces').text(total_pieces);
+
+    // ✅ Update Summary Table too
+    $('#total_box').text(total_boxes);
+    $('#box_piece').text(total_box_pcs);
+    $('#delivered_pcs').text(total_pieces);
+    highlightSummary();
+
+}
+
+
+function highlightSummary() {
+    $('#summary_table td.highlight').addClass('bg-success text-white');
+    setTimeout(() => {
+        $('#summary_table td.highlight').removeClass('bg-success text-white');
+    }, 400);
+}
+
+
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    $('#table_data tbody tr').each(function(index) {
+        var size_name = $(this).find('td:eq(0)').text().trim(); 
+
+        var box = $(this).find('td:eq(1)').text().trim();
+
+        var pcs_per_box = $(this).find('td:eq(2)').text().trim();
+
+        var total_pcs = $(this).find('td:eq(4)').clone().children().remove().end().text().trim(); // Remove buttons/child divs
+
+        var size_id = $(this).find('td:eq(5)').text().trim();
+
+        var rate = $(this).find('td:eq(6)').text().trim(); 
+
+        // var amount = $(this).find('td:eq(7)').text().trim();
+
+       
+        // // Serial numbers (from badge text inside .serial-number-list) 
+        // var serial_number = $(this).find('.serial').map(function () {
+        //     return $(this).text().trim();
+        // }).get().join(', ');
+
+
+        var amount = parseFloat($(this).find('td:eq(7)').text().trim()) || 0.00;
+    
+        TableData.push({
+
+            "size_name": size_name,
+            "size_id": size_id,
+            "box": box,
+            "pcs_per_box": pcs_per_box,
+            "total_pcs": total_pcs,
+            "rate": rate, 
+            "amount": amount,
+            
+            
+        });
+    });
+
+    console.log("Collected Table Data:", TableData);
+    return TableData;
+}
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    if (confirm("Are you sure you want to save?")) {
+    // Collect table data
+    var TableData = storeTblValues();
+ 
+    // Check if TableData is an array and has length
+    if (!Array.isArray(TableData) || TableData.length === 0) {
+        showToast('error',"No product data to submit.");
+        return;
+    } 
+
+    // Validate serial numbers
+   
+    // Convert TableData to JSON string
+    TableData = JSON.stringify(TableData); 
+    console.log('tabl-data:',TableData);
+
+    // Create form data object for AJAX
+    var formData = new FormData(this);
+    formData.append('order-data', TableData);
+
+
+    
+    
+    // Collect totals and append them to formData
+    var total_pcs = $('#delivered_pcs').text();
+    var total_box = $('#total_box').text();
+   
+    // Append total values to formData
+    formData.append('total_pcs', total_pcs); 
+    formData.append('sub_total', total_box);
+ 
+    
+
+    // Send AJAX request
+    $.ajax({ 
+        type: "POST",
+        url: "/insert-sales-order/", // The backend URL
+        data: formData, // Form data including `chemical_data`
+        processData: false,
+        contentType: false, 
+        beforeSend: function() {
+            // Disable the submit button and show processing state
+            $('#submit_inwards').attr('disabled', true).text('Processing...');
+        }, 
+        success: function(response) {
+            // Re-enable the submit button
+            $('#submit_inwards').attr('disabled', false).text('Save');
+            if (response.status === 'success') {
+                showToast('success','Success! Data added.'); 
+                // location.reload(); // Optionally reload the page
+            } else {
+                showToast('error','Error: ' + response); // Show error message
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#submit_inwards').attr('disabled', false).text('Save');
+            let errorMsg = 'Could not add data.';
+
+            try {
+                // Try to parse JSON response from backend
+                var response = JSON.parse(xhr.responseText);
+                if (response && response.error_message) {
+                    errorMsg = response.error_message;
+                }
+            } catch (e) {
+                // Fallback if not JSON
+                errorMsg = xhr.statusText || errorMsg;
+            }
+
+            showToast('error', 'Error: ' + errorMsg);
+        }
+
+    });
+}
+});
+
+
+
+</script>

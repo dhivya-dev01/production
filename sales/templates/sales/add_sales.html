@@ -1,0 +1,2447 @@
+
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+#inwardOffcanvas {
+  width: 600px; /* adjust sidebar width as you like */
+}
+.input-group-sm .btn {
+  width: 35px;
+}
+
+</style>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Sales 
+                                                 <!-- &nbsp;  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#add_modal">Add</button> -->
+                                            </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Sales</a></li>
+                                            <li class="breadcrumb-item"><a href="/sales">Sales </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                                                    
+                                    <div class="card">
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <section class="hk-sec-wrapper">
+ 
+                                                        <form id="add_new">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="chemical_data" id="chemical_data">
+
+                                                            <div class="">
+                                                                <div class="col-md-12">
+                                                                    <div class="row"> 
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="sku" class="form-label">Order No.</label> 
+                                                                            <input type="text" class="form-control" id="qt_no" name="qt_no" value="{{order_no}}" readonly>
+                                                                        </div>
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="entry_date" class="form-label">Order Date</label>
+                                                                            <input type="date" class="form-control" id="order_date" name="order_date" required>
+                                                                        </div> 
+                                                                        
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="customer_id" class="form-label">Customer</label>
+                                                                            <select class="form-control single-select" id="customer_id" name="customer_id" required onchange="LoadSales_order()">
+                                                                                <option value="">Select</option>
+                                                                                {% for e in party %}
+                                                                                <option value="{{e.id}}">{{e.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>   
+
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="sales_order_id" class="form-label">Sales Order</label>
+                                                                            <select class="form-control single-select" id="sales_order_id" name="sales_order_id" required>
+                                                                                <option value="">Select</option>
+                                                                                {% for e in sales_order %}
+                                                                                <option value="{{e.id}}">{{e.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>   
+
+                                                                        <div class="col-md-2  mt-4">
+                                                                            <a id="load_data" class="btn btn-primary mt-3" onclick="LoadSalesData()">+ LOAD</a>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-md-2 mt-3" >
+                                                                            <label for="quality_id" class="form-label">Quality</label> 
+                                                                            <select class="form-control single-select" id="quality_id" name="quality_id">
+                                                                                <option value="">Select</option>
+                                                                                {% for q in quality %}
+                                                                                <option value="{{q.id}}">{{q.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div> 
+
+
+                                                                        <div class="col-md-2 mt-3">
+                                                                            <label for="style_id" class="form-label">Style</label> 
+                                                                            <select class="form-control single-select" id="style_id" name="style_id">
+                                                                                <option value="">Select</option>
+                                                                                {% for s in style %} 
+                                                                                <option value="{{s.id}}">{{s.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select> 
+                                                                        </div>
+  
+
+                                                                        <div class="col-md-2  mt-4">
+                                                                            <a id="load_data" class="btn btn-primary mt-3" onclick="LoadSizeData()">+ LOAD</a>
+                                                                        </div>
+                                                                     
+                                                                    </div>
+
+                                                                    <br>
+                                                                    
+                                                                   
+                                                                    
+                                                                    <hr>
+                                                                    
+                                                                    <div class="table-responsive">
+                                                                              
+
+                                                                        <table id="table_data" class="table table-bordered">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Quality</th>
+                                                                                    <th>Style</th>
+                                                                                    <!-- Sizes inserted here dynamically --> 
+                                                                                        <th>
+                                                                                        <div>XS</div>
+                                                                                        <div>45</div>
+                                                                                        <div>75</div>
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>S</div>
+                                                                                        <div>50</div>
+                                                                                        <div>80</div>
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>M</div>
+                                                                                        <div>55</div>
+                                                                                        <div>85</div>
+
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>L</div>
+                                                                                        <div>60</div>
+                                                                                        <div>90</div>
+
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>XL</div>
+                                                                                        <div>65</div>
+                                                                                        <div>95</div>
+
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>XXL</div>
+                                                                                        <div>70</div>
+                                                                                        <div>100</div>
+
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>3XL</div>
+                                                                                        <div>75</div>
+                                                                                        <div>105</div>
+
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        <div>4XL</div>
+                                                                                        <div>80</div>
+                                                                                        <div>110</div>
+
+                                                                                    </th>
+                                                                                    <th>Total Pcs</th>
+                                                                                    
+                                                                                    <th>Actions</th> 
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody></tbody>  
+                                                                            <tfoot>
+                                                                                <tr>
+                                                                                    <th colspan="2">Total</th>
+                                                                                    <th id="total_pcs_footer"></th>
+                                                                                    <th></th>
+                                                                                    
+                                                                                </tr>
+                                                                            </tfoot>
+                                                                        </table>
+
+                                                                    </div>
+                                                                  
+
+
+                                                                </div> 
+                                                            </div>
+
+
+
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-4 mt-3">
+                                                            <div class=" m-b-30">
+                                                                <div class=" table-responsive">   
+                                                                    
+                                                                     <table id="summary_table" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="3" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th> 
+                                                                                <th>Pcs / Boxes</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Total(pcs)</td>
+                                                                                <td class="highlight"><span id="delivered_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total Boxes</td> 
+                                                                                <td class="highlight"><span id="total_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr style="display: none;">
+                                                                                <td>Box Pcs</td>
+                                                                                <td class="highlight"><span id="box_piece">0</span></td>
+                                                                            </tr>
+                                                                           
+                                                                           
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+
+                                                        <div class="col-md-4 mt-3">
+                                                            <div class="col-md-12 ">
+
+                                                                <textarea type="text" class="form-control" id="remarks" name="remarks" rows="3" placeholder="Sales Order Remarks"></textarea>
+                                                            </div>
+                                                        </div> 
+
+                                                    </div>
+
+
+                                                    
+                                                    </div>
+                                                    
+                                                            <!-- `````````````````````````````````````````````````````` -->
+                                                            <div class="text-end">
+                                                                <input type="hidden" id="quotation_id" name="quotation_id" value="{{quotation_id}}">
+                                                                <input type="hidden" id="enquiry_id" name="enquiry_id" value="{{enquiry_id}}">
+                                                                <button type="button" class="btn btn-secondary ml-auto" onclick="history.back()">Close</button>
+                                                                <button type="submit" id="submit_inwards" class="btn btn-primary mr-auto ml-2">Save</button>
+                                                            </div>
+                                                        </form>
+                                                    </section>
+                                                    
+                                                    
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+
+
+
+                                    <!-- Offcanvas Sidebar -->
+
+                                    <div class="offcanvas offcanvas-end" tabindex="-1" id="inwardOffcanvas" aria-labelledby="inwardOffcanvasLabel">
+                                    <div class="offcanvas-header">
+                                        <h5 id="inwardOffcanvasLabel">Packing Inward Details</h5>
+                                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="offcanvas-body">
+                                        <table class="table table-bordered" id="purchaseTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Size</th>
+                                                <th>Rate</th>
+                                                <th>Total Pcs</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody> 
+                                        </table> 
+
+                                        <!-- ✅ Add button -->
+                                        <div class="text-end">
+                                        <button type="button" class="btn btn-primary" id="addToMainTable">Add to Table</button>
+                                        </div>
+                                    </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %} 
+
+<script>
+  $('.single-select').select2({})
+
+ 
+
+
+function LoadSales_order() {
+    var customer_id = $('#customer_id').val();
+    console.log('Customer-ID:', customer_id); // Adjusted for clarity
+ 
+    $.ajax({
+        type: 'POST',  // Change to POST
+        url: '/get_customer_sales_orders/', 
+        data: {
+            'customer_id': customer_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        success: function(data) {
+            $('#sales_order_id').prop('disabled', true).empty().append('<option value="">Loading...</option>');
+
+            if (data.data.length > 0) {
+                $('#sales_order_id').empty().append('<option value="">Select</option>');
+                data.data.forEach(function(sales) {
+                    $('#sales_order_id').append('<option value="' + sales.order_id + '">' + sales.order_no + '</option>');
+                });
+            } else {
+                $('#sales_order_id').empty().append('<option value="">No orders found</option>');
+            }
+
+            $('#sales_order_id').prop('disabled', false);
+        },
+
+
+
+        // success: function(data) {
+        //     $('#sales_order_id').empty().append(''); 
+        //     // $('#sales_order_id').empty().append('<option value="">Select</option>');
+
+        //     // Iterate over the returned data to populate the dropdown
+        //     if (data.order.length > 0) {
+        //         data.order.forEach(function(sales) {
+        //             $('#sales_order_id').append('<option value="' + sales.id + '">' + sales.order_no + '</option>');
+        //         });
+        //     }
+        // },
+        error: function(xhr, status, error) {
+            console.error('Error loading Sales lists:', error);
+        }
+    });
+}
+
+
+//````````````````````````` load data in table ``````````````````````````
+
+// function LoadInwardData() {
+//     let packing_list_id = $('#packing_list').val();
+//     let party_id = $('#customer_id').val();
+
+//     if (!packing_list_id) {
+//         alert("Please select a Packing List first.");
+//         return;
+//     }
+
+//     $('#purchaseTable tbody').empty(); // clear old data
+
+//     $.ajax({
+//         url: '/get_packing_inward_list/',
+//         type: 'GET',
+//         data: {
+//             packing_list_id: packing_list_id,
+//             party_id: party_id
+//         },
+//         dataType: 'json',
+//         success: function(response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+
+//                 // ✅ Open the offcanvas sidebar
+//                 let offcanvasElement = document.getElementById('inwardOffcanvas');
+//                 let bsOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+//                 bsOffcanvas.show();
+
+//                 let total_boxes = 0;
+//                 let total_box_pcs = 0;
+//                 let total_pieces = 0;
+
+//                 response.data.forEach(function(item) {
+//                     let total_pcs = item.total_pcs;
+//                     let rate = item.rate;
+//                     let amount = total_pcs * rate;
+
+//                     let row = `
+//                         <tr>
+//                             <td>${item.size_name}</td>
+//                             <td style="text-align:center;">${item.box_qty}</td>
+//                             <td style="text-align:center;">${item.pcs_per_box}</td>
+//                             <td style="text-align:center;">${item.box_pcs}</td>
+//                             <td style="text-align:center;">${item.total_pcs}</td>
+//                             <td style="display:none;">${item.size_id}</td>
+//                             <td>${item.rate}</td>
+//                             <td>${amount}</td>
+//                             <td><button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                                 <i class="feather icon-trash-2"></i></button></td>
+//                         </tr>
+//                     `;
+//                     $('#purchaseTable tbody').append(row);
+
+//                     total_boxes += parseFloat(item.box_qty || 0);
+//                     total_box_pcs += parseFloat(item.box_pcs || 0);
+//                     total_pieces += parseFloat(item.total_pcs || 0);
+//                 });
+
+//                 // Update footer totals
+//                 $('#total_boxes').text(total_boxes);
+//                 $('#total_box_pcs').text(total_box_pcs);
+//                 $('#total_pieces').text(total_pieces);
+
+//             } else {
+//                 alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function() {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+
+
+
+// function LoadInwardData() {
+//     let packing_list_id = $('#packing_list').val();
+//     let party_id = $('#customer_id').val();
+
+//     if (!packing_list_id) {
+//         alert("Please select a Packing List first.");
+//         return;
+//     }
+
+//     $('#purchaseTable tbody').empty();
+
+//     $.ajax({
+//         url: '/get_packing_inward_list/',
+//         type: 'GET',
+//         data: { packing_list_id, party_id },
+//         dataType: 'json',
+//         success: function(response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+//                 let offcanvasEl = document.getElementById('inwardOffcanvas');
+//                 let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+//                 bsOffcanvas.show();
+
+//                 response.data.forEach(function(item) {
+//                     let totalPcs = item.total_pcs || 0;
+//                     let rate = item.rate || 0;
+//                     let row = `
+//                         <tr data-sizeid="${item.size_id}" data-rate="${rate}" data-size="${item.size_name}">
+//                             <td>${item.size_name}</td>
+//                             <td style="text-align:center;">
+//                                 <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+//                                     <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+//                                 </div>
+//                             </td>
+ 
+//                             <td id="box_qty" style="display:none;">${item.box_qty}</td>
+//                             <td id="pcs_per_box" style="display:none;">${item.pcs_per_box}</td> 
+//                             <td id="box_pcs" style="display:none;">${item.box_pcs}</td>
+//                             <td id="total_pcs" style="display:none;">${item.total_pcs}</td> 
+//                             <td id="size_id" style="display:none;">${item.size_id}</td> 
+
+//                         </tr>
+//                     `;
+//                     $('#purchaseTable tbody').append(row);
+//                 });
+//             } else {
+//                 alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function() {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+
+function changeValue(button, delta) {
+    const row = button.closest('tr');
+    const input = row.querySelector('input.total-pcs-input');
+    const pcsPerBox = parseInt(row.querySelector('.pcs_per_box').textContent) || 1;
+    let value = parseInt(input.value) || 0;
+    value += delta * pcsPerBox;
+    if (value < 0) value = 0;
+    input.value = value;
+    updateAmount(input);
+}
+
+function updateAmount(input) {
+    const row = $(input).closest('tr');
+    const rate = parseFloat(row.find('.rate').text()) || 0;
+    const pcs = parseFloat($(input).val()) || 0;
+    const amount = rate * pcs;
+    row.find('.amount').text(amount.toFixed(2));
+}
+
+
+function getHeaderSizeIndexMap() {
+    const map = {};
+    $('#table_data thead th').each(function(index) {
+        const sizeName = $(this).text().trim();
+        // Ignore Quality, Style, Total Pcs, Actions
+        if (!['Quality','Style','Total Pcs','Actions'].includes(sizeName)) {
+            map[sizeName] = index;
+        }
+    });
+    return map;
+}
+ 
+
+
+// function LoadInwardData() {
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+//     let party_id = $('#customer_id').val();
+
+//     if (!quality_id) return alert("Please select a Quality List first.");
+//     if (!style_id) return alert("Please select a Style List first.");
+
+//     $('#purchaseTable tbody').empty();
+
+//     $.ajax({
+//         url: '/get_quality_style_lists/',
+//         type: 'GET',
+//         data: { quality_id, party_id, style_id },
+//         dataType: 'json',
+//         success: function (response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+//                 let offcanvasEl = document.getElementById('inwardOffcanvas');
+//                 let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+//                 bsOffcanvas.show();
+
+//                 response.data.forEach(item => {
+//                     let totalPcs = item.total_pcs || 0;
+//                     let rate = item.rate || 0;
+//                     let amount = rate * totalPcs;
+
+//                     let row = `
+//                         <tr 
+//                             data-sizeid="${item.size_id}" 
+//                             data-rate="${rate}" 
+//                             data-size="${item.size_name}"
+//                             data-qualityid="${item.quality_id}"
+//                             data-styleid="${item.style_id}"
+//                             data-pcsperbox="${item.pcs_per_box}"
+//                         >
+//                             <td>${item.size_name}</td>
+//                             <td class="rate">${rate}</td>
+//                             <td style="text-align:center;">
+//                                 <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+//                                     <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+//                                 </div>
+//                             </td>
+//                             <td class="amount">${amount.toFixed(2)}</td>
+
+//                             <!-- hidden fields -->
+//                             <td class="d-none box_qty">${item.box_qty}</td>
+//                             <td class="d-none pcs_per_box">${item.pcs_per_box}</td> 
+//                             <td class="d-none box_pcs">${item.box_pcs}</td>   
+//                             <td class="d-none total_pcs">${item.total_pcs}</td>  
+//                             <td class="d-none size_id">${item.size_id}</td> 
+//                             <td class="d-none quality_id">${item.quality_id}</td> 
+//                             <td class="d-none style_id">${item.style_id}</td>  
+//                         </tr>
+//                     `;
+//                     $('#purchaseTable tbody').append(row);
+//                 });
+
+//                 // ✅ Update amount when input changes
+//                 $('#purchaseTable').off('input', '.total-pcs-input').on('input', '.total-pcs-input', function () {
+//                     updateAmount(this);
+//                 });
+//             } else {
+//                 alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function () {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+// // ✅ Add to Main Table
+// $(document).on('click', '#addToMainTable', function () {
+//     let quality_name = $('#quality_id option:selected').text();
+//     let style_name = $('#style_id option:selected').text();
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+
+//     if (!quality_id || !style_id) return alert("Select Quality and Style first.");
+
+//     // 1️⃣ Collect offcanvas data
+//     const sizeData = {};
+//     let totalPcs = 0;
+
+//     $('#purchaseTable tbody tr').each(function () {
+//         const row = $(this);
+//         const sizeName = row.data('size'); // e.g., XS, S, 75, 80...
+//         const pcs = parseFloat(row.find('.total-pcs-input').val()) || 0;
+//         const rate = parseFloat(row.find('.rate').text()) || 0;
+//         const amount = pcs * rate;
+
+//         sizeData[sizeName] = { pcs, rate, amount };
+//         totalPcs += pcs;
+//     });
+
+//     // 2️⃣ Ensure all sizes exist in table header
+//     Object.keys(sizeData).forEach(sizeName => {
+//         if ($('#table_data thead th:contains("' + sizeName + '")').length === 0) {
+//             // Insert before Total Pcs
+//             $('#table_data thead th:contains("Total Pcs")').before(`<th>${sizeName}</th>`);
+//             // Add default 0 to existing rows
+//             $('#table_data tbody tr').each(function () {
+//                 $(this).find('td:contains("Total Pcs")').before('<td style="text-align:center;">0</td>');
+//             });
+//         }
+//     });
+
+//     // 3️⃣ Map header text → column index
+//     const headerMap = {};
+//     $('#table_data thead th').each(function(index) {
+//         const text = $(this).text().trim();
+//         if (!['Quality','Style','Total Pcs','Actions'].includes(text)) {
+//             headerMap[text] = index;
+//         }
+//     });
+
+//     // 4️⃣ Check if row exists
+//     let matchedRow = null;
+//     $('#table_data tbody tr').each(function () {
+//         if ($(this).data('qualityid') == quality_id && $(this).data('styleid') == style_id) {
+//             matchedRow = $(this);
+//             return false;
+//         }
+//     });
+
+//     if (matchedRow) {
+//         // ✅ Update existing row
+//         Object.keys(headerMap).forEach(size => {
+//             const idx = headerMap[size];
+//             matchedRow.find(`td:eq(${idx})`).text(sizeData[size] ? sizeData[size].pcs : 0);
+//         });
+//         // Update Total Pcs
+//         const totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+//         matchedRow.find(`td:eq(${totalIdx})`).text(totalPcs);
+//     } else {
+//         // ✅ Create new row
+//         const totalCols = $('#table_data thead th').length;
+//         const rowArr = Array(totalCols).fill('0');
+
+//         // Quality + Style
+//         rowArr[0] = quality_name;
+//         rowArr[1] = style_name;
+
+//         // Fill sizes
+//         Object.keys(headerMap).forEach(size => {
+//             const idx = headerMap[size];
+//             rowArr[idx] = sizeData[size] ? sizeData[size].pcs : 0;
+//         });
+
+//         // Total Pcs + Action
+//         const totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+//         rowArr[totalIdx] = totalPcs;
+//         rowArr[totalCols - 1] = `<button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                                      <i class="feather icon-trash-2"></i>
+//                                  </button>`;
+
+//         const rowHtml = `<tr data-qualityid="${quality_id}" data-styleid="${style_id}">${rowArr.map(td => `<td style="text-align:center;">${td}</td>`).join('')}</tr>`;
+//         $('#table_data tbody').append(rowHtml);
+//     }
+
+//     // 5️⃣ Close Offcanvas
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+//     // 6️⃣ Update Footer Totals
+//     updateTotals();
+// });
+
+
+
+// // 16-10✅ Add to Main Table
+// $(document).on('click', '#addToMainTable', function () {
+//     let quality_name = $('#quality_id option:selected').text();
+//     let style_name = $('#style_id option:selected').text();
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+
+//     let sizeData = [];
+//     let totalPcs = 0;
+
+//     // Collect size rows from offcanvas table
+//     $('#purchaseTable tbody tr').each(function () {
+//         let row = $(this);
+//         let sizeName = row.data('size');
+//         let pcs = parseFloat(row.find('.total-pcs-input').val()) || 0;
+//         let rate = parseFloat(row.find('.rate').text()) || 0;
+//         let amount = rate * pcs;
+
+//         sizeData.push({
+//             size_id: row.data('sizeid'),
+//             size_name: sizeName,
+//             pcs_per_box: row.data('pcsperbox'),
+//             pcs: pcs,
+//             rate: rate,
+//             amount: amount
+//         });
+
+//         totalPcs += pcs;
+//     });
+
+//     let totalAmount = sizeData.reduce((sum, s) => sum + s.amount, 0);
+
+//     // ✅ Find existing size headers (ignoring Quality, Style, Total, Actions)
+//     let existingSizes = [];
+//     $('#table_data thead th').each(function () {
+//         let txt = $(this).text().trim();
+//         if (!['Quality', 'Style', 'Total Pcs', 'Actions'].includes(txt)) {
+//             existingSizes.push(txt);
+//         }
+//     });
+
+//     // ✅ Add missing size headers (before Total Pcs)
+//     sizeData.forEach(size => {
+//         if (!existingSizes.includes(size.size_name)) {
+//             // Insert before Total Pcs column
+//             $('#table_data thead th:contains("Total Pcs")').before(`<th>${size.size_name}</th>`);
+
+//             // Add new size column (default 0) before total pcs in every existing row
+//             $('#table_data tbody tr').each(function () {
+//                 $(this).find('td:contains("Total Pcs")').before('<td style="text-align:center;">0</td>');
+//             });
+
+//             existingSizes.push(size.size_name);
+//         }
+//     });
+
+//     // ✅ Check if this quality + style combo already exists
+//     let matchedRow = null;
+//     $('#table_data tbody tr').each(function () {
+//         if ($(this).data('qualityid') == quality_id && $(this).data('styleid') == style_id) {
+//             matchedRow = $(this);
+//             return false;
+//         }
+//     });
+
+//     if (matchedRow) {
+//         // ✅ Update existing row values
+//         existingSizes.forEach((size, i) => {
+//             let s = sizeData.find(x => x.size_name === size);
+//             // Columns start after Quality + Style = index offset +2
+//             matchedRow.find(`td:eq(${i + 2})`).text(s ? s.pcs : 0);
+//         });
+//         matchedRow.find('.total-pcs').text(totalPcs);
+//     } else {
+//         // ✅ Create new row with all dynamic size columns, total, and actions
+//         let rowHtml = `
+//             <tr data-qualityid="${quality_id}" data-styleid="${style_id}">
+//                 <td>${quality_name}</td>
+//                 <td>${style_name}</td>
+//         `;
+
+//         existingSizes.forEach(size => {
+//             let s = sizeData.find(x => x.size_name === size);
+//             let pcs = s ? s.pcs : 0;
+//             rowHtml += `
+//                 <td style="text-align:center;">
+//                     <a href="#" class="open-modal"
+//                         data-quality_id="${quality_id}"
+//                         data-style_id="${style_id}"
+//                         data-size_id="${s ? s.size_id : ''}"
+//                         data-pcs_per_box="${s ? s.pcs_per_box : 0}"
+//                         data-rate="${s ? s.rate : 0}"
+//                         data-amount="${s ? s.amount : 0}"
+//                         data-pcs="${pcs}"
+//                         data-size_name="${size}">
+//                         ${pcs}
+//                     </a>
+//                 </td>`;
+//         });
+
+//         // ✅ Add Total Pcs + Action after all sizes
+//         rowHtml += `
+//             <td class="total-pcs" style="text-align:center;">${totalPcs}</td>
+//             <td style="text-align:center;">
+//                 <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                     <i class="feather icon-trash-2"></i>
+//                 </button>
+//             </td>
+//         </tr>`;
+
+//         $('#table_data tbody').append(rowHtml);
+//     }
+
+//     // ✅ Close Offcanvas
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+//     // ✅ Update Footer Totals
+//     updateTotals();
+// });
+
+
+// ✅ Add to Main Table
+// $(document).on('click', '#addToMainTable', function () {
+//     let quality_name = $('#quality_id option:selected').text();
+//     let style_name = $('#style_id option:selected').text();
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+
+//     let sizeData = [];
+//     let totalPcs = 0;
+
+//     $('#purchaseTable tbody tr').each(function () {
+//         let row = $(this);
+//         let sizeName = row.data('size');
+//         let pcs = parseFloat(row.find('.total-pcs-input').val()) || 0;
+//         let rate = parseFloat(row.find('.rate').text()) || 0;
+//         let amount = rate * pcs;
+
+//         sizeData.push({
+//             size_id: row.data('sizeid'),
+//             size_name: sizeName,
+//             pcs_per_box: row.data('pcsperbox'),
+//             pcs: pcs,
+//             rate: rate,
+//             amount: amount
+//         });
+
+//         totalPcs += pcs;
+//     });
+
+//     let totalAmount = sizeData.reduce((sum, s) => sum + s.amount, 0);
+
+//     // ✅ Build table headers dynamically if needed
+//     let existingSizes = [];
+//     $('#table_data thead th').each(function () {
+//         let txt = $(this).text().trim();
+//         if (!['Quality', 'Style', 'Total Pcs', 'Rate', 'Amount', 'Actions'].includes(txt)) {
+//             existingSizes.push(txt);
+//         }
+//     });
+
+//     sizeData.forEach(size => {
+//         if (!existingSizes.includes(size.size_name)) {
+//             $('#table_data thead tr').find('th:last').before(`<th>${size.size_name}</th>`);
+//             $('#table_data tbody tr').each(function () {
+//                 $(this).find('td:last').before('<td style="text-align:center;">0</td>');
+//             });
+//             existingSizes.push(size.size_name);
+//         }
+//     });
+
+//     // ✅ Check if same quality + style already exist
+//     let matchedRow = null;
+//     $('#table_data tbody tr').each(function () {
+//         if ($(this).data('qualityid') == quality_id && $(this).data('styleid') == style_id) {
+//             matchedRow = $(this);
+//             return false;
+//         }
+//     });
+
+//     if (matchedRow) {
+//         // Update existing row
+//         existingSizes.forEach((size, i) => {
+//             let s = sizeData.find(x => x.size_name === size);
+//             matchedRow.find(`td:eq(${i + 2})`).text(s ? s.pcs : 0);
+//         });
+//         matchedRow.find('.total-pcs').text(totalPcs);
+//         matchedRow.find('.rate').text(sizeData[0].rate.toFixed(2));
+//         matchedRow.find('.amount').text(totalAmount.toFixed(2));
+//     } else {
+//         // Add new row
+//         let rowHtml = `
+//             <tr data-qualityid="${quality_id}" data-styleid="${style_id}">
+//                 <td>${quality_name}</td>
+//                 <td>${style_name}</td>
+//         `;
+
+//         existingSizes.forEach(size => {
+//             let s = sizeData.find(x => x.size_name === size);
+//             let pcs = s ? s.pcs : 0;
+//             rowHtml += `
+//                 <td style="text-align:center;">
+//                     <a href="#" class="open-modal"
+//                         data-quality_id="${quality_id}"
+//                         data-style_id="${style_id}"
+//                         data-size_id="${s ? s.size_id : ''}"
+//                         data-pcs_per_box="${s ? s.pcs_per_box : 0}"
+//                         data-rate="${s ? s.rate : 0}"
+//                         data-amount="${s ? s.amount : 0}"
+//                         data-pcs="${pcs}"
+//                         data-size_name="${size}">
+//                         ${pcs}
+//                     </a> 
+//                 </td>`;
+//         });
+//             // <td class="amount" style="text-align:center;">${totalAmount.toFixed(2)}</td>
+
+//         rowHtml += `
+//             <td class="rate" style="text-align:center;">${sizeData[0].rate.toFixed(2)}</td>
+
+//             <td class="total-pcs" style="text-align:center;">${totalPcs}</td>
+
+//             <td style="text-align:center;">
+//                 <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                     <i class="feather icon-trash-2"></i>
+//                 </button>
+//             </td>
+            
+//             <td class="quality_id" style="display:none;">${quality_id}</td>
+//             <td class="style_id" style="display:none;">${style_id}</td>
+//             <td class="size_id" style="display:none;">${size_id}</td>
+
+
+//         </tr>`; 
+
+//         $('#table_data tbody').append(rowHtml);
+//     }
+
+//     // ✅ Close offcanvas
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+//     updateTotals();
+// }); 
+
+
+$('#addToMainTable').on('click', function () { 
+    let qualityId = $('#quality_id').val();
+    let styleId = $('#style_id').val();
+    let qualityName = $('#quality_id option:selected').text().trim();
+    let styleName = $('#style_id option:selected').text().trim();
+
+    if (!qualityId || !styleId) { alert("Please select both Quality and Style."); return; }
+
+    // gather sizeData (from purchaseTable rows)
+    const sizeData = [];
+    $('#purchaseTable tbody tr').each(function () {
+        const sizeName = $(this).data('size');
+        const sizeId = $(this).data('sizeid');
+        const pcs_per_box = $(this).data('pcs_per_box');
+        const rate = parseFloat($(this).data('rate')) || 0;
+        const pcs = parseFloat($(this).find('.total-pcs-input').val()) || 0;
+        const amount = pcs * rate;
+
+        if (pcs > 0) {
+            sizeData.push({ sizeName: String(sizeName), sizeId, pcs_per_box, pcs, rate, amount });
+        }
+    });
+
+    if (sizeData.length === 0) { alert("No size data found."); return; }
+
+    const headerBlocks = getHeaderBlocks(); // header order
+
+    // duplicate check: prevent adding same quality+style+sizeId combination
+    let duplicateFound = false;
+    $('#table_data tbody tr').each(function () {
+        const existingQuality = $(this).data('qualityid') || $(this).data('quality_id') || $(this).data('quality');
+        const existingStyle = $(this).data('styleid') || $(this).data('style_id') || $(this).data('style');
+        const existingSizes = ($(this).data('sizes') || '').toString().split(',').filter(x => x);
+
+        if (String(existingQuality) == String(qualityId) && String(existingStyle) == String(styleId)) {
+            sizeData.forEach(item => {
+                if (existingSizes.includes(String(item.sizeId))) duplicateFound = true;
+            });
+        }
+    });
+
+    if (duplicateFound) { alert("This Quality + Style + Size combination already exists!"); return; }
+
+    // Build row aligned with headerBlocks
+    let totalPcs = sizeData.reduce((s, it) => s + it.pcs, 0);
+    const presentSizeIds = sizeData.map(i => i.sizeId).filter(x => x != null);
+
+    let row = `<tr data-qualityid="${qualityId}" data-styleid="${styleId}" data-sizes="${presentSizeIds.join(',')}">
+        <td>${qualityName}</td>
+        <td>${styleName}</td>`;
+
+    headerBlocks.forEach(sizeBlock => {
+        // try to match any entry in sizeBlock with sizeData.sizeName
+        let matchedItem = null;
+        for (let i = 0; i < sizeBlock.length; i++) {
+            const txt = String(sizeBlock[i]).trim();
+            matchedItem = sizeData.find(sd => String(sd.sizeName) === txt);
+            if (matchedItem) break;
+        }
+
+        if (matchedItem) {
+            row += `<td class="text-center">
+                        <a href="#"
+                            class="open-modal"
+                            data-quality_id="${qualityId}"
+                            data-style_id="${styleId}"
+                            data-size_id="${matchedItem.sizeId}"
+                            data-pcs_per_box="${matchedItem.pcs_per_box}"
+                            data-pcs="${matchedItem.pcs}"
+                            data-rate="${matchedItem.rate}"
+                            data-amount="${matchedItem.amount.toFixed(2)}"
+                            data-size_name="${matchedItem.sizeName}"
+                            data-quality="${qualityName}"
+                            data-style="${styleName}"
+                        >${matchedItem.pcs}</a>
+                    </td>`;
+        } else {
+            row += `<td class="text-center">-</td>`;
+        }
+    });
+
+    row += `<td class="text-center total-pcs-cell">${totalPcs}</td>
+            <td class="text-center">
+                <button class="btn btn-xs btn-danger remove-row">
+                    <i class="feather icon-trash-2"></i>
+                </button>
+            </td>
+        </tr>`;
+
+    $('#table_data tbody').append(row);
+    updateSummaryTable();
+
+    // close offcanvas if exists
+    const offcanvasEl = document.getElementById('inwardOffcanvas');
+    if (offcanvasEl) {
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
+        offcanvas.hide();
+    }
+});
+
+
+
+function LoadInwardData() {
+    let quality_id = $('#quality_id').val();
+    let style_id = $('#style_id').val();
+    let party_id = $('#customer_id').val();
+
+    if (!quality_id) {
+        alert("Please select a Quality List first.");
+        return;
+    }
+
+    if (!style_id) {
+        alert("Please select a Style List first.");
+        return;
+    }
+
+
+    $('#purchaseTable tbody').empty();
+
+    $.ajax({
+        url: '/get_quality_style_lists/',
+        type: 'GET',
+        data: { quality_id, party_id, 
+                style_id
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let offcanvasEl = document.getElementById('inwardOffcanvas');
+                let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+                bsOffcanvas.show();
+
+                response.data.forEach(function(item) {
+                    let totalPcs = item.total_pcs || 0;
+                    let rate = item.rate || 0;
+                    let amount = rate * totalPcs;
+                    let row = `
+                        <tr data-sizeid="${item.size_id}" data-rate="${rate}" data-size="${item.size_name}">
+                            <td>${item.size_name}</td>
+                            <td class='rate'>${rate}</td>
+                            <td style="text-align:center;">
+                                <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+                                    <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+                                </div>
+                            </td>
+                            <td class="amount">${amount}</td>
+
+                            <td id="box_qty" style="display:none;">${item.box_qty}</td>
+                            <td id="pcs_per_box" class="pcs_per_box" style="display:none;">${item.pcs_per_box}</td> 
+                            <td id="box_pcs" style="display:none;">${item.box_pcs}</td>   
+                            <td id="total_pcs" style="display:none;">${item.total_pcs}</td>  
+                            <td id="size_id" style="display:none;">${item.size_id}</td> 
+                            <td id="quality_id" style="display:none;">${item.quality_id}</td>  
+                            <td id="style_id" style="display:none;">${item.style_id}</td>  
+
+                        </tr>
+
+                    `;
+                    $('#purchaseTable tbody').append(row);
+                });
+            } else {
+                alert("No data found for this Packing List.");
+            }
+        },
+        error: function() {
+            alert("Error loading inward data.");
+        }
+    });
+}
+
+function parsePcs(item) {
+    return parseFloat(item.box_pcs ?? item.total_pcs ?? item.pcs ?? 0) || 0;
+}
+
+/* ---------------------------
+   Read header blocks (each header cell -> array of its <div> texts)
+   Returns e.g. [ ["XS","45","75"], ["S","50","80"], ... ]
+   --------------------------- */
+function getHeaderBlocks() {
+    const headerBlocks = [];
+    const ths = $('#header-row-1 th');
+    const totalTh = ths.length;
+
+    ths.each(function (index) {
+        // skip first two (Quality, Style) and last two (Total Pcs, Actions)
+        if (index > 1 && index < totalTh - 2) {
+            const block = [];
+            $(this).find('div').each(function () {
+                block.push($(this).text().trim());
+            });
+            // store only non-empty blocks
+            if (block.length) headerBlocks.push(block);
+        }
+    });
+
+    return headerBlocks;
+}
+
+/* ---------------------------
+   updateSummaryTable: sums all rows' .total-pcs-cell and updates summary & footer
+   --------------------------- */
+function updateSummaryTable() {
+    let grandTotal = 0;
+    $('.total-pcs-cell').each(function () {
+        const v = parseFloat($(this).text()) || 0;
+        grandTotal += v;
+    });
+
+    $('#delivered_pcs').text(grandTotal.toFixed(0));
+    $('#total_pcs_footer').text(grandTotal.toFixed(0));
+}
+
+
+
+function updateTotals() {
+    let grandTotal = 0;
+    $('#table_data tbody tr').each(function () {
+        grandTotal += parseFloat($(this).find('.amount').text()) || 0;
+    });
+    $('#total_amount').text(grandTotal.toFixed(2));
+}
+
+
+
+// function LoadInwardData() {
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+//     let party_id = $('#customer_id').val();
+
+//     if (!quality_id) {
+//         alert("Please select a Quality List first.");
+//         return;
+//     }
+
+//     if (!style_id) {
+//         alert("Please select a Style List first.");
+//         return;
+//     }
+
+//     $('#purchaseTable tbody').empty();
+
+//     $.ajax({
+//         url: '/get_quality_style_lists/',
+//         type: 'GET',
+//         data: { quality_id, party_id, style_id },
+//         dataType: 'json',
+//         success: function (response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+//                 let offcanvasEl = document.getElementById('inwardOffcanvas');
+//                 let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+//                 bsOffcanvas.show();
+
+//                 response.data.forEach(function (item) {
+//                     let totalPcs = item.total_pcs || 0;
+//                     let rate = item.rate || 0;
+//                     let amount = rate * totalPcs;
+
+//                     let row = `
+//                         <tr data-sizeid="${item.size_id}" data-rate="${rate}" data-size="${item.size_name}">
+//                             <td>${item.size_name}</td>
+//                             <td class="rate">${rate}</td>
+//                             <td style="text-align:center;">
+//                                 <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+//                                     <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+//                                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+//                                 </div>
+//                             </td>
+//                             <td class="amount">${amount.toFixed(2)}</td>
+
+//                             <td id="box_qty" style="display:none;">${item.box_qty}</td>
+//                             <td id="pcs_per_box" style="display:none;">${item.pcs_per_box}</td> 
+//                             <td id="box_pcs" style="display:none;">${item.box_pcs}</td>   
+//                             <td id="total_pcs" style="display:none;">${item.total_pcs}</td>  
+//                             <td id="size_id" style="display:none;">${item.size_id}</td> 
+//                             <td id="quality_id" style="display:none;">${item.quality_id}</td> 
+//                             <td id="style_id" style="display:none;">${item.style_id}</td>  
+//                         </tr>
+//                     `;
+//                     $('#purchaseTable tbody').append(row);
+//                 });
+
+//                 // ✅ Event listener for manual input changes
+//                 $('#purchaseTable').on('input', '.total-pcs-input', function () {
+//                     updateAmount(this);
+//                 });
+//             } else {
+//                 alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function () {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+
+// function changeValue(button, delta) {
+//     const row = button.closest('tr');
+//     const input = row.querySelector('input.total-pcs-input');
+
+//     // Read pcs_per_box from hidden cell
+//     const pcsPerBox = parseInt(row.querySelector('#pcs_per_box').textContent) || 0;
+
+//     // Current value
+//     let value = parseInt(input.value) || 0;
+
+//     // Change by pcs_per_box each click
+//     value += delta * pcsPerBox;
+
+//     // ✅ Prevent going below 0
+//     if (value < 0) {
+//         value = 0;
+//     }
+
+//     input.value = value; 
+ 
+//     // ✅ Recalculate amount after change
+//     updateAmount(input);
+// }
+
+// function updateAmount(input) {
+//     const row = $(input).closest('tr');
+//     const rate = parseFloat(row.find('.rate').text()) || 0;
+//     const pcs = parseFloat($(input).val()) || 0;
+//     const amount = rate * pcs;
+
+//     row.find('.amount').text(amount.toFixed(2));
+// }
+
+
+// $(document).on('click', '#addToMainTable', function () {
+//     let quality_name = $('#quality_id option:selected').text();
+//     let style_name = $('#style_id option:selected').text();
+//     let quality_id = $('#quality_id').val();
+//     let style_id = $('#style_id').val();
+
+//     let sizeData = {};
+//     let totalPcs = 0;
+//     let rate = 0;
+
+//     // Collect size data from offcanvas table
+//     $('#purchaseTable tbody tr').each(function () {
+//         const size = $(this).data('size');
+//         const pcs = parseFloat($(this).find('input.total-pcs-input').val()) || 0;
+//         const rowRate = parseFloat($(this).data('rate')) || 0;
+//         rate = rowRate; // assuming same rate across sizes
+//         sizeData[size] = pcs;
+//         totalPcs += pcs;
+//     });
+
+//     const amount = rate * totalPcs;
+
+//     // Get existing sizes from table header
+//     let existingSizes = [];
+//     $('#table_data thead th').each(function () {
+//         let txt = $(this).text().trim();
+//         if (txt !== 'Quality' && txt !== 'Style' && txt !== 'Total Pcs' && txt !== 'Rate' && txt !== 'Amount' && txt !== 'Actions') {
+//             existingSizes.push(txt);
+//         }
+//     });
+
+//     // Add new size headers if needed
+//     for (const size in sizeData) {
+//         if (!existingSizes.includes(size)) {
+//             $('#table_data thead tr').find('th:last').before(`<th>${size}</th>`);
+
+//             // Add empty cells for each existing row
+//             $('#table_data tbody tr').each(function () {
+//                 $(this).find('td:last').before('<td style="text-align:center;">0</td>');
+//             });
+
+//             existingSizes.push(size);
+//         }
+//     }
+
+//     // Check if row with same quality + style exists
+//     let matchedRow = null;
+//     $('#table_data tbody tr').each(function () {
+//         const rowQualityId = $(this).data('qualityid');
+//         const rowStyleId = $(this).data('styleid');
+//         if (rowQualityId == quality_id && rowStyleId == style_id) {
+//             matchedRow = $(this);
+//             return false;
+//         }
+//     });
+
+//     if (matchedRow) {
+//         // ✅ Update existing row
+//         existingSizes.forEach((size, index) => {
+//             let pcs = sizeData[size] || 0;
+//             // index + 2 to skip quality + style columns
+//             matchedRow.find(`td:eq(${index + 2})`).text(pcs);
+//         });
+//         matchedRow.find('td.total-pcs').text(totalPcs);
+//         matchedRow.find('td.rate').text(rate);
+//         matchedRow.find('td.amount').text(amount.toFixed(2));
+//     } else {
+//         // ✅ Add new row
+//         let rowHtml = `
+//             <tr data-qualityid="${quality_id}" data-styleid="${style_id}">
+//                 <td>${quality_name}</td>
+//                 <td>${style_name}</td>
+//         `;
+
+//         existingSizes.forEach(size => {
+//             const pcs = sizeData[size] || 0;
+//             rowHtml += `<td style="text-align:center;">
+//                             <a href="#"  
+//                                 class="open-modal" 
+//                                 data-quality_id="${sizeData.quality_id}" 
+//                                 data-style_id="${sizeData.style_id}" 
+//                                 data-size_id="${sizeData.size_id}" 
+//                                 data-pcs_per_box="${sizeData.pcs_per_box}"
+//                                 data-pcs="${pcs}" 
+//                                 data-rate="${sizeData.rate}" 
+//                                 data-amount="${sizeData.amount}" 
+//                                 data-size_name="${size}" 
+//                                 data-quality="${group.quality}" 
+//                                 data-style="${group.style}"
+//                             >${pcs}</a>
+
+              
+//                 </td>`;
+//         });
+
+//         rowHtml += `
+//             <td>
+//                 <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                     <i class="feather icon-trash-2"></i>
+//                 </button>
+//             </td>
+//             <td class="total-pcs" style="text-align:center;">${totalPcs}</td>
+            
+            
+//         </tr>`;
+
+//         $('#table_data tbody').append(rowHtml);
+//     }
+
+//     // ✅ Close offcanvas
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+//     updateTotals();
+// });
+
+
+// function updateTotals() {
+
+//     let total_boxes = 0;
+//     let total_box_pcs = 0;
+//     let total_pieces = 0;
+
+//     $('#table_data tbody tr').each(function() {
+
+//         total_boxes += parseFloat($(this).find('td:eq(1)').text()) || 0;
+//         total_box_pcs += parseFloat($(this).find('td:eq(3)').text()) || 0;
+//         total_pieces += parseFloat($(this).find('td:eq(4)').text()) || 0;
+
+//     });
+
+//     $('#total_boxes').text(total_boxes);
+//     $('#total_box_pcs').text(total_box_pcs);
+//     $('#total_pieces').text(total_pieces);
+
+// }
+
+
+
+
+// ````````````````````````````````````````````````````````````````````````
+function LoadInwardData_without_rate_amt() {
+    let quality_id = $('#quality_id').val();
+    let style_id = $('#style_id').val();
+    let party_id = $('#customer_id').val();
+
+    if (!quality_id) {
+        alert("Please select a Quality List first.");
+        return;
+    }
+
+    if (!style_id) {
+        alert("Please select a Style List first.");
+        return;
+    }
+
+
+    $('#purchaseTable tbody').empty();
+
+    $.ajax({
+        url: '/get_quality_style_lists/',
+        type: 'GET',
+        data: { quality_id, party_id,
+                style_id
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                let offcanvasEl = document.getElementById('inwardOffcanvas');
+                let bsOffcanvas = new bootstrap.Offcanvas(offcanvasEl);
+                bsOffcanvas.show();
+
+                response.data.forEach(function(item) {
+                    let totalPcs = item.total_pcs || 0;
+                    let rate = item.rate || 0;
+                    let amount = rate * totalPcs; 
+                     
+                    let row = `
+                        <tr data-sizeid="${item.size_id}" data-rate="${rate}" data-size="${item.size_name}">
+                            <td>${item.size_name}</td>
+                            <td>${rate}</td>
+                            <td style="text-align:center;">
+                                <div class="input-group input-group-sm" style="width:150px; margin:auto;">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, -1)">−</button>
+                                    <input type="number" class="form-control text-center total-pcs-input" value="${totalPcs}" min="0" step="1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeValue(this, 1)">+</button>
+                                </div>
+                            </td>
+                            <td>${amount}</td>
+ 
+ 
+                            <td id="box_qty" style="display:none;">${item.box_qty}</td>
+                            <td id="pcs_per_box" style="display:none;">${item.pcs_per_box}</td> 
+                            <td id="box_pcs" style="display:none;">${item.box_pcs}</td>   
+                            <td id="total_pcs" style="display:none;">${item.total_pcs}</td>  
+                            <td id="size_id" style="display:none;">${item.size_id}</td> 
+                            <td id="quality_id" style="display:none;">${item.quality_id}</td> 
+                            <td id="style_id" style="display:none;">${item.style_id}</td>  
+
+                        </tr>
+
+                    `;
+                    $('#purchaseTable tbody').append(row);
+                });
+            } else {
+                alert("No data found for this Packing List.");
+            }
+        },
+        error: function() {
+            alert("Error loading inward data.");
+        }
+    });
+}
+
+
+
+
+// function changeValue(button, delta) {
+//     const row = button.closest('tr');
+//     const input = row.querySelector('input.total-pcs-input');
+    
+//     // Read pcs_per_box and total_pcs limit from hidden cells
+//     const pcsPerBox = parseInt(row.querySelector('#pcs_per_box').textContent) || 0;
+//     const totalPcsLimit = parseInt(row.querySelector('#total_pcs').textContent) || 0;
+
+//     let value = parseInt(input.value) || 0;
+
+//     // Each click changes by pcs_per_box
+//     value += delta * pcsPerBox;
+
+//     // ✅ Prevent going below 0 or above total available pcs
+//     if (value < 0) {
+//         value = 0;
+//     // } else if (totalPcsLimit > 0 && value > totalPcsLimit) {
+//     } else if (totalPcsLimit > 0 && value > totalPcsLimit) {
+//         value = totalPcsLimit;
+
+//         // Optional feedback flash
+//         input.classList.add('border-danger');
+//         setTimeout(() => input.classList.remove('border-danger'), 400);
+//     }
+
+//     input.value = value;
+// }
+
+
+
+// $(document).on('click', '#addToMainTable', function() {
+//     $('#purchaseTable tbody tr').each(function() {
+
+//         const size_name = $(this).data('size');
+//         const size_id = $(this).data('sizeid');
+//         const rate = parseFloat($(this).data('rate')) || 0;
+//         const total_pcs = parseFloat($(this).find('input').val()) || 0;
+//         console.log('tot-pcs:',total_pcs);  
+//         const box_qty = parseFloat($(this).find('#box_qty').text()) || 0;
+//         const pcs_per_box = parseFloat($(this).find('#pcs_per_box').text()) || 0;
+//         const box_pcs = parseFloat($(this).find('#box_pcs').text()) || 0;
+
+
+
+//         const amount = rate * total_pcs;
+
+//         if (total_pcs > 0) {
+//             const newRow = ` 
+//                 <tr>
+//                     <td>${size_name}</td>
+//                     <td style="text-align:center;">${box_qty}</td> <!-- Box -->
+//                     <td style="text-align:center;">${pcs_per_box}</td> <!-- Pcs/Box -->
+//                     <td style="text-align:center;display:none;">${box_pcs}</td> <!-- Box Pcs -->
+//                     <td style="text-align:center;">${total_pcs}</td>
+//                     <td style="display:none;">${size_id}</td>
+//                     <td>${rate}</td>
+//                     <td>${amount.toFixed(2)}</td>
+//                     <td>
+//                         <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                             <i class="feather icon-trash-2"></i>
+//                         </button>
+//                     </td>
+//                 </tr>
+//             `;
+//             $('#table_data tbody').append(newRow);
+//         }
+//     });
+
+//     // ✅ Optionally close the offcanvas after adding
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+
+//     recalculateTotals();
+//     updateTotals();
+// });
+
+// ````````````````````````````````` 14-10-2025 `````````````````````````````````````````
+// $(document).on('click', '#addToMainTable', function() {
+//     $('#purchaseTable tbody tr').each(function() {
+
+//         const size_name = $(this).data('size');
+//         const size_id = $(this).data('sizeid');
+//         const rate = parseFloat($(this).data('rate')) || 0;
+//         const total_pcs = parseFloat($(this).find('input').val()) || 0;
+//         const pcs_per_box = parseFloat($(this).find('#pcs_per_box').text()) || 0;
+//         const box_pcs = parseFloat($(this).find('#box_pcs').text()) || 0;
+//         const quality_id = parseFloat($(this).find('#quality_id').text()) || 0;
+//         const style_id = parseFloat($(this).find('#style_id').text()) || 0;
+
+//         // ✅ Calculate box_qty dynamically
+//         let box_qty = 0;
+//         if (pcs_per_box > 0) {
+//             box_qty = total_pcs / pcs_per_box;
+//         }
+
+//         // ✅ Optional: round to 2 decimals if needed
+//         box_qty = parseFloat(box_qty.toFixed(2));
+
+//         const amount = rate * total_pcs;
+
+//         if (total_pcs > 0) {
+//             const newRow = ` 
+//                 <tr>
+//                     <td>${size_name}</td>
+//                     <td style="text-align:center;">${box_qty}</td> <!-- Box -->
+//                     <td style="text-align:center;">${pcs_per_box}</td> <!-- Pcs/Box -->
+//                     <td style="text-align:center;display:none;">${box_pcs}</td> <!-- Box Pcs -->
+//                     <td style="text-align:center;">${total_pcs}</td>
+//                     <td style="display:none;">${size_id}</td>
+//                     <td>${rate}</td> 
+//                     <td>${amount.toFixed(2)}</td>
+//                     <td style="display:none;">${quality_id}</td>
+//                     <td style="display:none;">${style_id}</td>
+
+//                     <td>
+//                         <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+//                             <i class="feather icon-trash-2"></i>
+//                         </button>
+//                     </td>
+//                 </tr>
+//             `;
+//             $('#table_data tbody').append(newRow);
+//         }
+//     });
+
+//     // ✅ Close offcanvas after adding
+//     const offcanvasEl = document.getElementById('inwardOffcanvas');
+//     const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+//     bsOffcanvas.hide();
+
+//     // ✅ Recalculate totals
+//     recalculateTotals();
+// });
+
+
+
+
+
+// function changeValue(button, delta) {
+//     const input = button.parentElement.querySelector('input');
+//     let value = parseInt(input.value) || 0;
+//     value = Math.max(0, value + delta); // prevent negative values
+//     input.value = value;
+// }
+
+
+
+function LoadSalesData() {
+    let sales_order_id = $('#sales_order_id').val();
+    let party_id = $('#customer_id').val();
+
+    if (!sales_order_id) {
+        alert("Please select a Sales Order List first.");
+        return;
+    }
+
+   
+
+    $.ajax({
+        url: '/get_sales_order_data_lists/',
+        type: 'POST',
+        data: {
+            sales_order_id: sales_order_id,
+            party_id: party_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status !== 'success' || response.data.length === 0) {
+                alert("No data found for this sales order.");
+                return;
+            }
+
+            // 1️⃣ Get all size headers (last div in <th>)
+            let sizeHeaders = [];
+            $('#table_data thead th').each(function(index) {
+                let divs = $(this).find('div');
+                if (divs.length > 0) {
+                    let sizeNumber = $(divs[divs.length - 1]).text().trim(); // last div = actual size
+                    sizeHeaders.push({ name: sizeNumber, index: index });
+                }
+            });
+
+            // 2️⃣ Group data by Quality + Style
+            let groupedData = {};
+            response.data.forEach(function(item) {
+                let key = item.quality + '||' + item.style; // unique key
+                if (!groupedData[key]) groupedData[key] = [];
+                groupedData[key].push(item);
+            });
+
+            // 3️⃣ Loop through each group and render row
+            for (let key in groupedData) {
+                let items = groupedData[key];
+                let [quality, style] = key.split('||');
+
+                // Prepare size -> pcs and size -> id maps
+                let sizeMap = {};
+                let sizeIdMap = {};
+                let totalPcs = 0;
+
+                items.forEach(function(item) {
+                    sizeMap[item.size_name] = item.total_pcs || 0;
+                    sizeIdMap[item.size_name] = item.size_id || '';
+                    totalPcs += item.total_pcs || 0;
+                });
+
+                // Check if row already exists for this Quality+Style
+                let matchedRow = null;
+                $('#table_data tbody tr').each(function() {
+                    if ($(this).data('quality') === quality && $(this).data('style') === style) {
+                        matchedRow = $(this);
+                        return false;
+                    }
+                });
+
+                if (matchedRow) {
+                    // 🔁 Update existing row
+                    sizeHeaders.forEach(function(header) {
+                        let pcs = sizeMap[header.name] || 0;
+                        matchedRow.find('td').eq(header.index).text(pcs);
+                    });
+
+                    let totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+                    matchedRow.find('td').eq(totalIdx).text(totalPcs);
+                } else {
+                    // ➕ Create new row
+                    let rowHtml = `<tr data-quality="${quality}" data-style="${style}">
+                        <td>${quality}</td>
+                        <td>${style}</td>`;
+
+                    sizeHeaders.forEach(function(header) {
+                        let pcs = sizeMap[header.name] || 0;
+                        let size_id = sizeIdMap[header.name] || '';
+                        rowHtml += `<td style="text-align:center;" data-size-id="${size_id}">${pcs}</td>`;
+                    });
+
+                    let totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+                    rowHtml += `<td style="text-align:center;">${totalPcs}</td>
+                    <td style="display:none;" class="quality_id">${quality_id}</td>
+                    <td style="display:none;" class="style_id">${styleId}</td>`;
+                    rowHtml += `<td style="text-align:center;">
+                                    <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+                                        <i class="feather icon-trash-2"></i>
+                                    </button>
+                                </td>`;
+                    rowHtml += `</tr>`;
+
+                    $('#table_data tbody').append(rowHtml);
+                }
+            }
+
+            // 4️⃣ Update footer totals
+            updateTotals();
+        },
+        error: function() {
+            alert("Error loading sales order data.");
+        }
+    });
+}
+
+
+
+
+function LoadSalesData_17() {
+    let sales_order_id = $('#sales_order_id').val();
+    let party_id = $('#customer_id').val();
+    if (!sales_order_id) {
+        alert("Please select a Sales Order List first.");
+        return;
+    }
+
+    $.ajax({
+        url: '/get_sales_order_data_lists/',
+        type: 'POST',
+        data: {
+            sales_order_id: sales_order_id,
+            party_id: party_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status !== 'success' || response.data.length === 0) {
+                alert("No data found for this sales order.");
+                return;
+            }
+
+            // 1️⃣ Get all size headers (last div in <th>)
+            let sizeHeaders = [];
+            $('#table_data thead th').each(function(index) {
+                let divs = $(this).find('div');
+                if (divs.length > 0) {
+                    let sizeNumber = $(divs[divs.length - 1]).text().trim(); // last div = actual size
+                    sizeHeaders.push({ name: sizeNumber, index: index });
+                }
+            });
+
+            // 2️⃣ Group data by Quality + Style
+            let groupedData = {};
+            response.data.forEach(function(item) {
+                let key = item.quality + '||' + item.style; // unique key
+                if (!groupedData[key]) groupedData[key] = [];
+                groupedData[key].push(item);
+            });
+
+            // 3️⃣ Loop through each group and render row
+            for (let key in groupedData) {
+                let items = groupedData[key];
+                let [quality, style] = key.split('||');
+
+                // Prepare size -> pcs map
+                let sizeMap = {};
+                let totalPcs = 0;
+                items.forEach(function(item) {
+                    sizeMap[item.size_name] = item.total_pcs || 0;
+                    totalPcs += item.total_pcs || 0;
+                });
+
+                // Check if row already exists for this Quality+Style
+                let matchedRow = null;
+                $('#table_data tbody tr').each(function() {
+                    if ($(this).data('quality') === quality && $(this).data('style') === style) {
+                        matchedRow = $(this);
+                        return false;
+                    }
+                });
+
+                if (matchedRow) {
+                    // Update existing row
+                    sizeHeaders.forEach(function(header) {
+                        let pcs = sizeMap[header.name] || 0;
+                        matchedRow.find('td').eq(header.index).text(pcs);
+                    });
+                    // Update Total Pcs
+                    let totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+                    matchedRow.find('td').eq(totalIdx).text(totalPcs);
+                } else {
+                    // Create new row
+                    let rowHtml = `<tr data-quality="${quality}" data-style="${style}">
+                        <td>${quality}</td>
+                        <td>${style}</td>`;
+
+                    sizeHeaders.forEach(function(header) {
+                        let pcs = sizeMap[header.name] || 0;
+                        rowHtml += `<td style="text-align:center;" data-size-id="${size_id}">${pcs}</td>`;
+                    });
+
+                    let totalIdx = $('#table_data thead th:contains("Total Pcs")').index();
+                    rowHtml += `<td style="text-align:center;">${totalPcs}</td>`;
+                    rowHtml += `<td style="text-align:center;">
+                                    <button class="btn btn-xs btn-danger" onclick="removeRow(this)">
+                                        <i class="feather icon-trash-2"></i>
+                                    </button>
+                                </td>`;
+                    rowHtml += `</tr>`;
+
+                    $('#table_data tbody').append(rowHtml);
+                }
+            }
+
+            // 4️⃣ Update footer totals
+            updateTotals(); 
+        },
+        error: function() {
+            alert("Error loading sales order data.");
+        }
+    });
+}
+
+ 
+// function LoadSalesData() {
+//     let sales_order_id = $('#sales_order_id').val();
+//     let party_id = $('#customer_id').val();
+//     if (!sales_order_id) {
+//         alert("Please select a Sales Order List first.");
+//         return;
+//     }
+
+//     $('#table_data tbody').empty(); // clear old data
+
+//     $.ajax({
+//         url: '/get_sales_order_data_lists/',
+//         type: 'POST',
+//         data: { sales_order_id: sales_order_id,
+//                 party_id:party_id,
+//                 csrfmiddlewaretoken : $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+
+//          },
+//         dataType: 'json',
+//         success: function(response) {
+//             if (response.status === 'success' && response.data.length > 0) {
+//                 let total_boxes = 0;
+//                 let total_box_pcs = 0;
+//                 let total_pieces = 0;
+
+//                 response.data.forEach(function(item) {
+//                     var total_pcs = item.total_pcs;
+//                     var rate = item.rate;
+//                     var amount = total_pcs * rate ;
+//                     console.log('amt:',amount);  
+
+//                     let row = `  
+//                         <tr>
+//                             <td>${item.size_name}</td>
+//                             <td style="text-align:center;">${item.box_qty}</td>
+//                             <td style="text-align:center;">${item.pcs_per_box}</td> 
+//                             <td style="text-align:center;">${item.box_pcs}</td>
+//                             <td style="text-align:center;">${item.total_pcs}</td>
+//                             <td style="display:none;">${item.size_id}</td>
+//                             <td style="display:none;">${item.sales_order_id}</td>
+//                             <td>${item.rate}</td>
+//                             <td>${amount}</td>
+//                             <td><button class="btn btn-xs btn-danger" onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+//                         </tr>
+//                     `;
+//                     $('#table_data tbody').append(row);
+
+//                     total_boxes += parseFloat(item.box_qty || 0);
+//                     total_box_pcs += parseFloat(item.box_pcs || 0);
+//                     total_pieces += parseFloat(item.total_pcs || 0);
+//                 });
+
+//                 // Update footer totals
+//                 $('#total_boxes').text(total_boxes);
+//                 $('#total_box_pcs').text(total_box_pcs);
+//                 $('#total_pieces').text(total_pieces);
+//             } else {
+//                     alert("The selected Style does not belong to the selected Quality. Please choose a valid combination.");
+
+                    
+//                 // alert("No st found for this quality List.");
+//                 // alert("No data found for this Packing List.");
+//             }
+//         },
+//         error: function() {
+//             alert("Error loading inward data.");
+//         }
+//     });
+// }
+
+
+
+function removeRow(btn) {
+    $(btn).closest('tr').remove();
+    recalculateTotals();
+}
+
+function recalculateTotals() {
+    let total_boxes = 0;
+    let total_box_pcs = 0;
+    let total_pieces = 0;
+
+    $('#table_data tbody tr').each(function() {
+        total_boxes += parseFloat($(this).find('td:eq(1)').text()) || 0;
+        total_box_pcs += parseFloat($(this).find('td:eq(3)').text()) || 0;
+        total_pieces += parseFloat($(this).find('td:eq(4)').text()) || 0;
+    });
+
+    // ✅ Update footer totals
+    $('#total_boxes').text(total_boxes);
+    $('#total_box_pcs').text(total_box_pcs);
+    $('#total_pieces').text(total_pieces);
+
+    // ✅ Update Summary Table too
+    $('#total_box').text(total_boxes);
+    $('#box_piece').text(total_box_pcs);
+    $('#delivered_pcs').text(total_pieces);
+    highlightSummary();
+
+}
+
+
+function highlightSummary() {
+    $('#summary_table td.highlight').addClass('bg-success text-white');
+    setTimeout(() => {
+        $('#summary_table td.highlight').removeClass('bg-success text-white');
+    }, 400);
+}
+
+
+
+// function storeTblValues() {
+//     let TableData = [];
+
+//     // Step 1: Read size info from the table header
+//     let sizeHeaders = []; // [{ index: 2, size_name: "85", size_id: 10 }, ...]
+//     $('#table_data thead th').each(function(index) {
+//         let $th = $(this);
+//         let divs = $th.find('div');
+//         let size_name = divs.length > 0 ? $(divs[divs.length - 1]).text().trim() : $th.text().trim();
+//         let size_id = $th.data('size-id') || '';
+
+//         // We'll only include size columns (ignore 0,1 = Quality, Style; and last two = Total, Actions)
+//         if (index > 1 && !$th.text().includes("Total") && !$th.text().includes("Action")) {
+//             sizeHeaders.push({
+//                 index: index,
+//                 size_name: size_name,
+//                 size_id: size_id
+//             });
+//         }
+//     });
+
+//     // Step 2: Loop through table rows and collect data
+//     $('#table_data tbody tr').each(function () {
+//         let $row = $(this);
+
+//         let quality_id = $row.data('qualityid') || '';
+//         let style_id = $row.data('styleid') || '';
+//         let quality_name = $row.find('td:eq(0)').text().trim();
+//         let style_name = $row.find('td:eq(1)').text().trim();
+
+//         // Step 3: Loop through each size column for this row
+//         sizeHeaders.forEach(header => {
+//             let pcs = parseFloat($row.find('td').eq(header.index).text()) || 0;
+
+//             // Only store if pcs > 0 (optional)
+//             // if (pcs > 0) {
+//             TableData.push({
+//                 quality_id: quality_id,
+//                 quality_name: quality_name,
+//                 style_id: style_id,
+//                 style_name: style_name,
+//                 size_id: header.size_id,
+//                 size_name: header.size_name,
+//                 rate: 0,         // Can be set later
+//                 amount: 0,       // pcs * rate, can be calculated later
+//                 total_pcs: pcs
+//             });
+//             // }
+//         });
+//     });
+
+//     console.log("✅ Stored Table Data:", TableData);
+//     return TableData;
+// }
+
+
+// function storeTblValues() {
+//     let TableData = [];
+
+//     $('#table_data tbody tr').each(function () {
+//         let $row = $(this);
+
+//         let quality_id = $row.data('qualityid') || '';
+//         let style_id = $row.data('styleid') || '';
+
+//         let quality_name = $row.find('td:eq(0)').text().trim();
+//         let style_name = $row.find('td:eq(1)').text().trim();
+
+//         let totalCols = $row.find('td').length;
+
+//         $row.find('td').each(function (index) {
+//             if (index > 1 && index < totalCols - 2) {  // Skip Quality, Style, Total, Actions
+
+//                 // Get size name from last div of header th
+//                 let headerDivs = $('#table_data thead th').eq(index).find('div');
+//                 let size_name = headerDivs.length > 0 
+//                     ? $(headerDivs[headerDivs.length - 1]).text().trim() 
+//                     : $('#table_data thead th').eq(index).text().trim();
+
+//                 let pcs = parseFloat($(this).text()) || 0;
+//                 let size_id = $(this).data('size-id') || '';  // ✅ Corrected here
+//                 let rate = 0;  // You can load this if needed later
+//                 let amount = rate * pcs;
+
+//                 TableData.push({
+//                     quality_id,
+//                     quality_name,
+//                     style_id,
+//                     style_name,
+//                     size_id,
+//                     size_name,
+//                     rate,
+//                     amount,
+//                     total_pcs: pcs
+//                 });
+//             }
+//         });
+//     });
+
+//     console.log("✅ Stored Table Data:", TableData);
+//     return TableData;
+// }
+
+
+
+
+// function storeTblValues() {
+//     let TableData = [];
+
+//     $('#table_data tbody tr').each(function () {
+//         let $row = $(this);
+
+//         let quality_id = $row.data('qualityid') || '';
+//         let style_id = $row.data('styleid') || '';
+
+//         let quality_name = $row.find('td:eq(0)').text().trim();
+//         let style_name = $row.find('td:eq(1)').text().trim();
+
+//         let totalCols = $row.find('td').length;
+
+//         $row.find('td').each(function (index) {
+//             if (index > 1 && index < totalCols - 2) {  // Skip Quality, Style, Total, Actions
+
+//                 // Get size name from last div of header th
+//                 let headerDivs = $('#table_data thead th').eq(index).find('div');
+//                 let size_name = headerDivs.length > 0 ? $(headerDivs[headerDivs.length - 1]).text().trim() : $('#table_data thead th').eq(index).text().trim();
+
+//                 let pcs = parseFloat($(this).text()) || 0;
+
+//                 let modalLink = $(this).find('a.open-modal');
+//                 let size_id = modalLink.data('size_id') || '';
+//                 let rate = parseFloat(modalLink.data('rate')) || 0;
+//                 let amount = rate * pcs;
+
+//                 TableData.push({
+//                     quality_id,
+//                     quality_name,
+//                     style_id,
+//                     style_name,
+//                     size_id,
+//                     size_name,
+//                     rate,
+//                     amount,
+//                     total_pcs: pcs
+//                 });
+//             }
+//         });
+//     });
+
+//     console.log("✅ Stored Table Data:", TableData);
+//     return TableData;
+// }
+
+
+
+
+
+// function storeTblValues() {
+//     let TableData = [];
+
+//     // Loop through each row in main table
+//     $('#table_data tbody tr').each(function () {
+//         let $row = $(this);
+
+//         let quality_id = $row.data('qualityid') || '';
+//         let style_id = $row.data('styleid') || '';
+
+//         let quality_name = $row.find('td:eq(0)').text().trim();
+//         let style_name = $row.find('td:eq(1)').text().trim();
+
+//         // Loop through size columns dynamically
+//         let totalCols = $row.find('td').length;
+
+//         $row.find('td').each(function (index) {
+//             // Skip first two (Quality + Style) and last two (Total + Actions)
+//             if (index > 1 && index < totalCols - 2) {
+//                 let size_name = $('#table_data thead th').eq(index).text().trim();
+//                 let pcs = parseFloat($(this).text()) || 0;
+
+//                 // Get data from <a.open-modal>
+//                 let modalLink = $(this).find('a.open-modal');
+//                 let size_id = modalLink.data('size_id') || '';
+//                 let rate = parseFloat(modalLink.data('rate')) || 0;
+//                 let amount = rate * pcs;
+
+//                 // Push one flat record per size
+//                 TableData.push({
+//                     quality_id: quality_id,
+//                     quality_name: quality_name,
+//                     style_id: style_id,
+//                     style_name: style_name,
+//                     size_id: size_id,
+//                     size_name: size_name,
+//                     rate: rate,
+//                     amount: amount,
+//                     total_pcs: pcs
+//                 });
+//             }
+//         });
+//     });
+
+//     console.log("✅ Stored Table Data:", TableData);
+//     return TableData;
+// }
+
+function storeTblValues() {
+    let TableData = [];
+
+    $('#table_data tbody tr').each(function () {
+        let $row = $(this);
+
+        let quality_id = $row.data('qualityid') || '';
+        let style_id = $row.data('styleid') || ''; 
+      
+        let quality_name = $row.find('td:eq(0)').text().trim();
+        let style_name = $row.find('td:eq(1)').text().trim();
+
+        let totalCols = $row.find('td').length;
+
+        // Loop over size columns only (skip Quality, Style, Total, Action columns)
+        $row.find('td').each(function (index) {
+            if (index > 1 && index < totalCols - 2) {
+                let $td = $(this);
+                let pcs = parseFloat($td.text()) || 0;
+
+                // ✅ Get size name from <th> at same index
+                let headerDivs = $('#table_data thead th').eq(index).find('div');
+                let size_name = headerDivs.length > 0
+                    ? $(headerDivs[headerDivs.length - 1]).text().trim()
+                    : $('#table_data thead th').eq(index).text().trim();
+
+                // ✅ Get size_id directly from <td>
+                let size_id = parseInt($td.data('size-id')) || 0;
+
+                // ✅ Only store if valid size_id and pcs
+                if (size_id > 0 && pcs > 0) {
+                    TableData.push({
+                        quality_id,
+                        quality_name,
+                        style_id,
+                        style_name,
+                        size_id,
+                        size_name,
+                        rate: 0,
+                        amount: 0,
+                        total_pcs: pcs
+                    });
+                }
+                console.log('data:',TableData);
+            }
+        });
+    });
+
+    console.log("✅ Filtered Table Data:", TableData);
+    return TableData;
+}
+
+
+// function storeTblValues() {
+//     let TableData = [];
+
+//     $('#table_data tbody tr').each(function () {
+//         let $row = $(this);
+
+//         let quality_id = $row.data('qualityid') || '';
+//         let style_id = $row.data('styleid') || ''; 
+
+//         let quality_name = $row.find('td:eq(0)').text().trim();
+//         let style_name = $row.find('td:eq(1)').text().trim();
+
+//         let totalCols = $row.find('td').length;
+
+//         // Loop over size columns only (skip Quality, Style, Total, Action columns)
+//         $row.find('td').each(function (index) {
+//             if (index > 1 && index < totalCols - 2) {
+//                 let $td = $(this);
+//                 let pcs = parseFloat($td.text()) || 0;
+
+//                 // ✅ Get size name from <th> at same index
+//                 let headerDivs = $('#table_data thead th').eq(index).find('div');
+//                 let size_name = headerDivs.length > 0
+//                     ? $(headerDivs[headerDivs.length - 1]).text().trim()
+//                     : $('#table_data thead th').eq(index).text().trim();
+
+//                 // ✅ Get size_id directly from <td>
+//                 let size_id = $td.data('size-id') || '';
+
+//                 TableData.push({
+//                     quality_id,
+//                     quality_name,
+//                     style_id,
+//                     style_name,
+//                     size_id,
+//                     size_name,
+//                     rate: 0,          // Can be set later
+//                     amount: 0,        // rate * pcs
+//                     total_pcs: pcs
+//                 });
+//             }
+//         });
+//     });
+
+//     console.log("✅ TableData:", TableData);
+//     return TableData;
+// }
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    if (confirm("Are you sure you want to save?")) {
+    // Collect table data
+    var TableData = storeTblValues();
+ 
+    // Check if TableData is an array and has length
+    if (!Array.isArray(TableData) || TableData.length === 0) {
+        showToast('error',"No product data to submit.");
+        return;
+    } 
+
+    // Validate serial numbers
+   
+    // Convert TableData to JSON string
+    TableData = JSON.stringify(TableData); 
+    console.log('tabl-data:',TableData);
+
+    // Create form data object for AJAX
+    var formData = new FormData(this);
+    formData.append('order-data', TableData);
+
+
+    
+    
+    // Collect totals and append them to formData
+    var total_pcs = $('#delivered_pcs').text();
+    var total_box = $('#total_box').text();
+   
+    // Append total values to formData
+    formData.append('total_pcs', total_pcs); 
+    formData.append('sub_total', total_box);
+ 
+    
+
+    // Send AJAX request
+    $.ajax({ 
+        type: "POST",
+        url: "/insert-sales/", // The backend URL
+        data: formData, // Form data including `chemical_data`
+        processData: false,
+        contentType: false, 
+        beforeSend: function() {
+            // Disable the submit button and show processing state
+            $('#submit_inwards').attr('disabled', true).text('Processing...');
+        }, 
+        success: function(response) {
+            // Re-enable the submit button
+            $('#submit_inwards').attr('disabled', false).text('Save');
+            if (response.status === 'success') {
+                // showToast('success','Success! Data added.'); 
+
+                notifier.show(
+                    'Well Done!', 
+                    'Success! Data added.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // location.reload(); // Optionally reload the page
+            } else {
+                notifier.show(
+                    'Error!', 
+                    'Error'+response, 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+               
+                // showToast('error','Error: ' + response); // Show error message
+            }
+        },
+        error: function(xhr, status, error) {
+            $('#submit_inwards').attr('disabled', false).text('Save');
+            let errorMsg = 'Could not add data.';
+
+            try {
+                // Try to parse JSON response from backend
+                var response = JSON.parse(xhr.responseText);
+                if (response && response.error_message) {
+                    errorMsg = response.error_message;
+                }
+            } catch (e) {
+                // Fallback if not JSON
+                errorMsg = xhr.statusText || errorMsg;
+            }
+
+            showToast('error', 'Error: ' + errorMsg);
+        }
+
+    });
+}
+});
+
+
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:     
+
+    // Set default values for date and time fields
+    document.getElementById('order_date').value = currentDateString;
+   
+
+</script>

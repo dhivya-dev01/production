@@ -1,0 +1,1182 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Yarn Outward Update</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Yarn</a></li>
+                                            <li class="breadcrumb-item"><a href="/yarn-deliver">Yarn Outward </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    <div class="card">
+  
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                                
+                                                <div class="row">
+
+                                                    <!-- `````````````````````````` tm update ```````````````````````` -->
+
+                                                    <div class="col-md-12">
+
+                                                        <form id="update_tm_form">
+
+                                                           {% csrf_token %}   
+                                                            <div class="row ">
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="delivery_no" class="form-lebel">Outward No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.do_number}}" disabled>
+                                                                    <input type="hidden" class="form-control" value="{{parent_stock_instance.tm_id}}" disabled>
+                                                                </div>  
+                                                    
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Outward Date</label>
+                                                                    <input class="form-control" type="date" name="delivery_date" id="delivery_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_no" class="form-lebel"><span style="color:red">*</span>  Receive No.</label>
+                                                                    <input type="text" class="form-control" id="receive_no" name="receive_no" value="{{parent_stock_instance.receive_no}}">
+                                                                </div>   
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_date" class="form-label"> <span style="color:red">*</span>  Receive Date</label>
+                                                                    <input class="form-control" type="date" name="receive_date" id="receive_date" required>
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Lot No.</label>
+                                                                    <input type="text" class="form-control" id="lot_no" name="lot_no" value="{{parent_stock_instance.lot_no}}">
+                                                                </div>
+
+                                                                <div class="col-md-4 mt-3">
+                                                                    <label class="form-label">Remarks</label>
+                                                                    <textarea class="form-control" name="remarks" id="remarks">{{ parent_stock_instance.remarks|default_if_none:"" }}</textarea>
+
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-4">
+                                                                  
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <input type="hidden" id="tm_out_id" name="tm_out_id" value="{{parent_stock_instance.id}}">
+
+                                                                    <button type="submit" id="update" class="btn btn-primary mt-3">Update</button>
+
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                    
+                                                        <form id="update_tx">
+                                                            {% csrf_token %}
+                                                          
+                                                            <div class="row mt-2">
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color: red;">*</span> Party sss</label>
+                                                                    <!-- <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadInward()"> -->
+                                                                        <select id="party_id" name="party_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color: red;">*</span> Knitting Program</label>
+                                                                    <!-- <select id="prg_id" name="prg_id" class="form-control single-select"  onchange="loadLot()" disabled> -->
+                                                                        <select id="prg_id" name="prg_id" class="form-control single-select" onchange="loadKnittingDetails()"  disabled>
+                                                                        <option>Select</option>
+                                                                        {% for k in program %}
+                                                                        <option value="{{ k.id }}">{{ k.knitting_number }} - {{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+ 
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color: red;">*</span> Inward List </label>
+                                                                    <input type="hidden" id="tx_inward_id" name="tx_inward_id">
+
+                                                                    <select id="inward_id" name="inward_id" class="form-control single-select" disabled multiple>
+                                                                       {% for k in inward_lists %}
+                                                                        <option value="{{ k.id }}">{{ k.inward_number }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>  
+                                                                </div>
+
+
+                                                                
+
+                                                                <!-- REMARKS -->
+                                                        </div>
+
+                                                        
+                                                        
+                                                        <!-- ```````````````` tx update ``````````````````````` -->
+
+                                                            <div class="row mt-2"> 
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Yarn Count</label>
+                                                                    
+                                                                    <select class="form-control single-select" id="product_id" name="product_id">
+                                                                        <option>Select</option>
+                                                                        {% for p in count %}
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="unit" class="form-label"> Bags</label>
+                                                                    <input class="form-control" type="number" name="bag" id="bag">
+                                                                </div>
+ 
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="unit" class="form-label"> per Bag Wt. (kg)</label>
+                                                                    <input class="form-control" type="number" name="per_bag" id="per_bag">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="unit" class="form-label"> Qty (kg)</label>
+                                                                    <input class="form-control" type="number" name="quantity" id="tx_quantity">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="unit" class="form-label"> Gross Wt (kg).</label>
+                                                                    <input class="form-control" type="number" name="gross_wt" id="gross_wt">
+                                                                </div>
+                                                                
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <input type="hidden" id="tm_po_id" name="tm_po_id">
+                                                                    <input type="hidden" id="tm_prg_id" name="tm_prg_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="process" name="process" value="{{stage.tolerance}}">
+                                                                    <input type="hidden" id="is_update_mode" value="true">
+
+                                                                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                     
+ 
+                                                    </div>
+
+                                                    <div class="col-md-3 " style="display: none;">
+                                                        <div class="">            
+                                                            <table id="summaryTable" class="table table-striped table-bordered w-100 ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2" >Summary Table</th>
+                                                                    </tr>  
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Total Quantity</td>
+                                                                        <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                    </tr>
+
+                                                                    <tr> 
+                                                                        <td>Gross Total</td>
+                                                                        <td style="background-color: #428bca; color: black; font-size: 18px" align="end" colspan="2" id="gross_total_placeholder">0.00</td>
+                                                                    </tr>
+                                                                   
+                                                                </tbody>
+                                                            </table>     
+
+                                                            <div class="col-md-12 mb-2 ">
+                                                                <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                <textarea class="form-control" type="text" name="remarks" id="remarks" rows="2" placeholder="REMARKS">{{parent_stock_instance.remarks}}</textarea>
+                                                            </div>
+
+                                                        </div> 
+
+
+                                                    <div>
+ 
+                                                 
+
+
+                                                </div>
+                                            </div>
+
+                                                  
+                                        <hr>
+                                          
+                                           
+
+
+                                                    <div class="">
+                                                        {% csrf_token %}
+                                                        <div class="dt-responsive  table-responsive table-hover">
+                                                            
+                                                            <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+                                                            <table id="datatable" class="table table-striped table-bordered w-100">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>id</th> 
+                                                                        <th>Action</th>
+                                                                        <th>Yarn Count</th>
+                                                                        <th>Bags</th>
+                                                                        <th> Per Bag Wt. (kg)</th>
+                                                                        <th>Qty (kg)</th>
+                                                                        <th>Gross Wt. (kg)</th>
+                
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>                            
+                                                                </tbody>
+                                                            </table>                                        
+                                                        </div>
+                                                        <hr>
+
+
+                                                        <div class="table-responsive table-desi">
+                                                            <h6 style="text-align: center;">KNITTING PROGRAM</h6>
+
+        
+                                                            <table class="table table-bordered w-100" id="knitting_details">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Item</th>
+                                                                        <th>Yarn Count</th>
+                                                                        <th>Gauge</th>
+                                                                        <th>Tex</th>
+                                                                        <th>Dia</th>
+                                                                        <th>Rolls</th>
+                                                                        <th>Wt. Per Roll</th>
+                                                                        <th>Quantity</th>
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody>
+                                                                    
+                                                                    
+                                                                  
+                                                                </tbody> 
+
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="5" class="text-end">Total:</th>
+                                                                        <th id="total_rolls"></th>
+                                                                        <th></th>
+                                                                        <th id="total_quantity"></th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div> 
+                
+                                                        
+                                                    </div>
+                                     
+                           
+                                            </div>
+
+                                               
+                                        </div> 
+                                    </div>
+
+                                    <!-- ``````````` debit note modal ``````````````````````````` -->
+
+                                    <div id="debit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Debit Note</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="debit_note_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}                                            
+                                                        <div class="row">  
+                                                            
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_name" class="form-label">Supplier</label>
+                                                                <input class="form-control" type="text" id="supplier_name" name="supplier_id">
+                                                            </div>
+    
+    
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="edit_name" class="form-label">Amount</label>
+                                                                <input class="form-control" type="text" id="debit_amount" name="amount">
+                                                            </div>
+
+
+
+                                                            <div class="col-md-12">
+                                                                <label for="remark" class="form-label">Remarks</label>
+                                                                <textarea class="form-control" rows="2" id="remarks" name="remarks"></textarea>
+                                                            </div>
+                                                                                                                                                                                               
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="id" id="edit_id">
+                                                        <input class="form-control" type="hidden" id="debit_po" name="po_id">
+                                                        
+                                                        <input type="hidden" id="process_type" name="process_type" value="Yarn">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Create</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> 
+
+
+                                    
+
+                                </div>
+                                
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+   $('.edit').select2({
+        dropdownParent: $('#debit_modal')
+    });
+    
+
+
+    
+    if ("{{ parent_stock_instance.delivery_date }}" && "{{ parent_stock_instance.delivery_date }}" !== "") {
+        var purchaseDate = "{{ parent_stock_instance.delivery_date }}";
+        // Ensure it's in the correct format (YYYY-MM-DD)
+        var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+        $('#delivery_date').val(formattedDate).trigger("change");
+    }
+
+    
+    if ("{{ parent_stock_instance.receive_date }}" && "{{ parent_stock_instance.receive_date }}" !== "") {
+        var purchaseDate = "{{ parent_stock_instance.receive_date }}";
+        // Ensure it's in the correct format (YYYY-MM-DD)
+        var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+        $('#receive_date').val(formattedDate).trigger("change");
+    }
+
+// ``````````````````````````````````````` INWARD LIST ```````````````````````````
+
+
+
+function loadPODeliverDetails() {
+    const inwardIds = $('#inward_id').val();
+    const partyId = $('#party_id').val();
+
+    if (!inwardIds || inwardIds.length === 0 || !partyId) {
+        console.warn("Missing inward ID or party ID");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/get_po_delivery_details/",
+        data: {
+            inward_id: inwardIds[0],  // Send first selected inward
+            party_id: partyId,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            const tableBody = $("#po_delivery_details tbody");
+            tableBody.empty();
+
+            if (data.data && data.data.length > 0) {
+                $("#total_program_qty").text(data.total_program_quantity || 0); 
+                $("#total_program_wt").text(data.total_weight || 0);
+
+                data.data.forEach(item => {
+                    const row = `<tr>
+                        <td>${item.po_number || ''} (${item.po_name || ''})</td>
+                        <td>${item.deliver_to || ''}</td>
+                        <td>${item.yarn_count || ''}</td>
+                        <td>${item.bag || ''}</td>
+                        <td>${item.per_bag || ''}</td> 
+                        <td>${item.quantity || ''}</td>
+                    </tr>`;
+                    tableBody.append(row);
+                });
+            } else {
+                tableBody.append("<tr><td colspan='6'>No delivery details found</td></tr>");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching delivery details:", error);
+        }
+    });
+}
+
+
+
+
+function LoadInward() {
+    var supplier_id = $('#party_id').val(); 
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST 
+        url: '/get_inward_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        success: function(data) {
+            $('#inward_id').empty().append('');
+            
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    // $('#inward_id').append('<option value="' + po.id + '">' + po.po_number + '-' + (po.name) + '</option>');
+                    $('#inward_id').append('<option value="' + po.id + '">' + po.inward_number + '</option>');
+
+                });
+
+              
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+function loadKnittingDetails() {
+    let prg_id = $("#prg_id").val(); // Get selected program IDs
+    
+
+    var table = $('#knitting_details').DataTable({
+            "processing": true, 
+            "pageLength": 50,
+            // "destroy": true,
+            "order": [],
+
+            "columns": [
+                // { "data": "id", "title": " ID #" },
+                { "data": "fabric_id", "title": "Item" }, 
+                { "data": "count", "title": " Yarn count" }, 
+                { "data": "gauge", "title": "Gauge"},
+                { "data": "tex", "title": "  Tex" },
+                { "data": "dia", "title": "  Dia" },
+                { "data": "rolls", "title": "  Rolls","className":"text-center"  },
+                { "data": "wt_per_roll", "title": "   per Roll Wt.(kg)","className":"text-end"  },
+                { "data": "quantity", "title": "  Quantity","className":"text-end"  },
+               
+            ], 
+            
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Helper to get column total
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[,]/g, '')) || 0 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Sum rolls (column 7)
+            var totalRolls = api.column(5, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Sum quantity (column 9)
+            var totalQty = api.column(7, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $('#total_rolls').html(totalRolls.toFixed(2));
+            $('#total_quantity').html(totalQty.toFixed(2));
+        },
+            "ajax": {  
+                "url": '/knit-prg-list/',
+                "type": "POST", 
+                "data": function(data){
+                    data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    data.prg_id = prg_id;
+
+                },
+                "dataSrc": function(json) { 
+                    if (json.message === 'error') { 
+                        
+                        console.log('access denied')
+                        return [];
+                    }
+
+                    // Log and return the valid data
+                    console.log(json);
+                    return json.data;
+                }
+            }
+        });
+    
+}
+
+
+// ```````````````````````````````````````````````end inward `````````````````````````
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach event listeners for real-time calculations
+    document.getElementById("bag").addEventListener("input", calculateQuantity);
+    document.getElementById("per_bag").addEventListener("input", calculateQuantity);
+    // document.getElementById("rate").addEventListener("input", calculateAmount);
+    document.getElementById("tx_quantity").addEventListener("input", calculateAmount); // Ensure manual updates trigger amount calculation
+});
+
+function calculateQuantity() {
+    var bag = parseFloat(document.getElementById("bag").value) || 0;
+    var perBag = parseFloat(document.getElementById("per_bag").value) || 0;
+    var quantity = bag * perBag;
+    document.getElementById("tx_quantity").value = quantity; // Corrected ID
+
+    // Auto-update amount if rate is already entered
+    calculateAmount();
+}
+
+function calculateAmount() {
+    var quantity = parseFloat(document.getElementById("tx_quantity").value) || 0; // Corrected ID
+    // var rate = parseFloat(document.getElementById("rate").value) || 0;
+    // var amount = quantity * rate;
+    // document.getElementById("amount").value = amount.toFixed(2);
+}
+
+
+
+function generate_debit_note (id) {
+        var tkn= document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $.post('/debit-edit/', {id:id, csrfmiddlewaretoken:tkn }, function(res) {
+            $('#edit_id').val(res.id); 
+
+            $('#debit_amount').val(res.amount); 
+            $('#debit_po').val(res.po_id);
+            $('#supplier_name').val(res.name);
+         
+            $('#edit_is_active').val(res.is_active).trigger("change");    
+            console.log('active',res.is_active);      
+            $('#debit_modal').modal('show');
+        });
+    } 
+
+
+
+    
+    $("#debit_note_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+ 
+        var dataArray = [];
+        for (var pair of formData.entries()) {
+            dataArray.push(pair);
+        }
+ 
+        var serializedData = {};
+ 
+        dataArray.forEach(function(pair) {
+            serializedData[pair[0]] = pair[1];
+        });
+ 
+        $.ajax({
+            type: 'POST',
+            url: '/create-debit-note/',
+            data:  serializedData,
+            success: function (response) { 
+                if (response.message === 'success') {
+                    
+                notifier.show(
+                  'Well Done!', 
+                  'Debit-note  Created successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+              $('#debit_modal').modal('hide');
+              $('#debit_note_form').trigger('reset');
+              refresh_data();
+                } 
+                else {
+                    notifier.show(
+              'Error!', 
+              'Failed to create debit-note .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                }
+                $('#debit_modal').modal('hide');
+                $('#debit_note_form').trigger('reset');
+                refresh_data();
+            },
+            error: function(xhr, errmsg, err){
+                notifier.show(
+              'Error!', 
+              'Failed to create debit-note .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                $('#debit_modal').modal('hide');
+            }
+        });
+    });
+
+
+
+ // ````````````````` test ```````````````````````````````````````````````
+
+
+    if ("{{ parent_stock_instance.delivery_date }}" && "{{ parent_stock_instance.delivery_date }}" !== "") {
+        var purchaseDate = "{{ parent_stock_instance.delivery_date }}";
+        // Ensure it's in the correct format (YYYY-MM-DD)
+        var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+        $('#delivery_date').val(formattedDate).trigger("change");
+    }
+
+
+
+
+    if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+        $('#supplier_id').val("{{parent_stock_instance.party_id}}").trigger("change"); 
+    }
+    
+    if ("{{parent_stock_instance.tm_po_id}}" && "{{parent_stock_instance.tm_po_id}}" !== "") {
+        $('#po_id').val("{{parent_stock_instance.tm_po_id}}").trigger("change"); 
+    }
+
+
+   
+
+    if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+        $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+    }
+
+    if ("{{parent_stock_instance.program_id}}" && "{{parent_stock_instance.program_id}}" !== "") {
+        $('#prg_id').val("{{parent_stock_instance.program_id}}").trigger("change");
+    }
+
+
+
+    if ("{{parent_stock_instance.inward_id}}" && "{{parent_stock_instance.inward_id}}" !== "") {
+        $('#inward_id').val("{{parent_stock_instance.inward_id}}").trigger("change");
+    }
+
+
+
+var tm_id = $('#tm_id').val();
+// console.log('tm-id:',id);
+// if (tm_id !== '' && !isNaN(tm_id)) {  // Check if id is not empty and is a number
+    var table = $('#datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [], 
+        columnDefs: [
+
+        ],
+        
+        "columns": [
+            { "data": "id", "title": "ID" },
+            { "data": "action", "title": "Action"},
+            { "data": "product", "title": "Yarn Count" }, 
+            { "data": "bag", "title": "Bag" ,"className":"text-center" },
+            { "data": "per_bag", "title": "per Bag Wt. (kg)","className":"text-end","render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                }   },
+            { "data": "quantity", "title": "Quantity(kg)","className":"text-end","render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                }  }, 
+            { "data": "gross_wt", "title": "Gross Wt.(kg)","className":"text-end","render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                }  }, 
+            
+          
+        // ,"className": "text-end"
+        ],
+        "ajax": {
+            "url": '/ajax-yarn-deatil-outward/', 
+            // "url": '/yarn-deliver-lists/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.tm_id = tm_id;  // Use validated id
+                
+            },
+            "dataSrc": function(json) {
+                console.log("Received JSON data:", json);
+
+                // // Use json.total_quantity directly for the summary update
+                updateSummary({
+                    total_quantity: json.total_quantity,
+                    gross_total: json.gross_total,
+        
+                });
+
+
+
+            if (json.message === "error") {
+                // Display error message in an alert
+                notifier.show(
+                    'Error!', 
+                    json.error_message, 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+
+                return []; // Return an empty data array for DataTable
+            }
+            return json.data; // Return the data if no error
+        }
+        }
+    });
+// } 
+
+// else {
+//     // console.error("Invalid id:", id);
+//     // Handle the case where id is invalid or empty
+// }
+
+ 
+function updateSummary(data) {
+    console.log("Updating summary with data:", data); // Debugging summary update
+
+    $('#qty_total_placeholder').text(data.total_quantity || 0);
+    $('#gross_total_placeholder').text(data.gross_total || 0);
+ 
+}
+
+
+
+
+function refresh_data()
+{
+    table.ajax.reload();
+}
+
+
+
+var originalBagValue = null;
+var originalPerBagValue = null;
+
+function yarn_deliver_detail_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/edit-yarn-outward-detail/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#tm_id').val(res.id); 
+        $('#bag').val(res.bag);
+        $('#per_bag').val(res.per_bag);
+        $('#tx_quantity').val(res.quantity);
+        $('#gross_wt').val(res.gross_wt); 
+        $('#tm_po_id').val(res.tm_po_id);
+        $('#tx_inward_id').val(res.inward_id).trigger("change"); 
+        $('#product_id').val(res.product_id).trigger("change"); 
+
+        // Store the original inward values (NOT the editable bag)
+        originalBagValue = parseFloat(res.bag);
+        originalPerBagValue = parseFloat(res.per_bag);
+    });
+}
+
+// ````````````````````````````````````````````````````
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let bagInput = document.getElementById("bag");
+    let perBagInput = document.getElementById("per_bag");
+    // let quantityField = document.getElementById("quantity");
+
+    // Validation when user leaves the field
+    bagInput.addEventListener("change", function () {
+        if (originalBagValue !== null) {
+            checkExactMatch(bagInput, originalBagValue);
+            calculateQuantity();
+        }
+    });
+
+    perBagInput.addEventListener("change", function () {
+        if (originalPerBagValue !== null) {
+            checkExactMatch(perBagInput, originalPerBagValue);
+        }
+    });
+
+    function checkExactMatch(input, originalValue) {
+        let value = parseFloat(input.value) || 0;
+        if (value !== originalValue) {
+            notifier.show(
+                'Error!', 
+                input.name.toUpperCase() + ' must not be changed. Resetting.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            input.value = originalValue;
+            // calculateQuantity();    // Calculate quantity live while typing
+    function calculateQuantity() {
+        const bag = parseFloat(bagInput.value) || 0;
+        const perBag = parseFloat(perBagInput.value) || 0;
+        const quantity = bag * perBag;
+        quantityField.value = quantity.toFixed(2);
+    }
+
+    bagInput.addEventListener('input', calculateQuantity);
+    perBagInput.addEventListener('input', calculateQuantity);
+        }
+    }
+ 
+
+});
+
+// ``````````````````````` ONCLICK INWARD  IT WILL ADD VLAUES TO TABLE `````````````````````
+
+
+
+$('#inward_id').on('change', function () {
+    const inward_ids = $(this).val();
+    if (!inward_ids || inward_ids.length === 0) return;
+
+    inward_ids.forEach(function (inward_id) {
+        $.ajax({ 
+            type: 'POST',
+            url: '/get_inward_details/',
+            data: {
+                'inward_ids': JSON.stringify([inward_id]),
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            
+
+            success: function (data) {
+                console.log('data-value:', data);
+
+                if (!data || !data.data || !Array.isArray(data.data) || data.data.length === 0) {
+                    console.error('Invalid data from server:', data);
+                    return;
+                }
+
+                const detail = data.data[0];  // or loop through all for multiple entries 
+
+                const payload = new FormData();
+                payload.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').val());
+                payload.append('tm_po_id', $('#tm_prg_id').val());
+                payload.append('lot_no', $('#lot_no').val());
+                payload.append('product_id', detail.yarn_count);
+                payload.append('bag', detail.bag);
+                payload.append('per_bag', detail.per_bag);
+                payload.append('quantity', detail.quantity);
+                payload.append('gross_wt', detail.gross_wt);
+                payload.append('rate', $('#rate').val() || 0);
+                payload.append('amount', $('#amount').val() || 0); 
+                payload.append('tx_inward_id', detail.id);
+                payload.append('party_id', $('#party_id').val()); 
+
+                // Submit AJAX update...
+
+            // Submit to update URL
+                $.ajax({
+                    url: '/update-yarn-outward/',
+                    type: 'POST',
+                    data: payload,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            notifier.show(
+                                'Success!',
+                                'Knitting Deliver updated successfully.',
+                                'success',
+                                "{% static 'assets/images/notification/ok-48.png' %}",
+                                4000
+                            );
+                            refresh_data();
+                        } else {
+                            notifier.show(
+                                'Error!',
+                                'Failed to update knitting deliver: ' + response.error_message,
+                                'danger',
+                                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                                4000
+                            );
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Submit error:', error);
+                        notifier.show(
+                            'Error!', 
+                            'Error in submitting data.',
+                            'danger',
+                            "{% static 'assets/images/notification/high_priority-48.png' %}",
+                            4000
+                        );
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching inward details:', error);
+            }
+        });
+    });
+});
+
+
+$('#update_tm_form').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_id', $('#tm_out_id').val());
+    formData.append('receive_date', $('#receive_date').val());
+    formData.append('receive_no', $('#receive_no').val());
+    formData.append('lot_no', $('#lot_no').val());
+    formData.append('remarks', $('#remarks').val());
+    formData.append('delivery_date', $('#delivery_date').val());
+
+    $.ajax({
+        url: '/outward-details-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                location.reload();
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                // $('#name').val('');
+                // $('#program_date').val('');
+                
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+
+
+$('#update_tx').on('submit', function(e) {
+    // alert('test')
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_po_id', $('#tm_prg_id').val());
+    formData.append('lot_no', $('#lot_no').val());
+
+// if (confirm('Are you sure you want to add debit note?')) {
+    $.ajax({
+        url: '/update-yarn-outward/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false, 
+        success: function(response) {
+            if (response.success) {
+                notifier.show( 
+                    'Well Done!', 
+                    'Yarn Deliver updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#product_id').val('').trigger("change");
+                $('#bag').val('');
+                $('#per_bag').val('');
+                $('#rate').val('');
+                $('#quantity').val('');
+                $('#amount').val('');
+                // $('#update_flag').val('false');
+                // $('#update').text('Add');
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update Yarn deliver:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        }, 
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                    'Error!', 
+                    'Error in processing the request.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+        }
+    });
+// }
+});
+
+
+
+function yarn_deliver_delete(id, inward_id, deliver_id, product_id,bag, quantity) {
+    console.log('id:',id);
+    if (confirm('Are you sure you want to delete this data?')) {
+        $.ajax({
+            url: "/delete-yarn-deliver/",
+            method: "POST",
+            data: {
+                id: id,
+                inward_id: inward_id,
+                deliver_id: deliver_id,
+                product_id: product_id,
+                bag: bag,
+                quantity: quantity,
+                tm_id: $("#tm_id").val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.message === 'yes') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Yarn Outward successfully deleted.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+                    refresh_data();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to delete!', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                notifier.show(
+                    'Error!', 
+                    'Something went wrong!', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+ 
+$('.single-select').select2();
+
+
+
+
+ </script>

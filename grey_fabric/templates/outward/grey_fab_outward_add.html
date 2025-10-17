@@ -1,0 +1,2795 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+
+   #program_detail_table td input.form-control {
+        /* padding: 0.25rem 0.5rem;  */
+        padding: 0.50rem 0.5rem;
+    }
+
+    /* #program_table th,  */
+    #purchaseTable td {
+        padding: 1px !important;
+        /* text-align: center; */
+        vertical-align: middle;
+        text-align:center;
+ 
+    }
+
+    #program_detail_table input[type="number"] {
+        margin: 0 auto;
+        display: block;
+
+        /* text-align:center; */
+        border: none;
+ 
+    } 
+ 
+ #program_detail_table tbody td {
+    width: 90px;
+    /* max-width: 100px;
+    min-width: 100px; */
+    word-break: break-word;
+    /* text-align: center; */
+    vertical-align: middle;
+
+}
+
+
+    .table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+
+    .table body th {
+    border-bottom: 1px solid #e2e5e8; 
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+
+
+.footer{
+    padding: 1px !important;
+    /* text-align: center; */
+    vertical-align: middle;
+    text-align: center;
+
+}
+</style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Grey Fabric Outward   </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/grey-fab-outward"> Grey Fabric Outward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i> 
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                     
+                                    <!-- <div class="row"> 
+                                        <div class="col-sm-12">
+                                            <div class="card">    -->
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <form id="add_new">
+                                                {% csrf_token %}
+                                                <div class="col-sm-12"> 
+                                                
+                                                    <div class="row">
+                                                
+                                               
+
+                                                        <div class="col-md-8 mt-3">
+                                                            <!-- Form Controls -->
+                                                            <div class="row ">
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward No.</label>
+                                                                    <input type="text" class="form-control" id="outward_no" name="outward_no" value="{{do_number}}" disabled>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward Date</label>
+                                                                    <input type="date" class="form-control" id="outward_date" name="outward_date">
+                                                                </div>
+                                
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select"  required>
+                                                                        <option value="">Select</option> <!--  // process-->
+                                                                        {% for k in party %} <!-- process -->
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Dyeing Program</label>
+                                                                    <select id="prg_id" name="prg_id" class="form-control single-select" required onchange=" LoadFabric()">
+                                                                    <!-- <select id="prg_id" name="prg_id" class="form-control single-select" required onchange="LoadProgramDetails, LoadFabric()"> -->
+                                                                        <option>Select</option>
+                                                                        {% for k in dyeing %}
+                                                                        <option value="{{ k.id }}" data-program-id="{{ k.program_id }}">
+                                                                            {{ k.program_no }} - ({{ k.name }})
+                                                                        </option> 
+                                                                        {% endfor %}
+                                                                    </select>  
+
+                                                                    <input type="hidden" name="program_id" id="program_id">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label for="lot" class="form-label"><span style="color: red;">*</span> Lot No.</label>
+                                                                    <select class="form-control single-select" id="lot_no" name="lot_no" required   >
+                                                                    <!-- <select class="form-control single-select" id="lot_no" name="lot_no" required  onchange="LoadInward()" > -->
+                                                                        <option value="">Select</option>
+                                                                        {% for l in lot %}
+                                                                        <option value="{{l.lot_no}}">{{l.lot_no}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                            
+
+
+
+
+
+                                                                    
+                                                                
+                                                                
+                                                            </div>
+                                                            <div class="row">
+                                                            
+
+                                                                  
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control single-select" required onchange="LoadColor()">
+                                                                        {% for k in fabrics %}
+                                                                        <option value="{{ k.id }}">
+                                                                            {{ k.name }} - ({{ k.fabric_name }})
+                                                                        </option> 
+                                                                        {% endfor %}
+                                                                    </select>  
+
+                                                                </div>
+ 
+
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="color_id" class="form-label"><span style="color:red">*</span> Color</label>
+                                                                    <!-- <select id="color_id" name="color_id" class="form-control single-select" onchange="LoadProgramDetails()" required>
+                                                                        {% for k in dyeing_colors %}
+                                                                        <option value="{{ k.id }}">
+                                                                            {{ k.program_no }} - ({{ k.name }})
+                                                                        </option> 
+                                                                        {% endfor %}
+                                                                    </select>   -->
+
+                                                                    <select id="color_id" name="color_id[]" class="form-control single-select" multiple required>
+                                                                        {% for k in dyeing_colors %}
+                                                                            <option value="{{ k.id }}">{{ k.program_no }} - ({{ k.name }})</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+
+
+                                                                </div>
+
+                                                                <div class="col-md-2  mt-4">
+                                                                    <a id="load_data" class="btn btn-primary mt-3">+ LOAD</a>
+                                                                </div>
+
+                                                            </div>
+                                                          
+                                                            <table id="" class="table table-bordered w-100"  style="display: none;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th rowspan="3">Fabric</th>
+                                                                        <!-- <th rowspan="3">Yarn Count</th>
+                                                                        <th rowspan="3">Tex</th>
+                                                                        <th rowspan="3">Gauge</th>
+                                                                        <th rowspan="3">GSM</th> -->
+                                                                        <th rowspan="3">Program Name</th>
+                                                                        <th rowspan="3">Dia</th>
+
+                                                                        <th colspan="2" class="text-center">Program</th>
+                                                                        <th colspan="2" class="text-center">Stock</th>
+                                                                        <th colspan="2" class="text-center">Already Received</th>
+                                                                        <th colspan="2" class="text-center">Balance</th>
+                                                                        <th colspan="3" class="text-center">Outward</th>
+
+                                                                        <!-- Hidden Columns -->
+                                                                        <th rowspan="3" style="display: none;">fabric_id</th>
+                                                                        <th rowspan="3" style="display: none;">yarn count id</th> 
+                                                                        <th rowspan="3" style="display: none;">tex id</th>
+                                                                        <th rowspan="3" style="display: none;">gauge id</th>
+                                                                        <th rowspan="3" style="display: none;">Dia id</th>
+                                                                        <th rowspan="3" style="display: none;">Program id</th>
+
+                                                                        <th rowspan="3">Action</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Gross Wt. (kg)</th>
+                                                                        <th rowspan="2"> Roll Wt. (kg)</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Rows will be added dynamically here -->
+                                                                </tbody>
+                                                                    <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="11" align="right" class="text-right"><p style="font-weight: bolder;">TOTAL</p></td>
+                                                                        <td align="center"><span id="footer-roll-total">0</span></td>
+                                                                        <td style="padding-left: 140px;"><span id="footer-gross-wt-total">0.000</span></td>
+                                                                        <td colspan="4"></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                
+                                                
+                                            
+                                                        
+                                                        </div> 
+
+ 
+
+                                                        <!-- colm-3 -->
+
+
+                                                        
+                                                    <div class="col-md-4 " style="border-left: 1px solid #e2e5e8; padding-left: 10px;">  
+                                                
+                                                        <h6>Delivery Information &nbsp;                                                              
+                                                            <!-- <input class="form-check-input " type="checkbox" id="is_delivery" name="is_delivery" > -->
+                                                        </h6>
+                                                        <section class="">
+                                                            <div class="">
+                                                                <div class="row ">
+                                                       
+                                                                    <div class="col-md-6 ">
+                                                                        <label for="delivery_party" class="form-label"><span style="color: red;">*</span> Party</label>
+                                                                        <select id="delivery_party" name="delivery_party" class="single-select"> <!-- bleaching or dyeing -->
+                                                                            <option value="company">Select</option>
+                                                                            {% for k in compact_party %}
+                                                                            <option value="{{k.id}}">{{k.name}}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+ 
+
+                                                                    <div class="col-md-6 ">
+                                                                        <label for="remarks" class="form-label"><span style="color: red;">*</span> Remarks</label>
+                                                                        <textarea class="form-control" id="delivery_remark" name="delivery_remark" type="text"></textarea>
+                                                                    </div>
+
+                                                                    <div class="col-md-2 mt-4"  style="text-align: center;">
+                                                                        <button type="button" align="center" class="btn btn-raised btn-primary mt-3 " onclick="addDeliveryRow()">+</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                                
+
+
+                                                            <div class="row mt-4">
+                                                                <div class="col-sm">
+                                                                    
+                                                                        <div class="dt-responsive table-responsive table-hover">
+                                                                            <table id="delivery_table"  class="table table-striped table-bordered nowrap">
+                                                                                {% csrf_token %}
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Party</th> 
+                                                                                    <th>Remarks</th>
+                                                                                  
+                                                                                    <th style="display: none;">Party id</th>
+                                                                                    <th>Action</th>
+                                                                                </tr> 
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                 
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+
+
+
+
+                                                    </div>
+
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                
+                                 
+
+                                            <div class="">
+                                                <div class="row mt-2">
+                                                    <div class="  col-md-12">
+
+                                                        
+                                                        <div class=" table-responsive table-desi">
+                                                                <h6 style="text-align: center;">DYEING PROGRAM</h6>
+                                                            <table id="program_detail_table" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <!-- <th>Action</th>  -->
+                                                                        <th>Dia</th>
+                                                                        <th>Color</th>
+                                                                        <th style="text-align: center;">Roll</th>
+                                                                        <th style="text-align: center;">Roll Wt.(in kg)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody></tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="2" style="text-align:right">Totals:</th>
+                                                                        <th id="total_rolls">0.00</th>
+                                                                        <th id="total_quantity">0.00</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+
+                                                        </div> 
+
+
+                                                    
+
+
+                                                    </div>
+
+                                                    <div class="row mt-3"> 
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-12 mt-2" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            </form>
+
+
+                                            <!-- <card-body  -->
+                                        </div>
+                                    </div>
+                                <!-- end program table -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+// $('#prg_id').on('change', function () {
+//     // const inward_id = $(this).val(); 
+//     // if (!inward_id) {
+//         LoadProgramDetails()
+//         return;
+//     // }
+// })
+
+
+$('#prg_id').on('change', function () {
+    const programId = $(this).find('option:selected').data('program-id'); // use hyphen, not underscore
+    $('#program_id').val(programId || '');
+});
+
+
+// ````````````````````````````````````````````````````````````````
+function LoadInward() {
+    const prg_id = $('#prg_id').val();
+
+    const lot_no = $('#lot_no').val();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // Assuming CSRF token is present
+
+    if (prg_id) {
+        $.ajax({
+            url: '/get-grey-inward-lists/',  // Django view URL
+            type: 'POST',
+            data: {
+                'prg_id': prg_id,
+                'lot_no':lot_no,
+                'csrfmiddlewaretoken': csrfToken
+            },
+
+            success: function(response) {
+                const inwardSelect = $('#inward_id');
+                inwardSelect.empty();
+
+                inwardSelect.append('<option value="">Select</option>');
+                response.inward_list.forEach(function(item) {
+                    inwardSelect.append(`<option value="${item.id}">${item.inward_number} - (${item.total_gross_wt.toFixed(3)}) </option>`);
+                });
+            },
+
+
+            error: function(xhr) {
+                console.error('Failed to load inward list:', xhr.responseText);
+            }
+        });
+    }
+}
+
+// ```````````````````` add-Row ``````````````````````````````
+
+
+
+function addDeliveryRow() {
+
+    // Sum current delivery quantities
+    let totalDeliveredQty = 0;
+    $("#delivery_table tbody tr").each(function () {
+
+    });
+
+
+
+    let delivery_remark = $("#delivery_remark").val();
+    let partyId = $("#delivery_party").val();
+    let party = $("#delivery_party option:selected").text();
+
+    if (!delivery_remark || !partyId || partyId === "company") {
+        notifier.show(
+            'Error!',
+            'Please select a party and enter delivery date.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // Add the row
+    let newRow = `<tr>
+                    <td>${party}</td>
+                    <td>${delivery_remark}</td>
+                    <td style="display:none">${partyId}</td>
+                    <td><button class='btn btn-danger btn-xs' onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+                  </tr>`;
+
+    $("#delivery_table tbody").append(newRow);
+
+    // Clear fields
+    $('#delvery_party').val('').trigger("change");
+    $('#remark').val('');
+}
+
+
+
+   
+function storeDeliveryTblValues() {
+    let TableData = [];
+    $('#delivery_table tbody tr').each(function () {
+        TableData.push({
+            "delivery_party": $(this).find('td:eq(0)').text(), 
+            "remarks": $(this).find('td:eq(1)').text(),
+            "delivery_party_id": $(this).find('td:eq(2)').text(),
+        });
+    });
+
+    console.log('Stored Delivery Table Data:', TableData);
+    return TableData;
+}
+ 
+
+
+function updateOutwardTotals() {
+    let totalRoll = 0;
+    let totalGrossWt = 0;
+
+    $('.outward-roll').each(function () {
+        totalRoll += parseFloat($(this).val()) || 0;
+    });
+
+    $('.outward-gross-wt').each(function () {
+        totalGrossWt += parseFloat($(this).val()) || 0;
+    });
+
+    // Update footer
+    $('#purchaseTable tfoot th:eq(5)').text(totalRoll);
+    $('#purchaseTable tfoot th:eq(6)').text(totalGrossWt.toFixed(3));
+}
+
+
+function addRows(
+    fabric, yarn_count, tex, gauge, gsm,
+    prg_name, dia,
+    program_roll, program_roll_wt,
+    available_rolls, available_wt,
+    tot_out_rolls, tot_out_wt,
+    balance_roll, balance_roll_wt,
+    outward_roll, outward_gross_wt,
+    outward_roll_wt,
+    id, fabricId, yarn_countId, gaugeId, texId, diaId,
+    inwardId, program_id, lot_no, lot_roll, inward_roll
+) {
+    program_roll = parseFloat(program_roll) || 0;
+    program_roll_wt = parseFloat(program_roll_wt) || 0;
+    
+    available_rolls = parseFloat(available_rolls) || 0;
+    available_wt = parseFloat(available_wt) || 0;
+
+    tot_out_roll = parseFloat(tot_out_rolls) || 0;
+    tot_out_wt = parseFloat(tot_out_wt) || 0;
+
+    balance_roll = (parseFloat(balance_roll))- (parseFloat(tot_out_rolls)) || 0;
+    balance_roll_wt = (parseFloat(balance_roll_wt))- parseFloat(tot_out_wt) || 0;
+
+    console.log('balance-roll:',balance_roll);
+    console.log('balance-roll-wt:',balance_roll_wt);
+
+
+    outward_roll = parseFloat(outward_roll) || 0;
+    outward_gross_wt = parseFloat(outward_gross_wt) || 0; 
+    outward_roll_wt = parseFloat(outward_roll_wt) || 0;
+
+    const outward_total_wt = outward_roll_wt || (outward_roll * (program_roll_wt / program_roll || 0));
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-row-id", rowId);
+
+    newRow.innerHTML = ` 
+         <td>
+            ${fabric ? `<strong>FABRIC:</strong> ${fabric}<br>` : ''}
+            ${yarn_count ? `<strong>YARN COUNT:</strong> ${yarn_count}<br>` : ''}
+            ${gauge ? `<strong>GAUGE:</strong> ${gauge}<br>` : ''}
+            ${tex ? `<strong>TEX:</strong> ${tex}<br>` : ''}
+            ${gsm ? `<strong>GSM:</strong> ${gsm}` : ''}
+        </td>
+        <td>${prg_name}</td>
+        <td>${dia}</td>
+        <td>0</td>
+        <td class="prg-roll">${program_roll}</td>
+        <td class="prg-roll-wt" align="end">${program_roll_wt.toFixed(3)}</td>
+
+        <td class="inward-roll">${available_rolls}</td>
+        <td class="inward-roll-wt" align="end">${available_wt.toFixed(3)}</td>
+
+        <td class="rec-roll">
+          ${tot_out_rolls}
+        </td>
+        <td class="rec-roll-wt" align="end">
+        ${tot_out_wt.toFixed(3)}
+        </td>
+
+
+
+
+        <td class="balance-roll">${(balance_roll - outward_roll).toFixed(0)}</td>
+        <td class="balance-roll-wt" align="end">${(balance_roll_wt - outward_total_wt).toFixed(3)}</td>
+
+        <td>
+
+                 <input type="number" class="form-control form-control-sm outward_roll w-100" 
+                        value="${outward_roll}" 
+                        style="border: none; text-align: right; min-width: 0;" 
+                        min="0" step="0.01">
+
+        </td>
+     
+
+        <td style="text-align: right;margin-end:3px;" class="outward-roll-wt">  ${outward_total_wt.toFixed(3)}   </td>
+
+        <td style="display:none"><input type="hidden" class="fabric_id" value="${fabricId}"></td>
+        <td style="display:none"><input type="hidden" class="yarn_count_id" value="${yarn_countId}"></td>
+        <td style="display:none"><input type="hidden" class="tex_id" value="${texId}"></td>
+        <td style="display:none"><input type="hidden" class="gauge_id" value="${gaugeId}"></td>
+        <td style="display:none"><input type="hidden" class="dia_id" value="${diaId}"></td>
+        <td style="display:none"><input type="hidden" class="inward_id" value="${inwardId}"></td>
+        <td style="display:none"><input type="hidden" class="program" value="${program_id}"></td>
+        <td style="display:none"><input type="hidden" class="lot_no" value="${lot_no}"></td>
+        <td style="display:none"><input type="hidden" class="gsm" id="gsm" value="${gsm}"></td>
+
+        <td><button class="btn btn-danger btn-xs remove-row"><i class='feather icon-trash-2'></i></button></td>
+    `;
+
+    document.querySelector("#purchaseTable tbody").appendChild(newRow);
+
+    const outwardRollInput = newRow.querySelector(".outward-roll");
+    const outwardGrossWtInput = newRow.querySelector(".outward-gross-wt");
+
+    let lastValidRoll = outward_roll;
+    let lastValidGrossWt = outward_gross_wt;
+
+    outwardRollInput.addEventListener("input", () => {
+        const newRoll = parseFloat(outwardRollInput.value) || 0;
+        const avgWt = program_roll_wt / program_roll || 0; 
+        // const avgWt = available_rolls / program_roll_wt || 0;
+        console.log('roll-wt:',avgWt);
+        const calcGrossWt = newRoll * avgWt;
+
+        if (newRoll > available_rolls || calcGrossWt > available_wt) {
+
+            notifier.show(
+                'Error!', 
+                'Not enough stock available for this roll or weight.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            ); 
+
+
+            // alert("Not enough stock available for this roll or weight.");
+            outwardRollInput.value = lastValidRoll;
+            return;
+        }
+
+        lastValidRoll = newRoll;
+        lastValidGrossWt = calcGrossWt;
+
+        newRow.querySelector(".outward-roll-wt").textContent = calcGrossWt.toFixed(3);
+        newRow.querySelector(".balance-roll").textContent = (balance_roll - newRoll).toFixed(2);
+        newRow.querySelector(".balance-roll-wt").textContent = (balance_roll_wt - calcGrossWt).toFixed(3);
+
+            updateFooterTotals();
+
+    });
+
+    outwardGrossWtInput.addEventListener("input", () => {
+        const newGrossWt = parseFloat(outwardGrossWtInput.value) || 0;
+                updateFooterTotals();
+
+        if (newGrossWt > available_wt) {
+
+            notifier.show(
+                'Error!', 
+                'Not enough stock available for this gross weight.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            ); 
+
+
+            // alert("Not enough stock available for this gross weight.");
+            outwardGrossWtInput.value = lastValidGrossWt;
+            return;
+
+
+        }
+
+        lastValidGrossWt = newGrossWt;
+    });
+
+    // Row background highlight
+    if (inward_roll === 0) {
+        newRow.classList.add("bg-red");
+    } else if (lot_roll !== balance_roll) {
+        newRow.classList.add("bg-yellow");
+    } else if (lot_roll >= inward_roll) {
+        newRow.classList.add("bg-green"); 
+    }
+
+    // Remove row button
+    newRow.querySelector(".remove-row").addEventListener("click", () => {
+        newRow.remove();
+
+            updateFooterTotals();
+
+    });
+}
+
+// `````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show(
+//                 'Error!',
+//                 'Kindly Please select the dyeing program!.',
+//                 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                 4000
+//             );
+//             return;
+//         }
+
+//         const dias = response.dias;
+//         const rows = response.rows;
+
+//         // Build thead
+//         let thead = `<thead>
+//             <tr>
+//                 <th rowspan="2">Fabric</th>
+//                 <th rowspan="2">Color</th>`;
+//         dias.forEach(([dia_id, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">
+//                         ${dia_name}
+//                         <input type="hidden" class="dia-id" value="${dia_id}">
+//                       </th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         // Group rows by fabric
+//         let grouped = {};
+//         rows.forEach(row => {
+//             if (!grouped[row.fabric]) grouped[row.fabric] = [];
+//             grouped[row.fabric].push(row);
+//         });
+
+//         // Totals structure
+//         let diaTotals = {};
+//         dias.forEach(([_, dia_name]) => {
+//             diaTotals[dia_name] = { roll: 0, roll_wt: 0 };
+//         });
+
+//         let grandRollTotal = 0;
+//         let grandRollWtTotal = 0;
+
+//         // Build tbody
+//         let tbody = `<tbody>`;
+//         for (let fabric in grouped) {
+//             const fabricRows = grouped[fabric];
+
+//             fabricRows.forEach((row, index) => {
+//                 const safeFabric = fabric.replace(/\s+/g, '_');
+//                 const safeColor = row.color.replace(/\s+/g, '_');
+//                 const rowKey = `${safeFabric}_${safeColor}_${index}`; 
+
+//                 // ➤ Inward Row (Program)
+//                 tbody += `<tr style="background-color:#d8dede !important;">`;
+//                 if (index === 0) {
+//                     tbody += `<td rowspan="${fabricRows.length * 3}" style="vertical-align: middle; text-align: center;">${fabric}</td>`;
+//                 }
+//                 tbody += `<td rowspan="3" align="center">${row.color}</td>`;
+
+//                 let rowRollTotal = 0;
+//                 let rowRollWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const diaData = row[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const roll = parseFloat(diaData.roll) || 0;
+//                     const roll_wt = parseFloat(diaData.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center;background-color:#d4f1f1 ;">${roll}</td>
+//                               <td style="text-align: end;background-color:#d4f1f1 ;">${roll_wt.toFixed(3)}</td>`;
+
+//                     rowRollTotal += roll;
+//                     rowRollWtTotal += roll_wt;
+
+//                     diaTotals[dia_name].roll += roll;
+//                     diaTotals[dia_name].roll_wt += roll_wt;
+
+//                     grandRollTotal += roll;
+//                     grandRollWtTotal += roll_wt; 
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;background-color:#d4f1f1 ;" id="prg-total-roll-${rowKey}">${rowRollTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;background-color:#d4f1f1 ;" id="prg-total-rollwt-${rowKey}">${rowRollWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+
+//                 // ➤ Outward Row (Received)
+//                 tbody += `<tr style="background-color:#fce8e6 !important;">`;
+//                 let outRowTotal = 0, outRowWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const outwardData = row.outward?.[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const outRoll = parseFloat(outwardData.roll) || 0;
+//                     const outRollWt = parseFloat(outwardData.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center; color: #a33;background-color:#fce8e6;">${outRoll}</td>
+//                               <td style="text-align: end; color: #a33;background-color:#fce8e6;">${outRollWt.toFixed(3)}</td>`;
+
+//                     outRowTotal += outRoll;
+//                     outRowWtTotal += outRollWt;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;background-color:#fce8e6;" id="prg-out-roll-${rowKey}">${outRowTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;background-color:#fce8e6;" id="prg-out-rollwt-${rowKey}">${outRowWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+
+//                 // ➤ Input Row (Editable)
+//                 tbody += `<tr style="background-color:#e6f7ff !important;">`;
+//                 let inRowTotal = 0, inRowWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     tbody += `<td style="text-align: center;">
+//                                 <input type="number" style="border:none;text-align:center;color:black;font-size:15px;" name="out_roll_${row.color}_${dia_name}" value="0">
+//                               </td>
+//                               <td style="text-align: end;">
+//                                 <input type="number" style="border:none;text-align:right;color:black;font-size:15px;" name="out_roll_wt_${row.color}_${dia_name}" value="0">
+//                               </td>`;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;" id="prg-edit-roll-${rowKey}">${inRowTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;" id="prg-edit-rollwt-${rowKey}">${inRowWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+//             });
+//         }
+//         tbody += `</tbody>`;
+
+//         // ➤ Build tfoot
+//         let tfoot = `<tfoot><tr>
+//             <th colspan="2" style="text-align:right">Totals:</th>`;
+//         dias.forEach(([_, dia_name]) => {
+//             const total = diaTotals[dia_name];
+//             tfoot += `<th style="text-align: center;">${total.roll}</th>
+//                       <th style="text-align: end;">${total.roll_wt.toFixed(3)}</th>`;
+//         });
+//         tfoot += `<th style="text-align: center;">${grandRollTotal}</th>
+//                   <th style="text-align: end;">${grandRollWtTotal.toFixed(3)}</th></tr></tfoot>`;
+
+//         // ➤ Populate lot dropdown
+//         const lotSelect = $("#lot_no");
+//         lotSelect.empty().append(`<option value="">Select</option>`);
+//         if (response.lots && response.lots.length > 0) {
+//             response.lots.forEach(lot => {
+//                 lotSelect.append(`<option value="${lot}">${lot}</option>`);
+//             });
+//         } else {
+//             lotSelect.append(`<option value="">No lots found</option>`);
+//         }
+
+//         // ➤ Inject table into DOM
+//         $('#program_detail_table').html(thead + tbody + tfoot);
+//     });
+// }
+
+// ```````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+// $('#load_data').on('click', function () {
+//     LoadProgramDetails();
+// });
+
+
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show('Error!', 'Kindly Please select the dyeing program!.', 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//             return;
+//         }
+//             // <th rowspan="2">Fabric</th>
+
+//         const dias = response.dias;
+//         const rows = response.rows;
+//         let thead = `<thead><tr>
+            
+//             <th rowspan="2">Color</th>`;
+//         dias.forEach(([dia_id, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         let grouped = {};
+//         rows.forEach(row => {
+//             if (!grouped[row.fabric]) grouped[row.fabric] = [];
+//             grouped[row.fabric].push(row);
+//         });
+
+//         let tbody = `<tbody>`;
+//         for (let fabric in grouped) {
+//             const fabricRows = grouped[fabric];
+
+//             fabricRows.forEach((row, index) => {
+//                 const safeFabric = fabric.replace(/\s+/g, '_');
+//                 const safeColor = row.color.replace(/\s+/g, '_');  
+//                 const rowKey = `${safeFabric}_${safeColor}_${index}`;
+
+             
+//                 tbody += `<td rowspan="2" align="center">
+                    
+//                     <button type="remove" id="remove-row" style="float:center" class="btn btn-danger btn-xs "><i class="feather icon-trash-2"></i></button>
+
+//                     ${row.color}
+
+//                     <span class="fabric_id" style="display:none;">${row.fabric_id}</span>
+//                     <span class="color_id" style="display:none;">${row.color_id}</span>
+//                     <span class="gauge_id" style="display:none;">${row.gauge_id}</span>
+//                     <span class="yarn_count_id" style="display:none;">${row.yarn_count_id}</span>
+//                     <span class="tex_id" style="display:none;">${row.tex_id}</span>
+//                     <span class="gsm" style="display:none;">${row.gsm}</span>
+//                     <span class="dia_id" style="display:none;">${row.dia_id}</span>
+//                 </td>`; 
+                
+               
+//                 let rowRollTotal = 0;
+//                 let rowRollWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const data = row[dia_name] || { roll: 0, roll_wt: 0 };
+                    
+//                     const roll = parseFloat(data.roll) || 0;
+//                     const roll_wt = parseFloat(data.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center; background-color:#d4f1f1;">${roll}</td>
+//                             <td style="text-align: end; background-color:#d4f1f1;">${roll_wt.toFixed(3)}</td>`;
+
+//                     rowRollTotal += roll;
+//                     rowRollWtTotal += roll_wt;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold; background-color:#d4f1f1;" id="prg-total-roll-${rowKey}">${rowRollTotal}</td>
+//                         <td style="text-align:end; font-weight:bold; background-color:#d4f1f1;" id="prg-total-rollwt-${rowKey}">${rowRollWtTotal.toFixed(3)}</td>
+//                         </tr>`;
+
+               
+
+
+//                 tbody += `<tr style="background-color:#e6f7ff !important;">`;
+
+//                 let inRowTotalRollId = `prg-edit-roll-${rowKey}`;
+//                 let inRowTotalWtId = `prg-edit-rollwt-${rowKey}`;
+
+//                 dias.forEach(([dia_id, dia_name]) => {
+//                     const data = row[dia_name] || { roll: 0, roll_wt: 0 };
+                    
+//                     const roll = parseFloat(data.roll) || 0;
+//                     const roll_wt = parseFloat(data.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center;">
+//                                 <input type="number" 
+//                                     style="border:none;text-align:center;color:black;" 
+//                                     name="out_roll_${row.color}_${dia_name}" 
+//                                     class="roll-input" 
+//                                     data-target-roll="${inRowTotalRollId}" 
+//                                     data-target-wt="${inRowTotalWtId}" 
+//                                     value="${roll}" 
+//                                     min="0"
+//                                     oninput="updateInputTotals('${rowKey}')">
+//                             </td>
+//                             <td style="text-align: end;">
+//                                 <input type="number" 
+//                                     style="border:none;text-align:right;color:black;" 
+//                                     name="out_roll_wt_${row.color}_${dia_name}" 
+//                                     class="roll-wt-input" 
+//                                     data-target-roll="${inRowTotalRollId}" 
+//                                     data-target-wt="${inRowTotalWtId}" 
+//                                     value="${roll_wt.toFixed(3)}"  
+//                                     min="0"
+//                                     oninput="updateInputTotals('${rowKey}')">
+//                             </td>`;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;" id="${inRowTotalRollId}">0</td>
+//                         <td style="text-align:end; font-weight:bold;" id="${inRowTotalWtId}">0.000</td>
+//                         </tr>`;
+
+//             });
+//         }
+//         tbody += `</tbody>`;
+
+//         $('#program_detail_table').html(thead + tbody);
+//     });
+// }
+
+$('#load_data').on('click', function () {
+    LoadProgramDetails();
+});
+
+
+function LoadProgramDetails() {
+    const prg_id = $("#prg_id").val();
+    const color_id = $("#color_id").val();
+    const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+    $.post('/gf-dye-prg-list/', { prg_id, color_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+        if (!response || !response.rows || !response.dias) {
+            notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+            return;
+        }
+
+        const dias = response.dias; // [[dia_id, dia_name]]
+        const rows = response.rows;
+
+        let thead = `<thead><tr><th rowspan="2">Color</th>`;
+        dias.forEach(([_, dia_name]) => {
+            thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+        });
+        thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+        dias.forEach(() => {
+            thead += `<th>Roll</th><th>Wt</th>`;
+        });
+        thead += `</tr></thead>`;
+
+        let grouped = {};
+        rows.forEach(row => {
+            const key = `${row.fabric}||${row.color}`;
+            if (!grouped[key]) grouped[key] = [];
+            grouped[key].push(row);
+        });
+
+        let tbody = `<tbody>`;
+        Object.keys(grouped).forEach((key, index) => {
+            const [fabric, color] = key.split("||");
+            const safeFabric = fabric.replace(/\s+/g, '_');
+            const safeColor = color.replace(/\s+/g, '_');
+            const rowKey = `${safeFabric}_${safeColor}_${index}`;
+            const colorRows = grouped[key];
+            const metaRow = colorRows[0]; 
+            
+            // ✅ Build diaMap using dia_name (like "20")
+            const diaMap = {};
+            dias.forEach(([diaId, diaName]) => {
+                const cell = metaRow[diaName];  // ← this is correct now
+                if (cell) {
+                    diaMap[diaId] = {
+                        roll: cell.roll || 0,
+                        roll_wt: cell.roll_wt || 0
+                    };
+                } else {
+                    diaMap[diaId] = {
+                        roll: 0,
+                        roll_wt: 0
+                    };
+                }
+            });
+
+            // ➤ Display Row
+            let rowRollTotal = 0;
+            let rowRollWtTotal = 0;
+
+            tbody += `<tr><td rowspan="2">
+                <span class="fabric_id" style="display:none;">${metaRow.fabric_id}</span>
+                <span class="color_id" style="display:none;">${metaRow.color_id}</span>
+                <span class="gauge_id" style="display:none;">${metaRow.gauge_id}</span>
+                <span class="yarn_count_id" style="display:none;">${metaRow.yarn_count_id}</span>
+                <span class="tex_id" style="display:none;">${metaRow.tex_id}</span>
+                <span class="gsm" style="display:none;">${metaRow.gsm}</span>
+                <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+                <button type="remove" id="remove-row" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+                ${color}</td>`;
+
+            dias.forEach(([diaId]) => {
+                const data = diaMap[diaId];
+                rowRollTotal += parseFloat(data.roll) || 0;
+                rowRollWtTotal += parseFloat(data.roll_wt) || 0;
+
+                tbody += `<td style="text-align:center;background-color:#d4f1f1;">${data.roll}</td>
+                          <td style="text-align:end;background-color:#d4f1f1;">${parseFloat(data.roll_wt).toFixed(3)}</td>`;
+            });
+
+            tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+                      <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+                      </tr><tr>`;
+
+            // ➤ Input Row
+            let outrowRollTotal = 0;
+            let outrowRollWtTotal = 0;
+
+            dias.forEach(([diaId]) => {
+                const data = diaMap[diaId];
+                outrowRollTotal += parseFloat(data.roll) || 0;
+                outrowRollWtTotal += parseFloat(data.roll_wt) || 0;
+                tbody += `<td>
+                    <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                        data-dia-id="${diaId}" 
+                        data-target-roll="prg-edit-roll-${rowKey}"
+                        data-target-wt="prg-edit-rollwt-${rowKey}"
+                        style="width:120px;text-align:center;" value="${data.roll}" min="0"
+                        oninput="updateInputTotals('${rowKey}')">
+                </td>
+                <td>
+                    <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                        data-dia-id="${diaId}" 
+                        style="text-align:right;width:120px" value="${parseFloat(data.roll_wt).toFixed(3)}" min="0"
+                        oninput="updateInputTotals('${rowKey}')">
+                </td>`;
+
+
+                // tbody += `<td>
+                //     <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                //         data-target-roll="prg-edit-roll-${rowKey}"
+                //         data-target-wt="prg-edit-rollwt-${rowKey}"
+                //         style="width:120px;text-align:center;" value="${data.roll}" min="0"
+                //         oninput="updateInputTotals('${rowKey}')">
+                // </td>
+                // <td>
+                //     <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                //         style="text-align:right;width:120px" value="${parseFloat(data.roll_wt).toFixed(3)}" min="0"
+                //         oninput="updateInputTotals('${rowKey}')">
+                // </td>`;
+            });
+
+            tbody += `<td style="text-align:center;width:90px;">${outrowRollTotal}</td>
+                      <td style="text-align:end;width:90px;">${outrowRollWtTotal.toFixed(3)}</td>
+                      </tr>`;
+        });
+        tbody += `</tbody>`;
+
+        $('#program_detail_table').html(thead + tbody);
+
+        // ✅ Populate Lot Numbers
+        const lotSelect = $("#lot_no");
+        lotSelect.empty().append(`<option value="">Select</option>`);
+        if (response.lots && response.lots.length > 0) {
+            response.lots.forEach((lot, index) => {
+                lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+            });
+        } else {
+            lotSelect.append(`<option value="">No lots found</option>`);
+        }
+
+        // ✅ Remove row handler
+        $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+            const $row = $(this).closest('tr');
+            const $nextRow = $row.next();
+            $row.remove();
+            if ($nextRow) $nextRow.remove();
+        });
+    });
+}
+
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const color_id = $("#color_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, color_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//             return;
+//         }
+
+//         const dias = response.dias;     // Format: [[dia_id, dia_name], ...]
+//         const rows = response.rows;
+
+//         // Table Head
+//         let thead = `<thead><tr><th rowspan="2">Color</th>`;
+//         dias.forEach(([_, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         // Group rows by fabric + color
+//         let grouped = {};
+//         rows.forEach(row => {
+//             const key = `${row.fabric}||${row.color}`;
+//             if (!grouped[key]) grouped[key] = [];
+//             grouped[key].push(row);
+//         });
+
+//         // Table Body
+//         let tbody = `<tbody>`;
+//         Object.keys(grouped).forEach((key, index) => {
+//             const [fabric, color] = key.split("||");
+//             const safeFabric = fabric.replace(/\s+/g, '_');
+//             const safeColor = color.replace(/\s+/g, '_');
+//             const rowKey = `${safeFabric}_${safeColor}_${index}`;
+//             const colorRows = grouped[key];
+
+
+            
+//             // Build diaMap per row
+//             const diaMap = {};
+//             colorRows.forEach(item => {
+//                 diaMap[item.dia_id] = {
+//                     roll: item.roll || 0,
+//                     roll_wt: item.roll_wt || 0,
+//                     fabric_id: item.fabric_id,
+//                     color_id: item.color_id,
+//                     gauge_id: item.gauge_id,
+//                     yarn_count_id: item.yarn_count_id,
+//                     tex_id: item.tex_id,
+//                     gsm: item.gsm
+//                 };
+//             });
+
+//             // Get any row (first) to extract meta
+//             const metaRow = colorRows[0];
+
+//             // Static Display Row
+//             let rowRollTotal = 0;
+//             let rowRollWtTotal = 0;
+
+//             tbody += `<tr><td rowspan="2">
+//                 <span class="fabric_id" style="display:none;">${metaRow.fabric_id}</span>
+//                 <span class="color_id" style="display:none;">${metaRow.color_id}</span>
+//                 <span class="gauge_id" style="display:none;">${metaRow.gauge_id}</span>
+//                 <span class="yarn_count_id" style="display:none;">${metaRow.yarn_count_id}</span>
+//                 <span class="tex_id" style="display:none;">${metaRow.tex_id}</span>
+//                 <span class="gsm" style="display:none;">${metaRow.gsm}</span>
+//                 <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+//                 <button type="remove" id="remove-row" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+//                 ${color}</td>`;
+
+//             dias.forEach(([diaId, _]) => {
+//                 const data = diaMap[diaId] || { roll: 0, roll_wt: 0 };
+//                 rowRollTotal += parseFloat(data.roll) || 0;
+//                 rowRollWtTotal += parseFloat(data.roll_wt) || 0;
+
+//                 tbody += `<td style="text-align:center;background-color:#d4f1f1;">${data.roll}</td>
+//                           <td style="text-align:end;background-color:#d4f1f1;">${parseFloat(data.roll_wt).toFixed(3)}</td>`;
+//             });
+
+//             tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+//                       <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+//                       </tr><tr>`;
+
+//             // Input Row
+//             let outrowRollTotal = 0;
+//             let outrowRollWtTotal = 0;
+
+//             dias.forEach(([diaId, _]) => {
+//                 const data = diaMap[diaId] || { roll: 0, roll_wt: 0 };
+//                 outrowRollTotal += parseFloat(data.roll) || 0;
+//                 outrowRollWtTotal += parseFloat(data.roll_wt) || 0;
+
+//                 tbody += `<td>
+//                     <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+//                         data-target-roll="prg-edit-roll-${rowKey}"
+//                         data-target-wt="prg-edit-rollwt-${rowKey}"
+//                         style="width:120px;text-align:center;" value="${data.roll}" min="0"
+//                         oninput="updateInputTotals('${rowKey}')">
+//                 </td>
+//                 <td>
+//                     <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+//                         style="text-align:right;width:120px" value="${parseFloat(data.roll_wt).toFixed(3)}" min="0"
+//                         oninput="updateInputTotals('${rowKey}')">
+//                 </td>`;
+//             });
+
+//             tbody += `<td style="text-align:center;width:90px;">${outrowRollTotal}</td>
+//                       <td style="text-align:end;width:90px;">${outrowRollWtTotal.toFixed(3)}</td>
+//                       </tr>`;
+//         });
+//         tbody += `</tbody>`;
+
+//         $('#program_detail_table').html(thead + tbody);
+
+//         // ✅ Populate Lot Numbers
+//         const lotSelect = $("#lot_no");
+//         lotSelect.empty().append(`<option value="">Select</option>`);
+//         if (response.lots && response.lots.length > 0) {
+//             response.lots.forEach((lot, index) => {
+//                 lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+//             });
+//         } else {
+//             lotSelect.append(`<option value="">No lots found</option>`);
+//         }
+
+//         // ✅ Row removal handler
+//         $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+//             const $row = $(this).closest('tr');
+//             const $nextRow = $row.next();
+//             $row.remove();
+//             if ($nextRow) $nextRow.remove(); // remove input row
+//         });
+//     });
+// }
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const color_id = $("#color_id").val();  // New: filter by selected color
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, color_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//             return;
+//         }
+
+//         const dias = response.dias;
+//         const rows = response.rows;
+
+//         let thead = `<thead><tr><th rowspan="2">Color</th>`;
+//         dias.forEach(([_, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         let grouped = {};
+//         rows.forEach(row => {
+//             if (!grouped[row.fabric]) grouped[row.fabric] = [];
+//             grouped[row.fabric].push(row);
+//         });
+
+//         let tbody = `<tbody>`;
+//         for (let fabric in grouped) {
+//             grouped[fabric].forEach((row, index) => {
+//                 const safeFabric = fabric.replace(/\s+/g, '_');
+//                 const safeColor = row.color.replace(/\s+/g, '_');
+//                 const rowKey = `${safeFabric}_${safeColor}_${index}`;
+//                 tbody += `<tr style="width="120px;"><td rowspan="2">
+                    
+//                      <span class="fabric_id" style="display:none;">${row.fabric_id}</span>
+//                      <span class="color_id" style="display:none;">${row.color_id}</span> 
+//                      <span class="gauge_id" style="display:none;">${row.gauge_id}</span>
+//                      <span class="yarn_count_id" style="display:none;">${row.yarn_count_id}</span>
+//                      <span class="tex_id" style="display:none;">${row.tex_id}</span>
+//                      <span class="gsm" style="display:none;">${row.gsm}</span>
+//                     <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+ 
+//                     <button type="remove" id="remove-row" style="float:center" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+//                 ${row.color}</td>`;
+
+//                 let rowRollTotal = 0;
+//                 let rowRollWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     // const data = row[dia_name] || { roll: 0, roll_wt: 0 };
+
+//                     const data = diaMap[diaId] || { roll: 0, roll_wt: 0 };
+//                     const safeColor = color.replace(/\s+/g, '_');
+//                     const rowKey = `${safeFabric}_${safeColor}_0`; // Adjust index if needed
+
+//                     rowRollTotal += data.roll;
+//                     rowRollWtTotal += data.roll_wt;
+//                     tbody += `<td style="text-align:center;background-color:#d4f1f1;">${data.roll}</td>
+//                               <td style="text-align:end;background-color:#d4f1f1;">${data.roll_wt.toFixed(3)}</td>`;
+//                 });
+
+//                 tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+//                           <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+//                           </tr><tr style="width="90px;">`;
+
+
+//                 let outrowRollTotal = 0;
+//                 let outrowRollWtTotal = 0;
+//                 dias.forEach(([diaId, dia_name]) => {
+//                     const data = row[dia_name] || { roll: 0, roll_wt: 0 };
+//                     outrowRollTotal += data.roll;
+//                     outrowRollWtTotal += data.roll_wt;
+             
+
+//                     tbody += `<td style="width="90px;"><input type="number" name="out_roll_${color}_${diaId}"
+//                         data-target-roll="prg-edit-roll-${rowKey}"
+//                          data-target-wt="prg-edit-rollwt-${rowKey}" style="width:120px;text-align:center;" value="${data.roll}" min="0" /></td>
+//                               <td style="width="90px;><input type="number" name="out_roll_${color}_${diaId}" style="text-align:right ;width:120px" value="${data.roll_wt.toFixed(3)}" min="0" /></td>`;
+//                 });
+
+
+//             // dias.forEach(([diaId, diaName]) => {
+//             //     const data = diaMap[diaId] || { roll: 0, roll_wt: 0 };
+//             //     const safeColor = color.replace(/\s+/g, '_');
+//             //     const rowKey = `${safeFabric}_${safeColor}_0`; // Adjust index if needed
+
+//             //     tbody += `<td>
+//             //         <input type="number"
+//             //             style="border:none;text-align:center;color:black;"
+//             //             name="out_roll_${color}_${diaId}"
+//             //             class="roll-input"
+//             //             data-target-roll="prg-edit-roll-${rowKey}"
+//             //             data-target-wt="prg-edit-rollwt-${rowKey}"
+//             //             value="${data.roll}"
+//             //             min="0"
+//             //             oninput="updateInputTotals('${rowKey}')">
+//             //     </td>`;
+
+//             //     tbody += `<td>
+//             //         <input type="number"
+//             //             style="border:none;text-align:center;color:black;"
+//             //             name="out_wt_${color}_${diaId}"
+//             //             class="roll-wt-input"
+//             //             value="${data.roll_wt}"
+//             //             min="0"
+//             //             oninput="updateInputTotals('${rowKey}')">
+//             //     </td>`;
+//             // });
+
+
+
+
+//                 tbody += `<td style="text-align:center;width:90px;" >${outrowRollTotal}</td>
+//                           <td style="text-align:end;width:90px;">${outrowRollWtTotal.toFixed(3)}</td>
+//                           </tr><tr>`;
+//                 // tbody += `<td></td></tr>`;  
+//             });
+//         }
+//         tbody += `</tbody>`;
+
+//         $('#program_detail_table').html(thead + tbody);
+
+//        const lotSelect = $("#lot_no");
+//             lotSelect.empty().append(`<option value="">Select</option>`);
+//             if (response.lots && response.lots.length > 0) {
+//                 response.lots.forEach((lot, index) => {
+//                     lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+//                 });
+//             }
+
+//                   // Attach remove-row handler
+//             $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+//                 const $row = $(this).closest('tr');
+//                 const $nextRow = $row.next();
+//                 const $thirdRow = $nextRow.next();
+
+//                 $row.remove();
+//                 $nextRow.remove(); 
+//                 if ($thirdRow && $thirdRow.find('td').length <= 2) {
+//                     $thirdRow.remove();
+//                 }
+//             });
+//     });
+
+//        // Remove row
+//             newRow.querySelector(".remove-row").addEventListener("click", () => {
+//                 newRow.remove();
+//                 updateFooterTotals();
+//             });
+
+// }
+
+
+function updateInputTotals(rowKey) { 
+    let rollSum = 0; 
+    let wtSum = 0;
+
+    $(`input[data-target-roll="prg-edit-roll-${rowKey}"]`).each(function () {
+        let val = parseFloat($(this).val()) || 0;
+        rollSum += val;
+    });
+
+    $(`input[data-target-wt="prg-edit-rollwt-${rowKey}"]`).each(function () {
+        let val = parseFloat($(this).val()) || 0;
+        wtSum += val;
+    });
+
+    $(`#prg-edit-roll-${rowKey}`).text(rollSum);
+    $(`#prg-edit-rollwt-${rowKey}`).text(wtSum.toFixed(3));
+}
+
+// ```````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show(
+//                 'Error!',
+//                 'Kindly Please select the dyeing program!.',
+//                 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}",
+//                 4000
+//             );
+//             return;
+//         }
+
+//         const dias = response.dias;
+//         const rows = response.rows;
+
+//         // Build thead
+//         let thead = `<thead>
+//             <tr>
+//                 <th rowspan="2">Fabric</th>
+//                 <th rowspan="2">Color</th>`;
+//         dias.forEach(([dia_id, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">
+//                         ${dia_name}
+//                         <input type="hidden" class="dia-id" value="${dia_id}">
+//                       </th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         // Group rows by fabric
+//         let grouped = {};
+//         rows.forEach(row => {
+//             if (!grouped[row.fabric]) grouped[row.fabric] = [];
+//             grouped[row.fabric].push(row);
+//         });
+
+//         // Totals structure
+//         let diaTotals = {};
+//         dias.forEach(([_, dia_name]) => {
+//             diaTotals[dia_name] = { roll: 0, roll_wt: 0 };
+//         });
+
+//         let grandRollTotal = 0;
+//         let grandRollWtTotal = 0;
+
+//         // Build tbody
+//         let tbody = `<tbody>`;
+//         for (let fabric in grouped) {
+//             const fabricRows = grouped[fabric];
+
+//             fabricRows.forEach((row, index) => {
+//                 const safeFabric = fabric.replace(/\s+/g, '_');
+//                 const safeColor = row.color.replace(/\s+/g, '_');
+//                 const rowKey = `${safeFabric}_${safeColor}_${index}`; 
+
+//                 // Inward row
+//                 tbody += `<tr style="background-color:#d8dede">`;
+//                 if (index === 0) {
+//                     tbody += `<td rowspan="${fabricRows.length * 3}" style="vertical-align: middle; text-align: center;">${fabric}</td>`;
+//                 }
+//                 tbody += `<td rowspan="3" align="center">${row.color}</td>`;
+
+//                 let rowRollTotal = 0;
+//                 let rowRollWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const diaData = row[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const roll = parseFloat(diaData.roll) || 0;
+//                     const roll_wt = parseFloat(diaData.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center;">${roll}</td>
+//                               <td style="text-align: end;">${roll_wt.toFixed(3)}</td>`;
+
+//                     rowRollTotal += roll;
+//                     rowRollWtTotal += roll_wt;
+
+//                     diaTotals[dia_name].roll += roll;
+//                     diaTotals[dia_name].roll_wt += roll_wt;
+
+//                     grandRollTotal += roll;
+//                     grandRollWtTotal += roll_wt;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;" id="prg-total-roll-${rowKey}">${rowRollTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;" id="prg-total-rollwt-${rowKey}">${rowRollWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+
+//                 // Outward row
+                
+//                 tbody += `<tr style="background-color:#fce8e6">`;
+//                 let outRowTotal = 0, outRowWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const outwardData = row.outward?.[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const outRoll = parseFloat(outwardData.roll) || 0;
+//                     const outRollWt = parseFloat(outwardData.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center; color: #a33;">${outRoll}</td>
+//                               <td style="text-align: end; color: #a33;">${outRollWt.toFixed(3)}</td>`;
+
+//                     outRowTotal += outRoll;
+//                     outRowWtTotal += outRollWt;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;" id="prg-out-roll-${rowKey}">${outRowTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;" id="prg-out-rollwt-${rowKey}">${outRowWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+
+//                 // Input row
+//                 tbody += `<tr style="background-color:#e6f7ff">`;
+//                 let inRowTotal = 0, inRowWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     tbody += `<td style="text-align: center;">
+//                                 <input type="number" style="border:none;text-align:center;color:black;font-size:15px;" name="out_roll_${row.color}_${dia_name}" value="0">
+//                               </td>
+//                               <td style="text-align: end;">
+//                                 <input type="number" style="border:none;text-align:right;color:black;font-size:15px;" name="out_roll_wt_${row.color}_${dia_name}" value="0">
+//                               </td>`;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;" id="prg-edit-roll-${rowKey}">${inRowTotal}</td>
+//                           <td style="text-align:end; font-weight:bold;" id="prg-edit-rollwt-${rowKey}">${inRowWtTotal.toFixed(3)}</td>
+//                           </tr>`;
+//             });
+//         }
+//         tbody += `</tbody>`;
+
+//         // Build tfoot
+//         let tfoot = `<tfoot><tr>
+//             <th colspan="2" style="text-align:right">Totals:</th>`;
+//         dias.forEach(([_, dia_name]) => {
+//             const total = diaTotals[dia_name];
+//             tfoot += `<th style="text-align: center;">${total.roll}</th>
+//                       <th style="text-align: end;">${total.roll_wt.toFixed(3)}</th>`;
+//         });
+//         tfoot += `<th style="text-align: center;">${grandRollTotal}</th>
+//                   <th style="text-align: end;">${grandRollWtTotal.toFixed(3)}</th></tr></tfoot>`;
+
+//         // Populate lot dropdown
+//         const lotSelect = $("#lot_no");
+//         lotSelect.empty().append(`<option value="">Select</option>`);
+//         if (response.lots && response.lots.length > 0) {
+//             response.lots.forEach(lot => {
+//                 lotSelect.append(`<option value="${lot}">${lot}</option>`);
+//             });
+//         } else {
+//             lotSelect.append(`<option value="">No lots found</option>`);
+//         }
+
+//         // Inject table
+//         $('#program_detail_table').html(thead + tbody + tfoot);
+//     });
+// }
+
+
+// function LoadProgramDetails_bk_26062025() {
+//     const prg_id = $("#prg_id").val();
+//     const color_id = $("#color_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/gf-dye-prg-list/', { prg_id, csrfmiddlewaretoken: csrfToken }, function(response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show(
+//                 'Error!', 
+//                 'Kindly Please select the dyeing program!.', 
+//                 'danger', 
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                 4000
+//             );
+//             return;
+//         }
+
+
+      
+
+//         const dias = response.dias; // [ [dia_id, dia_name], ... ]
+//         const rows = response.rows;
+
+//         // Build thead
+//         let thead = `<thead>
+//             <tr>
+//                 <th rowspan="2">Fabric</th>
+//                 <th rowspan="2">Color</th>`;
+//         dias.forEach(([dia_id, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">
+//                         ${dia_name}
+//                         <input type="hidden" class="dia-id" value="${dia_id}">
+//                       </th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th> Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         // Group rows by fabric
+//         let grouped = {};
+//         rows.forEach(row => {
+//             if (!grouped[row.fabric]) grouped[row.fabric] = [];
+//             grouped[row.fabric].push(row);
+//         });
+
+//         // Totals structure
+//         let diaTotals = {};
+//         dias.forEach(([_, dia_name]) => {
+//             diaTotals[dia_name] = { roll: 0, roll_wt: 0 };
+//         });
+
+//         let grandRollTotal = 0;
+//         let grandRollWtTotal = 0;
+
+
+//         let tbody = `<tbody>`;
+//         for (let fabric in grouped) {
+//             const fabricRows = grouped[fabric];  // ✅ Now fabricRows is defined correctly
+
+//             fabricRows.forEach((row, index) => {
+//                 // First row – program data
+//                 tbody += `<tr>`;
+//                 if (index === 0) {
+//                     tbody += `<td rowspan="${fabricRows.length * 2}" style="vertical-align: middle; text-align: center;">${fabric}</td>`;
+//                 }
+//                 tbody += `<td rowspan="3" align="center">${row.color}</td>`;
+
+//                 let rowRollTotal = 0;
+//                 let rowRollWtTotal = 0;
+
+//                 dias.forEach(([_, dia_name]) => {
+//                     const diaData = row[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const roll = parseFloat(diaData.roll) || 0;
+//                     const roll_wt = parseFloat(diaData.roll_wt) || 0;
+
+//                     tbody += `<td style="text-align: center;">${roll}</td>
+//                             <td style="text-align: end;">${roll_wt.toFixed(3)}</td>`;
+
+//                     rowRollTotal += roll;
+//                     rowRollWtTotal += roll_wt;
+
+//                     diaTotals[dia_name].roll += roll;
+//                     diaTotals[dia_name].roll_wt += roll_wt;
+
+//                     grandRollTotal += roll;
+//                     grandRollWtTotal += roll_wt;
+//                 });
+
+//                 tbody += `<td style="text-align:center; font-weight:bold;">${rowRollTotal}</td>
+//                         <td style="text-align:end; font-weight:bold;">${rowRollWtTotal.toFixed(3)}</td></tr>`;
+
+//                 // Second row – outward data
+//                 // tbody += `<tr><td ">Outward</td>`;
+//                 dias.forEach(([_, dia_name]) => {
+//                     const outwardData = row.outward?.[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const outRoll = parseFloat(outwardData.roll) || 0;
+//                     const outRollWt = parseFloat(outwardData.roll_wt) || 0;
+//                     const out_roll = 0;
+//                     const out_roll_wt = 0;
+
+//                     tbody += `<td style="text-align: center; color: #a33;">${outRoll}</td>
+//                             <td style="text-align: end; color: #a33;">${outRollWt.toFixed(3)}</td>`;
+//                 });
+//                 tbody += `<td colspan="2"></td></tr>`;
+
+
+//                  dias.forEach(([_, dia_name]) => {
+//                     const outwardData = row.outward?.[dia_name] || { roll: 0, roll_wt: 0 };
+//                     const outRoll = parseFloat(outwardData.roll) || 0;
+//                     const outRollWt = parseFloat(outwardData.roll_wt) || 0;
+//                     const out_roll = 0;
+//                     const out_roll_wt = 0;
+
+//                     tbody += `<td style="text-align: center; color: #a33;">
+//                                 <input type="number" style="border:none;text-align:center" id="out_roll" value="${out_roll}">
+//                             </td>
+//                             <td style="text-align: end; color: #a33;">
+//                               <input type="number" style="border:none;text-align:right" id="out_roll_wt" value="${out_roll_wt}">    
+//                             </td>`;
+//                 });
+//                 tbody += `<td colspan="2"></td></tr>`;
+//             });
+//         }
+//         tbody += `</tbody>`;
+
+//         // Build tfoot
+//         let tfoot = `<tfoot><tr>
+//             <th colspan="2" style="text-align:right">Totals:</th>`;
+
+
+        
+//         dias.forEach(([_, dia_name]) => {
+//             const total = diaTotals[dia_name];
+//             tfoot += `<th style="text-align: center;">${total.roll}</th>
+//                       <th style="text-align: end;">${total.roll_wt.toFixed(3)}</th>
+//                       `;
+//         });
+//         tfoot += `<th style="text-align: center;">${grandRollTotal}</th>
+//                   <th style="text-align: end;">${grandRollWtTotal.toFixed(3)}</th></tr></tfoot>`;
+
+//         // Populate lot dropdown
+//         const lotSelect = $("#lot_no");
+//         lotSelect.empty().append(`<option value="">Select</option>`);
+//         if (response.lots && response.lots.length > 0) {
+//             response.lots.forEach(lot => {
+//                 lotSelect.append(`<option value="${lot}">${lot}</option>`);
+//             });
+//         } else {
+//             lotSelect.append(`<option value="">No lots found</option>`);
+//         }
+
+//         // Inject full table
+//         $('#program_detail_table').html(thead + tbody + tfoot);
+//     });
+// }
+
+
+
+
+
+
+function LoadFabric() {
+    var prg_id = $('#prg_id').val();
+    console.log('Group ID:', prg_id);
+
+    if (!prg_id) {
+        console.warn("No Group ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_program_fabrics/',  // Updated backend URL
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Item Data:', data);
+
+            // Clear dropdowns
+            $('#fabric_id').empty().append('');
+            $('#color_id').empty().append('');
+           
+
+            // Populate Items
+            if (data.fabrics && Array.isArray(data.fabrics)) {
+                data.fabrics.forEach(function(fabrics) {
+                    $('#fabric_id').append('<option value="' + fabrics.id + '">' + fabrics.name + '</option>');
+                });
+            }
+            LoadColor();
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading items:', error);
+        }
+    });
+}
+
+
+
+function LoadColor() {
+    var prg_id = $('#prg_id').val();
+    var fabric_id = $('#fabric_id').val();
+    console.log('Group ID:', prg_id);
+
+    if (!prg_id) {
+        console.warn("No Group ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_program_color/',  // Updated backend URL
+        data: {
+            'prg_id': prg_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Item Data:', data.colors);
+
+            // Clear dropdowns
+            // $('#color_id').empty().append('<option value="">Select Item</option>');
+            $('#color_id').empty().append('');
+           
+ 
+            // Populate Items
+            if (data.colors && Array.isArray(data.colors)) {
+                data.colors.forEach(function(colors) {
+                    $('#color_id').append('<option value="' + colors.id + '">' + colors.name + '</option>');
+                });
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading items:', error);
+        }
+    });
+}
+
+
+
+// ```````````````````` addrow `````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+
+
+// function storeTblValues() {
+//     const TableData = [];
+
+//     $('#purchaseTable tbody tr').each(function () {
+//         const $row = $(this);
+
+//         const dia = $row.find('td:eq(0)').text().trim();
+
+//         const prg_roll = parseFloat($row.find('td:eq(1)').text().trim()) || 0;
+//         const prg_wt = parseFloat($row.find('td:eq(2)').text().trim()) || 0;
+
+//         const stock_roll = parseFloat($row.find('td:eq(3)').text().trim()) || 0;
+//         const stock_wt = parseFloat($row.find('td:eq(4)').text().trim()) || 0;
+
+//         const roll = parseFloat($row.find('td:eq(5) input').val()) || 0;
+//         const gross_wt = parseFloat($row.find('td:eq(6) input').val()) || 0;
+
+//         // Fetch hidden values using .text() or data attributes
+//         const color_id = $row.find('.color_id').text().trim() || '';
+//         const dia_id = $row.find('.dia_id').text().trim() || '';
+//         const fabric_id = $row.find('.fabric_id').text().trim() || '';
+//         const yarn_count_id = $row.find('.yarn_count_id').text().trim() || '';
+//         const tex_id = $row.find('.tex_id').text().trim() || '';
+//         const gauge_id = $row.find('.gauge_id').text().trim() || '';
+//         const gsm = $row.find('.gsm').text().trim() || '';
+
+//         const isValid = fabric_id && yarn_count_id && tex_id && gauge_id && dia_id;
+
+//         // Optional validation — you can skip invalid rows
+//         // if (!isValid) return;
+
+//         TableData.push({
+//             dia,
+//             prg_roll,
+//             prg_wt,
+//             stock_roll,
+//             stock_wt,
+//             roll,
+//             gross_wt: gross_wt.toFixed(2),
+//             fabric_id,
+//             yarn_count_id,
+//             tex_id,
+//             gauge_id,
+//             gsm,
+//             dia_id,
+//             color_id,
+//         });
+//     });
+
+//     console.log("TABLE-DATA:", TableData);
+//     return TableData;
+// }
+
+        // inputs.forEach(input => {
+            //     TableData.push({
+            //         fabric: fabric,
+            //         color: color,
+            //         dia: input.dia,
+            //         roll: input.roll,
+            //         roll_wt: input.roll_wt.toFixed(2),
+            //         // Optional: Add fabric_id, dia_id, color_id here if stored using data-attributes
+            //         // fabric_id: prgRow.find('.fabric_id').text().trim(),
+            //         // dia_id: ...,
+            //         // color_id: ...
+            //     });
+            // });
+
+function storeTblValues() {
+    const groupedData = {};
+
+    $('#program_detail_table tbody tr').each(function (index, rowEl) {
+        const $row = $(rowEl);
+
+        // Only process input rows (2nd row in each group)
+        if (index % 2 !== 1) return;
+
+        const $prevRow = $row.prev();
+        const color = $prevRow.find('.color_id').text().trim();
+        const fabric = $prevRow.find('.fabric_id').closest('td').text().trim();
+
+        const hiddenData = {
+            fabric_id: $prevRow.find('.fabric_id').text().trim(),
+            yarn_count_id: $prevRow.find('.yarn_count_id').text().trim(),
+            tex_id: $prevRow.find('.tex_id').text().trim(),
+            gauge_id: $prevRow.find('.gauge_id').text().trim(),
+            gsm: $prevRow.find('.gsm').text().trim(),
+            color_id: $prevRow.find('.color_id').text().trim(),
+            fabric: fabric,
+            color: color
+        };
+
+        const inputs = [];
+        const $tds = $row.find('td');
+
+        for (let i = 0; i < $tds.length - 2; i += 2) {
+            const rollInput = $tds.eq(i).find('input');
+            const wtInput = $tds.eq(i + 1).find('input');
+
+            const roll = parseFloat(rollInput.val()) || 0;
+            const roll_wt = parseFloat(wtInput.val()) || 0;
+            const dia_id = rollInput.data('dia-id'); // ✅ Correctly fetch dia_id
+            console.log('DIA:',dia_id);
+            if ((roll > 0 || roll_wt > 0) && dia_id !== undefined) {
+                inputs.push({
+                    dia_id: dia_id,
+                    roll: roll,
+                    roll_wt: roll_wt,
+                    ...hiddenData
+                });
+            }
+        }
+
+        if (inputs.length > 0) {
+            if (!groupedData[color]) {
+                groupedData[color] = {
+                    fabric: hiddenData.fabric,
+                    color: hiddenData.color,
+                    items: []
+                };
+            }
+            groupedData[color].items.push(...inputs);
+        }
+    });
+
+    const TableData = Object.values(groupedData);
+    console.log("PROGRAM_DETAIL_TABLE_DATA (Grouped):", TableData);
+    return TableData;
+}
+
+
+ 
+function storeTblValues_test1() {
+    const groupedData = {};
+
+    $('#program_detail_table tbody tr').each(function (index, rowEl) {
+        const $row = $(rowEl);
+
+        // Only process input rows (2nd row in each group)
+        if (index % 2 !== 1) return;
+
+        const $prevRow = $row.prev();  // 1st row with metadata
+        const color = $prevRow.find('.color_id').text().trim();
+        const fabric = $prevRow.find('.fabric_id').closest('td').text().trim();
+
+        const hiddenData = {
+            fabric_id: $prevRow.find('.fabric_id').text().trim(),
+            yarn_count_id: $prevRow.find('.yarn_count_id').text().trim(),
+            tex_id: $prevRow.find('.tex_id').text().trim(),
+            gauge_id: $prevRow.find('.gauge_id').text().trim(),
+            gsm: $prevRow.find('.gsm').text().trim(),
+            color_id: $prevRow.find('.color_id').text().trim(),
+            fabric: fabric,
+            color: color
+        };
+
+        const inputs = [];
+        const $tds = $row.find('td');
+
+        for (let i = 0; i < $tds.length - 2; i += 2) {
+            const rollInput = $tds.eq(i).find('input');
+            const wtInput = $tds.eq(i + 1).find('input');
+
+            const roll = parseFloat(rollInput.val()) || 0;
+            const roll_wt = parseFloat(wtInput.val()) || 0;
+
+            if (roll > 0 || roll_wt > 0) {
+                const dia = rollInput.data('dianame') || `dia_${i / 2}`;  // You must set data-dianame on input
+
+                inputs.push({
+                    dia: dia,
+                    roll: roll,
+                    roll_wt: roll_wt,
+                    ...hiddenData
+                });
+            }
+        }
+
+        if (inputs.length > 0) {
+            if (!groupedData[color]) {
+                groupedData[color] = {
+                    fabric: hiddenData.fabric,
+                    color: hiddenData.color,
+                    items: []
+                };
+            }
+            groupedData[color].items.push(...inputs);
+        }
+    });
+
+    const TableData = Object.values(groupedData);
+    console.log("PROGRAM_DETAIL_TABLE_DATA (Grouped):", TableData);
+    return TableData;
+}
+
+
+// function storeTblValues() {
+//     const groupedData = {};
+
+//     $('#program_detail_table tbody').each(function () {
+//         let $tbody = $(this);
+//         let $rows = $tbody.find('tr');
+
+//         for (let i = 0; i < $rows.length; i += 3) {
+//             const prgRow = $rows.eq(i);
+//             const inputRow = $rows.eq(i + 2);
+
+//             const fabric = prgRow.find('td:first').text().trim();
+//             const color = prgRow.find('td:eq(1)').text().trim();
+
+//             const inputs = [];
+
+//             inputRow.find('td').each(function () {
+//                 const $cell = $(this);
+//                 const inputEl = $cell.find('input');
+
+//                 if (inputEl.length > 0) {
+//                     const name = inputEl.attr('name') || '';
+//                     const value = parseFloat(inputEl.val()) || 0;
+
+//                     const diaMatch = name.match(/out_roll(?:_wt)?_(.+?)_(.+)/);
+//                     if (diaMatch) {
+//                         const dia = diaMatch[2];
+//                         const type = name.includes('_wt_') ? 'roll_wt' : 'roll';
+
+//                         let existing = inputs.find(i => i.dia === dia);
+//                         if (!existing) {
+//                             existing = {
+//                                 dia: dia,
+//                                 roll: 0,
+//                                 roll_wt: 0,
+//                                 // Optional: fetch hidden fields if needed
+//                                 fabric_id: prgRow.find('.fabric_id').text().trim() || '',
+//                                 yarn_count_id: prgRow.find('.yarn_count_id').text().trim() || '',
+//                                 tex_id: prgRow.find('.tex_id').text().trim() || '',
+//                                 gauge_id: prgRow.find('.gauge_id').text().trim() || '',
+//                                 gsm: prgRow.find('.gsm').text().trim() || '',
+//                                 dia_id: prgRow.find('.dia_id').text().trim() || '',
+//                                 color_id: prgRow.find('.color_id').text().trim() || '',
+//                                 fabric: fabric,
+//                                 color: color
+//                             };
+//                             inputs.push(existing);
+//                         }
+
+//                         existing[type] = value;
+//                     }
+//                 }
+//             });
+
+//             const filtered = inputs.filter(i => i.roll > 0 || i.roll_wt > 0);
+//             if (filtered.length > 0) {
+//                 if (!groupedData[color]) {
+//                     groupedData[color] = {
+//                         fabric: fabric,
+//                         color: color,
+//                         items: []
+//                     };
+//                 }
+//                 groupedData[color].items.push(...filtered);
+//             }
+//         }
+//     });
+
+//     const TableData = Object.values(groupedData);
+//     console.log("PROGRAM_DETAIL_TABLE_DATA (Grouped):", TableData);
+//     return TableData;
+// }
+
+
+
+
+function storeTblValues_dye_prg() {
+    const TableData = [];
+
+    $('#program_detail_table tbody').each(function () {
+        let $tbody = $(this);
+        let $rows = $tbody.find('tr');
+
+        for (let i = 0; i < $rows.length; i += 3) {
+            const prgRow = $rows.eq(i);
+            const outRow = $rows.eq(i + 1);
+            const inputRow = $rows.eq(i + 2);
+
+            const fabric = prgRow.find('td:first').text().trim();
+            const color = prgRow.find('td:eq(1)').text().trim();
+
+            const inputs = [];
+
+            inputRow.find('td').each(function (index) {
+                const $cell = $(this);
+                const inputEl = $cell.find('input');
+
+                if (inputEl.length > 0) {
+                    const name = inputEl.attr('name') || '';
+                    const value = parseFloat(inputEl.val()) || 0;
+
+                    // Extract dia name from input name (ex: out_roll_Red_16)
+                    const diaMatch = name.match(/out_roll(?:_wt)?_(.+?)_(.+)/);
+                    if (diaMatch) {
+                        const inputColor = diaMatch[1];
+                        const dia = diaMatch[2];
+                        const type = name.includes('_wt_') ? 'roll_wt' : 'roll';
+
+                        let existing = inputs.find(i => i.dia === dia);
+                        if (!existing) {
+                            existing = { dia, roll: 0, roll_wt: 0 };
+                            inputs.push(existing);
+                        }
+                        existing[type] = value;
+                    }
+                }
+            });
+
+    
+
+            inputs.forEach(input => {
+                if (input.roll > 0 || input.roll_wt > 0) {
+                    TableData.push({
+                        fabric: fabric,
+                        color: color,
+                        dia: input.dia,
+                        roll: input.roll,
+                        roll_wt: input.roll_wt.toFixed(2),
+                    });
+                }
+            });
+
+        }
+    });
+
+    console.log("PROGRAM_DETAIL_TABLE_DATA:", TableData);
+    return TableData;
+}
+
+
+
+
+// ``````````````````````````````` manualy clicked row to add ````````````````````````````````
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const yarn_count = $("#yarn_count_id option:selected").text();
+    const yarn_countId = $("#yarn_count_id").val();
+    const party_id = $("#party_id").val();
+
+    const fabric = $("#fabric_id option:selected").text();
+    const fabricId = $("#fabric_id").val();
+
+    const gauge = $("#gauge_id option:selected").text();
+    const gaugeId = $("#gauge_id").val();
+
+    const party = $("#party_id option:selected").text();
+    const partyId = $("#party_id").val();
+
+    const tex = $("#tex_id option:selected").text();
+    const texId = $("#tex_id").val();
+
+    const dia = $("#dia_id option:selected").text();
+    const diaId = $("#dia_id").val();
+
+
+
+    const gsm = parseFloat($("#gsm").val()) || 0;
+    const roll = parseFloat($("#roll").val()) || 0;
+    const lot_no = $("#lot_no").val().trim();
+    const roll_wt = parseFloat($("#roll_wt").val()) || 0;
+    const grossWt = parseFloat($("#gross_wt").val()) || 0;
+    const inwardId = $("#tm_inward_id").val() || 0;
+    const id = 0;
+
+    // Prevent adding row if required fields are empty
+    // if (!yarn_countId || !fabricId  || !gaugeId || !texId || !gsm || roll <= 0 || roll_wt <= 0 || greoss_wt <= 0) {
+    // if (!party_id <= 0) {
+    //     notifier.show( 
+    //         'Error', 
+    //         'Please fill in all required fields before adding.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    // Check if 'lot_no' is empty, if so, show alert
+    if (!lot_no) {
+        notifier.show( 
+            'Error', 
+            'Lot number is required.', 
+            'warning', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    // Check if inward_id already exists in any of the existing rows
+    const existingRows = document.querySelectorAll("#purchaseTable tbody tr");
+    let inwardIdExists = false;
+
+    existingRows.forEach(row => {
+        const rowInwardId = row.querySelector(".inward_id").value;
+        console.log("Checking inward_id:", rowInwardId); // Debugging to see the inward_id being checked
+        if (rowInwardId == inwardId) {
+            inwardIdExists = true;
+        }   
+    });
+
+    // if (inwardIdExists) {
+    //     notifier.show( 
+    //         'Error', 
+    //         'This Inward ID has already been added.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    // If no duplicate found, add the row
+    addRow(fabric,yarn_count,gauge,tex,gsm,dia, lot_no, roll, roll_wt, grossWt, party_id,fabricId,yarn_countId,gaugeId,texId,diaId, inwardId);
+    calculateTotalValue();
+}
+
+
+
+// Global storage for dia-wise grouped data
+const diaList = [14, 15, 16, 18];
+const groupedTable = {
+    Stock: {},
+    Program: {},
+    Color: {}
+};
+
+function addRow(
+    fabric, yarn_count, tex, gauge, gsm,
+    prg_name, dia,
+    program_roll, program_roll_wt,
+    available_rolls, available_wt,
+    tot_out_rolls, tot_out_wt,
+    balance_roll, balance_roll_wt,
+    outward_roll, outward_gross_wt,
+    outward_roll_wt,
+    id, fabricId, yarn_countId, gaugeId, texId, diaId,
+    inwardId, program_id, lot_no, lot_roll, inward_roll
+) {
+    dia = parseInt(dia);
+
+    // Normalize values
+    program_roll = parseFloat(program_roll) || 0;
+    program_roll_wt = parseFloat(program_roll_wt) || 0;
+    available_rolls = parseFloat(available_rolls) || 0;
+    available_wt = parseFloat(available_wt) || 0;
+    outward_roll = parseFloat(outward_roll) || 0;
+    outward_gross_wt = parseFloat(outward_gross_wt) || 0;
+
+    // Initialize dia slot if not exists
+    if (!groupedTable.Stock[dia]) groupedTable.Stock[dia] = { roll: 0, wt: 0 };
+    if (!groupedTable.Program[dia]) groupedTable.Program[dia] = { roll: 0, wt: 0 };
+    if (!groupedTable.Color[dia]) groupedTable.Color[dia] = { roll: 0, wt: 0 };
+
+    // Add values to grouped table
+    groupedTable.Stock[dia].roll += available_rolls;
+    groupedTable.Stock[dia].wt += available_wt;
+    groupedTable.Program[dia].roll += program_roll;
+    groupedTable.Program[dia].wt += program_roll_wt;
+    groupedTable.Color[dia].roll += outward_roll;
+    groupedTable.Color[dia].wt += outward_gross_wt;
+
+    renderGroupedTable();
+}
+
+
+function renderGroupedTable() {
+    const tbody = document.querySelector("#purchaseTable tbody");
+    tbody.innerHTML = "";
+
+    const rows = ['Stock', 'Program', 'Color'];
+    const bgColors = {
+        Stock: 'rgb(226, 228, 131)',
+        Program: 'rgb(112, 223, 223)',
+        Color: 'rgb(245, 202, 123)'
+    };
+
+    rows.forEach(type => {
+        let row = `<tr style="background-color:${bgColors[type]}"><td><strong>${type}</strong></td>`;
+        let totalRoll = 0, totalWt = 0;
+
+        diaList.forEach(dia => {
+            const entry = groupedTable[type][dia] || { roll: 0, wt: 0 };
+            row += `<td>${entry.roll}</td><td>${entry.wt.toFixed(2)}</td>`;
+            totalRoll += entry.roll;
+            totalWt += entry.wt;
+        });
+
+        row += `<td><strong>${totalRoll}</strong></td><td><strong>${totalWt.toFixed(2)}</strong></td></tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+    });
+}
+
+
+// `````````````````````````````````````````````````````````````
+
+function updateFooterTotals() {
+    let totalRoll = 0;
+    let totalGrossWt = 0;
+
+    document.querySelectorAll("#purchaseTable tbody .outward-roll").forEach(input => {
+        totalRoll += parseFloat(input.value) || 0;
+    });
+
+    document.querySelectorAll("#purchaseTable tbody .outward-gross-wt").forEach(input => {
+        totalGrossWt += parseFloat(input.value) || 0;
+    });
+
+    document.getElementById("footer-roll-total").textContent = totalRoll.toFixed(0);
+    document.getElementById("footer-gross-wt-total").textContent = totalGrossWt.toFixed(3);
+}
+
+
+// ``````````````````````````````````````````````````````````````````````````````````````
+
+
+// ``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+function addRow_bk_13062025(fabric,yarn_count,gauge,tex,gsm,dia, lot_no, roll, roll_wt, grossWt, party_id,fabricId,yarn_countId,gaugeId,texId,diaId, inwardId) {
+   
+    // console.log('rows:',addRow);
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    if (!tableBody) {
+        console.error("Table body not found!");
+        return;
+    }
+
+
+    //  // Prevent adding row if required fields are empty
+    // if (!party_id <= 0) {
+    //     notifier.show( 
+    //         'Error', 
+    //         'Please fill in all required fields before adding.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;  
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-product-id", fabricId);
+    newRow.setAttribute("data-row-id", rowId);
+    $('#lot_no').val().trim();
+    newRow.innerHTML = `
+        <td>${fabric}</td>
+        <td>${yarn_count}</td>
+        <td>${tex}</td>
+        <td>${gauge}</td>
+        <td>${gsm}</td>
+        <td>${dia}</td>
+        <td>${roll}</td>
+        <td>${roll_wt.toFixed(2)}</td>
+        <td>${grossWt.toFixed(2)}</td>
+        
+        <td style="display:none"><input type="hidden" class="party_id" value="${party_id}" /></td> 
+        <td style="display:none"><input type="hidden" class="fabric_id" value="${fabricId}" /></td>
+        <td style="display:none"><input type="hidden" class="yarn_count_id" value="${yarn_countId}" /></td>
+        <td style="display:none"><input type="hidden" class="gauge_id" value="${gaugeId}" /></td>
+        <td style="display:none"><input type="hidden" class="tex_id" value="${texId}" /></td>
+        <td style="display:none"><input type="hidden" class="dia_id" value="${diaId}" /></td>
+        <td style="display:none"><input type="hidden" class="inward_id" value="${inwardId}" /></td>
+        <td style="display:none"><input type="hidden" class="lot_no" value='${lot_no}'></td>
+
+        <td>
+            <button class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>
+            <button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+        </td>
+    `;
+
+    tableBody.appendChild(newRow);
+    calculateTotalValue();
+    resetFields();
+
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+        newRow.remove();
+        calculateTotalValue();
+    });
+
+    newRow.querySelector(".edit-row").addEventListener("click", function () {
+        
+        // Populate input fields with the row's data for editing
+        $("#yarn_count_id").val(yarn_countId).trigger('change');
+        $("#fabric_id").val(fabricId).trigger('change');
+        $("#gauge_id").val(gaugeId).trigger('change');
+        $("#tex_id").val(texId).trigger('change');
+        $("#dia_id").val(diaId).trigger('change');
+        $("#lot_no").val(lot_no);
+        $("#gsm").val(gsm);
+        $("#roll").val(roll);
+        $("#roll_wt").val(roll_wt);
+        $("#gross_wt").val(grossWt);
+        $("#tm_inward_id").val(inwardId);
+
+        newRow.remove();
+        
+        // Change the Add button to update functionality
+        $("#addButton").off("click").on("click", function () {
+            updateRow(rowId, productId);
+        });
+    });
+}
+
+
+
+// Calculate the total of all rows 
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+  
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#purchaseTable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseFloat($(this).find('td:eq(6)').text()) || 0; // Quantity from input field
+        const gross_wt = parseFloat($(this).find('td:eq(8)').text()) || 0; // Rate from input field
+ 
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += gross_wt;
+
+
+    });
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+
+}
+
+
+
+function resetFields() {
+    $('#roll').val('');
+    $('#roll_wt').val('');
+    $('#gross_wt').val('');
+    $('#gsm').val('');
+    $('#fabric_id').val('').trigger('change'); 
+    $('#tex_id').val('').trigger('change');
+    $('#gauge_id').val('').trigger('change');
+    $('#dia_id').val('').trigger('change');
+    // $('#fabric_id').val('').trigger('change');
+}
+
+
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var prgId = $('#prg_id').val();
+    if (!prgId || prgId === "Select") {
+        notifier.show(
+            'Error!',
+            'Please select a Knitting Program.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return; // Prevent submission if Knitting Program is not selected
+    }
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+    var DeliveryTableData = storeDeliveryTblValues();
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+ 
+
+        return; 
+    }
+
+
+    if (DeliveryTableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Delivery Table is empty. Please insert the delivery details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+ 
+        return;
+    }
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        DeliveryTableData = JSON.stringify(DeliveryTableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData); 
+        mdata.append('delivery_data', DeliveryTableData);
+
+        var do_no = $('#outward_no').val();
+
+        mdata.append('do_number', do_no);
+       
+
+        $.ajax({
+            type: "POST",  
+            url: "/add-grey-outward/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+             success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'success') {
+                    notifier.show( 
+                        'Well Done!', 
+                        data.message || 'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+
+
+                    // $('#outward_no').val(data.do_number);
+                    // $('#add_new').trigger('reset');
+ 
+                    // location.href='/grey-fab-outward';
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        }); 
+    }
+});
+
+
+
+$('.single-select').select2();
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('outward_date').value = currentDateString;
+
+
+</script>

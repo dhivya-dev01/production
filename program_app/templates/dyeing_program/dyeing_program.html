@@ -1,0 +1,2941 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+    /* #program_table th,  */
+    #program_table td {
+        padding: 2px !important;
+        /* text-align: center; */
+        /* vertical-align: middle; */
+    }
+
+    #program_table input[type="number"] {
+        margin: 0 auto;
+        display: block;
+    }
+
+
+.table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+.table body th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+  
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="colorModal" tabindex="-1" aria-labelledby="colorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Color & Dia Input</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="add_new">
+                {% csrf_token %}
+                <div class="row ms-2">
+
+                   
+
+
+                    <div class="col-md-2 mt-4">
+                        <button type="button" id="refresh" class="btn btn-secondary mt-2">Refresh</button>
+                    </div>
+
+                </div>
+                <!-- <div class="modal-body table-responsive" id="sizeTableBody"> -->
+                    <!-- Table is injected here -->
+                </div> 
+                
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-secondary" isd="refreshDistribution">Refresh</button> -->
+                    <button type="submit" id="submit" class="btn btn-primary">Add</button>
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </form>
+  
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Edit Quantity Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditedField()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ````````````````````````````````````````` -->
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body"> 
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Dyeing Program  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/dyeing-program"> Dyeing Program</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="program_add" >
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                              
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="number" class="form-label">Program No.</label>
+                                                                    <input type="text" class="form-control" id="delivery_number" value="{{prg_number}}" disabled>
+
+                                                                </div>
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label"> <span style="color: red;">*</span> Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="program_date" required>
+                                                                </div>
+                                                                
+                                                                <!-- <div class="col-md-2 mt-2">
+                                                                    <label class="form-label"> <span style="color: red;">*</span> Lot Name</label> 
+                                                                        <input class="form-control" id="fabricName" dir="ltr" style="position: relative;width: 220px; vertical-align: top; background-color: transparent;" name="name" type="text" required>
+
+                                                                </div> -->
+
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_grey_farbic" name="material_type" value="grey">
+                                                                    <label class="form-label" for="is_grey_farbic">Grey Fabric</label>
+                                                                    
+                                                                    <p><span id="material_type_error" class="text-danger small"></span></p>
+
+                                                                </div>
+
+
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_dyed_fabric" name="material_type" value="dye">
+                                                                    <label class="form-label" for="is_dyed_fabric"> Dyed Fabric</label>  
+                                                                </div>
+
+<!--             
+                                                            </div>
+                                                            <div class="row">
+                                                            
+                                                              -->
+                                                                 
+                                                                <!-- ``````````````````````````` -->
+                                                              
+                                                                <!-- ``````````````````` tm table values (quality - prg) ````````````````````````` -->
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="program_id" class="form-label">Knitting Program </label>
+                                                                    <select id="program_id" name="program_id" class="form-control single-select">  
+                                                                        
+                                                                        <option value="">Select</option>   
+                                                                        {% for k in program %}    
+                                                                        <option value="{{ k.id }}">{{ k.knitting_number }} - {{k.name}}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                    
+                                                                    <input type="hidden" name="name" id="name" >
+
+                                                                </div>
+
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="fabric_id" class="form-label">Fabric </label>
+
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                    
+                                                                    </select>
+                                                                </div>
+
+                                                        
+                                                                
+                                                            
+
+                                                            </div>
+                                                            <!-- ````````````````````````````````````````````````````````` -->
+                                                                
+                                                    
+                                                        </div>
+                                                        
+                                                        <!-- Program ID input -->
+                                                        <input type="hidden" id="program_id" value="{{ program_id }}">
+
+                                                        <!-- Output table will be injected here -->
+                                                        <div id="sizeTableBody">                    
+                                                            <button type="button" id="refresh" class="btn btn-secondary mt-2">Refresh</button>
+                                                        </div>
+                                                        <!-- <div id="sizeTableBody"></div> -->
+
+
+                                                        <div class="row">
+                        
+                                                            <div class="col-md-12">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <input type="hidden" name="count_id" id="count_id"> 
+                                                                    <input type="hidden" name="fauge_id" id="fauge_id">
+                                                                    <input type="hidden" name="tex_id" id="tex_id">
+                                                                    <input type="hidden" name="gsm" id="gsm">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                        
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+    // $(document).ready(function () {
+        $('#program_id').on('change', function () {
+            // Get the selected option's text
+            const selectedText = $(this).find('option:selected').text();
+
+            // Extract the program name after the dash (assuming format: "number - name")
+            const programName = selectedText.split(' - ')[1] || '';
+
+            // Set it in the hidden input
+            $('#name').val(programName.trim());
+        });
+    // });
+
+
+$('#program_id').on('change', function () {
+    var program_id = $(this).val();
+    console.log('fabs:',program_id);
+
+    
+
+    LoadLotDetails();
+    
+});
+
+function LoadLotDetails() {
+    var OutwardSelect = $("#program_id");
+    var out_id = OutwardSelect.val();
+
+    // Always clear table and program table
+    $('#program_table').empty(); 
+    // $('#purchaseTable tbody').empty();  // ✅ This line ensures table resets regardless of selected value
+
+    $('#fabric_id').empty();
+    $('#dia_id').empty();
+
+    // If no program selected, stop here
+    if (!out_id) return;
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    const existingFabricIds = new Set();
+    $('#purchaseTable tbody tr').each(function () {
+        const fabricId = $(this).data('fabric');
+        if (fabricId) {
+            existingFabricIds.add(String(fabricId));
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_lot_fabric_list/',
+        data: {
+            'prg_id': out_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); 
+
+            if (data.fabric && data.fabric.length > 0) {
+                $('#fabric_id').empty().append('<option value="">Select</option>');
+
+                $.each(data.fabric, function(index, fab) {
+                    const fabId = String(fab.fabric_program_id);
+
+                    if (!existingFabricIds.has(fabId)) {
+                        $('#fabric_id').append(
+                            '<option value="' + fab.fabric_program_id + '">' + fab.fabric_program_name + ' - (' + fab.real_fabric_name + ')</option>'
+                        );
+                    }
+
+                    // Optional: preload related dropdowns (only for first item or selected logic)
+                    if (index === 0) {
+                        $('#gauge_id').html('<option value="' + fab.gauge.id + '">' + fab.gauge.name + '</option>');
+                        $('#tex_id').html('<option value="' + fab.tex.id + '">' + fab.tex.name + '</option>');
+                        $('#count_id').html('<option value="' + fab.count.id + '">' + fab.count.name + '</option>');
+                        $('#gsm').val(fab.gsm);
+                    }
+                });
+            } else {
+                $('#fabric_id').html('<option value="">No Fabric Found</option>');
+                $('#gauge_id, #tex_id, #count_id').empty();
+                $('#gsm').val('');
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+} 
+
+
+
+
+
+
+// ```````````````` load fabric details(color-dia)`````````````````
+
+
+$(document).ready(function () {
+    $('#fabric_id').on('change', function () {
+        var fabric_id = $(this).val();
+        console.log('fabs:',fabric_id);
+
+        // Ensure Quality, Style, and Group are selected before proceeding
+        if (!fabric_id ) {
+            console.warn("Please select Fabric first.");
+                // notifier.show(
+                //     'Warning!', 
+                //     'Please select Fabric.', 
+                //     'warning', 
+                //     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                //     4000
+                // );
+            $(this).val(""); // Reset Program Type selection
+            return;
+        }
+
+        loadColors();
+      
+    });
+});
+
+// ``````````````````````````````````````````````````````````````````````````
+
+
+function loadColors() {
+    const fabric_id = $('#fabric_id').val();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!fabric_id || fabric_id === "0") {
+        console.warn("Invalid fabric ID");
+        $('#sizeTableBody').empty();
+        return;
+    }
+
+    $('#program_table').empty();
+    const out_id = $('#program_id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+            const dia_value = data.dia_data || {};
+            window.diaIdToNameMap = {};
+            dias.forEach(dia => {
+                window.diaIdToNameMap[dia.id] = dia.name;
+            });
+
+            if (colors.length === 0 || dias.length === 0) {
+                console.warn("No colors or dias received.");
+                return;
+            }
+
+            let tableHTML = `<table class="table table-striped table-bordered" id="program_table">
+                                <button type="button" id="refresh_btn" class="btn btn-secondary mt-2">Refresh</button>
+                                <thead>
+                                    <tr><th rowspan="1">Dia</th>`;
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">${dia.name}</th>`;
+            });
+            tableHTML += `<th rowspan="3" class="text-center">Total Rolls</th>
+                          <th rowspan="3" class="text-center">Total Wt.</th></tr>
+                          <tr><th>Roll</th>`;
+            dias.forEach(() => {
+                tableHTML += `<th class="text-center">Roll</th><th class="text-center">Roll Wt.(in kg)</th>`;
+            });
+            tableHTML += `</tr><tr><th>Color</th>`;
+            dias.forEach(dia => {
+                const d = dia_value[dia.id] || {};
+                const total = parseInt(d.rolls || 0);
+                const wt = parseFloat(d.wt_per_roll || 0).toFixed(2);
+                const totalWt = (total * wt).toFixed(2);
+                tableHTML += `<th class="text-center text-muted">(${total})</th>
+                              <th class="text-center text-muted">(${totalWt})</th>`;
+            });
+            tableHTML += `</tr></thead><tbody>`;
+
+
+
+            let grandTotalRolls = 0;
+            let grandTotalWeight = 0.0;
+
+            colors.forEach(color => {
+                tableHTML += `<tr id="row_color_${color.id}"><td>
+                    <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+                    <label for="color_${color.id}">${color.name}</label></td>`;
+
+                let rowRollSum = 0;
+                let rowWtSum = 0.0;
+
+                dias.forEach(dia => {
+                    const d = dia_value[dia.id];
+                    const totalRolls = d ? parseInt(d.rolls || 0) : 0;
+                    const wt = d ? parseFloat(d.wt_per_roll || 0) : 0;
+                    const baseRoll = Math.floor(totalRolls / colors.length);
+                    const remainder = totalRolls % colors.length;
+                    const colorIndex = colors.findIndex(c => c.id === color.id);
+                    const perColorRolls = baseRoll + (colorIndex < remainder ? 1 : 0);
+
+                    rowRollSum += perColorRolls;
+                    rowWtSum += (perColorRolls * wt);
+
+                    tableHTML += `<td><input type="number" class="form-control text-center no-spinner roll-input"
+                        name="roll_${color.id}_${dia.id}" id="roll_${color.id}_${dia.id}"
+                        value="${perColorRolls}" data-dia="${dia.id}" data-color="${color.id}" min="0" step="1" style="width: 100%; border: none;"></td>
+                        <td><input type="number" class="form-control text-center no-spinner"
+                        name="rollwt_${color.id}_${dia.id}" id="rollwt_${color.id}_${dia.id}"
+                        value="${(perColorRolls * wt).toFixed(2)}" readonly style="width: 100%; border: none;"></td>`;
+                });
+
+                grandTotalRolls += rowRollSum;
+                grandTotalWeight += rowWtSum;
+
+                tableHTML += `<td class="text-center text-primary" id="row_total_roll_${color.id}">${rowRollSum}</td>
+                            <td class="text-center text-primary" id="row_total_wt_${color.id}">${rowWtSum.toFixed(2)}</td>
+                            </tr>`;
+            });
+
+
+            tableHTML += `</tbody><tfoot>
+                        <tr><td><b>TOTAL</b></td>`;
+
+            dias.forEach(dia => {
+                tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+                            <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+            });
+
+            // ✅ Set final roll + weight total here
+            tableHTML += `<td class="text-center text-primary" id="row_total_roll">${grandTotalRolls}</td>
+                        <td class="text-center text-primary" id="row_total_wt">${grandTotalWeight.toFixed(2)}</td>
+                        </tr></tfoot></table>`;
+
+
+            // tableHTML += `</tbody><tfoot>
+            //               <tr><td><b>TOTAL</b></td>`;
+            // dias.forEach(dia => {
+            //     tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+            //                   <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+            // });
+           
+            // tableHTML += `<td class="text-center text-primary" id="row_total_roll">0</td>
+            //                 <td class="text-center text-primary" id="row_total_wt">0</td>
+            // </tr></tfoot></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+
+
+            function redistributeRolls(diaId) {
+                const wt = parseFloat(dia_value[diaId]?.wt_per_roll || 0);
+                const maxRolls = parseInt(dia_value[diaId]?.rolls || 0);
+
+                // Get all remaining checked color checkboxes
+                const checkedColors = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                const numColors = checkedColors.length;
+                if (numColors === 0) return;
+
+                // Divide rolls among remaining colors
+                const baseRoll = Math.floor(maxRolls / numColors);
+                const remainder = maxRolls % numColors;
+
+                let totalRoll = 0;
+
+                checkedColors.forEach((colorId, index) => {
+                    const roll = baseRoll + (index < remainder ? 1 : 0);
+                    const weight = (roll * wt).toFixed(2);
+
+                    const rollInput = $(`#roll_${colorId}_${diaId}`);
+                    const weightInput = $(`#rollwt_${colorId}_${diaId}`);
+
+                    if (rollInput.length) {
+                        rollInput.val(roll);
+                        weightInput.val(weight);
+                    }
+                    totalRoll += roll;
+                });
+
+                // Update totals
+                $(`#total_roll_${diaId}`).text(totalRoll);
+                $(`#total_wt_${diaId}`).text((totalRoll * wt).toFixed(2));
+
+
+
+
+                const balanceRoll = maxRolls - totalRoll;
+                const balanceWt = (balanceRoll * wt).toFixed(2);
+
+                $(`#balance_roll_${diaId}`).text(balanceRoll);
+                $(`#balance_wt_${diaId}`).text(balanceWt);
+
+                // Update final totals
+                let finalTotalRoll = 0;
+                let finalTotalWt = 0.0;
+
+                $('.roll-input').each(function () {
+                    const dia = $(this).data('dia');
+                    const color = $(this).data('color');
+
+                    if ($(`#color_${color}`).is(':checked')) {
+                        finalTotalRoll += parseInt($(this).val()) || 0;
+                        finalTotalWt += parseFloat($(`#rollwt_${color}_${dia}`).val()) || 0;
+                    }
+                });
+
+                $('#total_roll_final').text(finalTotalRoll);
+                $('#total_wt_final').text(finalTotalWt.toFixed(2));
+            }
+
+
+            function updateRowTotals() {
+                const colorIds = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                colorIds.forEach(colorId => {
+                    let rowRollSum = 0;
+                    let rowWtSum = 0.0;
+
+                    dias.forEach(dia => {
+                        const diaId = dia.id;
+                        const roll = parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+                        const wt = parseFloat($(`#rollwt_${colorId}_${diaId}`).val()) || 0;
+
+                        rowRollSum += roll;
+                        rowWtSum += wt;
+                    });
+
+                    $(`#row_total_roll_${colorId}`).text(rowRollSum);
+                    $(`#row_total_wt_${colorId}`).text(rowWtSum.toFixed(2));
+                });
+            }
+
+            function updateFooterTotals() {
+                let finalTotalRoll = 0;
+                let finalTotalWt = 0.0;
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const wt = parseFloat(dia_value[diaId]?.wt_per_roll || 0);
+                    const maxRolls = parseInt(dia_value[diaId]?.rolls || 0);
+                    let sumRoll = 0;
+
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const colorId = $(this).data('color');
+                        if ($('#color_' + colorId).is(':checked')) {
+                            sumRoll += parseInt($(this).val()) || 0;
+                        }
+                    });
+
+                    const sumWt = (sumRoll * wt).toFixed(2);
+                    const balanceRoll = maxRolls - sumRoll;
+                    const balanceWt = (balanceRoll * wt).toFixed(2);
+
+                    $('#total_roll_' + diaId).text(sumRoll);
+                    $('#total_wt_' + diaId).text(sumWt);
+                    $('#balance_roll_' + diaId).text(balanceRoll);
+                    $('#balance_wt_' + diaId).text(balanceWt);
+
+                    finalTotalRoll += sumRoll;
+                    finalTotalWt += parseFloat(sumWt);
+                });
+
+                $('#total_roll_final').text(finalTotalRoll) || 0;
+                $('#total_wt_final').text(finalTotalWt.toFixed(2)) || 0;
+                
+            }
+            updateRowTotals();
+
+            updateFooterTotals();
+
+
+
+            $(document).on('input change', '.roll-input, .color-checkbox', function () {
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const maxRolls = parseInt(dia_value[diaId]?.rolls || 0);
+                    const wt = parseFloat(dia_value[diaId]?.wt_per_roll || 0);
+                    let sumRoll = 0;
+
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const $input = $(this);
+                        const colorId = $input.data('color');
+                        let rollVal = parseInt($input.val()) || 0;
+
+                        if ($('#color_' + colorId).is(':checked')) {
+                            sumRoll += rollVal;
+                        }
+                    });
+
+                    if (sumRoll > maxRolls) {
+                        const overflow = sumRoll - maxRolls;
+                        const $trigger = $(this).hasClass('roll-input') ? $(this) : null;
+
+                        if ($trigger && $trigger.data('dia') == diaId) {
+                            let currentVal = parseInt($trigger.val()) || 0;
+                            let adjustedVal = currentVal - overflow;
+                            adjustedVal = adjustedVal < 0 ? 0 : adjustedVal;
+
+                            $trigger.val(adjustedVal);
+                            $('#rollwt_' + $trigger.data('color') + '_' + diaId).val((adjustedVal * wt).toFixed(2));
+                        }
+                    }
+
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const $input = $(this);
+                        const colorId = $input.data('color');
+                        const rollVal = parseInt($input.val()) || 0;
+                        const weightVal = (rollVal * wt).toFixed(2);
+                        $('#rollwt_' + colorId + '_' + diaId).val(weightVal);
+                    });
+                });
+
+                updateFooterTotals();
+                updateRowTotals();
+            });
+
+
+                 $('.color-checkbox').change(function () {
+                const colorId = $(this).val();
+                const isChecked = $(this).is(':checked');
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+
+                    if (!isChecked) {
+                        $(`#row_color_${colorId}`).remove();  // now this works
+                    } else {
+                        // Optionally, you could re-add the row if needed
+                    }
+
+                    redistributeRolls(diaId);
+                });
+            });
+
+            $('#refresh_btn').click(function () {
+                loadColors();  // reload fresh from server
+            });
+
+        }
+    });
+}
+
+
+
+
+function loadColors_test() {
+    const fabric_id = $('#fabric_id').val();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!fabric_id || fabric_id === "0") {
+        console.warn("Invalid fabric ID");
+        $('#sizeTableBody').empty();
+        return;
+    } 
+
+    $('#program_table').empty();
+    const out_id = $('#program_id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+            const dia_value = data.dia_data || {};
+            window.diaIdToNameMap = {};
+            dias.forEach(dia => {
+                window.diaIdToNameMap[dia.id] = dia.name;
+            });
+
+            if (colors.length === 0 || dias.length === 0) {
+                console.warn("No colors or dias received.");
+                return;
+            }
+
+            let tableHTML = `<table class="table table-striped table-bordered" id="program_table">
+                                <button type="button" id="refresh_btn" class="btn btn-secondary mt-2">Refresh</button>
+                                <thead>
+                                    <tr><th rowspan="1">Dia</th>`;
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">${dia.name}</th>`;
+            });
+            tableHTML += `<th rowspan="3" class="text-center">Total Rolls</th>
+                          <th rowspan="3" class="text-center">Total Weight</th></tr>
+                          <tr><th>Roll</th>`;
+            dias.forEach(() => {
+                tableHTML += `<th class="text-center">Roll</th><th class="text-center">Weight</th>`;
+            });
+            tableHTML += `</tr><tr><th>Color</th>`;
+            dias.forEach(dia => {
+                const d = dia_value[dia.id] || {};
+                const total = parseInt(d.rolls || 0);
+                const wt = parseFloat(d.wt_per_roll || 0).toFixed(2);
+                const totalWt = (total * wt).toFixed(2);
+                tableHTML += `<th class="text-center text-muted">(${total})</th>
+                              <th class="text-center text-muted">(${totalWt})</th>`;
+            });
+            tableHTML += `</tr></thead><tbody>`;
+
+            colors.forEach(color => {
+                tableHTML += `<tr id="row_color_${color.id}"><td>
+                    <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+                    <label for="color_${color.id}">${color.name}</label></td>`;
+
+                let rowRollSum = 0;
+                let rowWtSum = 0.0;
+
+                dias.forEach(dia => {
+                    const d = dia_value[dia.id];
+                    const totalRolls = d ? parseInt(d.rolls || 0) : 0; 
+                    const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+                    const baseRoll = Math.floor(totalRolls / colors.length);
+                    const remainder = totalRolls % colors.length;
+                    const colorIndex = colors.findIndex(c => c.id === color.id);
+                    const perColorRolls = baseRoll + (colorIndex < remainder ? 1 : 0);
+
+                    rowRollSum += perColorRolls;
+                    rowWtSum += (perColorRolls * parseFloat(wt));
+
+                    tableHTML += `<td><input type="number" class="form-control text-center no-spinner roll-input"
+                        name="roll_${color.id}_${dia.id}" id="roll_${color.id}_${dia.id}"
+                        value="${perColorRolls}" data-dia="${dia.id}" data-color="${color.id}" min="0" step="1" style="width: 100%; border: none;"></td>
+                        <td><input type="number" class="form-control text-center no-spinner"
+                        name="rollwt_${color.id}_${dia.id}" id="rollwt_${color.id}_${dia.id}"
+                        value="${(perColorRolls * wt).toFixed(2)}" readonly style="width: 100%; border: none;"></td>`;
+                });
+
+                tableHTML += `<td class="text-center text-primary" id="row_total_roll_${color.id}">${rowRollSum}</td>
+                              <td class="text-center text-primary" id="row_total_wt_${color.id}">${rowWtSum.toFixed(2)}</td>
+                              </tr>`;
+                              
+            });
+
+            tableHTML += `</tbody><tfoot>
+                          <tr><td><b>TOTAL</b></td>`;
+            dias.forEach(dia => {
+                tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+                              <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+            });
+            tableHTML += `<td id="total_roll_final" class="text-center text-primary fw-bold">0</td>
+                          <td id="total_wt_final" class="text-center text-primary fw-bold">0.00</td>
+                          </tr>
+                          <tr><td><b>BALANCE</b></td>`;
+            dias.forEach(dia => {
+                const d = dia_value[dia.id];
+                const total = parseInt(d.rolls || 0);
+                const wt = parseFloat(d.wt_per_roll || 0).toFixed(2);
+                
+                tableHTML += `<td id="balance_roll_${dia.id}" class="text-center">${total}</td>
+                              <td id="balance_wt_${dia.id}" class="text-center">${(total * wt).toFixed(2)}</td>`;
+            });
+            tableHTML += `<td></td><td></td></tr></tfoot></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+
+            function updateFooterTotals() {
+                let finalTotalRoll = 0;
+                let finalTotalWt = 0.0;
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const wt = parseFloat(dia_value[diaId]?.wt_per_roll || 0);
+                    let sumRoll = 0;
+
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const colorId = $(this).data('color');
+                        if ($('#color_' + colorId).is(':checked')) {
+                            sumRoll += parseInt($(this).val()) || 0;
+                        }
+                    });
+
+                    const sumWt = (sumRoll * wt).toFixed(2);
+                    $('#total_roll_' + diaId).text(sumRoll);
+                    $('#total_wt_' + diaId).text(sumWt);
+
+                    finalTotalRoll += sumRoll;
+                    finalTotalWt += parseFloat(sumWt);
+                });
+
+                $('#total_roll_final').text(finalTotalRoll);
+                $('#total_wt_final').text(finalTotalWt.toFixed(2));
+            }
+
+            updateFooterTotals();
+
+         
+            $(document).on('input change', '.roll-input, .color-checkbox', function () {
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const maxRolls = parseInt(dia_value[diaId]?.rolls || 0);
+                    const wt = parseFloat(dia_value[diaId]?.wt_per_roll || 0);
+                    let sumRoll = 0;
+
+                    // First, collect valid inputs and clamp them if necessary
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const $input = $(this);
+                        const colorId = $input.data('color');
+
+                        let rollVal = parseInt($input.val()) || 0;
+
+                        if ($('#color_' + colorId).is(':checked')) {
+                            sumRoll += rollVal;
+                        }
+                    });
+
+                    // If current sum exceeds allowed total, adjust the input that triggered the overflow
+                    if (sumRoll > maxRolls) {
+                        const overflow = sumRoll - maxRolls;
+                        const $trigger = $(this).hasClass('roll-input') ? $(this) : null;
+
+                        if ($trigger && $trigger.data('dia') == diaId) {
+                            let currentVal = parseInt($trigger.val()) || 0;
+                            let adjustedVal = currentVal - overflow;
+                            adjustedVal = adjustedVal < 0 ? 0 : adjustedVal;
+
+                            $trigger.val(adjustedVal);
+                            $('#rollwt_' + $trigger.data('color') + '_' + diaId).val((adjustedVal * wt).toFixed(2));
+                        }
+                    }
+
+                    // Update weights
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const $input = $(this);
+                        const colorId = $input.data('color');
+                        const rollVal = parseInt($input.val()) || 0;
+                        const weightVal = (rollVal * wt).toFixed(2);
+                        $('#rollwt_' + colorId + '_' + diaId).val(weightVal);
+                    });
+
+                    // Update dia-wise totals
+                    let diaRollSum = 0;
+                    let diaWtSum = 0;
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const colorId = $(this).data('color');
+                        if ($('#color_' + colorId).is(':checked')) {
+                            const rollVal = parseInt($(this).val()) || 0;
+                            diaRollSum += rollVal;
+                            diaWtSum += (rollVal * wt);
+                        }
+                    });
+
+                    $('#total_roll_' + diaId).text(diaRollSum);
+                    $('#total_wt_' + diaId).text(diaWtSum.toFixed(2));
+                });
+
+                // Update row-wise color totals
+                colors.forEach(color => {
+                    let rollSum = 0;
+                    let wtSum = 0;
+                    dias.forEach(dia => {
+                        if ($('#color_' + color.id).is(':checked')) {
+                            const rollVal = parseInt($('#roll_' + color.id + '_' + dia.id).val()) || 0;
+                            const wt = parseFloat(dia_value[dia.id]?.wt_per_roll || 0);
+                            rollSum += rollVal;
+                            wtSum += (rollVal * wt);
+                        }
+                    });
+                    $('#row_total_roll_' + color.id).text(rollSum);
+                    $('#row_total_wt_' + color.id).text(wtSum.toFixed(2));
+                });
+
+                // Update grand total
+                updateFooterTotals();
+            });
+
+            $('.color-checkbox').change(function () {
+                const colorId = $(this).val();
+                const isChecked = $(this).is(':checked');
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+
+                    if (!isChecked) {
+                        $(`#row_color_${colorId}`).remove();  // now this works
+                    } else {
+                        // Optionally, you could re-add the row if needed
+                    }
+
+                    redistributeRolls(diaId);
+                });
+            });
+
+            $('#refresh_btn').click(function () {
+                loadColors();  // reload fresh from server
+            });
+
+
+        },
+        error: function () {
+            alert("Error loading color/dia data.");
+        }
+    });
+}
+
+function loadColors_crt() {
+    const fabric_id = $('#fabric_id').val();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!fabric_id || fabric_id === "0") {
+        console.warn("Invalid fabric ID");
+        $('#sizeTableBody').empty();
+        return;
+    }
+
+    $('#program_table').empty();
+    const out_id = $('#program_id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+            const dia_value = data.dia_data || {};
+            window.diaIdToNameMap = {};
+            dias.forEach(dia => {
+                window.diaIdToNameMap[dia.id] = dia.name;
+            });
+
+            if (colors.length === 0 || dias.length === 0) {
+                console.warn("No colors or dias received.");
+                return;
+            }
+
+            let tableHTML = `
+            <table class="table table-striped table-bordered wrap" id="program_table">
+
+                <thead>
+                    <tr>
+                        <th rowspan="3"> Color</th>`;
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+            });
+
+            
+  
+            tableHTML += `</tr><tr>`;
+                dias.forEach(dia => {
+                    tableHTML += `<th class="text-center">Roll</th><th class="text-center">Weight</th>`;
+                });
+                tableHTML += `</tr><tr style="background-color: #f9f9f9;">`;  // third row below headers
+
+                dias.forEach(dia => {
+                    const diaDetails = dia_value[dia.id] || {};
+                    const totalRolls = parseInt(diaDetails.rolls || 0);
+                    const wtPerRoll = parseFloat(diaDetails.wt_per_roll || 0);
+                    const totalWt = (totalRolls * wtPerRoll).toFixed(2);
+
+                    tableHTML += `<th class="text-center text-muted">(${totalRolls})</th>
+                                <th class="text-center text-muted">(${totalWt})</th>`;
+                });
+
+                tableHTML += `</tr></thead><tbody>`;
+
+
+            // colors.forEach(color => {
+            //     tableHTML += `<tr><td>
+            //         <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+            //         <label for="color_${color.id}">${color.name}</label></td>`;
+            colors.forEach(color => {
+                tableHTML += `<tr id="row_color_${color.id}"><td>  <!-- added ID -->
+                    <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+                    <label for="color_${color.id}">${color.name}</label></td>`;
+
+
+
+                dias.forEach(dia => {
+                    const d = dia_value[dia.id];
+                    const totalRolls = d ? parseInt(d.rolls || 0) : 0;
+                    const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+
+                    const baseRoll = Math.floor(totalRolls / colors.length);
+                    const remainder = totalRolls % colors.length;
+                    const colorIndex = colors.findIndex(c => c.id === color.id);
+                    const perColorRolls = baseRoll + (colorIndex < remainder ? 1 : 0);
+
+                    tableHTML += `<td><input type="number" 
+                        class="form-control text-center no-spinner roll-input" 
+                        name="roll_${color.id}_${dia.id}" 
+                        id="roll_${color.id}_${dia.id}" 
+                        value="${perColorRolls}" 
+                        data-dia="${dia.id}" data-color="${color.id}" min="0" step="1" style="width: 100%; border: none;"></td>
+                        
+                        <td style="text-align:end;"><input type="number" 
+                        class="form-control text-center no-spinner" 
+                        name="rollwt_${color.id}_${dia.id}"  
+                        id="rollwt_${color.id}_${dia.id}" 
+                        value="${(perColorRolls * wt).toFixed(2)}" 
+                        readonly style="width: 100%; border: none;"></td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            // Add TFOOT
+            tableHTML += `<tfoot><tr><td align="center" ><p style="font-weight:bolder;">TOTAL</p></td>`;
+            dias.forEach(dia => {
+                tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+                              <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+            });
+            tableHTML += `</tr><tr><td align="center" ><p style="font-weight:bolder;">BALANCE</p></td>`;
+            dias.forEach(dia => {
+                const d = dia_value[dia.id];
+                const total = d ? parseInt(d.rolls || 0) : 0;
+                const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+                tableHTML += `<td id="balance_roll_${dia.id}" class="text-center">${total}</td>
+                              <td id="balance_wt_${dia.id}" class="text-center">${(total * wt).toFixed(2)}</td>`;
+            });
+            tableHTML += `</tr></tfoot></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+            // $('#colorModal').modal('show');
+
+            function updateFooterTotals() { 
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const wt = parseFloat((dia_value[diaId]?.wt_per_roll) || 0);
+
+                    let sumRoll = 0;
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const colorId = $(this).data('color');
+                        const checkbox = $('#color_' + colorId);
+                        if (checkbox.is(':checked')) {
+                            sumRoll += parseInt($(this).val()) || 0;
+                        }
+                    });
+
+                    const sumWt = (sumRoll * wt).toFixed(2);
+                    const totalRoll = parseInt(dia_value[diaId]?.rolls || 0);
+                    const balRoll = totalRoll - sumRoll;
+                    const balWt = (balRoll * wt).toFixed(2);
+
+                    $('#total_roll_' + diaId).text(sumRoll);
+                    $('#total_wt_' + diaId).text(sumWt);
+                    $('#balance_roll_' + diaId).text(balRoll);
+                    $('#balance_wt_' + diaId).text(balWt);
+                });
+            }
+
+            function redistributeRolls(diaId) {
+                const d = dia_value[diaId];
+                const total = parseInt(d?.rolls || 0);
+                const wt = parseFloat(d?.wt_per_roll || 0);
+                const checkedColors = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                let fixed = 0;
+                let manual = [];
+
+                checkedColors.forEach(cid => {
+                    const input = $(`#roll_${cid}_${diaId}`);
+                    if (input.hasClass('manual-input')) {
+                        let val = parseInt(input.val()) || 0;
+                        fixed += val;
+                        manual.push(cid);
+                    }
+                });
+
+                let remaining = total - fixed;
+                if (remaining < 0) remaining = 0;
+
+                const others = checkedColors.filter(cid => !manual.includes(cid));
+                const base = Math.floor(remaining / others.length);
+                let rem = remaining % others.length;
+
+                others.forEach((cid, i) => {
+                    const val = base + (i < rem ? 1 : 0);
+                    $(`#roll_${cid}_${diaId}`).val(val);
+                    $(`#rollwt_${cid}_${diaId}`).val((val * wt).toFixed(2));
+                });
+
+                manual.forEach(cid => {
+                    const val = parseInt($(`#roll_${cid}_${diaId}`).val()) || 0;
+                    $(`#rollwt_${cid}_${diaId}`).val((val * wt).toFixed(2));
+                });
+
+                updateFooterTotals();
+            }
+
+            function updateDistribution() {
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    $('.roll-input').removeClass('manual-input');
+                    redistributeRolls(diaId);
+                });
+            }
+
+            $(document).on('input', '.roll-input', function () {
+                const diaId = $(this).data('dia');
+                $(this).addClass('manual-input');
+                redistributeRolls(diaId);
+            });
+
+          
+            $('#refresh').click(function () {
+                loadColors();  // reload fresh from server
+            });
+
+           
+            $('.color-checkbox').change(function () {
+                const colorId = $(this).val();
+                const isChecked = $(this).is(':checked');
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+
+                    if (!isChecked) {
+                        $(`#row_color_${colorId}`).remove();  // now this works
+                    } else {
+                        // Optionally, you could re-add the row if needed
+                    }
+
+                    redistributeRolls(diaId);
+                });
+            });
+
+
+            // ... rest of your existing code ...
+
+
+            $('#refreshDistribution').on('click', function () {
+                $('.roll-input').removeClass('manual-input');
+                updateDistribution();
+            });
+
+            updateDistribution();
+        },
+        error: function (xhr) {
+            console.error('Error:', xhr.responseText);
+            alert("Server Error");
+        }
+    });
+}
+
+
+
+// ````````````````````````````` table store  ``````````````````````````````````
+
+function storeTblValues() {
+    var TableData = [];
+
+    $('#program_table tbody tr').each(function () {
+        const $row = $(this);
+        const colorCheckbox = $row.find('.color-checkbox');
+        const color_id = colorCheckbox.val();
+        const color_name = $row.find('label[for="' + colorCheckbox.attr('id') + '"]').text().trim();
+
+        const rollInputs = $row.find('input.roll-input');
+
+        rollInputs.each(function () {
+            const rollInput = $(this);
+            const roll = parseInt(rollInput.val()) || 0;
+            const dia_id = rollInput.data('dia');
+          
+
+            const name = window.diaIdToNameMap[dia_id] || `Dia ${dia_id}`;
+
+
+
+            // alert(name);
+            const rollWtInput = $(`#rollwt_${color_id}_${dia_id}`);
+            const roll_wt = parseFloat(rollWtInput.val()) || 0;
+
+            if (roll > 0) {
+                TableData.push({
+                    color_id: color_id,
+                    color_name: color_name,
+                    dia_id: dia_id,
+                    dia_name: name,
+                    roll: roll,
+                    roll_wt: roll_wt
+                });
+            }
+        });
+    });
+
+    console.log('PROGRAM TABLE DATA:', TableData);
+    return TableData;
+}
+
+
+// ``````````````````````````````` add function ``````````````````````````
+
+
+
+$('#add_new').on('submit', function (e) {
+    e.preventDefault();
+    console.log("Add button clicked");
+ 
+    const fabric_id = $('#fabric_id').val();
+    console.log('fab', fabric_id);
+    const fabric_name = $("#fabric_id option:selected").text();
+    const TableData = storeTblValues();
+    console.log('table-data:',TableData);
+
+
+    // Collect total already added rolls per dia_id
+    const existingRollsMap = {};
+    $('#purchaseTable tbody tr').each(function () {
+        const row = $(this);
+        const dia_id = row.data('dia');
+        const color_id = row.data('color');
+        const fabric = row.data('fabric');
+        const roll = parseInt(row.find('.roll-cell').text()) || 0;
+
+        const key = `${fabric}_${dia_id}`;
+        if (!existingRollsMap[key]) existingRollsMap[key] = 0;
+        existingRollsMap[key] += roll;
+    });
+
+    // Validate and insert/update rows
+    for (const item of TableData) {
+        const rowId = `row_${fabric_id}_${item.color_id}_${item.dia_id}`;
+        const existingRow = $(`#${rowId}`);
+
+        const diaInfo = window.loadedData?.dia_data[item.dia_id];
+        const maxRolls = parseInt(diaInfo?.rolls || 0);
+        const key = `${fabric_id}_${item.dia_id}`;
+        const currentRolls = existingRollsMap[key] || 0;
+
+        const prevRollInRow = existingRow.length ? parseInt(existingRow.find('.roll-cell').text()) || 0 : 0;
+        const updatedTotal = currentRolls - prevRollInRow + item.roll;
+
+        // if (updatedTotal > maxRolls) {
+        //     alert(`Cannot add ${item.roll} rolls for Dia ${item.dia_name}. Total rolls exceed limit (${maxRolls}).`);
+        //     continue;
+        // }
+
+
+
+        // Update the tracker
+        existingRollsMap[key] = updatedTotal;
+
+        if (existingRow.length) {
+            existingRow.find('.roll-cell').text(item.roll);
+            existingRow.find('.rollwt-cell').text(item.roll_wt.toFixed(2));
+        } else {
+            const rowHtml = `
+                <tr id="${rowId}" data-fabric="${fabric_id}" data-color="${item.color_id}" data-dia="${item.dia_id}">
+                    <td style="display: none;">${fabric_id}</td>
+                    <td>${fabric_name}</td>
+                    <td>${item.color_name}</td>
+                    <td>${item.dia_name}</td>
+                    <td class="roll-cell" align="center">
+                       <p
+
+                            data-fabric-id="${fabric_id}" 
+                            data-color-id="${item.color_id}" 
+                            data-dia-id="${item.dia_id}" 
+                            data-roll="${item.roll}" 
+                            >
+                                ${item.roll}
+                        </p>
+                      
+                        </td>
+                    <td class="rollwt-cell" align="right">${item.roll_wt.toFixed(2)}</td>
+                    <td style="display: none;">${item.dia_id}</td>
+                    <td style="display: none;">${item.color_id}</td>
+                    <td>
+                        <button type="button" class="btn btn-xs btn-danger delete-row">
+                            <i class="feather icon-trash-2"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            $('#purchaseTable tbody').append(rowHtml);
+        }
+
+       
+    }
+
+    // $('#fabric_id').val('').trigger('change');
+    $('#program_table').empty();
+
+    // $('#colorModal').modal('hide'); 
+    
+    $('#colorModal').modal('hide');
+    // $('#fabric_id').val('').trigger('change');
+    // LoadLotDetails();  // <--- reload updated options
+
+
+    // Place this outside of your submit handler
+$('#purchaseTable').on('click', '.delete-row', function () {
+    $(this).closest('tr').remove();
+});
+
+    // Add event listener to remove row button
+        // newRow.querySelector(".delete-row").addEventListener("click", function () {
+        //     newRow.remove();
+        // });
+});
+
+
+// `````````````````````````` edit modal ````````````````````````````````
+
+
+$('#edit_button').on('click', function () {
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    const out_id = $('#program_id').val();
+
+    if (!fabric_id) {
+        alert("Please select a Fabric to edit.");
+        return;
+    }
+
+    const existingData = {};
+    $('#purchaseTable tbody tr').each(function () {
+        const row = $(this);
+        if (row.data('fabric') == fabric_id) {
+            const color_id = row.data('color');
+            const dia_id = row.data('dia');
+            const roll = parseInt(row.find('.roll-cell').text()) || 0;
+            const roll_wt = parseFloat(row.find('.rollwt-cell').text()) || 0;
+            existingData[`${color_id}_${dia_id}`] = { roll, roll_wt };
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+            const dia_value = data.dia_data || {};
+
+            let tableHTML = `<table class="table table-striped table-bordered wrap" id="program_table">
+                <thead><tr><th rowspan="3"> Color</th>`;
+
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+            });
+            // tableHTML += `</tr><tr>`;
+            // dias.forEach(dia => {
+            //     const d = dia_value[dia.id];
+            //     const qty = d.rolls * parseFloat(d.wt_per_roll);
+            //     tableHTML += `<th class="text-center">Roll (${d.rolls})</th>
+            //                   <th class="text-center">Roll Wt (${qty})</th>`;
+            // });
+            // tableHTML += `</tr></thead><tbody>`;
+
+            tableHTML += `</tr><tr>`;
+            dias.forEach(dia => {
+                tableHTML += `<th class="text-center">Roll</th><th class="text-center">Weight</th>`;
+            });
+            tableHTML += `</tr><tr style="background-color: #f9f9f9;">`;  // third row below headers
+
+            dias.forEach(dia => {
+                const diaDetails = dia_value[dia.id] || {};
+                const totalRolls = parseInt(diaDetails.rolls || 0);
+                const wtPerRoll = parseFloat(diaDetails.wt_per_roll || 0);
+                const totalWt = (totalRolls * wtPerRoll).toFixed(2);
+
+                tableHTML += `<th class="text-center text-muted">(${totalRolls})</th>
+                            <th class="text-center text-muted">(${totalWt})</th>`;
+            });
+
+            tableHTML += `</tr></thead><tbody>`;
+
+
+            colors.forEach(color => {
+                const color_id = color.id;
+                const color_name = color.name;
+                tableHTML += `<tr><td>
+                    <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" id="color_${color_id}" value="${color_id}" ${dias.some(d => existingData[`${color_id}_${d.id}`]) ? 'checked' : ''}>
+                    <label for="color_${color_id}">${color_name}</label></td>`;
+
+                dias.forEach(dia => {
+                    const dia_id = dia.id;
+                    const d = dia_value[dia_id];
+                    const wt = d ? parseFloat(d.wt_per_roll || 0) : 0;
+                    const key = `${color_id}_${dia_id}`;
+                    const found = existingData[key];
+                    const roll = found ? found.roll : 0;
+                    const roll_wt = found ? found.roll_wt : 0;
+
+                    tableHTML += `<td><input type="number" class="form-control text-center no-spinner roll-input ${found ? 'manual-input' : ''}" 
+                        name="roll_${color_id}_${dia_id}" id="roll_${color_id}_${dia_id}" 
+                        value="${roll}" data-dia="${dia_id}" data-color="${color_id}" min="0" step="1" style="width: 100%; border: none;"></td>
+                        <td style="text-align:end;"><input type="number" class="form-control text-center no-spinner" 
+                        name="rollwt_${color_id}_${dia_id}" id="rollwt_${color_id}_${dia_id}" 
+                        value="${roll_wt.toFixed(2)}" readonly style="width: 100%; border: none;"></td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `<tfoot><tr><td align="center"><p style="font-weight:bolder;">TOTAL</p></td>`;
+            dias.forEach(dia => {
+                tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+                              <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+            });
+            tableHTML += `</tr><tr><td align="center"><p style="font-weight:bolder;">BALANCE</p></td>`;
+            dias.forEach(dia => {
+                const d = dia_value[dia.id];
+                const total = d ? parseInt(d.rolls || 0) : 0;
+                const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+                tableHTML += `<td id="balance_roll_${dia.id}" class="text-center">${total}</td>
+                              <td id="balance_wt_${dia.id}" class="text-center">${(total * wt).toFixed(2)}</td>`;
+            });
+            tableHTML += `</tr></tfoot></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+            $('#colorModal').modal('show');
+
+            const diaRollLimits = {};
+            dias.forEach(dia => {
+                diaRollLimits[dia.id] = parseInt(dia_value[dia.id].rolls || 0);
+            });
+
+            // Initialize global storage
+            window.rollsByDiaColor = {};
+            dias.forEach(dia => {
+                window.rollsByDiaColor[dia.id] = {};
+                colors.forEach(color => {
+                    const rollInput = $(`#roll_${color.id}_${dia.id}`);
+                    window.rollsByDiaColor[dia.id][color.id] = parseInt(rollInput.val()) || 0;
+                });
+            });
+
+            $('.roll-input').on('input', function () {
+                const diaId = $(this).data('dia');
+                const colorId = $(this).data('color');
+                const currentVal = parseInt($(this).val()) || 0;
+                const totalRolls = diaRollLimits[diaId];
+
+                let currentTotal = 0;
+                $(`.roll-input[data-dia="${diaId}"]`).each(function () {
+                    const cid = $(this).data('color');
+                    if ($(`#color_${cid}`).is(':checked')) {
+                        currentTotal += parseInt($(this).val()) || 0;
+                    }
+                });
+
+                if (currentTotal > totalRolls) {
+                    const allowed = totalRolls - (currentTotal - currentVal);
+                    $(this).val(allowed);
+                }
+
+                updateEditFooterTotals();
+                editredistributeRolls(diaId, colorId, currentVal);
+            });
+
+            // Checkbox change listener
+            $('.color-checkbox').on('change', function () {
+                const colorId = $(this).val();
+
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const input = $(`#roll_${colorId}_${diaId}`);
+                    if (!$(this).is(':checked')) {
+                        input.val(0);  // Set to 0 when unchecked
+                        input.removeClass('manual-input');
+                        window.rollsByDiaColor[diaId][colorId] = 0;
+                    }
+                });
+
+                dias.forEach(dia => {
+                    editredistributeRolls(dia.id);
+                });
+            });
+
+
+            function updateEditFooterTotals() {
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    const wt = parseFloat((dia_value[diaId]?.wt_per_roll) || 0);
+
+                    let sumRoll = 0;
+                    $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+                        const colorId = $(this).data('color');
+                        if ($('#color_' + colorId).is(':checked')) {
+                            sumRoll += parseInt($(this).val()) || 0;
+                        }
+                    });
+
+                    const sumWt = (sumRoll * wt).toFixed(2);
+                    const totalRoll = parseInt(dia_value[diaId]?.rolls || 0);
+                    const balRoll = totalRoll - sumRoll;
+                    const balWt = (balRoll * wt).toFixed(2);
+
+                    $('#total_roll_' + diaId).text(sumRoll);
+                    $('#total_wt_' + diaId).text(sumWt);
+                    $('#balance_roll_' + diaId).text(balRoll);
+                    $('#balance_wt_' + diaId).text(balWt);
+                });
+            }
+
+            function updateEditDistribution() {
+                dias.forEach(dia => {
+                    const diaId = dia.id;
+                    $('.roll-input').removeClass('manual-input');
+                    editredistributeRolls(diaId);
+                });
+            }
+
+            function editredistributeRolls(diaId, changedColorId = null, newVal = null) {
+                const diaInfo = data.dia_data[diaId];
+                if (!diaInfo) return;
+
+                const totalRolls = parseInt(diaInfo.rolls || 0);
+                const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0);
+
+                const checkedColors = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                if (changedColorId && !checkedColors.includes(changedColorId.toString())) {
+                    $(`#roll_${changedColorId}_${diaId}`).val(0);
+                    return;
+                }
+
+                let sumOtherRolls = 0;
+                checkedColors.forEach(colorId => {
+                    if (colorId != changedColorId?.toString()) {
+                        sumOtherRolls += parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+                    }
+                });
+
+                let maxAllowed = totalRolls - sumOtherRolls;
+                if (changedColorId && newVal > maxAllowed) {
+                    newVal = maxAllowed;
+                    $(`#roll_${changedColorId}_${diaId}`).val(newVal);
+                }
+
+                if (changedColorId) {
+                    const oldVal = window.rollsByDiaColor[diaId][changedColorId] || 0;
+                    const diff = newVal - oldVal;
+                    window.rollsByDiaColor[diaId][changedColorId] = newVal;
+
+                    if (diff !== 0) {
+                        let colorsToAdjust = checkedColors.filter(id => id !== changedColorId.toString());
+                        let remainingDiff = Math.abs(diff);
+                        const direction = diff > 0 ? -1 : 1;
+
+                        while (remainingDiff > 0 && colorsToAdjust.length > 0) {
+                            let changed = false;
+                            for (let i = 0; i < colorsToAdjust.length; i++) {
+                                let cid = colorsToAdjust[i];
+                                let currentVal = parseInt($(`#roll_${cid}_${diaId}`).val()) || 0;
+                                let newValOther = currentVal + direction;
+                                if (newValOther >= 0) {
+                                    $(`#roll_${cid}_${diaId}`).val(newValOther);
+                                    window.rollsByDiaColor[diaId][cid] = newValOther;
+                                    remainingDiff--;
+                                    changed = true;
+                                    if (remainingDiff <= 0) break;
+                                }
+                            }
+                            if (!changed) break;
+                        }
+                    }
+                }
+
+                let sumAll = 0;
+                checkedColors.forEach(colorId => {
+                    sumAll += parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+                });
+
+                if (sumAll !== totalRolls && checkedColors.length > 0) {
+                    let firstColorId = checkedColors[0];
+                    let firstVal = parseInt($(`#roll_${firstColorId}_${diaId}`).val()) || 0;
+                    let correction = totalRolls - sumAll;
+                    $(`#roll_${firstColorId}_${diaId}`).val(firstVal + correction);
+                    window.rollsByDiaColor[diaId][firstColorId] = firstVal + correction;
+                }
+
+                updateEditFooterTotals();
+            }
+
+            updateEditFooterTotals();
+            updateEditDistribution();
+        },
+        error: function (xhr) {
+            console.error('Error:', xhr.responseText);
+            alert("Server Error");
+        }
+    });
+});
+
+
+// $('#edit_button').on('click', function () {
+//     const fabric_id = $('#fabric_id').val();
+//     const fabric_name = $("#fabric_id option:selected").text();
+//     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+//     const out_id = $('#program_id').val();
+
+//     if (!fabric_id) {
+//         alert("Please select a Fabric to edit.");
+//         return;
+//     }
+
+//     // Collect existing values from purchaseTable for this fabric_id
+//     const existingData = {};
+//     $('#purchaseTable tbody tr').each(function () {
+//         const row = $(this);
+//         if (row.data('fabric') == fabric_id) {
+//             const color_id = row.data('color');
+//             const dia_id = row.data('dia');
+//             const roll = parseInt(row.find('.roll-cell').text()) || 0;
+//             const roll_wt = parseFloat(row.find('.rollwt-cell').text()) || 0;
+//             existingData[`${color_id}_${dia_id}`] = { roll, roll_wt };
+//         }
+//     });
+
+//     // Call AJAX to fetch all possible combinations
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_fabric_dia_list/',
+//         data: {
+//             'id': out_id,
+//             'fabric_id': fabric_id,
+//             'csrfmiddlewaretoken': csrfToken
+//         },
+//         dataType: 'json',
+//         success: function (data) {
+//             if (!data.success) {
+//                 alert("Failed to fetch data.");
+//                 return;
+//             }
+
+//             const colors = data.colors || [];
+//             const dias = data.dia || [];
+//             const dia_value = data.dia_data || {};
+//             let tableHTML = `<table class="table table-striped table-bordered wrap" id="program_table">
+//                 <thead>
+//                     <tr>
+//                         <th rowspan="2">Fabric Color</th>`;
+//             dias.forEach(dia => {
+//                 tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+//             });
+//             tableHTML += `</tr><tr>`;
+//             Object.entries(dia_value).forEach(([diaId, diaDetails]) => {
+//                 var qty = diaDetails.rolls * parseFloat(diaDetails.wt_per_roll);
+//                 tableHTML += `<th class="text-center">Roll (${diaDetails.rolls})</th>
+//                             <th class="text-center">Roll Wt (${qty})</th>`;
+//             });
+
+
+
+//             // dias.forEach(dia => {
+//             //     const d = dia_value[dia.id];
+//             //     const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+//             //     tableHTML += `<th class="text-center">Roll (${d.rolls})</th><th class="text-center">Roll Wt (${wt})</th>`;
+//             // });
+//             tableHTML += `</tr></thead><tbody>`;
+
+//             colors.forEach(color => {
+//                 const color_id = color.id;
+//                 const color_name = color.name;
+//                     // <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" id="color_${color_id}" value="${color_id}">
+
+//                 //    checkbox
+             
+//                 dias.forEach(dia => {
+//                     const dia_id = dia.id;
+//                     const d = dia_value[dia_id];
+//                     const wt = d ? parseFloat(d.wt_per_roll || 0) : 0;
+//                     const key = `${color_id}_${dia_id}`;
+//                     const found = existingData[key];
+
+//                     const roll = found ? found.roll : 0;
+//                     console.log('cell-roll:',roll);
+//                     const roll_wt = found ? found.roll_wt : 0;
+//                     const isChecked = found ? "checked" : "";
+
+//                     if (found) {
+//                         $(`#color_${color_id}`).prop('checked', true);
+//                     }
+//                     tableHTML += `<tr><td>
+//                         <input type="checkbox" class="form-check-input ms-3 me-1 color-checkbox" id="color_${color_id}" value="${color_id}" ${dias.some(d => existingData[`${color_id}_${d.id}`]) ? 'checked' : ''}>
+
+//                         <label for="color_${color_id}">${color_name}</label></td>`;
+
+
+//                     // If there's a match, precheck and set values; else default to 0
+//                     tableHTML += `<td><input type="number" 
+//                         class="form-control text-center no-spinner roll-input ${found ? 'manual-input' : ''}" 
+//                         name="roll_${color_id}_${dia_id}" 
+//                         id="roll_${color_id}_${dia_id}" 
+//                         value="${roll}" 
+//                         data-dia="${dia_id}" data-color="${color_id}" min="0" step="1" style="width: 100%; border: none;"></td>
+                        
+//                         <td style="text-align:end;"><input type="number" 
+//                         class="form-control text-center no-spinner" 
+//                         name="rollwt_${color_id}_${dia_id}"  
+//                         id="rollwt_${color_id}_${dia_id}" 
+//                         value="${roll_wt.toFixed(2)}" 
+//                         readonly style="width: 100%; border: none;"></td>`;
+                    
+//                     // Set checkbox checked for this row if at least one dia exists
+//                     if (found) {
+//                         $(`#color_${color_id}`).prop('checked', true);
+//                     }
+//                 });
+
+//                 tableHTML += `</tr>`;
+//             });
+
+//             // TFOOT with totals and balance
+//             tableHTML += `<tfoot><tr><td align="center"><p style="font-weight:bolder;">TOTAL</p></td>`;
+//             dias.forEach(dia => {
+//                 tableHTML += `<td id="total_roll_${dia.id}" class="text-center">0</td>
+//                               <td id="total_wt_${dia.id}" class="text-center">0.00</td>`;
+//             });
+//             tableHTML += `</tr><tr><td align="center"><p style="font-weight:bolder;">BALANCE</p></td>`;
+//             dias.forEach(dia => {
+//                 const d = dia_value[dia.id];
+//                 const total = d ? parseInt(d.rolls || 0) : 0;
+//                 const wt = d ? parseFloat(d.wt_per_roll || 0).toFixed(2) : "0.00";
+//                 tableHTML += `<td id="balance_roll_${dia.id}" class="text-center">${total}</td>
+//                               <td id="balance_wt_${dia.id}" class="text-center">${(total * wt).toFixed(2)}</td>`;
+//             });
+//             tableHTML += `</tr></tfoot></table>`;
+
+//             $('#sizeTableBody').html(tableHTML);
+//             $('#colorModal').modal('show');
+
+//             // // Store the max rolls per dia globally
+//             const diaRollLimits = {};
+//             dias.forEach(dia => {
+//                 diaRollLimits[dia.id] = parseInt(dia_value[dia.id].rolls || 0);
+//             });
+
+//             // Attach validation to roll inputs
+//             $('.roll-input').on('input', function () {
+//                 const diaId = $(this).data('dia');
+//                 const colorId = $(this).data('color');
+//                 const currentVal = parseInt($(this).val()) || 0;
+
+//                 const totalRolls = diaRollLimits[diaId];
+
+//                 // Calculate current total rolls across all checked colors for this dia
+//                 let currentTotal = 0;
+//                 $(`.roll-input[data-dia="${diaId}"]`).each(function () {
+//                     const cid = $(this).data('color');
+//                     if ($(`#color_${cid}`).is(':checked')) {
+//                         currentTotal += parseInt($(this).val()) || 0;
+//                     }
+//                 });
+
+//                 // If total exceeds limit, revert this input's value
+//                 if (currentTotal > totalRolls) {
+//                     const allowed = totalRolls - (currentTotal - currentVal);
+//                     $(this).val(allowed);
+//                 }
+
+//                 // Update totals
+//                 updateEditFooterTotals();
+//             });
+
+
+
+
+//             // Call your update logic (reuse your updateFooterTotals, redistributeRolls, etc.)
+//             updateEditFooterTotals();
+//             function updateEditFooterTotals() {
+//                 dias.forEach(dia => {
+//                     const diaId = dia.id;
+//                     const wt = parseFloat((dia_value[diaId]?.wt_per_roll) || 0);
+
+//                     let sumRoll = 0;
+//                     $('.roll-input[data-dia="' + diaId + '"]').each(function () {
+//                         const colorId = $(this).data('color');
+//                         const checkbox = $('#color_' + colorId);
+//                         if (checkbox.is(':checked')) {
+//                             sumRoll += parseInt($(this).val()) || 0;
+//                         }
+//                     });
+
+//                     const sumWt = (sumRoll * wt).toFixed(2);
+//                     const totalRoll = parseInt(dia_value[diaId]?.rolls || 0);
+//                     const balRoll = totalRoll - sumRoll;
+//                     const balWt = (balRoll * wt).toFixed(2);
+
+//                     $('#total_roll_' + diaId).text(sumRoll);
+//                     $('#total_wt_' + diaId).text(sumWt);
+//                     $('#balance_roll_' + diaId).text(balRoll);
+//                     $('#balance_wt_' + diaId).text(balWt);
+//                 });
+//             }
+//             updateEditDistribution();
+//               function updateEditDistribution() {
+//         dias.forEach(dia => {
+//             const diaId = dia.id;
+//             $('.roll-input').removeClass('manual-input');
+//             editredistributeRolls(diaId);
+//         });
+//     }
+
+
+
+
+
+//     //   // test1|
+//     function editredistributeRolls(diaId, changedColorId, newVal) {
+//         const diaInfo = data.dia_data[diaId];
+//         if (!diaInfo) return;
+
+//         const totalRolls = parseInt(diaInfo.rolls || 0);
+//         const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+
+//         // Get checked colors for this dia
+//         const checkedColors = $('.color-checkbox:checked').map(function () {
+//             return $(this).val();
+//         }).get();
+
+//         if (!checkedColors.includes(changedColorId.toString())) {
+//             // If changed color is unchecked, ignore changes or set 0
+//             $(`#roll_${changedColorId}_${diaId}`).val(0);
+//             return;
+//         }
+
+//         // Calculate current total excluding changed input
+//         let sumOtherRolls = 0;
+//         checkedColors.forEach(colorId => {
+//             if (colorId != changedColorId.toString()) {
+//                 let val = parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+//                 sumOtherRolls += val;
+//             }
+//         });
+
+//         // Calculate allowed max for changed color to keep sum == totalRolls
+//         let maxAllowed = totalRolls - sumOtherRolls;
+//         if (newVal > maxAllowed) {
+//             newVal = maxAllowed;
+//             $(`#roll_${changedColorId}_${diaId}`).val(newVal);
+//         }
+
+//         // Difference from previous value
+//         const oldVal = window.rollsByDiaColor[diaId][changedColorId] || 0;
+//         const diff = newVal - oldVal;
+
+//         // Update stored roll for changed color
+//         window.rollsByDiaColor[diaId][changedColorId] = newVal;
+
+//         // Redistribute difference to other colors
+//         if (diff !== 0) {
+//             let colorsToAdjust = checkedColors.filter(id => id !== changedColorId.toString());
+//             if (colorsToAdjust.length === 0) return; // no others to adjust
+
+//             // If diff > 0, subtract from others
+//             // If diff < 0, add to others
+
+//             let remainingDiff = Math.abs(diff);
+//             const direction = diff > 0 ? -1 : 1; // reduce others if diff>0, increase if diff<0
+
+//             while (remainingDiff > 0 && colorsToAdjust.length > 0) {
+//                 let changed = false;
+
+//                 for (let i = 0; i < colorsToAdjust.length; i++) {
+//                     let cid = colorsToAdjust[i];
+//                     let currentVal = parseInt($(`#roll_${cid}_${diaId}`).val()) || 0;
+//                     let newValOther = currentVal + direction;
+
+//                     if (newValOther >= 0) {
+//                         $(`#roll_${cid}_${diaId}`).val(newValOther);
+//                         window.rollsByDiaColor[diaId][cid] = newValOther;
+//                         remainingDiff--;
+//                         changed = true;
+//                         if (remainingDiff <= 0) break;
+//                     }
+//                 }
+
+//                 if (!changed) break; // can't adjust anymore
+//             }
+//         }
+
+//         // //Finally, ensure sum == totalRolls, adjust first color if minor discrepancy due to rounding
+//         let sumAll = 0;
+//         checkedColors.forEach(colorId => {
+//             sumAll += parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+//         });
+
+//         if (sumAll !== totalRolls && checkedColors.length > 0) {
+//             let firstColorId = checkedColors[0];
+//             let firstVal = parseInt($(`#roll_${firstColorId}_${diaId}`).val()) || 0; 
+//             let correction = totalRolls - sumAll;
+//             $(`#roll_${firstColorId}_${diaId}`).val(firstVal + correction);
+//             window.rollsByDiaColor[diaId][firstColorId] = firstVal + correction;
+//         }
+//     }
+//         },
+//         error: function (xhr) {
+//             console.error('Error:', xhr.responseText);
+//             alert("Server Error");
+//         }
+//     });
+
+// });
+
+
+function openRollEditModal(element) {
+    let fabricId = $(element).data('fabric-id');
+    let fabricName = $(element).data('fabric_name');
+    let diaId = $(element).data('dia-id');
+    let colorId = $(element).data('color-id'); // ✅ Corrected
+    let roll = $(element).attr('data-roll'); 
+    roll = roll ? parseFloat(roll).toFixed(2) : "0.00";
+
+    console.log(`🔹 Opening modal: Item ${fabricId}, Size ${diaId}, Color ${colorId}, Qty ${roll}`);
+
+    $('#editModalTitle').text(`Edit Rolls - ${fabricName}`);
+    let $modalBody = $('#editModalBody');
+    $modalBody.empty();
+
+    let inputHTML = `
+        <div class="form-group">
+            <label>Roll  ${fabricName}:</label>
+            <input type="number" class="form-control edit-quantity" 
+                   data-fabric-id="${fabricId}" 
+                   data-color-id="${colorId}"
+                   data-dia-id="${diaId}" 
+                 
+                   value="${roll}" step="0.01" min="0">
+        </div>`; 
+
+    console.log("🔹 Injecting into modal:", inputHTML);
+    $modalBody.html(inputHTML);
+    $('#editModal').modal('show');
+}
+
+function saveEditedField() {
+    const input = $('.edit-quantity');
+
+    const fabricId = input.data('fabric-id');
+    const colorId = input.data('color-id');
+    const diaId = input.data('dia-id');
+    const newRoll = parseFloat(input.val()) || 0;
+
+    // Build the row ID used when appending
+    const rowId = `#row_${fabricId}_${colorId}_${diaId}`;
+    const row = $(rowId);
+
+    if (row.length) {
+        row.find('.roll-cell a')
+            .text(newRoll)
+            .attr('data-roll', newRoll);
+
+        $('#editModal').modal('hide');
+    } else {
+        alert("Row not found for update.");
+    }
+}
+
+
+// function saveEditedField() {
+//     let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+//     let input = $('.edit-field');
+//     let itemKey = input.data('item-key');
+//     let colorIndex = input.data('color-index');
+//     let field = input.data('field');
+//     let newValue = parseFloat(input.val()) || 0;
+
+//     if (selectedItems[itemKey] && selectedItems[itemKey].colors[colorIndex]) {
+//         selectedItems[itemKey].colors[colorIndex][field] = newValue;
+//         localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+//         $('#editModal').modal('hide');
+//         loadPurchaseTable(); // Refresh table with updated values
+//     } else {
+//         alert("Invalid selection or index.");
+//     }
+// }
+
+          
+function loadColors_test1() {
+    var fabric_id = $('#fabric_id').val();
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!fabric_id || fabric_id === "0") {
+        console.warn("Invalid fabric ID, skipping color load.");
+        $('#sizeTableBody').empty();
+        return;
+    }
+
+    var out_id = $('#program_id').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('Received Colors and Dias:', data);
+
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+
+            if (colors.length === 0 || dias.length === 0) {
+                console.warn("No colors or dias received.");
+                return;
+            }
+
+            let tableHTML = `<table class="table table-bordered table-responsive w-100%" id="program_table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Fabric Color</th>`;
+
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+            });
+
+            tableHTML += `</tr><tr>`;
+
+            dias.forEach(() => {
+                tableHTML += `
+                    <th class="text-center">Roll</th>
+                    <th class="text-center">Roll Wt</th>`;
+            });
+
+            tableHTML += `</tr></thead><tbody>`;
+
+            const totalColors = colors.length;
+
+            // Keep track of initial rolls in an object for reference
+            // structure: rollsByDiaColor[diaId][colorId] = roll value
+            let rollsByDiaColor = {};
+
+            colors.forEach(color => {
+                tableHTML += `<tr>
+                    <td>
+                        <input type="checkbox" class="form-check-input me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+                        <label for="color_${color.id}">${color.name}</label>
+                    </td>`;
+
+                dias.forEach(dia => {
+                    const diaInfo = data.dia_data[dia.id];
+                    let perColorRolls = 0;
+                    let wtPerRoll = 0;
+
+                    if (diaInfo) {
+                        const totalRolls = parseInt(diaInfo.rolls || 0);
+                        const wt = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+
+                        const baseRoll = Math.floor(totalRolls / totalColors);
+                        let remainder = totalRolls % totalColors;
+
+                        // To distribute remainder fairly by color index:
+                        const colorIndex = colors.findIndex(c => c.id === color.id);
+                        perColorRolls = baseRoll + (colorIndex < remainder ? 1 : 0);
+                        wtPerRoll = wt;
+
+                        // Store initial rolls
+                        if (!rollsByDiaColor[dia.id]) rollsByDiaColor[dia.id] = {};
+                        rollsByDiaColor[dia.id][color.id] = perColorRolls;
+                    }
+
+                    tableHTML += `
+                        <td><input type="number" 
+                                class="form-control text-center no-spinner roll-input" 
+                                name="roll_${color.id}_${dia.id}" 
+                                id="roll_${color.id}_${dia.id}" 
+                                value="${perColorRolls}" 
+                                min="0" step="1" style="width: 80px;" data-dia="${dia.id}" data-color="${color.id}"></td>
+                        <td><input type="number" 
+                                class="form-control text-center no-spinner" 
+                                name="rollwt_${color.id}_${dia.id}" 
+                                id="rollwt_${color.id}_${dia.id}" 
+                                value="${wtPerRoll}" 
+                                min="0" step="0.01" style="width: 100px;" readonly></td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `</tbody></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+            $('#colorModal').modal('show');
+
+            window.loadedData = data;
+            window.rollsByDiaColor = rollsByDiaColor; // save initial state
+
+
+            $('.color-checkbox').change(function () {
+                updateRollDistribution();
+            });
+
+            // On roll input change, redistribute rolls accordingly
+            $(document).on('input', '.roll-input', function () {
+                const diaId = $(this).data('dia');
+                const changedColorId = $(this).data('color');
+                let newVal = parseInt($(this).val()) || 0;
+                if (newVal < 0) newVal = 0;
+                $(this).val(newVal);
+
+                redistributeRolls(diaId, changedColorId, newVal);
+            });
+
+            function updateRollDistribution() {
+                const checkedColors = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                dias.forEach(dia => {
+                    const diaInfo = data.dia_data[dia.id];
+                    if (!diaInfo) return;
+
+                    const totalRolls = parseInt(diaInfo.rolls || 0);
+                    const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+                    const colorCount = checkedColors.length;
+
+                    if (colorCount === 0) {
+                        colors.forEach(color => {
+                            $(`#roll_${color.id}_${dia.id}`).val(0);
+                            $(`#rollwt_${color.id}_${dia.id}`).val(0);
+                        });
+                        return;
+                    }
+
+                    const baseRoll = Math.floor(totalRolls / colorCount);
+                    let remainder = totalRolls % colorCount;
+
+                    checkedColors.forEach((colorId, idx) => {
+                        let extra = remainder > 0 ? 1 : 0;
+                        let finalRoll = baseRoll + extra;
+                        remainder = Math.max(0, remainder - 1);
+
+                        $(`#roll_${colorId}_${dia.id}`).val(finalRoll);
+                        $(`#rollwt_${colorId}_${dia.id}`).val(wtPerRoll);
+                    });
+
+                    colors.forEach(color => {
+                        if (!checkedColors.includes(color.id.toString())) {
+                            $(`#roll_${color.id}_${dia.id}`).val(0);
+                            $(`#rollwt_${color.id}_${dia.id}`).val(0);
+                        }
+                    });
+                });
+            }
+
+
+             //   // test1|
+            function redistributeRolls(diaId, changedColorId, newVal) {
+                const diaInfo = data.dia_data[diaId];
+                if (!diaInfo) return;
+
+                const totalRolls = parseInt(diaInfo.rolls || 0);
+                const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+
+                // Get checked colors for this dia
+                const checkedColors = $('.color-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                if (!checkedColors.includes(changedColorId.toString())) {
+                    // If changed color is unchecked, ignore changes or set 0
+                    $(`#roll_${changedColorId}_${diaId}`).val(0);
+                    return;
+                }
+
+                // Calculate current total excluding changed input
+                let sumOtherRolls = 0;
+                checkedColors.forEach(colorId => {
+                    if (colorId != changedColorId.toString()) {
+                        let val = parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+                        sumOtherRolls += val;
+                    }
+                });
+
+                // Calculate allowed max for changed color to keep sum == totalRolls
+                let maxAllowed = totalRolls - sumOtherRolls;
+                if (newVal > maxAllowed) {
+                    newVal = maxAllowed;
+                    $(`#roll_${changedColorId}_${diaId}`).val(newVal);
+                }
+
+                // Difference from previous value
+                const oldVal = window.rollsByDiaColor[diaId][changedColorId] || 0;
+                const diff = newVal - oldVal;
+
+                // Update stored roll for changed color
+                window.rollsByDiaColor[diaId][changedColorId] = newVal;
+
+                // Redistribute difference to other colors
+                if (diff !== 0) {
+                    let colorsToAdjust = checkedColors.filter(id => id !== changedColorId.toString());
+                    if (colorsToAdjust.length === 0) return; // no others to adjust
+
+                    // If diff > 0, subtract from others
+                    // If diff < 0, add to others
+
+                    let remainingDiff = Math.abs(diff);
+                    const direction = diff > 0 ? -1 : 1; // reduce others if diff>0, increase if diff<0
+
+                    while (remainingDiff > 0 && colorsToAdjust.length > 0) {
+                        let changed = false;
+
+                        for (let i = 0; i < colorsToAdjust.length; i++) {
+                            let cid = colorsToAdjust[i];
+                            let currentVal = parseInt($(`#roll_${cid}_${diaId}`).val()) || 0;
+                            let newValOther = currentVal + direction;
+
+                            if (newValOther >= 0) {
+                                $(`#roll_${cid}_${diaId}`).val(newValOther);
+                                window.rollsByDiaColor[diaId][cid] = newValOther;
+                                remainingDiff--;
+                                changed = true;
+                                if (remainingDiff <= 0) break;
+                            }
+                        }
+
+                        if (!changed) break; // can't adjust anymore
+                    }
+                }
+
+                // //Finally, ensure sum == totalRolls, adjust first color if minor discrepancy due to rounding
+                let sumAll = 0;
+                checkedColors.forEach(colorId => {
+                    sumAll += parseInt($(`#roll_${colorId}_${diaId}`).val()) || 0;
+                });
+
+                if (sumAll !== totalRolls && checkedColors.length > 0) {
+                    let firstColorId = checkedColors[0];
+                    let firstVal = parseInt($(`#roll_${firstColorId}_${diaId}`).val()) || 0;
+                    let correction = totalRolls - sumAll;
+                    $(`#roll_${firstColorId}_${diaId}`).val(firstVal + correction);
+                    window.rollsByDiaColor[diaId][firstColorId] = firstVal + correction;
+                }
+            }
+
+            // Initial distribution with remainder
+            updateRollDistribution();
+
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading colors:', xhr.responseText);
+            alert("Error: " + xhr.responseText);
+        }
+    });
+}
+
+// function loadColors() {
+//     var fabric_id = $('#fabric_id').val(); 
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+//     if (!fabric_id || fabric_id === "0") {
+//         console.warn("Invalid fabric ID, skipping color load.");
+//         $('#sizeTableBody').empty();
+//         return;
+//     }
+
+//     var out_id = $('#program_id').val();
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_fabric_dia_list/',
+//         data: {
+//             'id': out_id,
+//             'fabric_id': fabric_id,
+//             'csrfmiddlewaretoken': csrfToken
+//         },
+//         dataType: 'json',
+//         success: function (data) {
+//             console.log('Received Colors and Dias:', data);
+
+//             if (!data.success) {
+//                 alert("Failed to fetch data.");
+//                 return;
+//             }
+
+//             const colors = data.colors || [];
+//             const dias = data.dia || [];
+
+//             if (colors.length === 0 || dias.length === 0) {
+//                 console.warn("No colors or dias received.");
+//                 return;
+//             }
+
+
+
+
+//             let tableHTML = `<table class="table table-bordered table-responsive w-100%">
+//                 <thead>
+//                     <tr>
+//                         <th rowspan="2">Fabric Color</th>`;
+
+//             dias.forEach(dia => {
+//                 tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+//             });
+
+//             tableHTML += `</tr><tr>`;
+
+//             dias.forEach(() => {
+//                 tableHTML += `
+//                     <th class="text-center">Roll</th>
+//                     <th class="text-center">Roll Wt</th>`;
+//             });
+
+//             tableHTML += `</tr></thead><tbody>`;
+//             const totalColors = colors.length;
+
+//                 dias.forEach(dia => {
+//                     const diaInfo = data.dia_data[dia.id];
+//                     if (!diaInfo) return;
+
+//                     const totalRolls = parseInt(diaInfo.rolls || 0);
+//                     const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+
+//                     const baseRoll = Math.floor(totalRolls / totalColors);
+//                     let remainder = totalRolls % totalColors;
+
+//                     colors.forEach((color, index) => {
+//                         const extra = remainder > 0 ? 1 : 0;
+//                         const finalRoll = baseRoll + extra;
+//                         remainder = Math.max(0, remainder - 1);
+
+//                         tableHTML += `<tr>
+//                             <td>
+//                                 <input type="checkbox" class="form-check-input me-1 color-checkbox" checked id="color_${color.id}" value="${color.id}">
+//                                 <label for="color_${color.id}">${color.name}</label>
+//                             </td>`;
+
+//                         // One row per color, now each dia column:
+//                         dias.forEach(d => {
+//                             const rollVal = d.id === dia.id ? finalRoll : 0;
+//                             const wtVal = d.id === dia.id ? wtPerRoll : 0;
+
+//                             tableHTML += `
+//                                 <td><input type="number" 
+//                                         class="form-control text-center no-spinner" 
+//                                         name="roll_${color.id}_${d.id}" 
+//                                         id="roll_${color.id}_${d.id}" 
+//                                         value="${rollVal}" 
+//                                         min="0" step="1" style="width: 80px;"></td>
+//                                 <td><input type="number" 
+//                                         class="form-control text-center no-spinner" 
+//                                         name="rollwt_${color.id}_${d.id}" 
+//                                         id="rollwt_${color.id}_${d.id}" 
+//                                         value="${wtVal}" 
+//                                         min="0" step="0.01" style="width: 100px;"></td>`;
+//                         });
+
+//                         tableHTML += `</tr>`;
+//                     });
+//                 });
+
+
+//                 tableHTML += `</tbody></table>`;
+
+//                 $('#sizeTableBody').html(tableHTML);
+//                 $('#colorModal').modal('show');  // Show modal
+
+
+//                 // Attach change event after DOM is updated
+//                 $('.color-checkbox').change(function () {
+//                     updateRollDistribution();
+//                 });
+
+//                 function updateRollDistribution() {
+//                     const checkedColors = $('.color-checkbox:checked').map(function () {
+//                         return $(this).val();
+//                     }).get();
+
+//                     dias.forEach(dia => {
+//                         const diaInfo = data.dia_data[dia.id];
+//                         if (!diaInfo) return;
+
+//                         const totalRolls = parseInt(diaInfo.rolls || 0);
+//                         const wtPerRoll = parseFloat(diaInfo.wt_per_roll || 0).toFixed(2);
+//                         const colorCount = checkedColors.length;
+
+//                         if (colorCount === 0) {
+//                             // If no colors selected, clear all inputs
+//                             colors.forEach(color => {
+//                                 $(`#roll_${color.id}_${dia.id}`).val(0);
+//                                 $(`#rollwt_${color.id}_${dia.id}`).val(0);
+//                             });
+//                             return;
+//                         }
+
+//                         const baseRoll = Math.floor(totalRolls / colorCount);
+//                         let remainder = totalRolls % colorCount;
+
+//                         colors.forEach((color, index) => {
+//                             const rollField = $(`#roll_${color.id}_${dia.id}`);
+//                             const wtField = $(`#rollwt_${color.id}_${dia.id}`);
+
+//                             if (checkedColors.includes(color.id.toString())) {
+//                                 let extra = remainder > 0 ? 1 : 0;
+//                                 let finalRoll = baseRoll + extra;
+//                                 rollField.val(finalRoll);
+//                                 wtField.val(wtPerRoll);
+//                                 remainder = Math.max(0, remainder - 1);
+//                             } else {
+//                                 rollField.val(0);
+//                                 wtField.val(0);
+//                             }
+//                         });
+//                     });
+//                 }
+
+
+//             },
+//             error: function (xhr, status, error) {
+//                 console.error('Error loading colors:', xhr.responseText);
+//                 alert("Error: " + xhr.responseText);
+//             }
+//         });
+//     }
+
+
+
+
+
+// `````````` load purchase table ````````````````````
+
+
+
+// function deleteRow(itemKey) {
+//     let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+//     delete selectedItems[itemKey];
+//     localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+//     loadPurchaseTable();
+// }
+
+
+function removeRow(itemKey) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    if (selectedItems.hasOwnProperty(itemKey)) {
+        delete selectedItems[itemKey]; // Remove item from stored data
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems)); // Update localStorage
+
+        // Remove the specific row from the table
+        $(`tr[data-item-id="${itemKey}"]`).remove();
+        console.log(`🗑️ Removed row for item ID: ${itemKey}`);
+    } else {
+        console.warn(`⚠️ Item ID ${itemKey} not found in localStorage.`);
+    }
+}
+
+
+
+
+
+
+// `````````````````````````````````` sidebar end `````````````````````````````````````
+
+
+// storetable values
+
+
+// function storeTblValues() {
+//     var TableData = [];
+ 
+ 
+//     $('#program_table tbody tr').each(function(index) {
+//     var product = $(this).find('td:eq(1)').text().trim();
+//     var bag = $(this).find('td:eq(2)').text().trim();
+//     var perBag = $(this).find('td:eq(3)').text().trim();
+//     var quantity = $(this).find('td:eq(4)').text().trim(); 
+    
+//     var gross_wt = $(this).find('td:eq(5)').text().trim();
+
+//     var tmId = $(this).find('#tm_id').text().trim();
+//     var id = $(this).find('#id').text().trim();
+//     var product_id = $(this).find('#product_id').text().trim();
+//     var po_id = $(this).find('td:eq(9)').text().trim();
+//     var deliver_id = $(this).find('td:eq(10)').text().trim();
+//     var receive_no = $(this).find('td:eq(11)').text().trim();
+//     var receive_date = $(this).find('td:eq(12)').text().trim(); 
+//     var is_inward = $(this).find('td:eq(13)').text().trim();
+//     var program_id = $(this).find('td:eq(14)').text().trim();
+//     var lot_no = $(this).find('td:eq(15)').text().trim();   
+//     var tx_id = $(this).find('td:eq(16)').text().trim();   
+
+//     console.log(`Row ${index + 1} - Data:`, { product, quantity, tmId, id, product_id ,program_id, lot_no});
+
+
+//     if (product_id && quantity ) {
+//             TableData.push({
+//                 "product_id": product_id,
+//                 "product_name": product,
+//                 "bag": bag, 
+//                 "per_bag": perBag,
+//                 "quantity": quantity, 
+//                 'gross_wt':gross_wt, 
+//                 'po_id':po_id,  
+//                 'deliver_id':deliver_id,
+//                 'receive_no':receive_no,
+//                 'receive_date':receive_date,
+//                 'is_inward':is_inward,
+//                 'program_id':program_id,
+//                 'lot_no':lot_no,
+//                 'tx_id':tx_id,
+//             });
+//         } else {
+//             console.log("Missing data for row, skipping...");
+//         }
+// });
+
+//     console.log('TABLE-DATA:', TableData);  // Output the collected table data
+//     return TableData;  // Return the data to be used further (for submission, storage, etc.)
+// }
+
+
+
+
+
+// $('#add_new').on('submit', function (e) {
+//     e.preventDefault(); // Prevent form submission
+//     console.log("Add button clicked");
+
+//     var fabric_name = $("#fabric_id option:selected").text();
+  
+//     var fabric_id = $('#fabric_id').val();
+//     var TableData = storeTblValues(); // get data from modal
+
+//     if (TableData.length === 0) {
+//         notifier.show(
+//             'Error!',
+//             'Table is empty. Please insert the program details.',
+//             'success',
+//             "{% static 'assets/images/notification/ok-48.png' %}",
+//             4000
+//         );
+//         return;
+//     }
+
+    
+//     TableData.forEach(function (item) {
+//         const rowHtml = `
+//             <tr>
+//                 <td style="display: none;">${fabric_id}</td>
+//                 <td>${fabric_name}</td>
+//                 <td>${item.color_name}</td>
+//                 <td>${item.dia_name}</td>
+//                 <td>${item.roll}</td>
+//                 <td>${item.roll_wt.toFixed(2)}</td>
+//                 <td style="display: none;">${item.dia_id}</td>
+//                 <td style="display: none;">${item.color_id}</td>
+//                 <td>
+//                     <button type="button" class="btn btn-xs btn-danger delete-row"><i class="feather icon-trash-2"></i></button>
+//                 </td>
+//             </tr>
+//         `;
+//         $('#purchaseTable tbody').append(rowHtml);
+//     });
+//     $('fabric_id').val('').trigger('change');
+//     $('#program_table').empty();
+//     $('#colorModal').modal('hide'); // close the modal
+// });
+
+
+
+function storeProgramTblValues() {
+    var TableData = [];
+
+    $('#program_table tbody tr').each(function () {
+        const row = $(this);
+        const checkbox = row.find('.color-checkbox');
+        if (!checkbox.is(':checked')) return; // Skip unchecked colors
+
+        const color_id = checkbox.val();
+        const color_name = row.find('label[for="color_' + color_id + '"]').text().trim();
+        const fabric_id = $('#fabric_id').val();
+        const fabric_name = $('#fabric_id option:selected').text().trim();
+
+        // Loop through dias based on diaIdToNameMap set in loadColors
+        for (const dia_id in window.diaIdToNameMap) {
+            const dia_name = window.diaIdToNameMap[dia_id];
+            const roll_input = row.find(`#roll_${color_id}_${dia_id}`);
+            const roll_wt_input = row.find(`#rollwt_${color_id}_${dia_id}`);
+
+            if (roll_input.length && roll_wt_input.length) {
+                const roll = parseInt(roll_input.val()) || 0;
+                const roll_wt = parseFloat(roll_wt_input.val()) || 0.0;
+
+                // Push only if roll is greater than 0
+                if (roll > 0) {
+                    TableData.push({
+                        fabric_id: fabric_id,
+                        fabric_name: fabric_name,
+                        dia_id: dia_id,
+                        dia_name: dia_name,
+                        color_id: color_id,
+                        color_name: color_name,
+                        roll: roll,
+                        roll_wt: roll_wt
+                    });
+                }
+            }
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+// function storeProgramTblValues() {
+//     var TableData = [];
+ 
+ 
+//     $('#program_table tbody tr').each(function(index) {
+//     var fabric_id = $(this).find('td:eq(0)').text().trim();
+//     var fabric_name = $(this).find('td:eq(1)').text().trim();
+//     var color_name = $(this).find('td:eq(2)').text().trim();
+//     var dia_name = $(this).find('td:eq(3)').text().trim();
+//     var roll = $(this).find('td:eq(4)').text().trim(); 
+    
+//     var roll_wt = $(this).find('td:eq(5)').text().trim();
+//     var dia_id = $(this).find('td:eq(6)').text().trim();
+//     var color_id = $(this).find('td:eq(7)').text().trim();
+
+   
+
+//     console.log(`Row ${index + 1} - Data:`, { fabric_id,dia_id,color_id,roll,roll_wt});
+
+
+//     if (fabric_id && roll ) {
+//             TableData.push({
+//                 "fabric_id": fabric_id,
+//                 "fabric_name": fabric_name,
+//                 "dia_id": dia_id, 
+//                 "color_id": color_id,
+//                 "roll": roll, 
+//                 'roll_wt':roll_wt, 
+               
+//             });
+//         } else {
+//             console.log("Missing data for row, skipping...");
+//         }
+// });
+
+//     console.log('TABLE-DATA:', TableData);  // Output the collected table data
+//     return TableData;  // Return the data to be used further (for submission, storage, etc.)
+// }
+
+
+
+
+$('#program_add').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+    // var program_date = $('#program_date');
+    // var program_name = $('#program_name');
+    // var program_id = $('#program_id');
+    // var fabric_id = $('#fabric_id');
+
+    var TableData = storeProgramTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'success', 
+            "{% static 'assets/images/notification/ok-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        // mdata.append('program_date', program_date); 
+        // mdata.append('program_no', program_no); 
+        // mdata.append('program_id', program_id); 
+        // mdata.append('fabric_id', fabric_id); 
+        mdata.append('chemical_data', TableData); 
+        console.log('m-dsta:',mdata);
+
+ 
+        $.ajax({
+            type: "POST", 
+            url: "/add-dyeing-program/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            // beforeSend: function() {
+            //     console.log("Sending AJAX request...");
+            //     $('#submit').attr('disabled', true).text('Processing...');
+            // },
+            success: function(data) {
+                console.log("Server Response:", data);
+                // $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'success') {
+                    notifier.show( 
+                        'Well Done!', 
+                        'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );  
+ 
+                    // location.reload();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );  
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+
+
+function extractLocalStorageData(selectedItems) {
+    let extractedData = [];
+
+    Object.values(selectedItems).forEach(item => {
+        if (!item.colors || item.colors.length === 0) return;
+
+        item.colors.forEach(color => {
+            const roll = parseFloat(color.roll);
+            const roll_wt = parseFloat(color.roll_wt);
+
+            // Skip if both are zero or invalid
+            if ((isNaN(roll) || roll <= 0) && (isNaN(roll_wt) || roll_wt <= 0)) return;
+
+            extractedData.push({
+                outward_id: item.outward_id,
+                lot_no: item.lot_no,
+                fabric_id: item.fabric_id,
+                fabric_name: item.fabric_name,
+                color_id: color.color_id,
+                color_name: color.color_name,
+                dia_id: color.dia_id,
+                dia_name: color.dia_name,
+                roll: roll || 0,
+                roll_wt: roll_wt || 0
+            });
+        });
+    });
+
+    return extractedData;
+}
+
+// ```````````````````````````````````````````````````````````````````````````
+
+
+
+$('.single-select').select2();
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('program_date').value = currentDateString;
+    // document.getElementById('receive_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+</script>

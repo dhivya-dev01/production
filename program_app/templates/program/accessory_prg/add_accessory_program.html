@@ -1,0 +1,1760 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+/* Sidebar Styling */ 
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -40%; /* Initially hidden */
+    width: 40%; /* Make it 45% of the screen width */
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 1050;
+}
+
+/* Header Styling */
+.sidebar-header { 
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f9fa;
+}
+
+/* Sidebar Content Styling */
+.sidebar-body {
+    padding: 15px;
+}
+
+/* Footer Styling */
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+
+/* ````````````````````input spinner remove `````````````````` */
+
+/* Remove spinner for Chrome, Safari, Edge, and Opera */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner for Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+</style>
+
+
+
+<div id="sizeHeader" class="sidebar">
+    <div class="sidebar-header">
+        <h4>Size</h4>
+        <button onclick="closeColorSidebar()">×</button>
+    </div>
+    <div class="sidebar-body">
+        <div id="sizeTableBody"></div>
+    </div>
+    <div class="sidebar-footer">
+        <button type="button" class="btn btn-success" onclick="saveColorSelection()">+ Add Size</button>
+    </div>
+</div> 
+
+
+<!-- Edit Quantity Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Dynamic content will be injected here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditedQuantity()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body"> 
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Accessory Ratio Setting  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Accessories</a></li>
+                                            <li class="breadcrumb-item"><a href="/accessory-program"> Accessory Ratio Setting</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                           
+                                                                <!-- ``````````````````` tm table values (quality - prg) -->
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select"  onchange="LoadItem()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3" style="display: none;">
+                                                                    <!-- <label for="fabric_id" class="form-label">Size</label> -->
+                                                                    <select id="size_id" name="size_id" class="form-control single-select" readonly >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                            
+
+                                                            </div>
+
+                                                            <div class="row">
+                                                             
+                                                                
+                                                               
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Acc Group</label>
+                                                                    <select id="group_id" name="group_id" class="form-control single-select" onchange="LoadAccItem()" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in group %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Acc Item</label>
+                                                                    <select id="item_id" name="item_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                       
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Acc Quality</label>
+                                                                    <select id="acc_quality_id" name="acc_quality_id" class="form-control single-select" >
+                                                                       <option value="">Select</option> 
+                                                                
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">UOM</label>
+                                                                    
+                                                                    <select id="uom_id" name="uom_id" class="form-control single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in uom %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Product Pieces</label>
+                                                                    
+                                                                    <input type="number" class="form-control" id="product_pieces" name="product_pieces" value="12" required>
+                                                                </div>
+                                                                
+
+                                                                
+
+                                                               
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label"> Type</label>
+                                                                    <select id="program_type" name="program_type" class="form-control single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        <option value="Size">Size</option>
+                                                                        <option value="Color">Color</option>
+                                                                        <option value="Total Quantity">Total Quantity</option>
+                                                                        
+                                                                    </select>
+                                                                </div>
+
+                                                             
+
+                                                            </div>
+                                                    
+                                                        </div> 
+                                                        <div class="row mt-2">
+                                                            <div class="table-responsive table-desi">
+
+                                                                 <table id="purchaseTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="wrap">Quality/Style</th>
+                                                                            <th style="display: none;">Quality</th>
+                                                                            <th>Product Pieces</th>
+                                                                            <th>Program Type</th>
+                                                                            <th>UOM</th>
+                                                                            <th class="wrap">Size Name</th>
+                                                                
+                                                                            <th>
+                                                                                <div>XS</div>
+                                                                                <div>45</div>
+                                                                                <div>75</div>
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>S</div>
+                                                                                <div>50</div>
+                                                                                <div>80</div>
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>M</div>
+                                                                                <div>55</div>
+                                                                                <div>85</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>L</div>
+                                                                                <div>60</div>
+                                                                                <div>90</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>XL</div>
+                                                                                <div>65</div>
+                                                                                <div>95</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>XXL</div>
+                                                                                <div>70</div>
+                                                                                <div>100</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>3XL</div>
+                                                                                <div>75</div>
+                                                                                <div>105</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>4XL</div>
+                                                                                <div>80</div>
+                                                                                <div>110</div>
+
+                                                                            </th>
+                                                                            <th>Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody> 
+                                                                </table>
+                                                                
+                                                            
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                        
+                                                            <div class="col-md-12"> 
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div> 
+
+                                                        
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+ 
+
+
+$(document).ready(function () {
+    // Load programs when party is selected
+    $('#party_id').change(function () {
+        LoadProgram();
+    });
+
+    // Load details when a program is selected
+    $('#prg_id').change(function () {
+        let prg_id = $(this).val();
+
+        if (prg_id) {
+            updateProgramDetails();
+            loadProgramDetails(prg_id);
+        } else {
+            $('#purchaseTable tbody').empty(); // Clear table if no program is selected
+        }
+    });
+}); 
+
+function LoadProgram() {
+    let party_id = $('#party_id').val();
+    console.log('Party-ID:', party_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_cutting_program_lists/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $prg_id = $('#prg_id');
+            let $prg_quantity = $('#prg_quantity');
+            let $quality_id = $('#quality_id');
+            let $style_id = $('#style_id');
+
+            // Reset dropdowns and inputs
+            $prg_id.empty().append('<option value="">Select</option>');
+            $prg_quantity.val('');
+            $quality_id.val('').change();
+            $style_id.val('').change();
+
+            if (data.length > 0) {
+                data.forEach(function (po) {
+                    $prg_id.append(
+                        `<option value="${po.id}" data-total="${po.total_quantity}" data-quality="${po.quality_id}" data-style="${po.style_id}">
+                            ${po.cutting_no}
+                        </option>`
+                    );
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program lists:', error);
+        }
+    });
+}
+
+function updateProgramDetails() {
+    let selectedOption = $('#prg_id').find(':selected');
+    let totalQuantity = selectedOption.data('total') || '';
+    let qualityId = selectedOption.data('quality') || '';
+    let styleId = selectedOption.data('style') || '';
+
+    console.log('Updating fields:', { totalQuantity, qualityId, styleId });
+
+    $('#prg_quantity').val(totalQuantity);  
+    $('#quality_id').val(qualityId).change();
+    $('#style_id').val(styleId).change();
+}
+
+function loadProgramDetails(prg_id) {
+    $.ajax({
+        type: 'POST', 
+        url: '/get_sub_cutting_program/',
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty(); // Clear existing rows
+
+            if (data.length > 0) {
+                data.forEach(function (item) {
+                    addRow(item.size_name, item.color_name, item.size_id, item.color_id, item.quantity, 0); // Set wt as 0
+                });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    });
+}
+
+// ````````````````````````````````````````````
+
+
+$(document).ready(function () {
+    $('#program_type').on('change', function () {
+        var programType = $(this).val();
+        var qualityId = $('#quality_id').val();
+        var uomId = $('#uom_id').val();
+        var styleId = $('#style_id').val();
+        var groupId = $('#group_id').val();
+
+        console.log("Selected program_type:", programType);
+        console.log("Quality:", qualityId, "Style:", styleId, "Group:", groupId);
+
+        // Ensure Quality, Style, and Group are selected before proceeding
+        if (!qualityId || !styleId || !groupId || !uomId) {
+            console.warn("Please select Quality, Style, and Acc Group first.");
+            notifier.show(
+                'Warning!', 
+                'Please select Quality, Style, and Acc Group before choosing a Program Type.', 
+                'warning', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            $(this).val(""); // Reset Program Type selection
+            return;
+        }
+
+        // Load colors **only if** Program Type is "Size", "Color", or "Total Quantity"
+        if (programType === "Size" || programType === "Color" || programType === "Total Quantity") {
+            loadColors();
+        } else {
+            console.warn("Invalid selection, clearing table.");
+            $('#sizeTableBody').empty(); // Clear table when selecting "Select"
+        }
+    });
+});
+
+
+
+
+function loadColors() {
+    var quality_id = $('#acc_quality_id').val();
+    var item_id = $('#item_id').val();
+    var programType = $('#program_type').val(); // Get selected program type
+    console.log('Selected program_type:', programType);
+    
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    // If program_type is empty, null, or 0, clear the table and exit
+    if (!programType || programType === "0") {
+        console.warn("Invalid program type, skipping color load.");
+        $('#sizeTableBody').empty(); // Clear the table if invalid
+        return;
+    }
+
+    if (!quality_id) {
+        console.warn("Quality not selected");
+        return;
+    }
+
+    // Check if at least one size has a position
+    let hasPosition = false;
+    $('#size_id option').each(function () {
+        let sizePosition = $(this).data('position'); // Get position
+        if (sizePosition) {
+            hasPosition = true;
+            return false; // Exit loop if found
+        }
+    });
+
+    // If no position is found, alert and stop execution
+    if (!hasPosition) {
+        notifier.show(
+            'Error!', 
+            'Please add a position for sizes in Quality Settings before proceeding.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+        return;
+    }
+
+    // Proceed with AJAX request if position exists
+    $.ajax({
+        type: 'POST',
+        url: '/get_acc_size_list/',
+        data: {
+            'quality_id': quality_id,
+            'item_id': item_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('Received Sizes:', data);
+
+            if (data.error) {
+                alert("Error: " + data.error);
+                return;
+            }
+
+            // Extract size options along with their positions
+            let headerSizes = [];
+            $('#size_id option').each(function () {
+                let sizeValue = $(this).val();
+                let sizeName = $(this).text().trim();
+                let sizePosition = $(this).data('position') || 0;
+
+                if (sizeValue) {
+                    headerSizes.push({ id: sizeValue, name: sizeName, position: parseInt(sizePosition) });
+                }
+            });
+
+            // Sort header sizes by position
+            headerSizes.sort((a, b) => a.position - b.position);
+
+            // Clear table header and body before adding new data
+            $('#sizeHeader').empty(); 
+            $('#sizeTableBody').empty();
+
+            // Create table structure
+            let tableHTML = `<table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th colspan=8 style="text-align:center">Quality Size</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Accessory Size</th>`; 
+
+            // Append size headers from select dropdown
+            headerSizes.forEach(size => {
+                tableHTML += `<th>${size.name}
+                                <input type="hidden" name="header_position_${size.id}" value="${size.position}">
+                              </th>`;
+            });
+
+            tableHTML += `</tr></thead><tbody>`;
+
+            // Get received sizes from the backend
+            let sizes = data.sizes || [];
+            if (sizes.length === 0) {
+                console.warn("No sizes received.");
+                return;
+            }
+
+            // Sort sizes based on position
+            sizes.sort((a, b) => a.position - b.position);
+
+            // Retrieve existing data from localStorage
+            let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+            let itemKey = `${$('#group_id').val()}_${$('#item_id').val()}_${quality_id}`;
+
+            // Loop through received sizes and create rows
+            sizes.forEach(size => {
+                let storedPosition = (selectedItems[itemKey] && selectedItems[itemKey].sizes[size.id]) 
+                    ? selectedItems[itemKey].sizes[size.id].position 
+                    : size.position; 
+
+                tableHTML += `<tr>
+                                <td>${size.name} 
+                                    <input type="hidden" name="position_${size.id}" value="${storedPosition}">
+                                </td>`;
+
+                // Add input fields for each header size
+                headerSizes.forEach(headerSize => {
+                    let storedValue = (selectedItems[itemKey] && selectedItems[itemKey].sizes[size.id] &&
+                                       selectedItems[itemKey].sizes[size.id].values[headerSize.id]) 
+                                      ? selectedItems[itemKey].sizes[size.id].values[headerSize.id] 
+                                      : '';
+
+                    tableHTML += `
+                        <td>
+                           <input type="number" id="qty_${size.id}_${headerSize.id}" class="form-control text-center no-spinner" 
+                                value="${storedValue}" min="0" step="0.01" style="width: 120px;">
+
+                        </td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `</tbody></table>`;
+
+            // Append the final table to the sidebar // <input type="number" id="qty_${size.id}_${headerSize.id}" class="form-control text-center" 
+                            // value="${storedValue}" min="0" step="0.01" style="width: 80px;">
+            $('#sizeTableBody').html(tableHTML);
+
+            console.log("Opening color sidebar...");
+            openColorSidebar();
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading colors:', xhr.responseText);
+            alert("Error: " + xhr.responseText);
+        }
+    });
+}
+
+
+
+
+function openColorSidebar() {
+    let sidebar = document.getElementById("sizeSidebar");
+
+    if (!sidebar) {
+        console.error("sizeSidebar element not found! Make sure it exists in the DOM.");
+        return;
+    }
+
+    sidebar.style.right = "0"; // Open sidebar by bringing it into view
+}
+
+function closeColorSidebar() {
+    document.getElementById("sizeSidebar").style.right = "-40%"; // Hide sidebar
+}
+if (!document.getElementById("sizeSidebar")) {
+    $("body").append(`
+        <div id="sizeSidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h4>Size</h4>
+                <button onclick="closeColorSidebar()">×</button>
+            </div>
+            <div class="sidebar-body">
+                <div id="sizeTableBody"></div>
+            </div>
+            <div class="sidebar-footer">
+                <button type="button" class="btn btn-success" onclick="saveColorSelection()">+ Add Size</button>
+            </div>
+        </div>
+    `);
+}
+
+
+
+// ✅ Increase/Decrease Quantity Functions
+function increaseColorQuantity(color_id) {
+    let input = document.getElementById(`color_qty_${color_id}`);
+    input.value = parseInt(input.value) + 1;
+}
+
+function decreaseColorQuantity(color_id) {
+    let input = document.getElementById(`color_qty_${color_id}`);
+    if (parseInt(input.value) > 0) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+
+
+
+
+window.addEventListener('load', function () {
+    sessionStorage.clear(); // Clears session storage on page reload
+    localStorage.removeItem('selectedItems'); // Clears only the selectedItems key from localStorage
+});
+
+
+
+
+// ````````````````````````````````````  localStorage values `````````````````````````````````````````
+
+
+
+function saveColorSelection() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {}; 
+
+    let quality_id = $('#acc_quality_id').val();
+    let quality_name = $('#acc_quality_id option:selected').text().trim();
+    let program_type = $('#program_type').val();
+    let product_pieces = $('#product_pieces').val();
+    let uom_id = $('#uom_id').val();
+    let uom_name = $('#uom_id option:selected').text().trim();
+
+    let item_group_id = $('#group_id').val();
+    let item_group_name = $('#group_id option:selected').text().trim();
+    let item_id = $('#item_id').val();
+    let item_name = $('#item_id option:selected').text().trim();
+
+    let itemKey = `${item_group_id}_${item_id}_${quality_id}_${uom_id}_${program_type}`;  
+
+    if (!selectedItems[itemKey]) {
+        selectedItems[itemKey] = { 
+            program_type,
+            product_pieces,
+            quality_id, quality_name, 
+            item_group_id, item_group_name, 
+            item_id, item_name,  
+            uom_id, uom_name,
+            sizes: {} 
+        };
+    }
+
+    let sizePositions = {};
+    $('input[name^="header_position_"]').each(function () {
+        let accessory_size_id = $(this).attr('name').split('_')[2]; 
+        let position = parseInt($(this).val()) || 0; 
+        sizePositions[accessory_size_id] = position; 
+    });
+
+    $('#sizeTableBody tbody tr').each(function () {
+        let size_input = $(this).find('input[name^="position_"]'); 
+        let size_id = size_input.attr('name').split('_')[1]; 
+        let accessory_size_id = size_input.attr('name').split('_')[2] || size_id;
+        let size_name = $(this).find('td:first').text().trim();
+        let position = sizePositions[accessory_size_id] || 0; 
+
+        if (!selectedItems[itemKey].sizes[size_id]) {
+            selectedItems[itemKey].sizes[size_id] = { 
+                size_name, 
+                accessory_size_id, 
+                quantities: [] 
+            };
+        }
+
+        $(this).find('td input[type="number"]').each(function () {
+            let input_id = $(this).attr('id'); 
+            let quantity = parseFloat($(this).val()) || 0; // ✅ Convert empty/null to 0
+
+            let [, sid, accessory_size_id] = input_id.split('_'); 
+            let size_position = sizePositions[accessory_size_id] || 0;
+
+            // ✅ Always store the value, even if it's 0
+            selectedItems[itemKey].sizes[size_id].quantities.push({
+                quality_size_id: accessory_size_id,
+                position: size_position, 
+                quantity: quantity.toFixed(2) 
+            });
+        });
+    });
+
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    console.log('Updated Local Storage:', JSON.parse(localStorage.getItem('selectedItems')));
+
+    closeColorSidebar();
+    loadPurchaseTable();  
+}
+
+
+function deleteRow(itemKey) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    delete selectedItems[itemKey];  // Remove entry
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems)); 
+    loadPurchaseTable();  // Refresh table
+}
+
+
+
+function loadPurchaseTable() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    let $tbody = $('#purchaseTable tbody');
+    $tbody.empty(); 
+
+    var program_type =$('#program_type').val();
+
+    let positionMap = {}; 
+    let positionToSizeMap = { 1: 75, 2: 80, 3: 85, 4: 90, 5: 95, 6: 100, 7: 105, 8: 110 };
+
+    $('#purchaseTable thead th').each(function (index) {
+        let position = $(this).find('div:last').text().trim();
+        if (position) {
+            positionMap[position] = index;
+        }
+    });
+
+    console.log("🔹 Position Map (Table Headers):", positionMap);
+
+    let hasAnyValidRow = false;
+
+    Object.keys(selectedItems).forEach(item_id => {
+        let itemData = selectedItems[item_id];
+
+        if (!itemData || !itemData.sizes) {
+            console.warn(`⚠️ Missing size data for item ID: ${item_id}`);
+            return;
+        }
+
+        let qualityName = itemData.quality_name || "N/A";
+        let qualityId = itemData.quality_id || 0;
+        let itemName = itemData.item_name || "N/A";
+        let itemId = itemData.item_id || 0;
+        let itemGroupName = itemData.item_group_name || "N/A";
+        let item_groupId = itemData.item_group_id || 0;
+        let uomName = itemData.uom_name || "N/A";
+        let uomId = itemData.uom_id || 0;
+        let productPieces = itemData.product_pieces || "";
+
+        let hasValidSizeRow = false;
+
+        Object.keys(itemData.sizes).forEach(sizeId => {
+            let sizeData = itemData.sizes[sizeId]; 
+
+            if (!sizeData.quantities || sizeData.quantities.length === 0) {
+                console.warn(`⚠️ Skipping empty size: ${sizeData.size_name}`);
+                return;
+            }
+
+            let sizeQuantities = {};
+            Object.keys(positionMap).forEach(pos => {
+                sizeQuantities[pos] = "-";
+            });
+
+            let hasValidQuantity = false;
+            let allZero = true; // New flag to check if all quantities are 0
+
+            sizeData.quantities.forEach(qtyData => {
+                let storedPosition = qtyData.position;
+                let quantity = qtyData.quantity ? parseFloat(qtyData.quantity).toFixed(2) : "-";
+
+                let actualSize = positionToSizeMap[storedPosition];
+
+                if (actualSize && positionMap.hasOwnProperty(actualSize.toString())) {
+                    if (quantity !== "-") {
+                        sizeQuantities[actualSize.toString()] = quantity;
+
+                        if (parseFloat(quantity) > 0) {
+                            hasValidQuantity = true;
+                        }
+
+                        if (parseFloat(quantity) !== 0) {
+                            allZero = false; // If any value is NOT zero, update flag
+                        }
+                    }
+                }
+            });
+
+            // 🚨 **Skip row if all values are exactly 0**
+            if (allZero) { 
+                console.warn(`⚠️ Skipping size ${sizeData.size_name} (All values are 0)`);
+                return;
+            }
+
+            hasValidSizeRow = true;
+            hasAnyValidRow = true;
+ 
+            let row = `<tr data-item-id="${item_id}">
+                            <td>${itemGroupName} / ${itemName} / ${qualityName} / ${uomName}</td> 
+                            <td style="display: none;">${qualityId}</td>
+                            <td>${productPieces}</td>
+                            <td>${program_type}</td>
+                            <td>${uomName}</td>
+                            <td>${sizeData.size_name}</td>`; 
+
+
+            Object.keys(positionMap).forEach(pos => { 
+                let quantity = sizeQuantities[pos];
+
+                if (quantity !== "-") { 
+                    row += `<td>
+                        <a href="javascript:void(0);" 
+                            class="edit-link" 
+                            data-item-id="${item_id}" 
+                            data-size-id="${sizeData.accessory_size_id}" 
+                            data-acc-size-id="${sizeData.accessory_size_id}" 
+                            data-quality-size-id="${sizeId}"  
+                            data-position="${pos}"   
+                            data-quantity="${quantity}" 
+                            onclick="openEditModal(this)">
+                                ${quantity}
+                        </a>
+                    </td>`;
+                } else {
+                    row += `<td>${quantity}</td>`;
+                }
+            });
+
+            row += `<td>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="removeRow('${item_id}')">
+                            <i class="feather icon-trash-2"></i>
+                        </button>
+                    </td> 
+
+                    <td style="display: none;" id="acc_group_id" >${item_groupId}</td>
+                    <td style="display: none;" id="acc_item_id">${itemId}</td>
+                    <td style="display: none;" id="uom_id">${uomId}</td>
+                    <td style="display:none;" id="acc_size_id">${sizeData.accessory_size_id}</td>
+                </tr>`;
+
+            $tbody.append(row);
+        });
+
+        if (!hasValidSizeRow) {
+            console.warn(`⚠️ Skipping item ${itemName} (All sizes are empty or 0)`);
+        }
+    });
+
+    if (!hasAnyValidRow) {
+        console.warn("⚠️ No valid rows found. Table remains empty.");
+    }
+}
+
+
+
+function openEditModal(element) {
+    let itemId = $(element).data('item-id');
+    let sizeId = $(element).data('size-id');
+    let accSizeId = $(element).data('acc-size-id'); // ✅ Corrected
+    let position = parseInt($(element).data('position')); 
+    let qualitySizeId = $(element).data('quality-size-id');
+    let quantity = $(element).attr('data-quantity'); 
+    quantity = quantity ? parseFloat(quantity).toFixed(2) : "0.00";
+
+    console.log(`🔹 Opening modal: Item ${itemId}, Size ${sizeId}, AccSizeID ${accSizeId}, Pos ${position}, Qty ${quantity}`);
+
+    $('#editModalTitle').text(`Edit Quantity - Accessory Size ID ${accSizeId}`);
+    let $modalBody = $('#editModalBody');
+    $modalBody.empty();
+
+    let inputHTML = `
+        <div class="form-group">
+            <label>Quantity for Position ${position}:</label>
+            <input type="number" class="form-control edit-quantity" 
+                   data-item-id="${itemId}"
+                   data-size-id="${sizeId}"
+                   data-acc-size-id="${accSizeId}" 
+                   data-quality-size-id="${qualitySizeId}"  
+                   data-position="${position}"
+                   value="${quantity}" step="0.01" min="0">
+        </div>`; 
+
+    console.log("🔹 Injecting into modal:", inputHTML);
+    $modalBody.html(inputHTML);
+    $('#editModal').modal('show');
+}
+
+
+
+function saveEditedQuantity() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    let editedInputs = $('.edit-quantity');
+
+    // ** Position Mapping **
+    let positionToSizeMap = { 
+        // 1: 45, 2: 50, 3: 55, 4: 60, 5: 65, 6: 70, 7: 75, 8: 80 
+        1: 75, 2: 80, 3: 85, 4: 90, 5: 95, 6: 100, 7: 105, 8: 110 
+
+    };
+
+    editedInputs.each(function () {
+        let newQty = parseFloat($(this).val()) || 0;
+        let itemId = $(this).attr('data-item-id');
+        let accSizeId = $(this).attr('data-acc-size-id');
+        let tablePosition = parseInt($(this).attr('data-position'));
+
+        // Convert table position to stored position
+        let storedPosition = Object.keys(positionToSizeMap).find(key => positionToSizeMap[key] == tablePosition);
+
+        console.log(`🔹 Saving Edit: Item ID ${itemId}, Acc Size ID ${accSizeId}, Pos ${tablePosition} (Mapped: ${storedPosition}), New Qty ${newQty}`);
+
+        if (!selectedItems) {
+            console.error("⚠️ No selected items found in localStorage.");
+            return;
+        }
+
+        let updated = false;
+
+        // Loop through all items and locate the correct `accessory_size_id`
+        Object.values(selectedItems).forEach(itemData => {
+            if (!itemData.sizes) return;
+
+            Object.values(itemData.sizes).forEach(sizeData => {
+                if (sizeData.accessory_size_id == accSizeId) {
+                    sizeData.quantities.forEach(qtyData => {
+                        if (parseInt(qtyData.position) === parseInt(storedPosition)) {
+                            console.log(`✅ Updating Pos ${storedPosition} from ${qtyData.quantity} to ${newQty.toFixed(2)}`);
+                            qtyData.quantity = newQty.toFixed(2);
+                            updated = true;
+                        }
+                    });
+                }
+            });
+        });
+
+        if (!updated) {
+            console.warn(`⚠️ No matching entry found for Acc Size ID ${accSizeId} at Position ${tablePosition} (Stored: ${storedPosition})`);
+        }
+    });
+
+    // ✅ Save back to localStorage
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    console.log("🔹 LocalStorage Updated:", JSON.parse(localStorage.getItem('selectedItems')));
+
+    $('#editModal').modal('hide'); // Close modal
+    loadPurchaseTable(); // Refresh table to reflect changes
+}
+
+
+function removeRow(itemKey) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    if (selectedItems.hasOwnProperty(itemKey)) {
+        delete selectedItems[itemKey]; // Remove item from stored data
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems)); // Update localStorage
+
+        // Remove the specific row from the table
+        $(`tr[data-item-id="${itemKey}"]`).remove();
+        console.log(`🗑️ Removed row for item ID: ${itemKey}`);
+    } else {
+        console.warn(`⚠️ Item ID ${itemKey} not found in localStorage.`);
+    }
+}
+
+
+
+// edit function
+
+function editRow(rowId) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    
+    // Find the specific row data based on rowId
+    let rowData = selectedItems[rowId];
+
+    if (!rowData) {
+        alert('Row data not found!');
+        return;
+    }
+
+    $('#editModalTitle').text(`Edit ${rowData.item_name}`);
+    $('#editItemId').val(rowId);
+
+    let $modalBody = $('#editModalBody');
+    $modalBody.empty();
+
+    // Loop through only the sizes for this row
+    Object.keys(rowData.sizes).forEach(sizeId => {
+        let sizeData = rowData.sizes[sizeId];
+        console.log('size-id:',sizeData);
+
+        // Ensure only sizes with quantities are displayed                        
+        // <label>${sizeData.size_name} (Size ID: ${sizeData.accessory_size_id})</label>`;
+
+        if (sizeData.quantities && sizeData.quantities.length > 0) {
+            let sizeHTML = `<div class="form-group">
+                                <label>${sizeData.size_name} </label>`;
+
+            // Loop through the quantities for this specific size
+            sizeData.quantities.forEach(qtyData => {
+                sizeHTML += `
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Quality ID: ${qtyData.quality_size_id}</span>
+                        <input type="number" class="form-control edit-quantity" 
+                            id="edit_qty_${sizeData.accessory_size_id}_${qtyData.quality_size_id}" 
+                            value="${qtyData.quantity || 0}" step="0.01" min="0">
+                    </div>`;
+            });
+
+            sizeHTML += `</div>`;
+            $modalBody.append(sizeHTML);
+        }
+    });
+
+    $('#editModal').modal('show');
+}
+
+
+
+// Function to save updated data from modal
+function saveEdit() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    let itemId = $('#editItemId').val();
+    let itemData = selectedItems[itemId];
+
+    if (!itemData) {
+        alert('Error updating item!');
+        return;
+    }
+
+    // Loop through each size and update the correct quantity based on the quality_size_id
+    Object.keys(itemData.sizes).forEach(sizeId => {
+        itemData.sizes[sizeId].quantities.forEach(qtyData => {
+            let inputField = $(`#edit_qty_${sizeId}_${qtyData.quality_size_id}`);
+            let newQty = parseFloat(inputField.val()) || 0;
+            qtyData.quantity = newQty.toFixed(2);
+        });
+    });
+
+    // Save updated data to localStorage
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+
+    // Close modal and reload table
+    $('#editModal').modal('hide');
+    loadPurchaseTable();
+}
+
+
+// ````````````````````````````````
+
+
+function LoadAccItem() {
+    var group_id = $('#group_id').val();
+    console.log('Group ID:', group_id);
+
+    if (!group_id) {
+        console.warn("No Group ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_acc_quality_item_list/',  // Updated backend URL
+        data: {
+            'group_id': group_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Item Data:', data);
+
+            // Clear dropdowns
+            $('#item_id').empty().append('<option value="">Select Item</option>');
+            $('#acc_quality_id').empty().append('<option value="">Select Quality</option>');
+            $('#acc_size_id').empty().append('<option value="">Select Size</option>');
+
+            // Populate Items
+            if (data.item && Array.isArray(data.item)) {
+                data.item.forEach(function(item) {
+                    $('#item_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading items:', error);
+        }
+    });
+}
+
+
+
+$('#item_id').change(function() {
+    var item_id = $(this).val();
+    console.log('Selected Item ID:', item_id);
+
+    if (!item_id) {
+        console.warn("No Item selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_acc_quality_list/',  // Updated backend URL
+        data: {
+            'item_id': item_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Quality Data:', data);
+
+            $('#acc_quality_id').empty().append('<option value="">Select Quality</option>');
+            $('#acc_size_id').empty().append('<option value="">Select Size</option>');
+
+            if (data.quality && Array.isArray(data.quality)) {
+                data.quality.forEach(function(quality) {
+                    $('#acc_quality_id').append('<option value="' + quality.id + '">' + quality.name + '</option>');
+                });
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading qualities:', error);
+        }
+    });
+});
+
+$(document).ready(function () {
+    // Load Sizes based on Selected Item and Quality
+    $('#acc_quality_id').change(function () {
+        let quality_id = $(this).val();
+        let item_id = $('#item_id').val();  // Get selected Item ID
+        console.log('Selected Quality ID:', quality_id);
+        console.log('Selected Item ID:', item_id);
+
+        if (!quality_id || !item_id) {
+            console.warn("⚠️ Both Item and Quality must be selected");
+            return;
+        }
+
+        let csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+        $.ajax({
+            type: 'POST', 
+            url: '/get_acc_item_size_list/',  
+            data: {
+                'item_id': item_id,   // Include Item ID
+                'quality_id': quality_id,  // Include Quality ID
+                'csrfmiddlewaretoken': csrfToken
+            },
+            dataType: 'json',
+
+            success: function (data) {
+                console.log('✅ Received Size Data:', data);
+
+                let $sizeDropdown = $('#acc_size_id');
+                $sizeDropdown.empty().append('<option value="">Select Size</option>');
+
+                if (data.size && Array.isArray(data.size)) {
+                    data.size.forEach(size => {
+                        $sizeDropdown.append(`<option value="${size.id}">${size.name}</option>`);
+                    });
+                } else {
+                    console.warn("⚠️ No sizes found for this Item & Quality.");
+                }
+            },
+
+            error: function (xhr, status, error) {
+                console.error('❌ Error loading sizes:', error);
+            }
+        });
+    });
+});
+
+
+// ````````````````````````````
+
+function LoadItem() {
+    var quality_id = $('#quality_id').val();
+    console.log('Quality-ID:', quality_id); // ✅ Debugging log
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_item_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            console.log('Received Data:', data); // ✅ Debugging log
+
+            // Clear previous options
+            $('#style_id').empty().append('<option value="">Select Style</option>');
+            $('#size_id').empty().append('<option value="">Select Size</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function (style) {
+                    $('#style_id').append('<option value="' + style.id + '">' + style.name + '</option>');
+                });
+            }
+
+            // Populate Sizes (General sizes, before selecting a style)
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function (size) {
+                    $('#size_id').append('<option value="' + size.id + '">' + size.name + '</option>');
+                });
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+}
+
+
+
+$('#style_id').on('change', function () {
+    var style_id = $(this).val();
+    var quality_id = $('#quality_id').val();
+
+    if (!style_id) {
+        console.warn("No Style selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_style_based_sizes/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            console.log('Received Sizes for Style:', data);
+
+            $('#size_id').empty().append('<option value="">Select Size</option>');
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function (size) {
+                    // Store the position in a `data-position` attribute
+                    $('#size_id').append('<option value="' + size.id + '" data-position="' + size.position + '">' + size.name + '</option>');
+                });
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Error loading sizes for selected style:', error);
+        }
+    });
+});
+
+
+
+
+function LoadItem_bk_18() {
+    var quality_id = $('#quality_id').val(); 
+    console.log('Quality-ID:', quality_id); // Debugging output
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_item_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear and add default "Select" option
+            // $('#item_id').empty().append('');
+            // if (data.item && Array.isArray(data.item)) {
+            //     data.item.forEach(function(item) {
+            //         $('#item_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+            //     });
+            // }
+
+            $('#style_id').empty().append('');
+            $('#size_id').empty().append('');
+            
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(style) {
+                    $('#style_id').append('<option value="' + style.id + '">' + style.name + '</option>');
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(size) {
+                    $('#size_id').append('<option value="' + size.id + '">' + size.name + '</option>');
+                });
+            }
+
+
+
+
+            
+
+          
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+ // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+function storeTblValues() {
+    var TableData = [];
+    var hasInvalidWt = false; // Flag to check if any wt <= 0 
+
+    $('#purchaseTable tbody tr').each(function () {
+        var item = $(this).find('td:eq(0)').text().trim();
+        var quality = $(this).find('td:eq(1)').text().trim();
+        var product_pieces = parseFloat($(this).find('.product_pieces').text()) || 0;
+        var uom = $(this).find('td:eq(3)').text().trim();
+        var quantity = parseFloat($(this).find('.quantity').text()) || 0;
+        var program_type = $(this).find('.program_type').text().trim(); // Program Type is text, not a number
+
+        var itemId = $(this).find('.item_id').text().trim();
+        var qualityId = $(this).find('.quality_id').text().trim();
+        var uomId = $(this).find('.uom_id').text().trim();
+
+        // ✅ Validate quantity and product_pieces
+        if (quantity <= 0 || product_pieces <= 0) {
+            hasInvalidWt = true;
+        }
+
+        // ✅ Add only valid rows
+        if (item && quality && quantity > 0 && product_pieces > 0) {
+            TableData.push({
+                "item": item,
+                "quality": quality,
+                "product_pieces": product_pieces,
+                "uom": uom,
+                "quantity": quantity,
+                "program_type": program_type,
+                "item_id": itemId,
+                "quality_id": qualityId,
+                "uom_id": uomId
+            });
+        }
+    });
+
+    // 🚨 If any invalid Wt exists, show alert
+    if (hasInvalidWt) {
+        console.log('Error: Some rows have invalid Quantity or Product Pieces (≤ 0). Please correct them before submitting.');
+        return []; // Stop submission
+    }
+
+    calculateTotalValue();
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+// ```````````````````````````````````````````````           12-03-2025 (accessory program add-row )              ```````````````````````````````````````````````
+
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const itemId = $("#item_id").val();
+    const itemName = $("#item_id option:selected").text().trim();
+    const qualityId = $("#quality_id").val();
+    const qualityName = $("#quality_id option:selected").text().trim();
+    const uomId = $("#uom_id").val();
+    const uomName = $("#uom_id option:selected").text().trim();
+    const quantity = parseFloat($("#quantity").val()) || 1;
+    const programType = $("#program_type").val();
+    const productPieces = parseFloat($("#product_pieces").val()) || 1;
+
+    if (!itemId || !uomId || !quantity || !programType) {
+        notifier.show(
+            'Error!',
+            'Please fill in all required fields: Item, UOM, Quantity, and Program Type.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    if (!isRowDuplicate(itemId, uomId, programType)) {
+        addRow(itemName, itemId, qualityName, qualityId, uomName, uomId, quantity, programType, productPieces);
+    } else {
+        notifier.show(
+            'Error!',
+            `Item: ${itemName} and UOM: ${uomName} already exists in the table.`,
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+    }
+}
+
+function isRowDuplicate(itemId, uomId, programType) {
+    let isDuplicate = false;
+
+    $("#purchaseTable tbody tr").each(function () { 
+        const existingItemId = $(this).find(".item_id").text().trim();
+        const existingUomId = $(this).find(".uom_id").text().trim();
+        const existingprgType = $(this).find(".program_type").text().trim();
+
+        if (existingItemId === itemId && existingUomId === uomId && existingprgType === programType) {
+            isDuplicate = true;
+            return false;
+        }
+    });
+
+    return isDuplicate;
+}
+
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let totalProductPieces = 0;
+
+    $('#purchaseTable tbody > tr').each(function () {
+        const quantity = parseFloat($(this).find('.quantity').text()) || 0;
+        const productPieces = parseFloat($(this).find('.product_pieces').text()) || 0;
+
+        totalQuantity += quantity;
+        totalProductPieces += productPieces;
+    });
+
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#pieces_total_placeholder').text(totalProductPieces);
+}
+
+
+
+
+
+
+function calculateRow(event) {
+    const row = event.target.closest("tr");
+
+    const rate = parseFloat($(row).find('.rate').val()) || 0;
+    const quantity = parseFloat($(row).find('.quantity').text()) || 0;
+
+    const amount = (rate * quantity).toFixed(2);
+    $(row).find('.amount').text(amount);
+
+    calculateTotalValue();
+}
+
+
+
+// `````````````````````````````````````````````````````````````````````
+
+
+$('#add_new').on('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked");
+
+    // ✅ Retrieve localStorage values
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    if (Object.keys(selectedItems).length === 0) {
+        notifier.show(
+            'Error!',
+            'No items in local storage. Please add items before saving.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return; // 🚨 Stop form submission if no data
+    }
+
+    let TableData = extractLocalStorageData(selectedItems);
+    console.log('📌 Extracted Data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!',
+            'No valid data found in local storage. Please check and try again.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        let formData = new FormData(this);
+        formData.append('cutting_data', JSON.stringify(TableData));
+
+        // ✅ Get total quantity safely
+        let totalQty = parseFloat($('#qty_total_placeholder').text().trim()) || 0;
+        formData.append('total_quantity', totalQty);
+
+        $.ajax({
+            type: "POST",
+            url: "/add-accessory-program/",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                console.log("🔄 Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function (data) {
+                console.log("✅ Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {
+                    notifier.show(
+                        'Success!',
+                        'Accessory Ratio Setting added successfully!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+
+                    // ✅ Clear form and tables
+                    $('#add_new').trigger('reset');
+                    $('#purchaseTable tbody, #summaryTable tbody').empty();
+                    localStorage.removeItem('selectedItems'); // ✅ Clear saved data
+
+                    // ✅ Reset select dropdowns
+                    $('#uom_id, #quality_id, #item_id, #program_type').val('').trigger("change");
+
+                } else {
+                    notifier.show(
+                        'Error!',
+                        'Failed to add: ' + data.message,
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("❌ AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!',
+                    'Error adding data: ' + errorThrown,
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+function extractLocalStorageData(selectedItems) {
+    let extractedData = [];
+
+    Object.values(selectedItems).forEach(item => {
+        if (!item.sizes) return;
+
+        Object.values(item.sizes).forEach(size => {
+            if (!size.quantities || size.quantities.length === 0) return;
+
+            // ✅ Check if *any* quantity is > 0
+            let hasAnyQuantity = size.quantities.some(qty =>
+                !isNaN(parseFloat(qty.quantity)) && parseFloat(qty.quantity) > 0
+            );
+
+            if (!hasAnyQuantity) return; // ❌ Skip entire row if all are 0 or invalid
+
+            // ✅ Push all quantities, even 0 ones, since we verified at least one is valid
+            size.quantities.forEach(qty => {
+                extractedData.push({
+                    item_group_id: item.item_group_id,
+                    item_group_name: item.item_group_name,
+                    item_id: item.item_id,
+                    item_name: item.item_name,
+                    quality_id: item.quality_id,
+                    quality_name: item.quality_name,
+                    product_pieces: item.product_pieces,
+                    uom_id: item.uom_id || "",
+                    uom_name: item.uom_name || "",
+                    accessory_size_id: size.accessory_size_id,
+                    size_name: size.size_name,
+                    quality_size_id: qty.quality_size_id,
+                    position: qty.position,
+                    quantity: parseFloat(qty.quantity) || 0  // ✅ Always store number
+                });
+            });
+        });
+    });
+
+    return extractedData;
+}
+
+
+
+  
+$('.single-select').select2();  
+
+
+</script>

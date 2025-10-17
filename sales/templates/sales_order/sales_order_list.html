@@ -1,0 +1,292 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Sales Order  &nbsp; 
+                                                <a href="/add-sales-order">
+                                                    <button type="button" class="btn btn-sm btn-primary ms-3" >Add </button>
+                                                </a>
+                                            </h4> 
+                                        </div>
+
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Sales</a></li>
+                                            <li class="breadcrumb-item"><a href="/add-sales-order">Sales Order </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div> 
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                   
+
+
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th>Action</th>
+                                                        <th> Order No</th>
+                                                        <th>Order Date</th>
+                                                        <th>Party</th>
+
+                                                        <!-- <th>Work Order No.</th> -->
+                                                        <!-- <th>Packing Received No.</th> -->
+                                                         
+                                                        <th>Total Box</th> 
+                                                        <th>Total Pcs</th>                                                        
+                                                        <th>Active</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+
+                                        
+                                    </div>
+
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %} 
+
+<script>
+
+
+
+var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50, 
+        "destroy": true, 
+   
+ 
+        "columns": [ 
+            { "data": "id", "title": " ID #" },
+            { "data": "action", "title": "Action" }, 
+            { "data": "order_no", "title": "Order No." }, 
+            { "data": "order_date", "title": "Order Date","className": "text-center" },
+            { "data": "party", "title": " Party"},
+            // { "data": "work_order_no", "title": " Work Order No.","className": "text-center" },
+            // { "data": "packing_received", "title": " Packing Received" }, 
+            { "data": "total_box", "title": " Total Box" }, 
+            { "data": "total_pcs", "title": " Total Pcs" },
+         
+            { "data": "status", "title": "Status" } 
+        ], 
+        "ajax": {   
+            "url": '/sales-order-ajax-report/',
+            "type": "POST",
+            "data": function(data){
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.party = $('#filter_party').val();
+                data.outward = $('#filter_packing').val();
+                data.work_no = $('#filter_work_no').val();
+                // data.quality = $('#filter_quality').val();   
+                // data.style = $('#filter_style').val();
+                if (start_date && end_date && $('#is_date').is(":checked")) {
+                    data.from_date = start_date; 
+                    data.to_date = end_date;
+                }
+            },
+            "dataSrc": function(json) { 
+                if (json.message === 'error') {
+                    
+                    console.log('access denied')
+                    return [];
+                }
+
+                // Log and return the valid data
+                console.log(json);
+                return json.data;
+            }
+        }
+    });
+
+ 
+
+    function refresh_data() {
+    if ($.fn.DataTable.isDataTable("#datatable")) { 
+        $('#datatable').DataTable().ajax.reload(null, false);  // ✅ Refresh without resetting pagination
+    }
+}
+
+
+
+
+
+
+var start_date;
+var end_date;
+    
+
+
+$(function() {
+    // Set start date to April 1, 2025
+    var start = moment('2025-04-01', 'YYYY-MM-DD');
+    // Set end date to today's date
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        start_date = start.format('YYYY-MM-DD');
+        end_date = end.format('YYYY-MM-DD');
+    }
+   
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Since April 1, 2025': [moment('2025-04-01'), moment()]
+        }
+    }, cb);
+
+    cb(start, end);
+
+    // Enable date filter checkbox by default and reload table
+    $('#is_date').prop('checked', true);
+    table.ajax.reload();
+});
+
+
+
+ $('.single-select').select2();
+
+
+
+
+function sales_order_edit(id) { 
+    var encodedId = btoa(id); 
+    console.log('detail-encodedId:',encodedId);
+
+    window.location.href = '/sales-order-edit/?id=' + encodedId; 
+}
+ 
+ 
+function sales_order_delete(id){
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/delete-sales-order/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                   if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Deleted successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+            });
+
+        }
+    
+}
+ 
+
+function sales_order_print(id) {
+	var url= '/sales-order-print/?k='; 
+	var y=url+window.btoa(id);
+	// <!-- window.open(y,'_blank'); -->
+	 printExternal(y);
+}
+
+
+
+function printExternal(url) {
+    var printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+
+    printWindow.addEventListener('load', function() {
+        if (Boolean(printWindow.chrome)) {
+            printWindow.print();
+            setTimeout(function(){
+                printWindow.close();
+
+            }, 500);
+        } else {
+            printWindow.print();
+            printWindow.close();
+        }
+    }, true);
+}
+ 
+
+
+</script>

@@ -1,0 +1,889 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+/* Sidebar Styling */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -40%; /* Initially hidden */
+    width: 40%; /* Make it 45% of the screen width */
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 1050;
+}
+
+/* Header Styling */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f9fa;
+}
+
+/* Sidebar Content Styling */
+.sidebar-body {
+    padding: 15px;
+}
+
+/* Footer Styling */
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+
+/* ````````````````````input spinner remove `````````````````` */
+
+/* Remove spinner for Chrome, Safari, Edge, and Opera */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner for Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+</style>
+
+<!-- <div id="sizeHeader" class="sidebar">
+    <div class="sidebar-header">
+        <h4>Size</h4>
+        <button onclick="closeColorSidebar()">×</button>
+    </div>
+    <div class="sidebar-body">
+        <div id="sizeTableBody"></div>
+    </div>
+    <div class="sidebar-footer">
+        <button type="button" class="btn btn-success" onclick="saveColorSelection()">+ Add Size</button>
+    </div>
+</div>  -->
+<div id="sizeSidebar" class="sidebar">
+    <div class="sidebar-header">
+        <h4>Fabric Dia & Color</h4>
+        <button onclick="closeColorSidebar()">×</button>
+    </div>
+    <div class="sidebar-body">
+        <!-- This must be here -->
+        <div id="sizeTableBody"></div>
+    </div>
+    <div class="sidebar-footer">
+        <button type="button" class="btn btn-primary" onclick="saveColorSelection()">+ Add </button>
+    </div>
+</div>
+
+
+
+<!-- Edit Quantity Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalTitle">Edit Quantity</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditedField()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ````````````````````````````````````````` -->
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body"> 
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Dyeing Program  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/dyeing-program"> Dyeing Program</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                              
+
+                                                                  <div class="col-md-2 mt-2">
+                                                                    <label for="number" class="form-label">Program No.</label>
+                                                                    <input type="text" class="form-control" id="delivery_number" value="{{prg_number}}" disabled>
+
+                                                                </div>
+                                                              
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="program_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Program Name</label>
+                                                                    <!-- <input type="text" class="form-control" name="name" id="name" required> -->
+                                                                        <input class="form-control" id="fabricName" dir="ltr" style="position: relative;width: 240px; vertical-align: top; background-color: transparent;" name="name" type="text">
+
+                                                                </div>
+
+                                                               
+                                                                <!-- <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option>    
+                                                                        {% endfor %} 
+                                                                    </select>  
+                                                                </div>  -->
+ 
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Lot </label>
+                                                                    <select id="lot_no" name="lot_no" class="form-control single-select" onchange="LoadLotDetails()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in lot_no %}
+                                                                        <option value="{{ k.out_id }}">{{ k.lot_no }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div> 
+                                                                 
+                                                                <!-- ``````````````````````````` -->
+                                                              
+                                                                <!-- ``````````````````` tm table values (quality - prg) ````````````````````````` -->
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Fabric Id</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                    
+                                                                    </select>
+                                                                </div>
+
+                                                                
+                                                            
+
+                                                            </div>
+                                                            <!-- ````````````````````````````````````````````````````````` -->
+                                                                
+                                                    
+                                                        </div> 
+                                                        <div class="row mt-2">
+                                                            <div class="table-responsive table-desi">
+
+                                                                 <table id="purchaseTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="wrap">Lot/Fabric</th>
+                                                                            <th style="display: none;">Outward Id</th>
+                                                                            <th style="display: none;">Fabric Id</th>
+                                                                            <th>Color</th>
+                                                                            <th class="wrap">Dia</th>
+                                                                            <th>Roll</th>
+                                                                            <th>Roll Wt. (kg)</th>
+                                                                
+                                                                           
+                                                                            <th>Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody> 
+                                                                </table>
+                                                                
+                                                            
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                        
+                                                            <div class="col-md-12">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                        
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+
+
+
+function LoadLotDetails() {
+    var OutwardSelect = $("#lot_no");
+    var out_id = OutwardSelect.val();
+    var lot_no = OutwardSelect.find("option:selected").text();
+    console.log('LOT-NO:', lot_no);
+
+    if (!lot_no) {
+        console.warn("No Lot NO selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_lot_fabric_list/',
+        data: {
+            'lot_no': lot_no,
+            'id': out_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); 
+            $('#fabric_id').empty();
+            $('#dia_id').empty();
+
+            // Populate fabric dropdown
+            if (data.fabric && data.fabric.length > 0) {
+                $('#fabric_id').append('<option value="">Select </option>');
+                $.each(data.fabric, function(index, fab) {
+                    // fab = [id, name]
+                    $('#fabric_id').append('<option value="' + fab[0] + '">' + fab[1] + '</option>');
+                });
+            }
+
+            // // Populate dia dropdown
+            // if (data.dia_names && data.dia_names.length > 0) {
+            //     $('#dia_id').append('<option value="">Select Dia</option>');
+            //     $.each(data.dia_names, function(index, dia) {
+            //         // dia = [id, name]
+            //         $('#dia_id').append('<option value="' + dia[0] + '">' + dia[1] + '</option>');
+            //     });
+            // }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+}
+
+
+
+// ```````````````` load fabric details(color-dia)`````````````````
+
+$(document).ready(function () {
+    $('#fabric_id').on('change', function () {
+        var fabric_id = $(this).val();
+        console.log('fabs:',fabric_id);
+
+
+     
+
+        // Ensure Quality, Style, and Group are selected before proceeding
+        if (!fabric_id ) {
+            console.warn("Please select Fabric first.");
+            notifier.show(
+                'Warning!', 
+                'Please select Fabric.', 
+                'warning', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            $(this).val(""); // Reset Program Type selection
+            return;
+        }
+
+        // Load colors **only if** Program Type is "Size", "Color", or "Total Quantity"
+        // if (fabric_id === "Size" || fabric_id === "Color" || fabric_id === "Total Quantity") {
+            loadColors();
+        // } else {
+        //     console.warn("Invalid selection, clearing table.");
+        //     $('#sizeTableBody').empty(); // Clear table when selecting "Select"
+        // }
+    });
+});
+
+
+
+function loadColors() {
+    var fabric_id = $('#fabric_id').val(); 
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    if (!fabric_id || fabric_id === "0") {
+        console.warn("Invalid fabric ID, skipping color load.");
+        $('#sizeTableBody').empty();
+        return;
+    }
+
+    var out_id = $('#lot_no').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_dia_list/',
+        data: {
+            'id': out_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('Received Colors and Dias:', data);
+
+            if (!data.success) {
+                alert("Failed to fetch data.");
+                return;
+            }
+
+            const colors = data.colors || [];
+            const dias = data.dia || [];
+
+            if (colors.length === 0 || dias.length === 0) {
+                console.warn("No colors or dias received.");
+                return;
+            }
+
+            let tableHTML = `<table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">Fabric Color</th>`;
+
+            dias.forEach(dia => {
+                tableHTML += `<th colspan="2" class="text-center">Dia ${dia.name}</th>`;
+            });
+
+            tableHTML += `</tr><tr>`;  // 2nd row: only Roll and Roll Wt
+
+            dias.forEach(() => {
+                tableHTML += `
+                    <th class="text-center">Roll</th>
+                    <th class="text-center">Roll Wt</th>`;
+            });
+
+            tableHTML += `</tr></thead><tbody>`;
+
+            colors.forEach(color => {
+                tableHTML += `<tr><td>${color.name}</td>`;
+                dias.forEach(dia => {
+                    tableHTML += `
+                        <td><input type="number" 
+                                   class="form-control text-center no-spinner" 
+                                   name="roll_${color.id}_${dia.id}" 
+                                   id="roll_${color.id}_${dia.id}" 
+                                   min="0" step="1" style="width: 80px;"></td>
+                        <td><input type="number" 
+                                   class="form-control text-center no-spinner" 
+                                   name="rollwt_${color.id}_${dia.id}" 
+                                   id="rollwt_${color.id}_${dia.id}" 
+                                   min="0" step="0.01" style="width: 100px;"></td>`;
+                });
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `</tbody></table>`;
+
+            $('#sizeTableBody').html(tableHTML);
+            openColorSidebar(); 
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading colors:', xhr.responseText);
+            alert("Error: " + xhr.responseText);
+        }
+    });
+}
+
+
+
+function openColorSidebar() {
+    let sidebar = document.getElementById("sizeSidebar");
+
+    if (!sidebar) {
+        console.error("sizeSidebar element not found! Make sure it exists in the DOM.");
+        return;
+    }
+
+    sidebar.style.right = "0"; // Open sidebar by bringing it into view
+}
+
+
+
+function closeColorSidebar() {
+    document.getElementById("sizeSidebar").style.right = "-40%"; // Hide sidebar
+}
+
+
+if (!document.getElementById("sizeSidebar")) {
+    $("body").append(`
+        <div id="sizeSidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h4>Size</h4>
+                <button onclick="closeColorSidebar()">×</button>
+            </div> 
+            <div class="sidebar-body">
+                <div id="sizeTableBody"></div>
+            </div>
+            <div class="sidebar-footer">
+                <button type="button" class="btn btn-primary" onclick="saveColorSelection()">+ Add Size</button>
+            </div>
+        </div>
+    `);
+}
+
+
+// ✅ Increase/Decrease Quantity Functions
+function increaseColorQuantity(color_id) {
+    let input = document.getElementById(`color_qty_${color_id}`);
+    input.value = parseInt(input.value) + 1;
+}
+
+function decreaseColorQuantity(color_id) {
+    let input = document.getElementById(`color_qty_${color_id}`);
+    if (parseInt(input.value) > 0) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+
+
+
+
+window.addEventListener('load', function () {
+    sessionStorage.clear(); // Clears session storage on page reload
+    localStorage.removeItem('selectedItems'); // Clears only the selectedItems key from localStorage
+});
+
+
+function saveColorSelection() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    let outward_id = $('#lot_no').val();
+    let lot_no = $('#lot_no option:selected').text().trim();
+    let fabric_id = $('#fabric_id').val();
+    let fabric_name = $('#fabric_id option:selected').text().trim();
+
+    let itemKey = `${outward_id}_${fabric_id}`;
+
+    if (!selectedItems[itemKey]) {
+        selectedItems[itemKey] = {
+            outward_id, lot_no,
+            fabric_id, fabric_name,
+            colors: [] // list of {color_id, color_name, dia_id, dia_name, roll, roll_wt}
+        };
+    }
+
+    $('#sizeTableBody tbody tr').each(function () {
+        let color_name = $(this).find('td:first').text().trim();
+
+        let $cells = $(this).find('td').not(':first'); // skip first td (color name)
+        for (let i = 0; i < $cells.length; i += 2) {
+            let $rollInput = $cells.eq(i).find('input');
+            let $rollWtInput = $cells.eq(i + 1).find('input');
+
+            if ($rollInput.length && $rollWtInput.length) {
+                let roll_id_parts = $rollInput.attr('id').split('_');
+                let color_id = roll_id_parts[1];
+                let dia_id = roll_id_parts[2];
+
+                let roll = parseFloat($rollInput.val()) || 0;
+                let roll_wt = parseFloat($rollWtInput.val()) || 0;
+
+                if (roll > 0 && roll_wt > 0) {
+                    let diaIndex = Math.floor(i / 2);
+                    let dia_th = $('#sizeTableBody table thead tr:nth-child(1) th').eq(diaIndex + 1);
+                    let dia_name = dia_th.text().replace('Dia', '').trim();
+
+                    // 🔍 Check if same color_id + dia_id already exists
+                    let existingIndex = selectedItems[itemKey].colors.findIndex(entry =>
+                        entry.color_id === color_id && entry.dia_id === dia_id
+                    );
+
+                    if (existingIndex !== -1) {
+                        let confirmUpdate = confirm(`Already exists: ${color_name} - Dia ${dia_name}.\n  Do you want to update the values?`);
+                        if (confirmUpdate) {
+                            selectedItems[itemKey].colors[existingIndex] = {
+                                color_id,
+                                color_name,
+                                dia_id,
+                                dia_name,
+                                roll: roll.toFixed(2),
+                                roll_wt: roll_wt.toFixed(2)
+                            };
+                        }
+                        // Else: skip without updating
+                    } else {
+                        selectedItems[itemKey].colors.push({
+                            color_id,
+                            color_name,
+                            dia_id,
+                            dia_name,
+                            roll: roll.toFixed(2),
+                            roll_wt: roll_wt.toFixed(2)
+                        });
+                    }
+                }
+            }
+        }
+    });
+
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    console.log('✅ Updated Local Storage:', selectedItems);
+    closeColorSidebar();
+    loadPurchaseTable();
+}
+
+
+// `````````` load purchase table ````````````````````
+
+function loadPurchaseTable() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    let $tbody = $('#purchaseTable tbody');
+    $tbody.empty();
+
+    Object.keys(selectedItems).forEach(itemKey => {
+        let item = selectedItems[itemKey];
+
+        if (!item.colors || item.colors.length === 0) return;
+
+        item.colors.forEach((entry, index) => {
+            let row = `<tr data-item-key="${itemKey}" data-color-index="${index}">
+                <td>${item.lot_no} / ${item.fabric_name}</td>
+                <td style="display: none;">${item.outward_id}</td>
+                <td style="display: none;">${item.fabric_id}</td>
+                <td>${entry.color_name}</td>
+                <td>${entry.dia_name}</td>
+                <td>
+                    <a href="javascript:void(0);" 
+                       onclick="openEditModal('${itemKey}', ${index}, 'roll', ${entry.roll})">
+                       ${entry.roll}</a>
+                </td>
+                <td>
+                    <a href="javascript:void(0);" 
+                       onclick="openEditModal('${itemKey}', ${index}, 'roll_wt', ${entry.roll_wt})">
+                       ${entry.roll_wt}</a>
+                </td>
+
+                <td>
+                  
+                    <button type="button" class="btn btn-danger btn-xs" onclick="deleteRow('${itemKey}')">
+                        <i class="feather icon-trash-2"></i>
+                    </button>
+                </td>
+            </tr>`;
+            $tbody.append(row);
+        });
+    });
+}
+
+
+
+function openEditModal(itemKey, colorIndex, field, currentValue) {
+    $('#editModalTitle').text(`Edit ${field === 'roll' ? 'Roll' : 'Roll Weight'}`);
+    let $modalBody = $('#editModalBody');
+    $modalBody.empty();
+
+    let inputHTML = `
+        <div class="form-group">
+            <label>Enter ${field === 'roll' ? 'Roll' : 'Roll Weight'}:</label>
+            <input type="number" class="form-control edit-field" 
+                   data-item-key="${itemKey}" 
+                   data-color-index="${colorIndex}" 
+                   data-field="${field}" 
+                   value="${currentValue}" 
+                   step="${field === 'roll' ? '1' : '0.01'}" min="0">
+        </div>`;
+
+    $modalBody.html(inputHTML);
+    $('#editModal').modal('show');
+}
+
+
+
+function saveEditedField() {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    let input = $('.edit-field');
+    let itemKey = input.data('item-key');
+    let colorIndex = input.data('color-index');
+    let field = input.data('field');
+    let newValue = parseFloat(input.val()) || 0;
+
+    if (selectedItems[itemKey] && selectedItems[itemKey].colors[colorIndex]) {
+        selectedItems[itemKey].colors[colorIndex][field] = newValue;
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+        $('#editModal').modal('hide');
+        loadPurchaseTable(); // Refresh table with updated values
+    } else {
+        alert("Invalid selection or index.");
+    }
+}
+
+
+function deleteRow(itemKey) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+    delete selectedItems[itemKey];
+    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    loadPurchaseTable();
+}
+
+
+function removeRow(itemKey) {
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    if (selectedItems.hasOwnProperty(itemKey)) {
+        delete selectedItems[itemKey]; // Remove item from stored data
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems)); // Update localStorage
+
+        // Remove the specific row from the table
+        $(`tr[data-item-id="${itemKey}"]`).remove();
+        console.log(`🗑️ Removed row for item ID: ${itemKey}`);
+    } else {
+        console.warn(`⚠️ Item ID ${itemKey} not found in localStorage.`);
+    }
+}
+
+
+
+
+
+
+// `````````````````````````````````` sidebar end `````````````````````````````````````
+
+
+
+
+$('#add_new').on('submit', function (e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked");
+
+    // ✅ Retrieve localStorage values
+    let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
+
+    if (Object.keys(selectedItems).length === 0) {
+        notifier.show(
+            'Error!',
+            'No items in local storage. Please add items before saving.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return; // 🚨 Stop form submission if no data
+    }
+
+    let TableData = extractLocalStorageData(selectedItems);
+    console.log('📌 Extracted Data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!',
+            'No valid data found in local storage. Please check and try again.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        let formData = new FormData(this);
+        formData.append('fabric_data', JSON.stringify(TableData));
+
+  
+        $.ajax({
+            type: "POST",
+            url: "/add-dyeing-program/",
+            data: formData, 
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                console.log("🔄 Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function (data) {
+                console.log("✅ Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {
+                    notifier.show(
+                        'Success!',
+                        'Dyeing Program added successfully!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+
+                    // ✅ Clear form and tables
+                    $('#add_new').trigger('reset');
+                    $('#purchaseTable tbody, #summaryTable tbody').empty();
+                    localStorage.removeItem('selectedItems'); // ✅ Clear saved data
+
+                    // ✅ Reset select dropdowns
+                    $('#uom_id, #quality_id, #item_id, #program_type').val('').trigger("change");
+
+                } else {
+                    notifier.show(
+                        'Error!',
+                        'Failed to add: ' + data.message,
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("❌ AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!',
+                    'Error adding data: ' + errorThrown,
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+function extractLocalStorageData(selectedItems) {
+    let extractedData = [];
+
+    Object.values(selectedItems).forEach(item => {
+        if (!item.colors || item.colors.length === 0) return;
+
+        item.colors.forEach(color => {
+            const roll = parseFloat(color.roll);
+            const roll_wt = parseFloat(color.roll_wt);
+
+            // Skip if both are zero or invalid
+            if ((isNaN(roll) || roll <= 0) && (isNaN(roll_wt) || roll_wt <= 0)) return;
+
+            extractedData.push({
+                outward_id: item.outward_id,
+                lot_no: item.lot_no,
+                fabric_id: item.fabric_id,
+                fabric_name: item.fabric_name,
+                color_id: color.color_id,
+                color_name: color.color_name,
+                dia_id: color.dia_id,
+                dia_name: color.dia_name,
+                roll: roll || 0,
+                roll_wt: roll_wt || 0
+            });
+        });
+    });
+
+    return extractedData;
+}
+
+// ```````````````````````````````````````````````````````````````````````````
+
+
+
+$('.single-select').select2();
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('program_date').value = currentDateString;
+    // document.getElementById('receive_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+</script>

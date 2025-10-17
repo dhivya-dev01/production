@@ -1,0 +1,910 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Purchase Order  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Purchase</a></li>
+                                            <li class="breadcrumb-item"><a href="/po-list">Purchase Order </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <!-- <div class="card">
+                                                <div class="row">
+                                                    <div>
+                    
+                                                    
+                    
+                    
+                                                        <form id="add_po">
+                                                            {% csrf_token %}
+                                                            <div class="row ms-2 mt-2">
+                                                                 <div class="col-md-4">
+                                                                     <label for="order_date" class="form-label">Purchase Date</label>
+                                                                     <input class="form-control" type="date" name="purchase_date" id="purchase_date">
+                                                                 </div>
+                    
+                                                                 <div class="col-md-4 mt-2">
+                                                                     <label for="order_time" class="form-label">Purchase Order Number</label>
+                                                                     <input class="form-control" type="text" maxlength="15" name="po_number" id="po_number">
+                                                                 </div>
+                                                                     
+                                                                 
+                                                                 <div class="col-md-4 mt-2">
+                                                                    <label for="product_id" class="form-label">Supplier </label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="deliver_to" class="form-label">Delivery </label>
+                                                                    <select id="deliver_id" name="deliver_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="order_date" class="form-label">Delivery Date</label>
+                                                                    <input class="form-control" type="date" name="delivery_date" id="delivery_date">
+                                                                </div>
+                                                                
+                                                            </div>
+                    <hr>
+                    
+                                                            <div class="row ms-2">
+                                                      
+                    
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="product_id" class="form-label">Product</label>
+                                                                    <select id="product_id" name="product_id" class="form-control single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in product %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="bag" class="form-label">Bag</label>
+                                                                    <input type="number" class="form-control" id="bag" name="bag" required>
+                                                                </div>
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="per_bag" class="form-label">Kilo per Bag</label>
+                                                                    <input type="number" class="form-control" id="per_bag" name="per_bag" required>
+                                                                </div>
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quantity" class="form-label">Quantity</label>
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" readonly>
+                                                                </div>
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">Rate</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="rate" name="rate" required>
+                                                                </div>
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="amount" class="form-label">Amount</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="amount" name="amount" readonly>
+                                                                </div>
+                                                                <div class="col-md-2 mt-4">
+                                                                    <button type="submit" id="add_button" class="btn btn-primary">Add</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                     
+                    
+                    
+                    
+                                                    </div>
+                                                </div> 
+                                                <div class="card-body">
+                                                  
+
+                                                    <table class="table all-package" id="billTable" name="billTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="display: none">Product ID</th>
+                                                                <th>Product</th>
+                                                                <th>Bag</th>
+                                                                <th>Quantity</th>
+                                                                <th>Rate</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+
+                                                    
+
+                                                </div>
+                                                <div class="modal-footer" >
+                                                    <button type="button" id="save_data" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </div> -->
+
+
+
+
+
+
+                                            <div class="card">
+                                                <div class="row">
+                                                    <div>
+                    
+                                                    
+                    
+                    
+                                                        <form id="add_new">
+                                                            {% csrf_token %}
+                                                            <div class="row ms-2">
+                                                                 <div class="col-md-2 mt-2">
+                                                                     <label for="order_date" class="form-label">Purchase Date</label>
+                                                                     <input class="form-control" type="date" name="purchase_date" id="purchase_date" required>
+                                                                 </div>
+
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Supplier </label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="deliver_to" class="form-label">Deliverd to </label>
+                                                                    <select id="deliver_id" name="deliver_id" class="form-control form-select single-select" required>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Delivery Date</label>
+                                                                    <input class="form-control" type="date" name="delivery_date" id="delivery_date" required>
+                                                                </div>
+                    
+                                                                
+                                                                             
+                                                                
+                                                            </div>
+                    
+                    
+                                                            <div class="row ms-2">
+                                                      
+                    
+                                                                <div class="col-md-2 mt-3">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id" class="form-label">Product</label>
+                                                                        <select id="product_id" name="product_id" class="form-control form-select single-select" >
+                                                                            <!-- onchange="uom_load()" -->
+                                                                            <option value="">Select</option>
+                                                                            {% for k in product %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="bag" class="form-label">Bag</label>
+                                                                    <input type="number" class="form-control" id="bag" name="bag"  >
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="per_bag" class="form-label">Kilo per Bag</label>
+                                                                    <input type="number" class="form-control" id="per_bag" name="per_bag"  >
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3 mb-3">
+                                                                    <label for="quantity" class="form-label">Quantity</label>
+                                                                    <input type="number" class="form-control" name="quantity" id="quantity"  readonly>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">Rate</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="rate" name="rate"  >
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="amount" class="form-label">Amount</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="amount" name="amount" readonly>
+                                                                </div>
+
+
+
+
+
+                                                               
+                                                            </div> <div class="modal-footer mt-1">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="button" id="update" class="btn btn-primary " onclick="addRow()">Add</button>
+                                                                </div>
+                                                       
+                     
+                    
+                    
+                    
+                                                    </div>
+                                                </div> 
+                                                <!-- <div class="card-body">
+                                                    <div class="table-responsive table-desi">
+                                                        
+                                                        <table id="productstable" name="productstable" class="table table table-striped table-bordered nowrap">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Product</th>
+                                                                    <th>Bag</th>
+                                                                    <th>Per Bag</th>
+                                                                    <th>Quantity</th>
+                                                                    <th>Rate</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Action</th>  
+                                                                    <th style="display: none"></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                        
+                                                    </div>
+                                                </div> -->
+
+                                                <!-- <form id="add_new"> -->
+                                                    <div class="card-body">
+                                                        <div class="table-responsive table-desi">
+                                                            <table id="productstable" class="table table-striped table-bordered nowrap">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Product</th>
+                                                                        <th>Bag</th>
+                                                                        <th>Per Bag</th>
+                                                                        <th>Quantity</th>
+                                                                        <th>Rate</th>
+                                                                        <th>Amount</th>
+                                                                        <th>Action</th>
+                                                                        <th style="display: none"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Rows will be dynamically added here -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="modal-footer">
+                                                        <button type="button" id="cancel" class="btn btn-danger">Close</button>
+                                                        <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                    </div> -->
+                                                <!-- </form> -->
+
+                                                
+
+                                                <!-- <div class="col-md-4">
+
+                                                </div>  -->
+                                                <div class="row">
+                    
+                                                    <div class="col-md-8">
+                                                        
+                                                    </div>
+                                                    <!-- <div class="col-md-3"></div> -->
+                                                    <div class="col-md-4">
+                                                    <div class=" m-b-30">
+                                                        <div class="card-body">            
+                                                            <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th colspan="2">Summary Table</th>
+                                                                    </tr> 
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td> Total Quantity</td>
+                                                                        <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Sub Total</td>
+                                                                        <td align="end" colspan="2" id="sub_total_placeholder">0.00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Total Tax</td>
+                                                                        <td align="end" colspan="2" id="tax_placeholder">0.00</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Round off</td>
+                                                                        <td align="end" colspan="2" id="round_off">0.00</td>
+                                                                    </tr>
+                                                                    <tr> 
+                                                                        <td>Grand Total</td>
+                                                                        <td style="background-color: #428bca; color: black; font-size: 21px" align="end" colspan="2" id="total_payable">0.00</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>     
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <div class="modal-footer" >
+                                                    <button type="button" id="cancel" class="btn btn-danger">Close</button>
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </div> </form>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <!-- <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th> UOM</th>                                                        
+                                                        <th>Active</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+
+                                        
+                                    </div> -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+
+// function calculateQuantity() {
+//     var bag = parseFloat(document.getElementById("bag").value) || 0;
+//     var perBag = parseFloat(document.getElementById("per_bag").value) || 0;
+//     var quantity = bag * perBag;
+//     document.getElementById("quantity").value = quantity;
+    
+//     // Recalculate amount if rate is already entered
+//     calculateAmount();
+// }
+
+// function calculateAmount() {
+//     var quantity = parseFloat(document.getElementById("quantity").value) || 0;
+//     var rate = parseFloat(document.getElementById("rate").value) || 0;
+//     var amount = quantity * rate;
+//     document.getElementById("amount").value = amount.toFixed(2);
+// }
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach event listeners for real-time calculations
+    document.getElementById("bag").addEventListener("input", calculateQuantity);
+    document.getElementById("per_bag").addEventListener("input", calculateQuantity);
+    document.getElementById("rate").addEventListener("input", calculateAmount);
+});
+
+function calculateQuantity() {
+    var bag = parseFloat(document.getElementById("bag").value) || 0;
+    var perBag = parseFloat(document.getElementById("per_bag").value) || 0;
+    var quantity = bag * perBag;
+    document.getElementById("quantity").value = quantity;
+
+    // Auto-update amount if rate is already entered
+    calculateAmount();
+}
+
+function calculateAmount() {
+    var quantity = parseFloat(document.getElementById("quantity").value) || 0;
+    var rate = parseFloat(document.getElementById("rate").value) || 0;
+    var amount = quantity * rate;
+    document.getElementById("amount").value = amount.toFixed(2);
+}
+
+
+
+
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    // Iterate over each row in the table
+    $('#productstable tbody tr').each(function(row, tr) {
+        // Extracting data from the row
+        var product_id = $(tr).find('td:eq(7)').find('span').text(); // Assuming product ID is in the 8th column (index 7)
+        var product_name = $(tr).find('td:eq(0)').text(); // Product Name
+        var bag = $(tr).find('td:eq(1)').text(); // Bag
+        var per_bag = $(tr).find('td:eq(2)').text(); // Per Bag
+        var quantity = $(tr).find('td:eq(3)').text(); // Quantity
+        var rate = $(tr).find('td:eq(4)').text(); // Rate
+        var amount = $(tr).find('td:eq(5)').text(); // Amount
+
+        // Debugging: Check if any required data is missing
+        console.log("Row Data:", {
+            product_id: product_id,
+            product_name: product_name,
+            bag: bag,
+            per_bag: per_bag,
+            quantity: quantity,
+            rate: rate,
+            amount: amount
+        });
+
+        // Ensure product_id is available and then push the data to TableData
+        if (product_id && quantity && rate && amount) {
+            TableData.push({
+                "product_id": product_id,
+                "product_name": product_name,
+                "bag": bag,
+                "per_bag": per_bag,
+                "quantity": quantity,
+                "rate": rate,
+                "amount": amount
+            });
+        } else {
+            console.log("Missing data for row, skipping...");
+        }
+    });
+
+    console.log('Store Table Values:', TableData);
+    return TableData;
+}
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the Purchase Order requests.', 
+            'success', 
+            "{% static 'assets/images/notification/ok-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData);
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+
+
+        var totalQty = $('#qty_total_placeholder').text();
+        var subTotal = $('#sub_total_placeholder').text();
+        var taxTotal = $('#tax_placeholder').text();
+        var roundOff = $('#round_off').text();
+        var totalPayable = $('#total_payable').text();
+
+        // Append total values to FormData
+        mdata.append('total_quantity', totalQty);  // This is where total_quantity is added
+        mdata.append('sub_total', subTotal);
+        mdata.append('tax_total', taxTotal);
+        mdata.append('round_off', roundOff);
+        mdata.append('total_payable', totalPayable);
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "/purchase/add-po/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data === 'yes') {
+                    notifier.show(
+                        'Well Done!', 
+                        'PO added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                    location.reload();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add1', 
+                        'danger', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+function addRow() {
+    var productSelect = $("#product_id");
+    var productId = productSelect.val();
+    var productText = productSelect.find("option:selected").text();
+
+    var bag = $("#bag").val();
+    var per_bag = $("#per_bag").val();
+    var quantity = $("#quantity").val();
+    var rate = $("#rate").val();
+    var amount = $("#amount").val();
+
+    if (!productId || !bag || !per_bag || !quantity || !rate) { 
+        alert("Please fill all fields before adding a row.");
+        return;
+    }
+
+    var tableBody = $("#productstable tbody");
+    var productExists = false;
+
+    tableBody.find("tr").each(function() {
+        var rowProductId = $(this).find("td:eq(7) span").text();
+        if (rowProductId === productId) {
+            var currentQuantity = parseFloat($(this).find("td:eq(3)").text());
+            var newQuantity = currentQuantity + parseFloat(quantity);
+            $(this).find("td:eq(3)").text(newQuantity);
+            productExists = true;
+            return false; // Break loop
+        }
+    });
+
+    if (!productExists) {
+        var newRow = `
+            <tr>
+                <td class="text-start">${productText}</td>
+                <td class="text-start">${bag}</td>
+                <td class="text-start">${per_bag}</td>
+                <td class="text-end">${quantity}</td>
+                <td class="text-end">${rate}</td>
+                <td class="text-end">${amount}</td>
+                <td>
+                    <button class="btn btn-xs btn-danger" type="button" onclick="removeRow(this)">
+                        <i class="feather icon-trash-2"></i>
+                    </button>
+                    <button class="btn btn-xs btn-primary" type="button" onclick="editRow(this)">
+                        <i class="feather icon-edit"></i>
+                    </button>
+                </td>
+                <td style="display:none"><span>${productId}</span></td>
+            </tr>
+        `;
+        tableBody.append(newRow);
+    }
+
+    calculateTotal();
+    resetFields();
+}
+
+
+
+
+
+var editIndex = -1;  
+
+function editRow(mrow) {
+    // Get the row index and assign to editIndex
+    editIndex = $(mrow).closest('tr').index();
+
+    // Fetch the values from the table row
+    var product_id = $(mrow).closest('tr').find('td:eq(7)').find('span').text();  // Hidden Product ID
+    var bag = $(mrow).closest('tr').find('td:eq(1)').text();                 // Quantity
+    var per_bag = $(mrow).closest('tr').find('td:eq(2)').text();                 // Quantity
+    var quantity = $(mrow).closest('tr').find('td:eq(3)').text();                 // Quantity
+    var rate = $(mrow).closest('tr').find('td:eq(4)').text();                 // Quantity
+    var amount = $(mrow).closest('tr').find('td:eq(5)').text();                 // Quantity
+
+    // Set the form fields with the values from the table row
+    $("#product_id").val(product_id).trigger("change");  // Trigger change event to load UOMs
+    $("#bag").val(bag);
+    $("#per_bag").val(per_bag);
+    $("#quantity").val(quantity);
+    $("#rate").val(rate);
+    $("#amount").val(amount);
+
+    // Remove the row from the table
+    
+    $(mrow).closest('tr').remove();
+    calculateTotal();
+}
+
+
+
+
+function resetFields() {
+    $('#product_id').val('').trigger("change");
+    document.getElementById('bag').value = ''; 
+    document.getElementById('per_bag').value = ''; 
+    document.getElementById('quantity').value = ''; 
+    document.getElementById('rate').value = ''; 
+    document.getElementById('amount').value = ''; 
+}
+
+
+
+function removeRow(button) {
+    // Remove the row
+    $(button).closest('tr').remove();
+
+    // Update totals after removing the row
+    calculateTotal();
+}
+ 
+
+// function calculateTotal() {
+//     let totalQuantity = 0;
+//     let subTotal = 0;
+//     let totalTax = 0;
+//     let taxSummary = {}; 
+
+//     // Iterate over each row in the table to calculate totals
+//     $('#productstable tbody > tr').each(function() {
+//         // Fetch values from each cell
+//         const quantity = parseInt($(this).find('td:eq(3)').text()) || 0; // Quantity
+//         const rate = parseFloat($(this).find('td:eq(4)').text()) || 0; // Rate
+//         const amount = parseFloat($(this).find('td:eq(5)').text()) || 0; // Amount
+//         const taxAmount = 5; // Assuming a fixed tax value (you can update this based on your needs)
+
+//         // Update totals 
+//         totalQuantity += quantity;
+//         subTotal += amount;
+//         totalTax += taxAmount;  // Assuming a fixed tax rate for now
+
+//         // Update tax summary (if any tax logic is needed)
+//         if (taxAmount > 0) {
+//             const taxRate = 5;  // Assuming a fixed rate (change as needed)
+//             if (!taxSummary[taxRate]) {
+//                 taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+//             }
+//             // For simplicity, assume SGST and CGST are split equally
+//             const sgstAmount = taxAmount / 2;
+//             taxSummary[taxRate].sgst += sgstAmount;
+//             taxSummary[taxRate].cgst += sgstAmount;
+//             taxSummary[taxRate].totalTax += taxAmount;
+//         }
+//     });
+
+//     // Calculate round off value and grand total
+//     const roundOff = (subTotal + totalTax) - Math.round(subTotal + totalTax);  // Get decimal difference
+//     const grandTotal = (subTotal + totalTax + roundOff).toFixed(2);  // Add roundOff to grand total
+
+//     // Display totals 
+//     $('#qty_total_placeholder').text(totalQuantity);
+//     $('#sub_total_placeholder').text(subTotal.toFixed(2));
+//     $('#tax_placeholder').text(totalTax.toFixed(2));
+//     $('#round_off').text(roundOff.toFixed(2));
+//     $('#total_payable').text(grandTotal);
+
+//     // Update tax summary table (if needed)
+//     $('#tax_summary_body').empty();
+//     for (const [rate, data] of Object.entries(taxSummary)) {
+//         $('#tax_summary_body').append(`
+//             <tr>
+//                 <td>${rate}%</td>
+//                 <td>${data.sgst.toFixed(2)}</td>
+//                 <td>${data.cgst.toFixed(2)}</td>
+//                 <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+//                 <td>${data.totalTax.toFixed(2)}</td>
+//             </tr>
+//         `);
+//     }
+// }
+
+
+
+function calculateTotal() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#productstable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseInt($(this).find('td:eq(3)').text()) || 0; // Quantity
+        const rate = parseFloat($(this).find('td:eq(4)').text()) || 0; // Rate
+        const amount = parseFloat($(this).find('td:eq(5)').text()) || 0; // Amount
+       
+        // Calculate tax amount as 5% of the amount
+        const taxAmount = (amount * taxRate) / 100;
+
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += amount;
+        totalTax += taxAmount;  // Adding calculated tax to total tax
+
+        // Update tax summary (if any tax logic is needed)
+        if (taxAmount > 0) {
+            if (!taxSummary[taxRate]) {
+                taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+            }
+            // Assuming SGST and CGST split equally for simplicity
+            const sgstAmount = taxAmount / 2;
+            taxSummary[taxRate].sgst += sgstAmount;
+            taxSummary[taxRate].cgst += sgstAmount;
+            taxSummary[taxRate].totalTax += taxAmount;
+        }
+    });
+
+    // Calculate round-off value and grand total
+    const totalAmount = subTotal + totalTax;
+    const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+
+    // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+    const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+    $('#tax_placeholder').text(totalTax.toFixed(2));
+    $('#round_off').text(adjustedRoundOff.toFixed(2));
+    $('#total_payable').text(grandTotal);
+
+    // Update tax summary table (if needed)
+    $('#tax_summary_body').empty();
+    for (const [rate, data] of Object.entries(taxSummary)) {
+        $('#tax_summary_body').append(`
+            <tr>
+                <td>${rate}%</td>
+                <td>${data.sgst.toFixed(2)}</td>
+                <td>${data.cgst.toFixed(2)}</td>
+                <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+                <td>${data.totalTax.toFixed(2)}</td>
+            </tr>
+        `);
+    }
+}
+
+
+
+
+
+
+</script>
+<script>
+
+
+ 
+$('.single-select').select2();
+
+            // Get current date and time
+            const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('purchase_date').value = currentDateString;
+    document.getElementById('delivery_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+
+
+    
+    
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+// });
+
+
+ </script>

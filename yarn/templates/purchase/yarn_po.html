@@ -1,0 +1,437 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content"> 
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                         
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <!-- Breadcrumb moved here -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="page-header-title">
+
+                                                <h4 class="m-b-10 me-1  ">Yarn PO </h4>
+                                            </div>
+                                            <a href="/yarn-po-add/" class="btn btn-gradient-primary btn-sm">Add</a>
+                                            <button type="button" class="btn btn-gradient-secondary btn-sm" onclick="refresh_data()">Refresh</button>
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/yarn-po"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Yarn</li>
+                                            <li class="breadcrumb-item"><a href="/yarn-po">Yarn PO</a></li>
+                                        </ul>
+                                        
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div> 
+                                    </div>
+ 
+                                    <div class="card-body">                                        
+                                        <div class="dt-responsive table-hover">
+
+
+                                            <div class="row">
+
+                                                <div class="col-md-2 mt-2 ">
+                                                    <label for="name" class="form-label"><input type="checkbox" id="is_date" checked>  Date Filter </label> 
+                                                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 9px; border: 1px solid #ccc; width: 100%; height:35px; border-radius:4px" >
+                                                        <i class="bx bx-calendar"></i>&nbsp;
+                                                        <span></span> <i class="bx bx-caret-down">
+                                                        </i>
+                                                    </div>
+                                                </div> 
+                                                <div class="col-md-2 mt-2">
+                                                    <label class="form-label" for="filter_party">Party</label>
+                                                    <select id="filter_party" class="form-control  single-select">
+                                                        <option value="">Select </option>
+                                                        {% for k in party %}
+                                                        <option value="{{k.id}}">{{k.name}} </option>
+
+                                                        {% endfor %}
+                                                        
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 mt-2">
+                                                    <label class="form-label" for="filter_mill">Mill</label>
+                                                    <select id="filter_mill" class="form-control  single-select">
+                                                        <option value="">Select </option>
+                                                        {% for k in mill %}
+                                                        <option value="{{k.id}}">{{k.name}} </option>
+
+                                                        {% endfor %}
+                                                        
+                                                    </select>
+                                                </div>
+                            
+
+                                                <div class="col-md-2 mt-2">
+                                                    <label class="form-label" for="filter_yarn_count">Yarn count</label>
+                                                    <select id="filter_yarn_count" class="form-control  single-select">
+                                                        <option value="">Select </option>
+                                                        {% for k in yarn_count %}
+                                                        <option value="{{k.id}}">{{k.name}} </option>
+
+                                                        {% endfor %}
+                                                        
+                                                        
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-md-1 mt-4">
+                                                    <button type="button" class="btn btn-gradient-success mt-2" onclick="refresh_data()">Refresh</button> 
+
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <table id="datatable" class="table table-striped table-bordered wrap" cellpadding="0" cellspacing="0">
+                                                
+                                                {% csrf_token %} 
+                                                
+                                                <thead>
+                                                        <tr>
+                                                            <th>ID #</th>
+                                                            <th>Action</th>
+                                                            <th>PO Date</th>
+                                                            <th>PO No.</th>
+                                                            <th>Lot Name</th>
+                                                            <th>Party</th>
+                                                            <th>Mill</th>
+                                                            <th>Yarn Count</th>
+                                                            <th>Total Bags</th>
+                                                            <th>Total Quantity</th>
+                                                            
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>                            
+                                                    </tbody>
+                                                </table>   
+                                            </div>                                     
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+
+<script> 
+
+$('.single-select').select2(); 
+
+
+
+var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, 
+        "order": [],
+        "columns": [ 
+            { "data": "id", "title": " ID #" },
+            { "data": "action", "title": "Action" }, 
+            { "data": "po_date", "title": " PO Date","className": "text-center" },
+            { "data": "po_number", "title": " PO No."},
+            { "data": "name", "title": " Lot Name" },
+            { "data": "supplier_id", "title": " Party" },
+            { "data": "mill", "title": " Mill" },
+            { "data": "yarn_count", "title": " Yarn count" },
+            { "data": "total_bag", "title": "Total Bags","className":"text-center"  },
+            { "data": "total_quantity", "title": "Total Quantity","className":"text-end" ,"render": function (data, type, row) {
+                 return parseFloat(data).toFixed(3);
+                } },
+            { "data": "status", "title": "Status" }
+        ], 
+        "ajax": {  
+            "url": '/yarn-po-report/',
+            "type": "POST",
+            "data": function(data){
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.party = $('#filter_party').val();
+                data.mill = $('#filter_mill').val();
+                data.yarn_count = $('#filter_yarn_count').val();
+                if (start_date && end_date && $('#is_date').is(":checked")) {
+                    data.from_date = start_date;
+                    data.to_date = end_date;
+                }
+            },
+            "dataSrc": function(json) { 
+                if (json.message === 'error') {
+                    
+                    //console.log('access denied') 
+                    return [];
+                }
+
+                // Log and return the valid data
+               // console.log(json);
+                return json.data;
+            }
+        }
+    });
+
+    function refresh_data()
+    {
+        table.ajax.reload();
+    }
+
+ 
+
+var start_date;
+var end_date;
+
+
+
+
+// $(function() {
+//     var start = moment().startOf('month');
+//     var end = moment().endOf('month');
+
+//     function cb(start, end) {
+//         $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+//         start_date = start.format('YYYY-MM-DD');
+//         end_date = end.format('YYYY-MM-DD');
+//     }
+
+//     $('#reportrange').daterangepicker({
+//         startDate: start,
+//         endDate: end,
+//         ranges: {
+//            'Today': [moment(), moment()],
+//            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+//            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+//            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+//            'This Month': [moment().startOf('month'), moment().endOf('month')],
+//            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+//         }
+//     }, cb);
+
+//     cb(start, end);
+
+//     // Enable date filter checkbox by default and reload table
+//     $('#is_date').prop('checked', true);
+//     table.ajax.reload();
+// });
+
+
+$(function() {
+    // Set start date to April 1, 2025
+    var start = moment('2025-04-01', 'YYYY-MM-DD');
+    // Set end date to today's date
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        start_date = start.format('YYYY-MM-DD');
+        end_date = end.format('YYYY-MM-DD');
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+           'Since April 1, 2025': [moment('2025-04-01'), moment()]
+        }
+    }, cb);
+
+    cb(start, end);
+
+    // Enable date filter checkbox by default and reload table
+    $('#is_date').prop('checked', true);
+    table.ajax.reload();
+});
+
+function po_edit(id) {
+    var encodedId = btoa(id); 
+    console.log('detail-encodedId:',encodedId);
+
+    window.location.href = '/yarn-po-details/?id=' + encodedId;
+}
+
+
+
+
+// function print_orders(orderId) {
+//     $.ajax({
+//         type: 'POST',
+//         url: '/print_orders/',
+//         data: {
+//             order_id: orderId,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+//         },
+//         success: function(response) {
+//             // Handle the response, possibly open a new window with the invoice
+//             var printWindow = window.open('', '_blank');
+//             printWindow.document.write(response);
+//             printWindow.document.close();
+//             printWindow.print();
+//         },
+//         error: function(response) {
+//             Lobibox.notify('error', {
+//                     pauseDelayOnHover: true,
+//                     continueDelayOnInactiveTab: false,
+//                     position: 'top right',
+//                     icon: 'bx bx-check-circle',
+//                     msg: 'Error.'
+//                 });
+
+//             // alert('Error printing the order.');
+//         }
+//     });
+// }
+
+ 
+
+
+
+
+// function po_print(id) {
+// 	var url= '/po-print/?k=';
+// 	var y=url+window.btoa(id);
+// 	// <!-- window.open(y,'_blank'); -->
+// 	 printExternal(y);
+// }
+
+//  function printExternal(url) {
+//     var printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+
+//     printWindow.addEventListener('load', function() {
+//         if (Boolean(printWindow.chrome)) {
+//             printWindow.print();
+//             setTimeout(function(){
+//                 printWindow.close();
+
+//             }, 500);
+//         } else {
+//             printWindow.print();
+//             printWindow.close();
+//         }
+//     }, true);
+// }
+
+
+// ``````````````````````````````````````````````````````````````````
+
+
+
+function po_print(id) {
+    const url = '/po-print/?k=' + window.btoa(id);
+    printExternal(url);
+}
+
+function printExternal(url) {
+    const printWindow = window.open(
+        url,
+        '_blank',
+        'left=200,top=200,width=950,height=500,toolbar=0,resizable=0'
+    );
+
+    // Wait for the window to fully load before printing
+    const interval = setInterval(function () {
+        if (printWindow.document.readyState === 'complete') {
+            clearInterval(interval);
+            printWindow.focus();
+            printWindow.print();
+
+            // Allow time for the print dialog to open
+            setTimeout(function () {
+                printWindow.close();
+            }, 1000);
+        }
+    }, 250);
+}
+
+
+
+
+// function po_print(id) {
+//     const url = '/po-print/?k=' + window.btoa(id); // new view that returns PDF
+//     window.open(url, '_blank');
+// }
+
+// ````````````````````````````````
+
+
+
+function po_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+        $.ajax({
+            url: "/delete-yarn-po/",
+            method: "POST",
+            data: { 
+                id: id, 
+                csrfmiddlewaretoken: '{{ csrf_token }}' 
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.message === 'yes') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Yarn PO deleted successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+                    table.ajax.reload(); 
+                } else {
+                    notifier.show(
+                        'Action Blocked!', 
+                        data.message || 'Failed to delete Yarn PO.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+            error: function(xhr, status, error) {
+                notifier.show(
+                    'Server Error!', 
+                    'Something went wrong while processing your request.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                console.error("AJAX error:", error);
+            }
+        });
+    }
+}
+
+    
+
+</script>

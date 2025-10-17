@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>MIRRA GARMENTS - DYED FABRIC INWARD</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <!-- Normalize or reset CSS with your favorite library -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+      <!-- Load paper.css for happy printing -->
+     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">-->
+      <!-- Set page size here: A5, A4 or A3 -->
+      <!-- Set also "landscape" if you need -->
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+      </style>
+    <style>
+  /* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
+
+  @page {
+    size: A4 landscape;
+    margin: 1cm; /* You can adjust margin as needed */
+  }
+
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  body {
+    position: relative;
+    width: 29.7cm;  /* A4 landscape width */
+    height: 21cm;   /* A4 landscape height */
+    margin: 0 auto;
+    padding: 1cm;
+    color: #001028;
+    background: #FFFFFF;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 12px;
+  }
+
+  header {
+    padding: 10px 0;
+    margin-bottom: 30px;
+  }
+
+  #logo {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  #logo img {
+    width: 90px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+  }
+
+  a {
+    color: black;
+    font-family: Roboto, sans-serif;
+    font-size: 10pt;
+    text-decoration: none;
+  }
+
+  h1 {
+    color: black;
+    font-family: Roboto, sans-serif;
+    font-size: 13.5pt;
+    font-weight: bold;
+  }
+
+  h4 { 
+    color: black;
+    font-family: Roboto, sans-serif;
+    font-size: 11pt;
+    font-weight: bold;
+  }
+
+  p {
+    color: black;
+    font-family: Roboto, sans-serif;
+    font-size: 10pt;
+    margin: 0pt;
+  }
+
+  .table > tbody > tr > td,
+  .table > tbody > tr > th,
+  .table > tfoot > tr > td,
+  .table > tfoot > tr > th,
+  .table > thead > tr > td,
+  .table > thead > tr > th {
+    padding: 4px;
+  }
+</style>
+   </head>
+   
+
+   <body class="A5">
+
+			<section class="sheet" style="padding:20px">
+   
+										
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="35%" style="vertical-align: top;"><img  width="140" height="70" src="{{ image_url }}"/></td>
+							</td>
+							
+						
+
+							<td width="65%" align="right">
+								<h4><big><b><strong>{{ company.name.upper }}</strong><b></big></h4>
+
+									
+								 <div class="mt-5" style="margin-top: -6px;">
+									<p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+									<p><b>Cell:</b> {{ company.mobile }} | <b>Phone:</b> {{ company.phone }}</p>
+									<p><b>Email:</b> {{ company.email }}</p>
+									<p><b>GSTIN:</b> {{ company.gstin }} </p>
+
+								</div>
+								
+							</td>
+						</tr> 
+						
+					</table>
+					
+					<hr style="margin-top:6px;margin-bottom:6px">
+					
+
+					
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+						<tbody>
+              {% for t in inward_values %}
+                <tr>
+                  <td  align="left">
+                    <p><strong>INWARD No. :{{ t.inward_number }} </strong> </p>
+              
+                  </td>
+                  <td align="center" >
+                    <div class="border-box" style="width: 180px;border:2px solid black;text-align:center;padding: 3px;">
+                      <p><strong>DYED FABRIC INWARD</strong></p>
+                    </div>
+                  </td>
+
+                  <td  align="right" >
+                    <p><strong>INWARD DATE: {{ t.inward_date|date:"d-m-Y" }}</strong></p>
+                  </td>
+                </tr>
+                
+              {% endfor %} 
+							
+							
+						</tbody>					
+					</table>
+
+					<hr style="margin-top:3px;margin-bottom:3px">
+
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >  
+						<tbody>
+							<tr> 
+								<td  align="left"> 
+									<p>FROM. M/S  : <strong>{{ customer_name }} </strong> </p>
+									<p>GSTIN  &nbsp;&nbsp;: <strong>{{ gstin }} </strong> </p>
+									<p>Mobile.&nbsp;  : <strong>{{ mobile }} </strong> </p>
+								</td>
+
+ 
+                <td align="right">
+                    <p style="font-size:15px; ">Lot No. &nbsp; : <strong>  {{lot_no}}</strong></p>
+                    
+                </td>
+
+                               
+							</tr>
+                            
+              <tr>
+                  <td>
+                      <hr style="margin-top:6px;margin-bottom:6px">
+
+                  </td>
+                  <td>
+                      <hr style="margin-top:6px;margin-bottom:6px">
+                  </td> 
+              </tr>
+
+              <tr>
+                <td align="left">
+                  <p>DYEING RECEIVE No.: <strong>{{ dye_receive_no }}</strong></p>
+                  <p>DYEING RECEIVE DATE: <strong>{{ dye_receive_date|date:"d-m-Y" }}</strong></p>
+                </td>
+
+                <td align="right">
+                  <p>STEAM/COMPACTING RECEIVE No.: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong > {{ receive_no }}</strong></p>
+                  <p>STEAM/COMPACTING RECEIVE DATE: <strong>{{ receive_date|date:"d-m-Y" }} </strong></p>
+                </td>
+              </tr>
+
+              <tr>
+                  
+                <td align="left">
+                    <p>PO No. &nbsp;&nbsp; : &nbsp;<strong>{{ po }}</strong></p>
+                </td>
+                
+                <td align="right">
+                    <p>OUTWARD No. &nbsp;&nbsp; : &nbsp;<strong>{{ outward }}</strong></p>
+                </td>
+              </tr>
+
+              <tr>
+                  
+              </tr>
+
+			</tbody>					
+		</table>
+
+	
+
+<table class="table table-bordered table-striped">
+
+  {% for group in grouped_delivery_details %}
+    {% widthratio dias|length 1 2 as dia_colspan %}
+    <thead>
+      <tr>
+        <th colspan="{{ dia_colspan|add:2 }}">
+          <p align="center"><strong>Fabric:</strong> 
+            {{ group.fabric_info.fabric }} /
+            {{ group.fabric_info.yarn_count }} /
+            {{ group.fabric_info.gauge }} /
+            {{ group.fabric_info.tex }} /
+            {{ group.fabric_info.gsm }}
+          </p>
+        </th>
+      </tr>
+      {% endfor %}
+
+      </thead>
+    </table>
+
+<table class="table table-bordered table-striped">
+
+  {% for group in grouped_delivery_details %}
+    {% widthratio dias|length 1 2 as dia_colspan %}
+    <thead>
+   
+      <tr>
+        <th><strong>Color</strong></th>
+        {% for dia in dias %}
+          <th colspan="2" style="text-align: center;"><strong>{{ dia }}</strong></th>
+        {% endfor %}
+        <th colspan="2" style="text-align: center;"><strong>Total</strong></th>
+      </tr>
+      <tr>
+        <th></th>
+        {% for dia in dias %}
+          <th style="text-align: center;">Roll</th>
+          <th style="text-align: center;">Weight</th>
+        {% endfor %}
+        <th style="text-align: center;">Roll</th>
+        <th style="text-align: center;">Weight</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for color_group in group.color_groups %}
+        <tr>
+          <td>{{ color_group.color }}</td>
+          {% for dia in dias %}
+            {% with dia_data=None %}
+              {% for d in color_group.dias %}
+                {% if d.dia == dia %}
+                  <td align="center">{{ d.roll|floatformat:0 }}</td>
+                  <td align="center">{{ d.gross_wt|floatformat:3 }}</td>
+                  {% with dia_data=1 %}{% endwith %}
+                {% endif %}
+              {% endfor %}
+            {% endwith %}
+          {% endfor %}
+          <td align="center"><strong>{{ color_group.total_roll|floatformat:0 }}</strong></td>
+          <td align="center"><strong>{{ color_group.total_weight|floatformat:3 }}</strong></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  {% endfor %}
+
+  <tfoot>
+    <tr>
+      <td align="right"><strong>Total</strong></td>
+      {% for total in dia_totals_list %}
+        <td align="center"><strong>{{ total.roll|floatformat:0 }}</strong></td>
+        <td align="center"><strong>{{ total.gross_wt|floatformat:3 }}</strong></td>
+      {% endfor %}
+      <td align="center"><strong>{{ grand_total_roll|floatformat:0 }}</strong></td>
+      <td align="center"><strong>{{ grand_total_weight|floatformat:3 }}</strong></td>
+    </tr>
+  </tfoot>
+
+</table>
+
+                   
+                    
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+						
+						<tr>
+							<td align="left">
+
+							</td>
+							<td  align="right">
+								<p><strong> For MIRRA GARMENTS PVT LTD</strong> </p>
+					
+							</td>
+
+							
+						</tr>
+						
+						<tr>
+							<td align="left">
+							<br>
+							<br>	
+							</td>
+					
+						</tr>
+						
+						<tr>
+							<td align="left">
+								<p><strong> Party's Signature </strong></p>
+							</td>
+
+								<td align="right">
+								<p><strong> Authroized Signature </strong></p>
+							</td>
+
+
+						</tr>
+							
+							
+									
+					</table>
+				
+
+				
+			</section>
+
+ </body>
+</html>

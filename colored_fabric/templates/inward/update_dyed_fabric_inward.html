@@ -1,0 +1,1760 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<style>
+    /* #program_table th,  */
+    #editTableBody td {
+        padding: 4px !important;
+        /* text-align: center; */
+        vertical-align: middle;
+        text-align:center;
+
+    }
+
+    #editTableBody input[type="number"] {
+        margin: 0 auto;
+        display: block;
+        
+        text-align:center;
+
+    }
+ /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+
+
+    .table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+
+    .table body th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+
+
+
+
+</style>
+
+
+
+
+<style>
+    .bg-red {
+        background-color: #ffcccc !important;
+    }
+    .bg-yellow {
+        background-color: #fff3cd !important;
+    }
+    .bg-green {
+        background-color: #d4edda !important;
+    }
+</style>
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Dyed Fabric Inward Update  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Dyed Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/dyed-fabric-inward"> Dyed Fabric Inward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">   
+
+                                        <div class="card-body">  
+                                            <div class="col-sm-12">
+                                                
+                                                <form id="add_new">
+                                                {% csrf_token %}
+
+                                                    <div class="row">  
+                                                    
+
+                                                        <div class="col-md-12">
+                                               
+
+                                                            <!-- Radio Buttons -->
+                                                            <div class="row ">
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Inward No.</label>
+                                                                    <input type="text" class="form-control" id="inward_no" name="inward_no" value="{{parent_stock_instance.inward_number}}" disabled>
+                                                                    <input type="hidden" class="form-control" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Inward Date</label>
+                                                                    <input type="date" class="form-control" id="inward_date" name="inward_date">
+                                                                </div>
+
+
+                                                                 <div class="col-md-2 mt-4 d-flex flex-column justify-content-between" style="height: 60px;"> 
+                                                                    <!-- Top Radio Button -->
+                                                                    <div>
+                                                                       <input class="form-check-input" type="radio" id="is_grey_fabric" name="material_type" value="grey"
+                                                                        {% if parent_stock_instance.po_id == "0" or parent_stock_instance.po_id is "" %} checked {% endif %}>
+                                                                        <label class="form-label" for="is_grey_fabric"> Grey Fabric  </label>  
+                                                                    </div>
+
+                                                                    <!-- Bottom Radio Button -->
+                                                                    <div>
+                                                                        <input class="form-check-input" type="radio" id="is_dyed_po" name="material_type" value="dye"
+                                                                        {% if parent_stock_instance.outward_id == "0" or parent_stock_instance.outward_id is "" %} checked {% endif %}>
+                                                                        <label class="form-label" for="dye"> Dyed Fabric PO  </label>  
+                                                                        <p><span id="material_type_error" class="text-danger small"></span></p>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                               
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select"  required>
+                                                                        <option value="">Select</option> <!--  // mill-trader-->
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="due_receive_no" class="form-label"><span style="color:red">*</span>  Receive No.(Dyeing)</label>
+                                                                    <input type="text" class="form-control" id="dye_receive_no" name="dye_receive_no" value="{{parent_stock_instance.dye_receive_no}}">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="dye_receive_date" class="form-label"><span style="color:red">*</span>   Receive Date (Dyeing)</label>
+                                                                    <input type="date" class="form-control" id="dye_receive_date" name="dye_receive_date" value="{{parent_stock_instance.dye_receive_date}}">
+                                                                </div>
+
+
+
+
+
+                                                                
+                                                            </div>
+
+                                                            <!-- Form Controls -->
+                                                            <div class="row ">
+
+
+                                                               
+                                                                
+                                                             
+                                                                
+                                                                {% if parent_stock_instance.outward_id == "0" or parent_stock_instance.outward_id is None %}
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label class="form-label">PO list</label>
+                                                                    <select id="po_list" name="po_list" class="form-control single-select" >
+                                                                         <option value="">Select</option>
+                                                                        {% for y in po %}
+                                                                        <option value="{{y.id}}">{{y.po_number}}</option>
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+
+                                                                {% endif %}
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label for="lot_name" class="form-label"><span style="color: red;">*</span> Lot No.</label>
+                                                                    <input type="text" id="lot_no" name="lot_no" class="form-control" value="{{parent_stock_instance.lot_no}}" >
+                                                                    <!-- <select class="form-control single-select" id="lot_name" name="lot_name" required  >
+                                                                        <option value="">Select</option>
+                                                                    </select> -->
+                                                                </div>
+
+
+
+                                                                {% if parent_stock_instance.po_id == "0" or parent_stock_instance.po_id is "" %} 
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward List</label>
+                                                                    <select id="do_list" name="do_list" class="form-control single-select" required  onchange="LoadOutwarddetail_List()">
+                                                                         <option value="">Select</option>
+                                                                        {% for y in outward %}
+                                                                        <option value="{{y.id}}">{{y.do_number}}</option>
+                                                                        {% endfor %}
+
+                                                                    </select>  
+                                                                </div> 
+
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Order Through</label>
+                                                                    <select id="through_id" name="through_id" class="form-control single-select"  required>
+                                                                        <option value="">Select</option>
+                                                                        <!-- compacting -->
+                                                                    </select> 
+                                                                </div>
+
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_no" class="form-label"><span style="color:red">*</span>   Receive No.</label>
+                                                                    <input type="text" class="form-control" id="receive_no" name="receive_no" value="{{parent_stock_instance.receive_no}}">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_date" class="form-label"><span style="color:red">*</span>   Receive Date</label>
+                                                                    <input type="date" class="form-control" id="receive_date" name="receive_date" >
+                                                                </div>
+
+ 
+                                                                 
+                                                                
+                                                                {% endif %}
+
+                                                            
+                                                               
+ 
+                                                            </div>
+                                                            
+                                                            <div class="row">
+
+                                                                  <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Fabric</label>
+                                                                    <select id="fab_id" name="fab_id" class="form-control single-select"  disabled>
+                                                                        <option value="">Select</option> 
+                                                                        {% for f in fabric_program_with_name %}
+                                                                        <option value="{{f.id}}">{{f.name}} - {{f.fabric_name}}</option> 
+                                                                        {% endfor %}
+
+                                                                    </select>  
+                                                                </div> 
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Program</label>
+                                                                    <select id="program" name="program" class="form-control single-select"  disabled>
+                                                                        <option value="">Select</option> 
+                                                                        {% for p in dyeing %}
+                                                                        <option value="{{p.id}}">{{p.name}}</option> 
+                                                                        {% endfor %}
+                                                                        
+                                                                    </select> 
+                                                                </div>
+
+
+
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label class="form-label">Color</label>
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" multiple>
+                                                                        <option value="">Select</option> <!--  // mill-trader-->
+                                                                       
+                                                                    </select> 
+                                                                </div>
+
+
+
+                                                                <!-- <div class="col-md-2 mt-3" style="text-align: center;"> -->
+                                                                <div class="col-md-2 mt-3" >
+                                                                    <input type="hidden" id="prg_id" name="prg_id">
+                                                                    <a id="load_outward" class="btn btn-primary mt-4">+Add</a>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                            
+                                                    </div> 
+
+                                                      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                        <input type="hidden" id="parent_id" value="{{ parent_stock_instance.id }}">
+
+                                                        <table id="datatable" class="" style="display: none;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th rowspan="2">Action</th>
+                                                                    <th rowspan="2">Fabric</th>
+
+                                                                    <th rowspan="2">Dia</th>
+                                                                    <th rowspan="2">Color</th>
+                                                                    <th colspan="2" class="text-center">Received</th>
+                                                                    <th colspan="3" class="text-center">Inward</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Roll</th>
+                                                                    <th>Roll Wt. (kg)</th>
+                                                                    <th>Roll</th>
+                                                                    <th>Gross Wt. (kg)</th> 
+                                                                    
+                                                                    <th>Roll Wt. (kg)</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+
+                                                        <div class="">
+                                                            <table id="editTable" class="table table-striped table-bordered wrap" style="display:none;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <!-- <th rowspan="2">Action</th> -->
+                                                                        <th rowspan="2">Color</th>    
+                                                                        
+                                                                        <th rowspan="2">Dia</th> 
+
+                                                                        <th colspan="2" class="text-center">Outward</th>
+                                                                        <th colspan="2" class="text-center">Already Received</th>
+                                                                        <!-- <th colspan="2" class="text-center">Balance</th> -->
+                                                                        <th colspan="3" class="text-center">Inward</th> 
+                                                                        <!-- <th rowspan="2" >Action</th> -->
+
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>Roll</th>
+                                                                        <th>Roll Wt. (kg)</th>
+
+                                                                        <th>Roll</th>   
+                                                                        <th>Roll Wt. (kg)</th> 
+
+                                                                        <th>Roll</th>
+                                                                        <th align="right">Gross Wt. (kg)</th>
+
+                                                                        <th  style="display: none;"align="right">Total Wt. (kg)</th> 
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="editTableBody"></tbody>
+
+                                                                <!-- <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="6" class="text-center"><strong>Total</strong></td>
+                                                                        <td style="text-align: center;"><span id="footer-roll-total">0</span></td>
+                                                                        <td style="text-align: center;"><span id="footer-gross-wt-total">0.000</span></td>
+                                                                        <td style="text-align: center;"><span id="footer-total-wt-total">0.000</span></td>
+
+                                                                    </tr>
+                                                                </tfoot>  -->
+
+
+                                                                 <tfoot class="footer">
+                                                                    <tr style="font-weight: bold; text-align: center;">
+                                                                    <td colspan="2">Total</td>
+                                                                    <td><span id="footer-outward-roll">0</span></td>
+                                                                    <td><span id="footer-outward-wt">0.000</span></td>
+                                                                    <td><span id="footer-received-roll">0</span></td>
+                                                                    <td><span id="footer-received-wt">0.000</span></td>
+                                                                    <td><span id="footer-inward-roll">0</span></td>
+                                                                    <td><span id="footer-inward-gross-wt">0.000</span></td>
+                                                                    <td style="display: none;"><span id="footer-inward-roll-wt">0.000</span></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                        
+
+                                                <div class="row"> 
+                                                      
+                                                       
+
+                                                    <div class="col-md-4">
+                                                        <div class=" m-b-30">
+                                                        
+                                                            
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                    <div class="row ms-2">
+                                                        <div class="col-md-12" style="text-align: center;" >
+                                                            <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                            <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> -->
+        
+                                                            <button type="submit" id="submit" class="btn btn-primary" onclick="AddInward()">Save</button>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            
+                                            </div> 
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% include 'includes/footer.html' %}
+
+
+<!-- 
+<script>
+    const colorIds = {{ color_ids_list|safe }};
+    console.log('colorIds:', colorIds);
+
+    if (colorIds.length > 0) {
+        $('#color_id').val(colorIds).trigger("change");
+    }
+</script> -->
+
+<script>
+
+$('.single-select').select2();
+
+
+$(document).ready(function () {
+    loadPartyList();
+    $('#load_outward').click(); // Trigger button click on page load
+});
+
+// ``````````````````````````
+if ("{{ parent_stock_instance.inward_date }}" && "{{ parent_stock_instance.inward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.inward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#inward_date').val(formattedDate).trigger("change");
+    LoadDatatable_list();
+}
+
+
+if ("{{ parent_stock_instance.receive_date }}" && "{{ parent_stock_instance.receive_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.receive_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#receive_date').val(formattedDate).trigger("change");
+}
+
+
+
+if ("{{ parent_stock_instance.receive_date }}" && "{{ parent_stock_instance.receive_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.receive_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD) 
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#dye_receive_date').val(formattedDate).trigger("change");
+}
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.order_through_id}}" && "{{parent_stock_instance.order_through_id}}" !== "") {
+    $('#through_id').val("{{parent_stock_instance.order_through_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.po_id}}" && "{{parent_stock_instance.po_id}}" !== "") {
+    $('#po_list').val("{{parent_stock_instance.po_id}}").trigger("change");
+}
+
+
+
+ const outwardIds = "{{ parent_stock_instance.outward_id }}"; 
+
+    if (outwardIds && outwardIds !== "") {
+        // Convert comma-separated string to array
+        const idArray = outwardIds.split(",").map(id => id.trim());
+        $('#do_list').val(idArray).trigger("change");
+          LoadOutward_Color();
+    }
+
+
+// const colorIds = "{{ material_instances.color_id|default:'' }}";  // Ensures no `None`
+// alert(colorIds);
+// console.log('color-ids:', colorIds);
+
+// if (colorIds && colorIds !== "") {
+//     const idArray = colorIds.split(",").map(id => id.trim());
+//     $('#color_id').val(idArray).trigger("change");  // Works for select2 or regular <select multiple>
+// }
+
+
+function renderFloat(data) {
+    return parseFloat(data || 0).toFixed(3);
+}
+
+
+ const poIds = "{{ parent_stock_instance.po_id }}"; 
+
+    if (poIds && poIds !== "") {
+        // Convert comma-separated string to array
+        const idArray = poIds.split(",").map(id => id.trim());
+        $('#po_list').val(idArray).trigger("change");
+    }
+
+
+
+// ✅ Load data when user clicks "Load Outward"
+$('#load_outward').on('click', function () {
+    // LoadDatatable_list();
+    const selectedMaterial = $('input[name="material_type"]:checked').val();
+    console.log("Selected Materials:", selectedMaterial);
+
+    if (selectedMaterial === 'grey') {
+        LoadEditData();  // For Yarn
+        
+        updateFooterTotals();
+
+    } else if (selectedMaterial === 'dye') {
+        LoadPoData(); // For Grey Fabric
+        updateFooterTotals();
+
+    } else {
+        alert("Please select a material type first.");
+    }
+});
+
+
+
+
+// Load supplier/party list based on material type
+function loadPartyList() {
+    var materialType = $('#is_grey_fabric').is(':checked') ? 'grey' :
+                       $('#is_dyed_po').is(':checked') ? 'dye' : '';
+
+    if (!materialType) {
+        console.warn("No material type selected");
+        $('#party_id').html('<option value="">Select</option>');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_inward_party_list/',
+        data: {
+            'material_type': materialType
+        },
+        dataType: 'json',
+        success: function(data) {
+            var $supplierSelect = $('#party_id');
+            $supplierSelect.html('<option value="">Select</option>');
+
+            if (data.length > 0) {
+                $.each(data, function (_, party) {
+                    $supplierSelect.append($('<option>', {
+                        value: party.id,
+                        text: party.name
+                    }));
+                });
+            }
+
+            if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+                $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching party list:', error);
+        }
+    });
+}
+
+// ✅ Reload edit data when outward changes
+$('#do_list').on('change', function () {
+    const selectedMaterial = $('input[name="material_type"]:checked').val();
+    if (selectedMaterial === 'grey') {
+        // LoadEditData(); 
+        updateFooterTotals();
+    } else if (selectedMaterial === 'dye') { 
+        // LoadPoDa ta(); 
+        updateFooterTotals();
+    }
+});
+
+$('#do_list').on('change', function () {
+  LoadOutward_Color();
+});
+
+
+
+function LoadOutward_Color() {
+    var party_id = $('#party_id').val(); 
+    var lot_name = $('#lot_no').val(); 
+    var outward_id = $('#do_list').val();  
+
+    $.ajax({
+        type: 'POST', 
+        url: '/get_grey_outward_color_list/', 
+        data: {
+            'supplier_id': party_id,
+            'lot_no': lot_name,
+            'outward_id': outward_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+        success: function(data) {
+            $('#color_id').empty().append('<option value="">Select</option>');
+
+            if (data.color && data.color.length > 0) {
+                data.color.forEach(function(color) {
+                    $('#color_id').append(
+                        '<option value="' + color.id + '">' + color.name + '</option>'
+                    );
+                });
+            }
+
+            // Get color_ids list from Django template context
+            // Make sure this script is inside Django template or rendered dynamically
+            var color_ids = {{ color_ids|safe }};
+
+            console.log('Loaded colors:', data.color);
+            console.log('Preselected color_ids:', color_ids);
+
+            if (Array.isArray(color_ids) && color_ids.length > 0) {
+                $('#color_id').val(color_ids).trigger('change');
+            }
+            $('#load_outward').click(); // Trigger button click on page load
+
+        },
+
+        error: function(xhr, status, error) { 
+            console.error('Error loading outward delivery details:', error);
+        }
+    });
+}
+
+
+// function LoadOutward_Color() {
+//     var party_id = $('#party_id').val(); 
+//     var lot_name = $('#lot_no').val(); 
+//     var outward_id = $('#do_list').val();  
+
+//     $.ajax({
+//         type: 'POST', 
+//         url: '/get_grey_outward_color_list/', 
+//         data: {
+//             'supplier_id': party_id,
+//             'lot_no': lot_name,
+//             'outward_id': outward_id,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+
+//         success: function(data) {
+//             $('#color_id').empty().append('');
+//             // $('#color_id').empty().append('<option value="">Select</option>');
+
+//             if (data.color && data.color.length > 0) {
+//                 data.color.forEach(function(color) {
+//                     $('#color_id').append(
+//                         '<option selected value="' + color.id + '">' + color.name + '</option>'
+//                     );
+//                 });
+//             }
+
+
+//             if ("{{material_instances.color_id}}" && "{{material_instances.color_id}}" !== "") {
+//                 $('#color_id').val("{{material_instances.color_id}}").trigger("change");
+//             }
+
+
+//         },
+//         error: function(xhr, status, error) { 
+//             console.error('Error loading outward delivery details:', error);
+//         }
+//     });
+// }
+
+
+
+
+// ✅ Load DataTable for inward data already stored against tm_id
+function LoadDatatable_list() {
+    const tm_id = $('#tm_id').val();
+    console.log('TM ID:', tm_id);
+ 
+    $('#datatable').DataTable({
+        // language: { emptyTable: "No child records found for this TM ID." },
+        // processing: true,
+        // pageLength: 50,
+        // destroy: true,
+
+         destroy: true,  // Allow reinitialization
+        paging: false,  // 🔴 Removes pagination
+        info: false,    // 🔴 Removes "Showing X to Y of Z entries"
+        searching: false, // Optional: remove search box
+        ordering: false,  // Optional: remove column sorting
+        language: {
+            emptyTable: "No child records found for this TM ID.",
+            zeroRecords: "No matching records found",
+        },
+        order: [],
+        ajax: {
+            url: '/ajax-report-dyed-fab-inward-details/',
+            type: 'POST',
+            data: function (d) {
+                d.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                d.tm_id = tm_id;
+            }
+        }, 
+
+
+        
+        // "rowCallback": function(row, data, index){
+        //     const gross_wt = parseFloat(data.gross_wt);
+        //     if (!isNaN(gross_wt) && gross_wt == 0) {
+        //         $(row).css('background-color', '#FFEAEB');  // light red
+        //     }
+        // },
+        createdRow: function (row, data) {
+            $(row).attr('data-fabric', data.fabric_id)
+                  .attr('data-color', data.color_id)
+                  .attr('data-dia', data.dia_id); 
+
+            $(row).find('td:eq(5)').addClass('gsm-cell');
+            $(row).find('td:eq(9)').addClass('roll-cell');
+            $(row).find('td:eq(10)').addClass('rollwt-cell');
+            $(row).find('td:eq(11)').addClass('gross_wt-cell');
+        },
+        columns: [
+            { data: "action", title: "Action" },
+            { data: "fabric", title: "Fabric" },
+            // { data: "yarn_count", title: "Yarn Count" },
+            // { data: "tex", title: "Tex" },
+            // { data: "gauge", title: "Gauge" },
+            // { data: "gsm", title: "GSM" },
+            { data: "dia", title: "Dia" },
+            { data: "color", title: "Color" },
+            { data: "received_roll", title: "Roll", className: "text-center" },
+            { data: "received_roll_wt", title: "Roll Wt. (kg)", className: "text-end", render: renderFloat },
+            { data: "roll", title: "Roll", className: "text-center" },
+            { data: "total_wt", title: "Total Wt. (kg)", className: "text-end", render: renderFloat },
+            { data: "gross_wt", title: "Gross Wt. (kg)", className: "text-end", render: renderFloat }
+        ],
+       
+    });
+}
+
+
+
+function LoadEditData() {
+    console.log("LoadEditData called");
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    const po_id = $('#po_list').val() || 0;
+    const tm_id = $('#tm_id').val();
+    // const color_id = $('#color_id').val();
+    const colorIds = Array.isArray($('#color_id').val()) ? $('#color_id').val().join(',') : ($('#color_id').val() || '');
+
+    const lot_no = $('#lot_no').val();
+    var outward_list_array = $('#do_list').val();
+    var outward_list = Array.isArray(outward_list_array) ? outward_list_array.join(',') : (outward_list_array || '');
+
+    const tableBody = $('#editTableBody');
+    tableBody.empty();
+
+
+       const existingData = {};
+        $('#datatable tbody tr').each(function () {
+            const row = $(this);
+         
+
+             
+            const key = [
+                row.data('fabric') || '',
+                
+                row.data('dia') || '',
+                row.data('color') || ''
+            ].map(String).map(s => s.trim()).join('_');
+
+
+
+
+            existingData[key] = {
+                roll: parseInt(row.find('.roll-cell').text()) || 0,
+                roll_wt: parseFloat(row.find('.rollwt-cell').text()) || 0,
+                gross_wt: parseFloat(row.find('.gross_wt-cell').text()) || 0
+            };
+        });
+
+
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_grey_outward_edit_lists/',
+        data: {
+            outward_list: outward_list,
+            tm_id: tm_id,
+            color_id: colorIds,
+            csrfmiddlewaretoken: csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+
+
+
+            if (Array.isArray(data.programs) && data.programs.length > 0) {
+                const firstPrograms = data.programs[0];
+                
+                if (firstPrograms.id) {
+                    $("#program").val(firstPrograms.id).trigger("change");
+                }
+
+            }
+
+            if (data.fabric_id) {
+                $("#fab_id").val(data.fabric_id).trigger("change");
+            }
+
+
+            console.log('ajax-data:', data);
+
+    const diaData = data.order_data || [];
+    const tableBody = document.querySelector('#editTable tbody');
+    tableBody.innerHTML = ''; // clear existing rows
+
+    if (!diaData.length) {
+        $('#editTable').hide();
+        return;
+    }
+
+    // Group diaData by color
+    const groupedByColor = diaData.reduce((groups, order) => {
+        const color = String(order.color || '').trim();
+        if (!groups[color]) groups[color] = [];
+        groups[color].push(order);
+        return groups;
+    }, {});
+
+    // Iterate over each color group
+    for (const [color, orders] of Object.entries(groupedByColor)) {
+        const rowspanCount = orders.length;
+
+        orders.forEach((order, index) => {
+            const dia = String(order.dia || '').trim();
+            const fabricId = order.fabric_id || '-';
+            const out_ids = order.out_id || '-';
+            const dia_ids = String(order.dia_id || '').trim();
+            const color_ids = String(order.color_id || '').trim();
+            const fabric_id = order.fabric_id || '-';
+
+            // Fetch programMatch and baseDetails (same as before)
+            const programMatch = (data.program_details || []).find(detail =>
+                String(detail.dia_id || '').trim() === dia &&
+                String(detail.color_id || '').trim() === color &&
+                String(detail.fabric_id || '') === String(fabricId)
+            );
+
+            const baseDetails = (data.program_details || []).find(detail =>
+                String(detail.dia_id) === String(order.dia_id) &&
+                String(detail.color_id) === String(order.color_id) &&
+                String(detail.fabric_id) === String(order.fabric_id)
+            );
+
+            const perRollWt = parseFloat(baseDetails?.per_roll_wt || 0);
+            const programRoll = parseFloat(programMatch?.program_roll || 0);
+
+            const already_rec_roll = parseFloat(order.already_rec_roll || 0);
+            const already_rec_wt = parseFloat(order.already_rec_wt || 0);
+
+            const inward_roll = parseFloat(order.inward_roll || 0);
+            const inward_total_wt = parseFloat(order.inward_roll_wt || order.total_inward_wt || 0);
+            const inward_gross_wt = parseFloat(order.inward_gross_wt || order.gross_wt || order.total_inward_wt || 0);
+
+            const key = `${fabricId}_${color}_${dia}`;
+            const matched = existingData[key];
+
+            const inwardRollVal = matched ? matched.roll : inward_roll;
+            const inwardTotalWtVal = matched ? matched.roll_wt : inward_total_wt;
+            const inwardGrossWtVal = matched ? matched.gross_wt : inward_gross_wt;
+
+            const program_id = baseDetails?.program_id || '-';
+            const programBalance = (baseDetails?.program_bal_value || []).find(
+                p => parseInt(p.program_id) === parseInt(program_id)
+            );
+
+            let receive_roll = 0, receive_roll_wt = 0;
+            let balance_rolls = parseFloat(programBalance?.balance_roll || 0);
+            let balance_wt = parseFloat(programBalance?.balance_wt || 0);
+
+            let out_rolls = parseFloat(programBalance?.out_rolls || 0);
+            let out_wt = parseFloat(programBalance?.out_wt || 0);
+
+            if (programBalance) {
+                receive_roll = already_rec_roll;
+                receive_roll_wt = already_rec_wt;
+            }
+
+            const lotRoll = parseFloat(order.lot_roll || 0);
+            const lotRollWt = parseFloat(order.lot_roll_wt || 0);
+            const avgRollWt = lotRoll ? (lotRollWt / lotRoll) : 0;
+            const originalGrossWt = inwardRollVal * avgRollWt;
+
+            // Prepare the color <td> only for the first row of the color group
+            const colorCell = (index === 0) ? `<td rowspan="${rowspanCount}">${color}</td>` : '';
+
+            const rowHTML = `
+                <tr data-fabric="${fabricId}">
+                    ${colorCell}
+                    <td>${dia}</td>
+                    <td class="out-cell">${out_rolls}</td>
+                    <td style="text-align:center;" class="outrollwt-cell">${out_wt.toFixed(3)}</td>
+                    <td class="roll-cell">${receive_roll}</td>
+                    <td style="text-align:center;" class="rollwt-cell">${receive_roll_wt.toFixed(3)}</td>
+                    <td><input type="number" style="border:none;text-align:center;" class="form-control text-center inward-roll" value="${inwardRollVal}" min="0" step="1"></td>
+                    <td style="text-align:center;"><input type="number" style="border:none;" class="form-control text-center inward-gross-wt" value="${inwardGrossWtVal.toFixed(3)}" step="0.01"></td>
+                    <td style="text-align:center;display:none;"><input type="number" style="border:none;" class="form-control text-center inward-total-wt" value="${inwardTotalWtVal.toFixed(3)}" step="0.01"></td>
+                    <td style="display:none;" class="fabric_id">${fabric_id}</td>
+                    <td style="display:none;" class="dia_id">${dia_ids}</td>
+                    <td style="display:none;" class="color_id">${color_ids}</td>
+                    <td style="display:none;" class="outward_id">${out_ids}</td>
+                    <td style="display:none;" class="po_id">${po_id}</td>
+                    <td style="display:none;" class="prg_roll">${programRoll}</td>
+                    <td style="display:none;" class="program_id">${program_id}</td>
+                    <td style="display:none;" class="lot_no">${lot_no}</td>
+                </tr>
+            `;
+
+            const temp = document.createElement('tbody');
+            temp.innerHTML = rowHTML;
+            const newRow = temp.querySelector('tr');
+            $(newRow).removeAttr('style');
+
+            if (programRoll === 0) {
+                $(newRow).css({ 'background-color': '#f8d7da', 'color': '#721c24' });
+            } else if (lotRoll !== balance_rolls) {
+                $(newRow).css({ 'background-color': '#fff3cd', 'color': '#856404' });
+            } else if (lotRoll >= inwardRollVal) {
+                $(newRow).css({ 'background-color': '#d4edda', 'color': '#155724' });
+            }
+
+            tableBody.appendChild(newRow);
+
+            const inwardRollInput = newRow.querySelector(".inward-roll");
+            const originalBalanceRoll = balance_rolls;
+            const originalBalanceWt = balance_wt;
+            const originalInwardRoll = inwardRollVal;
+
+            inwardRollInput.addEventListener("input", () => {
+                const currentInwardRoll = parseFloat(inwardRollInput.value) || 0;
+                const currentGrossWt = currentInwardRoll * avgRollWt;
+
+                const rollDiff = currentInwardRoll - originalInwardRoll;
+                const wtDiff = currentGrossWt - originalGrossWt;
+
+                const updatedBalanceRoll = originalBalanceRoll - rollDiff;
+                const updatedBalanceWt = originalBalanceWt - wtDiff;
+
+                newRow.querySelector(".bal-roll-cell").textContent = updatedBalanceRoll.toFixed(3);
+                newRow.querySelector(".bal-rollwt-cell").textContent = updatedBalanceWt.toFixed(3);
+                newRow.querySelector(".inward-gross-wt").value = currentGrossWt.toFixed(2);
+
+                updateFooterTotals();
+            });
+        });
+    }
+
+    updateFooterTotals();
+    $('#editTable').show();
+
+    
+        },
+        error: function (xhr) {
+            console.error("Error loading data:", xhr.responseText);
+            alert("Failed to load edit data.");
+        }
+    });
+}
+
+
+
+
+function LoadOutwarddetail_List() {
+    var supplier_id = $('#supplier_id').val(); 
+    var lot_name = $('#lot_name').val(); 
+    var outward_id = $('#do_list').val(); 
+
+    $.ajax({
+        type: 'POST', 
+        url: '/get_grey_outward_delivery_lists/', 
+        data: {
+            'supplier_id': supplier_id,
+            'lot_no': lot_name,
+            'outward_id': outward_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+        success: function(data) {
+            $('#through_id').empty().append('<option value="">Select</option>');
+
+            if (data.order_through && data.order_through.length > 0) {
+                data.order_through.forEach(function(party) {
+                    $('#through_id').append(
+                        '<option value="' + party.id + '">' + party.name + '</option>'
+                    );
+                });
+            }
+            
+
+            if ("{{parent_stock_instance.order_through_id}}" && "{{parent_stock_instance.order_through_id}}" !== "") {
+                $('#through_id').val("{{parent_stock_instance.order_through_id}}").trigger("change");
+            }
+
+
+        },
+        error: function(xhr, status, error) { 
+            console.error('Error loading outward delivery details:', error);
+        }
+    });
+}
+
+
+function updateFooterTotals() {
+  let outwardRoll = 0, outwardWt = 0;
+  let receivedRoll = 0, receivedWt = 0;
+  let inwardRoll = 0, inwardGrossWt = 0, inwardRollWt = 0;
+
+  $("#editTable tbody tr").each(function () {
+    outwardRoll += parseFloat($(this).find(".out-cell").text()) || 0;
+    outwardWt += parseFloat($(this).find(".outrollwt-cell").text()) || 0;
+
+    receivedRoll += parseFloat($(this).find(".roll-cell").text()) || 0;
+    receivedWt += parseFloat($(this).find(".rollwt-cell").text()) || 0;
+
+    inwardRoll += parseFloat($(this).find(".inward-roll").val()) || 0;
+    inwardGrossWt += parseFloat($(this).find(".inward-gross-wt").val()) || 0;
+    inwardRollWt += parseFloat($(this).find(".inward-roll-wt").text()) || 0;
+  });
+
+  $("#footer-outward-roll").text(outwardRoll);
+  $("#footer-outward-wt").text(outwardWt.toFixed(3));
+  $("#footer-received-roll").text(receivedRoll);
+  $("#footer-received-wt").text(receivedWt.toFixed(3));
+  $("#footer-inward-roll").text(inwardRoll);
+  $("#footer-inward-gross-wt").text(inwardGrossWt.toFixed(3));
+  $("#footer-inward-roll-wt").text(inwardRollWt.toFixed(3));
+}
+
+
+
+
+// ````````````` loadpodata ``````````````````````````
+
+ 
+
+function LoadPoData() {
+    console.log("LoadPoData called");
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    const outward_id = $('#do_list').val();
+    const po_id = $('#po_list').val() || 0;
+    const tm_id = $('#tm_id').val();
+    const lot_no = $('#lot_no').val();
+
+    const tableBody = $('#editTableBody');
+    tableBody.empty();
+
+    // Step 1: Capture existing edited data from the datatable
+    const existingData = {};
+    $('#datatable tbody tr').each(function () {
+        const row = $(this);
+        const key = [
+            row.data('fabric'),
+          
+            row.data('dia'),
+            row.data('color')
+        ].map(String).map(s => s.trim()).join('_');
+
+        existingData[key] = {
+            roll: parseInt(row.find('.roll-cell').text()) || 0,
+            roll_wt: parseFloat(row.find('.rollwt-cell').text()) || 0,
+            gross_wt: parseFloat(row.find('.gross_wt-cell').text()) || 0
+        };
+    });
+
+    // Step 2: Fetch updated backend data
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_inward_po_detail_lists/',  //'/get_yarn_deliver_edit_lists/',
+        data: {
+            po_list: po_id,
+            tm_id: tm_id,
+            csrfmiddlewaretoken: csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('ajax-data:',data);
+            const diaData = data.order_data || [];
+            const baseDetails = data.program_details?.[0] || {};
+
+            if (!diaData.length) {
+                $('#editTable').hide();
+                alert("No fabric dia data found.");
+                return;
+            }
+ 
+
+            if (Array.isArray(data.program) && data.program.length > 0) {
+                const firstprogram = data.program[0];
+             
+
+                if (firstprogram.id) {
+                    $("#program").val(firstprogram.id).trigger("change");
+                }
+
+            }
+
+            if (data.fabric_id) {
+                $("#fab_id").val(data.fabric_id).trigger("change");
+            }
+
+
+
+
+            diaData.forEach(order => {
+                const dia = String(order.dia || '').trim();
+                const color = String(order.color || '').trim();
+                const fabricId = order.fabric_id || '-';
+                const dia_ids = String(order.dia_id || '').trim();
+                const color_ids = String(order.color_id || '').trim();
+                const fabric_id = order.fabric_id || '-';
+                const out_id = 0;
+                const programMatch = (data.program_details || []).find(detail =>
+                    String(detail.dia_id || '').trim() === dia &&
+                    String(detail.color_id || '').trim() === color &&
+                    String(detail.fabric_id || '') === String(fabricId)
+                );
+
+                const program_idss = programMatch?.program_id;
+                const diaId = String(order.dia_id || '').trim();
+                const colorId = String(order.color_id || '').trim();
+                const fabricIds = String(order.fabric_id || '').trim(); // ensure string
+
+                const baseDetails = (data.program_details || []).find(detail =>
+                    String(detail.dia_id || '').trim() === diaId &&
+                    String(detail.color_id || '').trim() === colorId &&
+                    String(detail.fabric_id || '').trim() === fabricIds
+                );
+             
+                const dia_id = dia;
+                const programWt = parseFloat(programMatch?.program_total_wt || 0);
+                const programRoll = parseFloat(programMatch?.program_roll || 0);
+                console.log('roll:',programRoll);
+                const already_rec_roll = parseFloat(order.already_rec_roll || 0);
+                const already_rec_wt = parseFloat(order.already_rec_wt || 0);
+                const inward_roll = parseFloat(order.po_roll || 0);
+                const inward_total_wt = parseFloat(order.tx_quantity || 0);
+                const inward_gross_wt = parseFloat(order.total_gross_wt || order.gross_wt || 0);
+
+                const key = `${fabricId}_${dia}_${color}`;
+                const matched = existingData[key];
+
+                const inwardRollVal = matched ? matched.roll : inward_roll;
+                const inwardTotalWtVal = matched ? matched.roll_wt : inward_total_wt;
+                const inwardGrossWtVal = matched ? matched.gross_wt : inward_gross_wt;
+                console.log('g-wt:',inwardGrossWtVal);
+                // ```````````````````````````````````````````````````````````````````````
+                const remaining_roll = parseFloat(order.remaining_roll || 0);
+                console.log(remaining_roll);
+                const remaining_roll_wt = parseFloat(order.remaining_roll_wt || 0);
+
+             
+               
+ 
+                const program_id = baseDetails?.program_id || '-';
+
+                // ✅ Now search in the nested array:
+                const programBalance = (baseDetails?.program_bal_value || []).find(
+                    p => parseInt(p.program_id) === parseInt(program_id)
+                );
+
+                console.log('program_id:', program_id);
+                console.log('programBalance:', programBalance);
+
+                let receive_roll = 0, receive_roll_wt = 0;
+                let out_rolls = 0, out_wt = 0;
+                let balance_rolls = 0; 
+                let balance_wt = 0;
+                if (programBalance) {
+                    const total_pg_roll = parseFloat(programBalance.pg_roll || 0);
+                    const total_pg_wt = parseFloat(programBalance.pg_wt || 0);
+                    const already_in_rolls = parseFloat(programBalance.in_rolls || 0);
+                    const already_in_wt = parseFloat(programBalance.in_wt || 0);
+                    balance_rolls = parseFloat(programBalance.balance_roll );
+                    balance_wt = parseFloat(programBalance.balance_wt );
+                    console.log('bal:',balance_rolls,balance_wt);
+
+                    out_rolls = parseFloat(programBalance.out_rolls );
+                    out_wt = parseFloat(programBalance.out_wt );
+
+
+
+                    receive_roll = already_in_rolls - inwardRollVal;
+                    console.log('rec-roll',receive_roll);
+                    receive_roll_wt = already_in_wt - inwardGrossWtVal;
+
+                 
+                }
+
+                let fabric_display_name = '-';
+                if (baseDetails && Array.isArray(baseDetails.fabric) && baseDetails.fabric.length > 0) {
+                    const f = baseDetails.fabric[0];
+                    fabric_display_name = `${f.name} - ${f.fabric_name}`;
+                } else if (baseDetails && baseDetails.fabric_name) {
+                    fabric_display_name = baseDetails.fabric_name;
+                } 
+                console.log('fab-names:',fabric_display_name);
+
+                // HTML
+                const rowHTML = `
+                    <tr data-fabric="${fabricId}"  data-dia="${dia}" data-color="${color}">
+                        <td style=display:none;>${fabric_display_name}</td>
+                      
+                        <td>${color}</td>
+                        <td>${dia}</td>
+
+
+                        <td class="bal-roll-cell">${out_rolls.toFixed(3)}</td>
+                        <td class="bal-rollwt-cell">${out_wt.toFixed(3)}</td>
+
+                        <td class="roll-cell">${receive_roll.toFixed(3)}</td>
+                        <td class="rollwt-cell">${receive_roll_wt.toFixed(3)}</td>
+                        
+
+
+                       
+                        <td><input type="number" style="border:none;" class="form-control text-center inward-roll" value="${inwardRollVal}" min="0" step="1"></td>
+                        <td><input type="number" style="border:none;" class="form-control text-end inward-gross-wt" value="${inwardGrossWtVal}" step="0.01"></td>
+                        <td><input type="number" style="border:none;display:none;" class="form-control text-end inward-total-wt" value="${inwardTotalWtVal}" step="0.01"></td>
+                        <td style="display:none;" class="fabric_id">${fabric_id}</td>
+                        <td style="display:none;" class="dia_id">${dia_ids}</td>
+                        <td style="display:none;" class="color_id">${color_ids}</td>
+                        <td style="display:none;" class="outward_id">${out_id}</td>
+                        <td style="display:none;" class="po_id">${po_id}</td>
+                        <td style="display:none;" class="prg_roll">${programRoll}</td>
+                        <td style="display:none;" class="program_id">${program_id}</td>
+                        <td style="display:none;" class="lot_no">${lot_no}</td>
+                    </tr>
+                `;
+                tableBody.append(rowHTML);
+
+            });
+
+            updateFooterTotals();
+            
+            $('#editTable').show();
+        },
+        
+        
+        
+        
+        error: function (xhr) {
+            console.error("Error loading data:", xhr.responseText);
+            // alert("Failed to load edit data.");
+        }
+
+        
+    });
+}
+$('#editTableBody').on('input', '.inward-roll, .inward-gross-wt', function () {
+    updateFooterTotals();
+});
+
+
+// ``````````````` store table values  ``````````````````
+
+
+
+// function storeTblValues() {
+//     var TableData = [];
+
+//     $('#editTable tbody tr').each(function(index) {
+//         // var fabric = $(this).find('td:eq(0)').text().trim();
+      
+//         var dia = $(this).find('td:eq(1)').text().trim();
+//         var color = $(this).find('td:eq(0)').text().trim();
+
+//         // var lot_roll = $(this).find('td:eq(6)').text().trim();
+//         // var lot_roll_wt = $(this).find('td:eq(7)').text().trim();
+
+//         var total_received_roll = $(this).find('td:eq(2)').text().trim();
+//         var total_received_roll_wt = $(this).find('td:eq(3)').text().trim();
+
+
+//         var balance_roll = $(this).find('td:eq(4)').text().trim();
+//         var balance_roll_wt = $(this).find('td:eq(5)').text().trim();
+
+
+//         var roll_input = $(this).find('td:eq(6) input');   
+//         var roll = roll_input.length ? roll_input.val().trim() : '0'; 
+
+      
+//         console.log('g-wt:',gross_wt_input);
+//         // var roll = $(this).find('td:eq(10) input').val().trim();
+//         // var wt_per_roll = $(this).find('td:eq(11)').text().trim();
+
+
+//         var rollwt_input = $(this).find('td:eq(8) input');
+//         console.log('rollwt_input:',rollwt_input);
+//         var roll_wt = rollwt_input.length ? rollwt_input.val().trim() : '0';
+
+
+//         var gross_wt_input = $(this).find('td:eq(7) input');
+//         console.log('gross_wt_input:',gross_wt_input);
+//         var gross_wt = gross_wt_input.length ? gross_wt_input.val().trim() : '0';
+
+//         // var tmId = $(this).find('td:eq(13)').text().trim();
+//         // var id = $(this).find('td:eq(16)').text().trim();
+//         var fabric_id = $(this).find('td:eq(9)').text().trim();
+        
+      
+
+//         var dia_id = $(this).find('td:eq(10)').text().trim();
+//         var color_id = $(this).find('td:eq(11)').text().trim();
+//         var outward_id = $(this).find('td:eq(12)').text().trim();
+//         var po_id = $(this).find('td:eq(13)').text().trim();
+//         var program_id = $(this).find('td:eq(15)').text().trim();
+
+
+//         // const fabric_id = row.find('#fabric_id').text().trim();
+//         // const po_id = row.find('#po_id').text().trim();
+//         // const lot_no = row.find('#lot_no').text().trim();
+
+//         // const dia_id = row.find('#dia_id').text().trim();
+//         // const color_id = row.find('#color_id').text().trim();
+//         // const outward_id = row.find('#out_id').text().trim();
+//         // const program_id = row.find('#programId').text().trim();
+
+//         // var lot_no = $(this).find('td:eq(16)').text().trim();
+//         // var prg_id = $(this).find('td:eq(19)').text().trim();
+//         console.log(`Row ${index + 1} - Data:`, { fabric_id, gross_wt, roll, roll_wt });
+
+//         if (fabric_id) {
+//             TableData.push({
+//                 "fabric_id": fabric_id,
+              
+//                 "dia_id": dia_id,
+//                 "color_id": color_id,
+//                 "roll": roll || 0,
+//                 "total_wt": roll_wt || 0,
+//                 "quantity": 0,
+//                 "gross_wt": gross_wt || 0,
+//                 "po_id": po_id,
+//                 'outward_id':outward_id,
+//                 'program_id':program_id || 0,
+//                 'lot_no':lot_no,
+//             });
+//         } else {
+//             console.warn(`Row ${index + 1}: Missing fabric_id, skipping...`);
+//         }
+//     });
+
+//     console.log('TABLE-DATA:', TableData);
+//     return TableData;
+// }
+
+function storeTblValues() {
+    const TableData = [];
+    let lastColor = ''; // to handle rowspan and remember last used color
+
+    $('#editTable tbody tr').each(function (index) {
+        const row = $(this);
+
+        // If this row has a color <td>, use it; otherwise, keep last used
+        const colorCell = row.find('td:first-child');
+        const color = colorCell.attr('rowspan') || colorCell.text().trim() ? colorCell.text().trim() : lastColor;
+        if (colorCell.text().trim()) {
+            lastColor = color;
+        }
+
+        const dia = row.find('td').eq(1).text().trim();
+
+        const lot_roll = row.find('.out-cell').text().trim();
+        const lot_roll_wt = row.find('.outrollwt-cell').text().trim();
+
+        const total_received_roll = row.find('.roll-cell').text().trim();
+        const total_received_roll_wt = row.find('.rollwt-cell').text().trim();
+
+        const roll = row.find('.inward-roll').val()?.trim() || '0';
+        const gross_wt = row.find('.inward-gross-wt').val()?.trim() || '0';
+        const total_wt = row.find('.inward-total-wt').val()?.trim() || '0';
+
+        const fabric_id = row.find('.fabric_id').text().trim();
+        const po_id = row.find('.po_id').text().trim();
+        const lot_no = row.find('.lot_no').text().trim();
+
+        const dia_id = row.find('.dia_id').text().trim();
+        const color_id = row.find('.color_id').text().trim();
+        const outward_id = row.find('.outward_id').text().trim();
+        const program_id = row.find('.program_id').text().trim();
+
+        if (fabric_id) {
+            TableData.push({
+                "fabric_id": fabric_id,
+                "dia_id": dia_id,
+                "color_id": color_id,
+                "roll": parseFloat(roll) || 0,
+                "roll_wt": parseFloat(total_wt) || 0,  // this is the inward total weight
+                "quantity": 0, // still static, update if needed
+                "gross_wt": parseFloat(gross_wt) || 0,
+                "po_id": po_id,
+                "lot_no": lot_no,
+                "outward_id": outward_id,
+                "program_id": program_id,
+                "color": color,
+                "dia": dia,
+                "lot_roll": parseFloat(lot_roll) || 0,
+                "lot_roll_wt": parseFloat(lot_roll_wt) || 0,
+                "received_roll": parseFloat(total_received_roll) || 0,
+                "received_roll_wt": parseFloat(total_received_roll_wt) || 0
+            });
+        } else {
+            console.warn(`Row ${index + 1}: Skipped due to missing fabric_id.`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+function storeTblValues_bk_1072025() {
+    const TableData = [];
+
+    $('#editTable tbody tr').each(function (index) {
+        const row = $(this);
+
+        const color = row.find('td:eq(0)').text().trim() || row.prevAll('tr').find('td[rowspan]').first().text().trim();  // handle rowspan
+        const dia = row.find('td:eq(1)').text().trim();
+
+        const lot_roll = row.find('.out-cell').text().trim();
+        const lot_roll_wt = row.find('.outrollwt-cell').text().trim();
+
+        const total_received_roll = row.find('.roll-cell').text().trim();
+        const total_received_roll_wt = row.find('.rollwt-cell').text().trim();
+
+      
+        const roll = row.find('.inward-roll').val()?.trim() || '0';
+        const gross_wt = row.find('.inward-gross-wt').val()?.trim() || '0';
+        const wt_per_roll = row.find('.inward-roll-wt').text().trim();
+
+        const fabric_id = row.find('#fabric_id').text().trim();
+        const po_id = row.find('#po_id').text().trim();
+        const lot_no = row.find('#lot_no').text().trim();
+
+        const dia_id = row.find('#dia_id').text().trim();
+        const color_id = row.find('#color_id').text().trim();
+        const outward_id = row.find('#outward_id').text().trim();
+        const program_id = row.find('#program_id').text().trim();
+
+        if (fabric_id) {
+            TableData.push({
+                "fabric_id": fabric_id,
+                "dia_id": dia_id,
+                "color_id": color_id,
+                "roll": roll || 0,
+                "roll_wt": wt_per_roll || 0,
+                "quantity": 0,
+                "gross_wt": gross_wt || 0,
+                "po_id": po_id,
+                "lot_no": lot_no,
+                "outward_id": outward_id,
+                "program_id": program_id,
+            });
+        } else {
+            console.warn(`Row ${index + 1}: Skipped due to missing fabric_id.`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+// `````````````````````````````````````````
+
+function LoadPO() {
+    var supplier_id = $('#supplier_id').val(); 
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#po_list').empty().append('<option value="">Select</option>');
+    // $('#through_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST 
+        url: '/get_grey_fabric_po_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(data) {
+            // $('#po_list').empty().append('<option value="">Select</option>');
+            $('#lot_name').empty().append('<option value="">Select</option>');
+        
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#po_list').append('<option value="' + po.id + '">' + po.po_number + ' - ' + po.name + '</option>');
+
+                
+                });
+
+            }
+
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+
+function LoadDO() {
+    var supplier_id = $('#supplier_id').val(); 
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#do_list').empty().append('<option value="">Select</option>');
+    $('#lot_name').empty().append('<option value="">Select</option>');
+    // $('#through_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST  
+        url: '/get_lot_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#lot_name').append('<option value="' + po.lot_no + '">' + po.lot_no + '</option>');
+
+                });
+            }
+        
+            // if (data.orders && data.orders.length > 0) {
+            //     data.orders.forEach(function(po) {
+            //         $('#do_list').append('<option value="' + po.id + '">' + po.do_number + ' - ' + po.lot_no  +  '(' + po.total_quantity + '.kg)' + '</option>');
+
+            //     });
+            // }  
+            // LoadOutward_List();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+} 
+
+
+
+
+
+
+
+// ``````````````` edit delete ```````````````````
+
+
+
+
+
+    function updateSummary(data) {
+        console.log("Updating summary with data:", data);
+
+        $('#qty_total_placeholder').text(data.total_quantity || 0);
+        $('#gross_total_placeholder').text(data.total_gross || 0);
+    }
+
+
+
+function AddInward(){
+    console.log('called');
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var inward_date = $('#inward_date').val();
+    var receive_no = $('#receive_no').val();
+    var receive_date = $('#receive_date').val();
+    var dye_receive_no = $('#dye_receive_no').val();
+    var dye_receive_date = $('#dye_receive_date').val();
+    var do_list = $('#do_list').val();
+    var tm_id = $('#tm_id').val();
+    var mdata = new FormData(this);  // ✅ Initialize before using
+
+    mdata.append('tm_id', tm_id);
+    mdata.append('inward_date', inward_date);
+    mdata.append('receive_date', receive_date);
+    mdata.append('receive_no', receive_no);
+    mdata.append('dye_receive_no', dye_receive_no);
+    mdata.append('dye_receive_date', dye_receive_date); 
+    mdata.append('do_list', do_list); 
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'success',  
+            "/static/assets/images/notification/ok-48.png", 
+            4000
+        ); 
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+
+        mdata.append('chemical_data', TableData); 
+
+        $.ajax({
+            type: "POST",  
+            url : "/update-dyed-inward-item/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log("Server Response:", data);
+
+                if (data.success) {
+                    notifier.show( 
+                        'Well Done!', 
+                        'Added Successfully!', 
+                        'success', 
+                        "/static/assets/images/notification/ok-48.png", 
+                        4000
+                    );  
+                    // location.reload();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to add', 
+                        'danger', 
+                        "/static/assets/images/notification/ok-48.png", 
+                        4000
+                    ); 
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "/static/assets/images/notification/high_priority-48.png", 
+                    4000
+                );  
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+}
+
+    function inward_detail_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/grey-fabric-inward-detail-delete/",
+                method: "POST",
+                data: {
+                    id: id,
+                    tm_id: $("#tm_id").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                dataType: "json",
+              
+                success: function (data) {
+                    console.log('Response:', data);
+                    if (data.message === 'yes') {
+                        showToast('success', 'Purchase Order Deleted!.');
+                        console.log('Calling refresh_data');
+                        refresh_data();
+                    } else {
+                        alert('Failed');
+                    }
+                },
+
+            });
+
+        }
+    }
+
+
+
+$('.single-select').select2();
+
+</script>
+

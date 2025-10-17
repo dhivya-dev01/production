@@ -1,0 +1,2289 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<style>
+        /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    /* #program_table th,  */
+    #editTableBody td {
+        padding: 4px !important;
+        /* text-align: center; */
+        vertical-align: middle;
+        text-align:center;
+
+    }
+
+    #editTableBody input[type="number"] {
+        margin: 0 auto;
+        display: block;
+        
+        text-align:center;
+        border: none;
+
+    }
+
+
+    .table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+
+    .table body th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+
+
+
+
+</style>
+
+
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Update Grey Fabric Inward   </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/grey-fab-inward"> Grey Fabric Inward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                     
+                                    <div class="row">  
+                                        <div class="col-sm-12">
+                                            <div class="card">   
+                                                
+                                                <form id="add_new">
+                                                {% csrf_token %}
+
+                                                    <div class="row">  
+                                                    
+
+                                                        <div class="col-md-12">
+                                               
+
+                                                            <!-- Radio Buttons -->
+                                                            <div class="row ms-2 mt-2">
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Inward No.</label>
+                                                                    <input type="text" class="form-control" id="inward_no" name="inward_no" value="{{parent_stock_instance.inward_number}}" disabled>
+                                                                    <input type="hidden" class="form-control" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Inward Date</label>
+                                                                    <input type="date" class="form-control" id="inward_date" name="inward_date">
+                                                                </div>
+ 
+                                                                
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_yarn" name="material_type" value="yarn"
+                                                                    {% if parent_stock_instance.po_id == 0 or parent_stock_instance.po_id is None %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_yarn"> Yarn </label>  
+                                                                </div>
+                                                                <!-- <h5>{{parent_stock_instance.po_id}}</h5> -->
+
+
+
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_grey_fabric" name="material_type" value="grey"
+                                                                    {% if parent_stock_instance.outward_id == "0" or parent_stock_instance.outward_id == "" %}checked{% endif %}>
+                                                                    <label class="form-label" for="grey"> Grey Fabric </label>  
+                                                                </div>
+
+
+<!-- 
+                                                           
+                                                                <div class="col-md-1 mt-5">
+                                                                        <input class="form-check-input" type="radio" id="is_grey_fabric" name="material_type" value="grey"
+
+                                                                        {% if parent_stock_instance.outward_id == 0 or parent_stock_instance.outward_id is None %} checked {% endif %}>
+
+
+                                                                    <label class="form-label" for="is_grey_fabric"> Grey Fabric</label>  
+                                                                </div> -->
+
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_no" class="form-label">Receive No.</label>
+                                                                    <input type="text" class="form-control" id="receive_no" name="receive_no" value="{{parent_stock_instance.receive_no}}">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="receive_date" class="form-label">Receive Date</label>
+                                                                    <input type="date" class="form-control" id="receive_date" name="receive_date" >
+                                                                </div>
+
+                                                            </div>
+
+                                                            <!-- Form Controls -->
+                                                            <div class="row ms-2">
+                                                       
+
+                                                                  <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Party</label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control single-select"  required>
+                                                                        <option value="">Select</option> <!--  // mill-trader-->
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option>  
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label class="form-label">PO list</label>
+                                                                    <select id="po_list" name="po_list" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+
+                                                                        {% for p in po %}
+                                                                        <option value="{{p.id}}">{{p.po_number}}</option>
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label for="lot_no" class="form-label"><span style="color: red;">*</span> Lot Name</label>
+                                                                    <input type="text" class="form-control" id="lot_no" name="lot_no" value="{{parent_stock_instance.lot_no}}" >
+                                                                     <!-- <select id="lot_no" name="lot_no" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+
+                                                                    </select>  -->
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward List</label>
+                                                                    <select id="do_list" name="do_list" class="form-control single-select" required multiple>
+                                                                        <option value="">Select</option>
+                                                                        {% for y in outward %}
+                                                                        <option value="{{y.id}}">{{y.do_number}}</option>
+                                                                        {% endfor %}
+                                                                    </select>   
+                                                                </div> 
+                                                                <div class="col-md-1 mt-3">
+                                                                    <input type="hidden" id="prg_id" name="prg_id">     
+                                                                    
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button id="load_outward" class="btn btn-primary mt-4">+Load</button>
+
+                                                                </div>
+                                                            </div>
+
+                                                  
+                                                            <!-- <div class="row ms-2">
+
+ 
+
+ 
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="fabric_id" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control single-select">
+
+                                                                        <option value="">Select</option>
+                                                                        {% for k in fabric_program %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}  - {{ k.fabric_name }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                    
+                                                                </div>
+                                                                
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <div class="form-group">
+                                                                        <label for="yarn_count" class="form-label">Yarn Count</label>
+                                                                        
+                                                                        <select id="yarn_count_id" name="yarn_count_id" class="form-control single-select" >
+                                                                            <option value="">Select</option>
+                                                                            {% for k in yarn_count %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+
+
+                                                            
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="gauge" class="form-label">Gauge</label>
+                                                                    <select id="gauge_id" name="gauge_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in gauge %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="tex" class="form-label">TEX/Loop Length</label>
+                                                                    <select id="tex_id" name="tex_id" class="form-control single-select" >
+                                                                        <option value="">Select</option> 
+                                                                        {% for k in tex %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="gsm" class="form-label">GSM</label>
+                                                                    <input type="number"  class="form-control" id="gsm" name="gsm"  >
+                                                                </div>
+ 
+                                                            </div>
+                                                            <div class="row ms-2 mt-2">
+                                                              
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="tex" class="form-label">Dia</label>
+                                                                    <select id="dia_id" name="dia_id" class="form-control single-select" >
+                                                                        <option value="">Select</option> 
+                                                                        {% for k in dia %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="roll" class="form-label">Rolls</label>
+                                                                    <input type="number" class="form-control" id="roll" name="roll">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="roll_wt" class="form-label">Roll Wt. (kg)</label>
+                                                                    <input type="number" class="form-control" id="roll_wt" name="roll_wt" oninput="validateDecimal3(this); updateDeliverPerBag(this)">
+                                                                </div>
+
+                                                            
+
+                                                                <div class="col-md-2 mt-2 mb-3">
+                                                                    <label for="gross_wt" class="form-label">Gross Wt. (kg)</label>
+                                                                    <input type="number" class="form-control" id="gross_wt" name="gross_wt" value="0">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" class="form-control" name="po_id" id="po_id"  readonly>
+                                                                    <input type="hidden" class="form-control" name="outward_id" id="outward_id"  readonly>
+                                                                    <input type="hidden" class="form-control" name="tx_id" id="tx_id"  readonly>
+
+                                                                    <button type="submit" id="update"
+                                                                            class="btn btn-primary mt-3">Add +</button>
+
+                                                                </div>
+                                                            </div> -->
+                                                    </div>
+                                            
+                                                </div> 
+                                                
+                                                <div class="row ms-2">
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                    <input type="hidden" id="parent_id" value="{{ parent_stock_instance.id }}">
+
+                                                    <table id="datatable" class="" style="display: none;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th rowspan="2">Action</th>
+                                                                <th rowspan="2">Fabric</th>
+                                                                <th rowspan="2">Yarn Count</th>
+                                                                <th rowspan="2">Tex</th>
+                                                                <th rowspan="2">Gauge</th>
+                                                                <th rowspan="2">GSM</th>
+                                                                <th rowspan="2">Dia</th>
+                                                                <th colspan="2" class="text-center">Received</th>
+                                                                <th colspan="3" class="text-center">Inward</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Roll</th>
+                                                                <th>Roll Wt. (kg)</th>
+                                                                <th>Roll</th>
+                                                                <th>Gross Wt. (kg)</th> 
+                                                                
+                                                                <th>Roll Wt. (kg)</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+
+
+                                                <div class="card-body">
+                                                    <table id="editTable" class="table table-striped table-bordered wrap" style="display:none;">
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th rowspan="2">Action</th> -->
+                                                                <th rowspan="2">Fabric</th>
+                                                                <!-- <th rowspan="2">Yarn Count</th>
+                                                                <th rowspan="2">Tex</th>
+                                                                <th rowspan="2">Gauge</th>
+                                                                <th rowspan="2">GSM</th> -->
+                                                                <th rowspan="2">Dia</th>
+                                                                <th colspan="2" class="text-center">Already Received</th>
+                                                                <th colspan="2" class="text-center">Balance</th>
+                                                                <th colspan="3" class="text-center">Inward</th> 
+                                                                <!-- <th rowspan="2" >Action</th> -->
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Roll</th>
+                                                                <th>Roll Wt. (kg)</th>
+
+                                                                <th>Roll</th>   
+                                                                <th>Roll Wt. (kg)</th> 
+
+                                                                <th>Roll</th>
+                                                                <th align="right">Gross Wt. (kg)</th>
+
+                                                                <th align="right">Total Wt. (kg)</th> 
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="editTableBody"></tbody>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2" style="text-align:right"><strong>TOTAL</strong></td>
+
+                                                                <td style="text-align: center;"><span id="footer-received-roll-total">0</span></td>
+                                                                <td style="text-align: right;"><span id="footer-received-wt-total">0.000</span></td>
+
+                                                                <td style="text-align: center;"><span id="footer-balance-roll-total">0</span></td>
+                                                                <td style="text-align: right;"><span id="footer-balance-wt-total">0.000</span></td>
+
+
+                                                                <td style="text-align: center;"><span id="footer-roll-total">0</span></td>
+                                                                <td style="text-align: right;"><span id="footer-gross-wt-total">0.000</span></td>
+                                                                <td style="text-align: right;"><span id="footer-roll-wt-total">0.000</span></td>
+                                                            </tr>
+                                                        </tfoot> 
+                                                    </table>
+                                                </div>
+
+
+
+                                                
+ 
+                                                <div class="row"> 
+                                           
+                                                       
+
+                                                    <div class="col-md-4">
+                                                        <div class=" m-b-30">
+                                                        
+                                                            
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                    <div class="row ms-2">
+                                                        <div class="col-md-12" style="text-align: center;" >
+                                                            <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                            <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> -->
+        
+                                                            <button type="submit" id="submit" class="btn btn-primary" onclick="AddInward()">Save</button>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            
+                                            </div> 
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+$('.single-select').select2();
+// $(document).ready(function () {
+
+
+function reset(){
+    $('#supplier_id').val('').trigger('change');
+    $('#po_list').val('').trigger('change');
+}
+
+
+
+
+
+$(document).ready(function () {
+    // Attach event listeners
+    $('#is_yarn, #is_grey_fabric').on('change', function () {
+        loadPartyList(); // Reload supplier list when material type changes
+        reset(); // Clear previous supplier selection
+    });
+
+    $('#supplier_id').on('change', function () {
+        checkAndLoadData(); // Only load DO or PO after party is selected
+    });
+
+    // Initial load
+    loadPartyList();
+});
+
+function reset() {
+    $('#supplier_id').val('').trigger('change');
+}
+
+
+function loadPartyList() {
+    var materialType = $('#is_yarn').is(':checked') ? 'yarn' :
+                       $('#is_grey_fabric').is(':checked') ? 'grey' : '';
+    console.log('m-type:',materialType);
+    if (!materialType) {
+        console.warn("No material type selected");
+        $('#supplier_id').html('<option value="">Select</option>');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_party_list/',
+        data: {
+            'material_type': materialType
+        },
+        dataType: 'json',
+        success: function(data) {
+            var $supplierSelect = $('#supplier_id');
+            $supplierSelect.html('<option value="">Select</option>');
+
+            if (data.length > 0) {
+                $.each(data, function (_, party) {
+                    $supplierSelect.append($('<option>', {
+                        value: party.id,
+                        text: party.name
+                    }));
+                });
+            }
+
+            // ✅ Set selected supplier_id AFTER options are loaded
+            const partyId = "{{ parent_stock_instance.party_id|default:'' }}";
+            if (partyId) {
+                $supplierSelect.val(partyId).trigger('change');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching party list:', error);
+        }
+    });
+}
+
+
+// Called only after party is selected
+function checkAndLoadData() {
+    const supplierId = $('#supplier_id').val();
+    if (!supplierId) return; // Do nothing if party not selected
+
+    if ($('#is_yarn').is(':checked')) {
+        $('#do_list').prop('disabled', false);
+        $('#po_list').prop('disabled', true).val('').trigger('change');
+
+        LoadDO(); // ✅ Only this is called
+
+    } else if ($('#is_grey_fabric').is(':checked')) {
+        $('#po_list').prop('disabled', false);
+        $('#do_list').prop('disabled', true).val('').trigger('change');
+        LoadPoData(); // ✅ Only this is called
+    }
+}
+
+
+// ```````````````````````````````````````````````````````````
+
+
+
+
+
+$('#load_outward').on('click', function (event) {
+    event.preventDefault();  // Prevent form submission / page reload
+
+    const selectedMaterial = $('input[name="material_type"]:checked').val();
+    console.log("Selected Material:", selectedMaterial);
+    console.log("is_grey_fabric checked:", $('#is_grey_fabric').is(':checked'));
+
+    if (selectedMaterial === 'yarn') {
+        LoadEditData();  // Call when Yarn is selected
+    } else if (selectedMaterial === 'grey') {
+        LoadPoData();  // Call when Grey Fabric is selected
+    } else {
+        alert("Please select a material type first.");
+    }
+});
+
+
+
+// ✅ Reload datatable when supplier is changed
+$('#supplier_id').on('change', function () {
+    LoadDatatable_list();
+});
+
+// ✅ Load Po data when PO changes
+$('#po_list').on('change', function () {
+    // LoadPoData(); 
+    updateFooterTotals();
+});
+
+
+
+
+
+$('#lot_no').on('input', function () {
+    const isYarnChecked = $('#is_yarn').is(':checked');
+    const selectedLot = $(this).val();
+    if (isYarnChecked && selectedLot) {
+        LoadOutward_List();
+    }
+});
+
+// ✅ Reload edit data when outward changes
+$('#do_list').on('change', function () {
+    const selectedMaterial = $('input[name="material_type"]:checked').val();
+    if (selectedMaterial === 'yarn') {
+        // LoadEditData(); 
+        // LoadOutward_List();
+
+        updateFooterTotals();
+    } else if (selectedMaterial === 'grey') { 
+        // LoadPoData();
+        updateFooterTotals();
+    }
+});
+
+ const outwardIds = "{{ parent_stock_instance.outward_id }}";
+
+    if (outwardIds && outwardIds !== "") {
+        // Convert comma-separated string to array
+        const idArray = outwardIds.split(",").map(id => id.trim());
+        // $('#do_list').val(idArray).trigger("change");
+
+        
+if ("{{parent_stock_instance.outward_id}}" && "{{parent_stock_instance.outward_id}}" !== "") {
+    $('#do_list').val("{{parent_stock_instance.outward_id}}").trigger("change");
+}
+
+    }
+
+// ✅ 1. Load outward list and select item from parent_stock_instance
+function LoadOutward_List() {
+    const supplier_id = $('#supplier_id').val(); 
+    const lot_name = $('#lot_no').val(); 
+
+    $('#do_list').empty().append('<option value="">Select</option>');
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_lot_outward_list/',
+        data: {
+            'supplier_id': supplier_id,
+            'lot_no': lot_name,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        // success: function(data) {
+        //     if (data.orders && data.orders.length > 0) {
+        //         data.orders.forEach(function(po) {
+        //             $('#do_list').append(
+        //                 `<option value="${po.id}">${po.do_number} - ${po.lot_no} (${po.total_quantity} kg)</option>`
+        //             );
+        //         });
+
+        //         const outwardId = "{{ parent_stock_instance.outward_id|default:'' }}";
+        //         if (outwardId) {
+        //             $('#do_list').val(outwardId).trigger('change');
+        //         }
+        //     }
+        // },
+
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#do_list').append(
+                        `<option value="${po.id}">${po.do_number} - ${po.lot_no} (${po.total_quantity} kg)</option>`
+                    );
+                });
+
+                const outwardIds = "{{ parent_stock_instance.outward_id|default:'' }}";
+                if (outwardIds) {
+                    const idArray = outwardIds.split(",").map(id => id.trim());
+                    $('#do_list').val(idArray).trigger("change");
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', status, error);
+        }
+    });
+}
+
+// ✅ 2. Handle dropdown change
+$('#do_list').on('change', function () {
+    const selectedMaterial = $('input[name="material_type"]:checked').val();
+    if (selectedMaterial === 'yarn') {
+        LoadEditData(); 
+        updateFooterTotals();
+    } else if (selectedMaterial === 'grey') { 
+        // LoadPoData();
+        updateFooterTotals();
+    }
+});
+
+// ✅ 3. On page load — trigger outward load only if data exists
+$(document).ready(function () {
+    const outwardId = "{{ parent_stock_instance.outward_id|default:'' }}";
+    if (outwardId) {
+        LoadOutward_List();
+    }
+});
+
+
+
+// function LoadOutward_List() {
+//     const supplier_id = $('#supplier_id').val(); 
+//     const lot_name = $('#lot_no').val(); 
+
+//     $('#do_list').empty().append('<option value="">Select</option>');
+//     console.log('Supplier-ID:', supplier_id, 'Lot:', lot_name);
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_lot_outward_list/',
+//         data: {  
+//             'supplier_id': supplier_id,
+//             'lot_no': lot_name,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+//         success: function(data) {
+//             console.log("Data:", data);
+//             if (data.orders && data.orders.length > 0) {
+//                 data.orders.forEach(function(po) {
+//                     $('#do_list').append(
+//                         `<option value="${po.id}">${po.do_number} - ${po.lot_no} (${po.total_quantity} kg)</option>`
+//                         // $('#do_list').val("{{parent_stock_instance.outward_id}}").trigger("change")
+
+                        
+//                     );
+
+//                 });
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('AJAX error:', status, error);
+//             console.log(xhr.responseText);
+//         } 
+//     });
+// }
+
+
+
+
+
+
+
+// ✅ Load DataTable for inward data already stored against tm_id
+function LoadDatatable_list() {
+    const tm_id = $('#tm_id').val();
+    console.log('TM ID:', tm_id);
+
+    $('#datatable').DataTable({
+        // language: { emptyTable: "No child records found for this TM ID." },
+        // processing: true,
+        // pageLength: 50,
+        // destroy: true,
+
+         destroy: true,  // Allow reinitialization
+        paging: false,  // 🔴 Removes pagination
+        info: false,    // 🔴 Removes "Showing X to Y of Z entries"
+        searching: false, // Optional: remove search box
+        ordering: false,  // Optional: remove column sorting
+        language: {
+            emptyTable: "No child records found for this TM ID.",
+            zeroRecords: "No matching records found",
+        },
+        order: [],
+        ajax: {
+            url: '/ajax-report-grey-fab-po-details/',
+            type: 'POST',
+            data: function (d) {
+                d.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                d.tm_id = tm_id;
+            }
+        }, 
+        
+        // "rowCallback": function(row, data, index){
+        //     const gross_wt = parseFloat(data.gross_wt);
+        //     if (!isNaN(gross_wt) && gross_wt == 0) {
+        //         $(row).css('background-color', '#FFEAEB');  // light red
+        //     }
+        // },
+        createdRow: function (row, data) {
+            $(row).attr('data-fabric', data.fabric_id)
+                  .attr('data-yarn', data.yarn_count_id)
+                  .attr('data-dia', data.dia_id)
+                  .attr('data-tex', data.tex_id)
+                  .attr('data-gauge', data.gauge_id);
+
+            $(row).find('td:eq(5)').addClass('gsm-cell');
+            $(row).find('td:eq(9)').addClass('roll-cell');
+            $(row).find('td:eq(10)').addClass('rollwt-cell');
+            $(row).find('td:eq(11)').addClass('gross_wt-cell');
+        },
+        columns: [
+            { data: "action", title: "Action" },
+            { data: "fabric", title: "Fabric" },
+            { data: "yarn_count", title: "Yarn Count" },
+            { data: "tex", title: "Tex" },
+            { data: "gauge", title: "Gauge" },
+            { data: "gsm", title: "GSM" },
+            { data: "dia", title: "Dia" },
+            { data: "received_roll", title: "Roll", className: "text-center" },
+            { data: "received_roll_wt", title: "Roll Wt. (kg)", className: "text-end", render: renderFloat },
+            { data: "roll", title: "Roll", className: "text-center" },
+            { data: "total_wt", title: "Total Wt. (kg)", className: "text-end", render: renderFloat },
+            { data: "gross_wt", title: "Gross Wt. (kg)", className: "text-end", render: renderFloat }
+        ],
+       
+    });
+}
+
+
+
+
+function LoadEditData() {
+    // LoadOutward_List(); 
+    console.log("LoadEditData called");
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    const outward_id = $('#do_list').val();
+    const po_id = $('#po_list').val() || 0;
+    const tm_id = $('#tm_id').val();
+    const lot_no = $('#lot_no').val();
+
+    const tableBody = $('#editTableBody');
+    tableBody.empty();
+
+    // Step 1: Capture existing edited data from the datatable
+    const existingData = {};
+    $('#datatable tbody tr').each(function () {
+        const row = $(this);
+        
+        const key = [
+            row.data('fabric') || '',
+            row.data('yarn') || '',
+            row.data('tex') || '',
+            row.data('gauge') || '',
+            row.data('dia') || '',
+            row.data('gsm') || ''
+        ].map(String).map(s => s.trim()).join('_');
+
+
+
+
+        existingData[key] = {
+            roll: parseInt(row.find('.roll-cell').text()) || 0,
+            roll_wt: parseFloat(row.find('.rollwt-cell').text()) || 0,
+            gross_wt: parseFloat(row.find('.gross_wt-cell').text()) || 0
+        };
+    });
+
+    // Step 2: Fetch updated backend data
+    $.ajax({
+        type: 'POST',
+        url: '/get_yarn_deliver_edit_lists/',
+        data: {
+            // outward_list: outward_id,
+            outward_list: Array.isArray(outward_id) ? outward_id.join(',') : outward_id,
+
+            tm_id: tm_id,
+            csrfmiddlewaretoken: csrfToken
+        },
+        dataType: 'json',
+
+
+        success: function (data) {
+
+            console.log('ajax-data:',data);
+    const diaData = data.order_data || [];
+    const tableBody = document.querySelector('#editTable tbody');
+    // updateFooterTotals();
+
+
+    if (!diaData.length) {
+        $('#editTable').hide();
+        alert("No fabric dia data found.");
+        return;
+    }
+
+    diaData.forEach(order => {
+        const dia = String(order.dia || '').trim();
+        const fabricId = order.fabric_id || '-';
+        const out_ids = order.out_id || '-';
+        const dia_ids = String(order.dia_id || '').trim();
+        const fabric_id = order.fabric_id || '-';
+
+        const programMatch = (data.program_details || []).find(detail =>
+            String(detail.dia_id || '').trim() === dia &&
+            String(detail.fabric_id || '') === String(fabricId)
+        );
+
+        const baseDetails = (data.program_details || []).find(detail =>
+            String(detail.dia_id) === String(order.dia_id) &&
+            String(detail.fabric_id) === String(order.fabric_id)
+        );
+
+        const yarn_count_id = baseDetails.yarn_count_id || '-';
+        const tex_id = baseDetails.tex_id || '-';
+        const gauge_id = baseDetails.gauge_id || '-';
+
+        const yarn = String(baseDetails.yarn_count || '').trim();
+        const tex = String(baseDetails.tex || '').trim();
+        const gauge = String(baseDetails.gauge || '').trim();
+        const gsm = String(baseDetails.gsm || '').trim();
+        const dia_id = dia;
+
+        const perRollWt = parseFloat(baseDetails.per_roll_wt || 0);
+        const programWt = parseFloat(programMatch?.program_total_wt || 0);
+        const programRoll = parseFloat(programMatch?.program_roll || 0);
+
+        const already_rec_roll = parseFloat(order.already_rec_roll || 0);
+        const already_rec_wt = parseFloat(order.already_rec_wt || 0);
+        const inward_roll = parseFloat(order.po_roll || 0);
+        const inward_total_wt = parseFloat(order.total_quantity || 0);
+        const inward_gross_wt = parseFloat(order.inward_gross_wt || order.gross_wt || 0);
+        console.log('gross-wt:',inward_gross_wt);
+        const key = `${fabricId}_${yarn}_${tex}_${gauge}_${dia}_${gsm}`;
+        const matched = existingData[key];
+
+        const inwardRollVal = matched ? matched.roll : inward_roll;
+        const inwardTotalWtVal = matched ? matched.roll_wt : inward_total_wt;
+        const inwardGrossWtVal = matched ? matched.gross_wt : inward_gross_wt;
+
+        const program_id = baseDetails?.program_id || '-';
+        const programBalance = (baseDetails?.program_bal_value || []).find(
+            p => parseInt(p.program_id) === parseInt(program_id)
+        );
+
+        let receive_roll = 0, receive_roll_wt = 0;
+        let balance_rolls = parseFloat(programBalance?.balance_roll || 0);
+        let balance_wt = parseFloat(programBalance?.balance_wt || 0);
+
+        if (programBalance) {
+            const already_in_rolls = parseFloat(programBalance.in_rolls || 0);
+            const already_in_wt = parseFloat(programBalance.in_wt || 0);
+            receive_roll = already_rec_roll;  //already_in_rolls + inwardRollVal;
+            receive_roll_wt = already_rec_wt;//already_in_wt + inwardGrossWtVal;
+        }
+
+        let fabric_display_name = '-';
+        if (Array.isArray(baseDetails.fabric) && baseDetails.fabric.length > 0) { 
+            const f = baseDetails.fabric[0];
+            fabric_display_name = `${f.name} - ${f.fabric_name}`;
+        } else {
+            fabric_display_name = baseDetails.fabric_name || '-';
+        }
+
+        const lotRoll = parseFloat(order.lot_roll || 0);
+        const lotRollWt = parseFloat(order.lot_roll_wt || 0);
+        const avgRollWt = lotRoll ? (lotRollWt / lotRoll) : 0;
+        const originalGrossWt = inwardRollVal * avgRollWt;
+//  <td>${fabric_display_name}</td>
+//                 <td>${yarn}</td>
+//                 <td>${tex}</td>
+//                 <td>${gauge}</td>
+//                 <td>${gsm}</td>
+        const rowHTML = `
+            <tr data-fabric="${fabricId}" data-yarn="${yarn}" data-tex="${tex}"
+                data-gauge="${gauge}" data-dia="${dia}" data-gsm="${gsm}">
+               
+
+                 <td style="text-align: left;padding:2px;">
+                    ${fabric_display_name ? `<strong style="font-weight: bold;">FABRIC:</strong> ${fabric_display_name}<br>` : ''}
+                    ${yarn ? `<strong style="font-weight: bold;">YARN COUNT:</strong> ${yarn}<br>` : ''}
+                    ${gauge ? `<strong style="font-weight: bold;">GAUGE:</strong> ${gauge}<br>` : ''}
+                    ${tex ? `<strong style="font-weight: bold;">TEX:</strong> ${tex}<br>` : ''}
+                    ${gsm ? `<strong style="font-weight: bold;">GSM:</strong> ${gsm}` : ''}
+                </td>
+
+
+
+                <td>${dia}</td>
+
+                <td class="roll-cell">${receive_roll}</td>
+                <td style="text-align:right;" class="rollwt-cell">${receive_roll_wt.toFixed(3)}</td>
+                <td class="bal-roll-cell">${balance_rolls}</td>
+                <td style="text-align:right;"  class="bal-rollwt-cell">${balance_wt.toFixed(3)}</td>
+
+                <td><input type="number" style="border:none;text-align:center;" class="form-control text-center inward-roll" value="${inwardRollVal}" min="0" step="1"></td>
+                <td style="text-align:right;" ><input type="number" style="border:none;padding-left:140px;" class="form-control text-end inward-gross-wt" value="${inwardGrossWtVal.toFixed(3)}" step="0.01"></td>
+                <td style="text-align:right;" ><input type="number" style="border:none;padding-left:140px;" class="form-control text-end inward-total-wt" value="${inwardTotalWtVal.toFixed(3)}" step="0.01"></td>
+
+                <td style="display:none;" class="fabric_id">${fabric_id}</td>
+                <td style="display:none;" class="yarn_count_id">${yarn_count_id}</td>
+                <td style="display:none;" class="gauge_id">${gauge_id}</td>
+                <td style="display:none;" class="tex_id">${tex_id}</td>
+                <td style="display:none;" class="dia_id">${dia_ids}</td>
+                <td style="display:none;" class="outward_id">${out_ids}</td>
+                <td style="display:none;" class="po_id">${po_id}</td>
+                <td style="display:none;" class="prg_roll">${programRoll}</td>
+                <td style="display:none;" class="program_id">${program_id}</td>
+                <td style="display:none;" class="lot_no">${lot_no}</td>
+                <td style="display:none;" class="gsm">${gsm}</td>
+            </tr>
+        `;
+
+        // Convert string to DOM and append
+        const temp = document.createElement('tbody');
+        temp.innerHTML = rowHTML;
+        // const newRow = temp.querySelector('tr');
+
+
+        const newRow = temp.querySelector('tr');
+
+        // // === ✅ Apply background color based on conditions ===
+        // if (programRoll === 0) {
+        //     newRow.classList.add("bg-red");
+        // } else if (lotRoll !== balance_rolls) {
+        //     newRow.classList.add("bg-yellow");
+        // } else if (lotRoll >= inwardRollVal) {
+        //     newRow.classList.add("bg-green");
+        // }
+
+
+
+        // $(newRow).removeAttr('style'); // Clear existing styles
+
+        // if (programRoll === 0) {
+        //     $(newRow).css({ 'background-color': '#f8d7da', 'color': '#721c24' }); 
+        // } else if (lotRoll !== balance_rolls) {
+        //     $(newRow).css({ 'background-color': '#fff3cd', 'color': '#856404' }); 
+        // } else if (lotRoll >= currentInwardRoll) {
+        //     $(newRow).css({ 'background-color': '#d4edda', 'color': '#155724' }); 
+        // }
+
+
+
+        tableBody.appendChild(newRow);
+
+        // Now bind the input event after row is in DOM
+        const inwardRollInput = newRow.querySelector(".inward-roll");
+        const originalBalanceRoll = balance_rolls;
+        const originalBalanceWt = balance_wt;
+        const originalInwardRoll = inwardRollVal;
+
+
+
+        inwardRollInput.addEventListener("input", () => {
+            const currentInwardRoll = parseFloat(inwardRollInput.value) || 0;
+            const currentGrossWt = currentInwardRoll * avgRollWt;
+
+            const rollDiff = currentInwardRoll - originalInwardRoll;
+            const wtDiff = currentGrossWt - originalGrossWt;
+
+            const updatedBalanceRoll = originalBalanceRoll - rollDiff;
+            const updatedBalanceWt = originalBalanceWt - wtDiff;
+
+            newRow.querySelector(".bal-roll-cell").textContent = updatedBalanceRoll.toFixed(3);
+            newRow.querySelector(".bal-rollwt-cell").textContent = updatedBalanceWt.toFixed(3);
+            newRow.querySelector(".inward-gross-wt").value = currentGrossWt.toFixed(2);
+
+
+            updateFooterTotals();
+
+            // 🔁 Re-evaluate and update background color
+            // newRow.classList.remove("bg-red", "bg-yellow", "bg-green"); 
+
+            // console.log('color-data:', newRow.classList.remove("bg-red", "bg-yellow", "bg-green"))
+
+            // if (programRoll === 0) {
+            //     newRow.classList.add("bg-red");
+            // // } else if (lotRoll !== balance_rolls) {
+            // //     newRow.classList.add("bg-yellow");
+            // // } else if (lotRoll >= currentInwardRoll) { 
+            // //     newRow.classList.add("bg-green");
+            // }
+        });
+ 
+    });
+
+    updateFooterTotals();
+
+    $('#editTable').show();
+},
+error: function (xhr) {
+    console.error("Error loading data:", xhr.responseText);
+    alert("Failed to load edit data.");
+}
+
+
+
+    });
+}
+
+
+function updateFooterTotals() {
+    let recRollTotal = 0;
+    let recWtTotal = 0;
+    let balanceRollTotal = 0;
+    let balanceWtTotal = 0;
+    let inwardRollTotal = 0;
+    let inwardGrossWtTotal = 0;
+    let inwardTotalWtTotal = 0;
+
+    document.querySelectorAll("#editTable tbody tr").forEach(row => {
+        // Received Roll and Wt (static data)
+        const recRoll = parseFloat(row.querySelector(".roll-cell")?.textContent || 0);
+        const recWt = parseFloat(row.querySelector(".rollwt-cell")?.textContent || 0);
+
+        recRollTotal += recRoll;
+        recWtTotal += recWt;
+
+        // Balance 
+        balanceRollTotal += parseFloat(row.querySelector(".bal-roll-cell")?.textContent || 0);
+        balanceWtTotal += parseFloat(row.querySelector(".bal-rollwt-cell")?.textContent || 0);
+
+        // Inward Inputs
+        inwardRollTotal += parseFloat(row.querySelector(".inward-roll")?.value || 0);
+        inwardGrossWtTotal += parseFloat(row.querySelector(".inward-gross-wt")?.value || 0);
+        inwardTotalWtTotal += parseFloat(row.querySelector(".inward-total-wt")?.value || 0);
+    });
+
+    // Update footer spans
+    document.getElementById("footer-received-roll-total").textContent = recRollTotal.toFixed(0);
+    document.getElementById("footer-received-wt-total").textContent = recWtTotal.toFixed(3);
+
+    document.getElementById("footer-balance-roll-total").textContent = balanceRollTotal.toFixed(0);
+    document.getElementById("footer-balance-wt-total").textContent = balanceWtTotal.toFixed(3);
+
+    document.getElementById("footer-roll-total").textContent = inwardRollTotal.toFixed(0);
+    document.getElementById("footer-gross-wt-total").textContent = inwardGrossWtTotal.toFixed(3);
+    document.getElementById("footer-roll-wt-total").textContent = inwardTotalWtTotal.toFixed(3);
+}
+
+
+
+
+
+// function updateFooterTotals() {
+//     let totalRoll = 0;
+//     let totalGrossWt = 0;
+
+//     document.querySelectorAll("#editTable tbody .inward-roll").forEach(input => {
+//         totalRoll += parseFloat(input.value) || 0;
+//     });
+
+//     document.querySelectorAll("#editTable tbody .inward-gross-wt").forEach(input => {
+//         totalGrossWt += parseFloat(input.value) || 0;
+//     });
+
+//     document.getElementById("footer-roll-total").textContent = totalRoll.toFixed(0);
+//     document.getElementById("footer-gross-wt-total").textContent = totalGrossWt.toFixed(3);
+// }
+
+
+
+// ````````````` loadpodata ``````````````````````````
+
+
+
+function LoadPoData() {
+    console.log("LoadPoData called");
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    const outward_id = $('#do_list').val() || 0;
+    const po_id = $('#po_list').val() || 0;
+    const tm_id = $('#tm_id').val();
+    const lot_no = $('#lot_no').val();
+
+    const tableBody = $('#editTableBody');
+    tableBody.empty();
+
+    // Step 1: Capture existing edited data from the datatable
+    const existingData = {};
+    $('#datatable tbody tr').each(function () {
+        const row = $(this);
+        const key = [
+            row.data('fabric'),
+            row.data('yarn'),
+            row.data('tex'),
+            row.data('gauge'),
+            row.data('dia'),
+            row.data('gsm')
+        ].map(String).map(s => s.trim()).join('_');
+
+        existingData[key] = {
+            roll: parseInt(row.find('.roll-cell').text()) || 0,
+            roll_wt: parseFloat(row.find('.rollwt-cell').text()) || 0,
+            gross_wt: parseFloat(row.find('.gross_wt-cell').text()) || 0
+        };
+    });
+
+    // Step 2: Fetch updated backend data
+    $.ajax({
+        type: 'POST',
+        url: '/get_grey_po_deliver_update_lists/',  //'/get_yarn_deliver_edit_lists/',
+        data: {
+            po_id: po_id,
+            tm_id: tm_id,
+            csrfmiddlewaretoken: csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('ajax-data:',data);
+
+            if (data.order_numbers && data.order_numbers.length > 0) {
+                data.order_numbers.forEach(function(po) {
+                    $('#lot_no').append('<option selected value="' + po.id + '">' + po.lot_no + ' - ' + po.name + '</option>');
+
+                
+                });
+
+            }
+
+
+            const diaData = data.order_data || [];
+            const baseDetails = data.program_details?.[0] || {};
+            console.log('prg-details', baseDetails);
+
+            if (!diaData.length) {
+                $('#editTable').hide();
+                alert("No fabric dia data found.");
+                return;
+            }
+
+            diaData.forEach(order => {
+                const dia = String(order.dia || '').trim();
+                const fabricId = order.fabric_id || '-';
+                const dia_ids = String(order.dia_id || '').trim();
+                const fabric_id = order.fabric_id || '-';
+
+                const programMatch = (data.program_details || []).find(detail =>
+                    String(detail.dia_id || '').trim() === dia &&
+                    String(detail.fabric_id || '') === String(fabricId)
+                );
+
+
+                const program_idss = programMatch?.program_id;
+         
+                const baseDetails = (data.program_details || []).find(detail =>
+                    String(detail.dia_id) === String(order.dia_id) &&
+                    String(detail.fabric_id) === String(order.fabric_id)
+                );
+                const yarn_count_id = baseDetails.yarn_count_id || '-';
+                const tex_id = baseDetails.tex_id || '-';
+                const gauge_id = baseDetails.gauge_id || '-';
+                // const programRoll = baseDetails.program_roll || '-';
+
+
+
+                const yarn = String(baseDetails.yarn_count || '').trim();
+                const tex = String(baseDetails.tex || '').trim();
+                const gauge = String(baseDetails.gauge || '').trim();
+                const gsm = String(baseDetails.gsm || '').trim();
+                // const programRoll = String(baseDetails.program_roll || '').trim();
+                const perRollWt = parseFloat(baseDetails.per_roll_wt || 0);
+                const dia_id = dia;
+                // const programRoll = parseFloat(programMatch?.program_roll || 0);
+                const programWt = parseFloat(programMatch?.program_total_wt || 0);
+                const programRoll = parseFloat(programMatch?.program_roll || 0);
+                console.log('roll:',programRoll);
+                const already_rec_roll = parseFloat(order.already_rec_roll || 0);
+                const already_rec_wt = parseFloat(order.already_rec_wt || 0);
+                const inward_roll = parseFloat(order.po_roll || 0);
+                const inward_total_wt = parseFloat(order.total_quantity || 0);
+                const inward_gross_wt = parseFloat(order.inward_gross_wt || order.gross_wt || 0);
+
+                const key = `${fabricId}_${yarn}_${tex}_${gauge}_${dia}_${gsm}`;
+                const matched = existingData[key];
+
+                const inwardRollVal = matched ? matched.roll : inward_roll;
+                const inwardTotalWtVal = matched ? matched.roll_wt : inward_total_wt;
+                const inwardGrossWtVal = matched ? matched.gross_wt : inward_gross_wt;
+
+                // ```````````````````````````````````````````````````````````````````````
+                const remaining_roll = parseFloat(order.remaining_roll || 0);
+                console.log(remaining_roll);
+                const remaining_roll_wt = parseFloat(order.remaining_roll_wt || 0);
+
+             
+               
+ 
+                const program_id = baseDetails?.program_id || '-';
+
+                // ✅ Now search in the nested array:
+                const programBalance = (baseDetails?.program_bal_value || []).find(
+                    p => parseInt(p.program_id) === parseInt(program_id)
+                );
+
+                console.log('program_id:', program_id);
+                console.log('programBalance:', programBalance);
+
+                let receive_roll = 0, receive_roll_wt = 0;
+                let balance_rolls = 0; 
+                let balance_wt = 0;
+                if (programBalance) {
+                    const total_pg_roll = parseFloat(programBalance.pg_roll || 0);
+                    const total_pg_wt = parseFloat(programBalance.pg_wt || 0);
+                    const already_in_rolls = parseFloat(programBalance.in_rolls || 0);
+                    const already_in_wt = parseFloat(programBalance.in_wt || 0);
+                    balance_rolls = parseFloat(programBalance.balance_roll );
+                    balance_wt = parseFloat(programBalance.balance_wt );
+                    console.log('bal:',balance_rolls,balance_wt);
+
+
+
+                    receive_roll = already_in_rolls - inwardRollVal;
+                    console.log('rec-roll',receive_roll);
+                    receive_roll_wt = already_in_wt - inwardGrossWtVal;
+
+                    // balance_roll = total_pg_roll - (already_in_rolls + inwardRollVal);
+                    // balance_wt = total_pg_wt - (already_in_wt + inwardGrossWtVal);
+                }
+
+
+           
+                let fabric_display_name = '-';
+                if (Array.isArray(baseDetails.fabric) && baseDetails.fabric.length > 0) {
+                    const f = baseDetails.fabric[0];
+                    fabric_display_name = `${f.name} - ${f.fabric_name}`;
+                } else {
+                    fabric_display_name = baseDetails.fabric_name || '-';
+                }
+                out_id = 0;
+                // HTML
+                const rowHTML = `
+                    <tr data-fabric="${fabricId}" data-yarn="${yarn}" data-tex="${tex}"
+                        data-gauge="${gauge}" data-dia="${dia}" data-gsm="${gsm}">
+                        <td style="text-align: left;padding:2px;">
+                            ${fabric_display_name ? `<strong style="font-weight: bold;">FABRIC:</strong> ${fabric_display_name}<br>` : ''}
+                            ${yarn ? `<strong style="font-weight: bold;">YARN COUNT:</strong> ${yarn}<br>` : ''}
+                            ${gauge ? `<strong style="font-weight: bold;">GAUGE:</strong> ${gauge}<br>` : ''}
+                            ${tex ? `<strong style="font-weight: bold;">TEX:</strong> ${tex}<br>` : ''}
+                            ${gsm ? `<strong style="font-weight: bold;">GSM:</strong> ${gsm}` : ''}
+                        </td>
+
+                        <td>${dia}</td>
+
+                        <td class="roll-cell">${receive_roll.toFixed(0)}</td>
+                        <td class="rollwt-cell">${receive_roll_wt.toFixed(3)}</td>
+                        <td class="bal-roll-cell">${balance_rolls.toFixed(0)}</td>
+                        <td class="bal-rollwt-cell">${balance_wt.toFixed(3)}</td>
+
+
+
+                       
+                        <td><input type="number" class="form-control text-center inward-roll" value="${inwardRollVal}" min="0" step="1"></td>
+                        <td><input type="number" class="form-control text-end inward-gross-wt" value="${inwardGrossWtVal}" step="0.01"></td>
+                        <td><input type="number" class="form-control text-end inward-total-wt" value="${inwardTotalWtVal}" step="0.01"></td>
+                        <td style="display:none;" class="fabric_id">${fabric_id}</td>
+                        <td style="display:none;" class="yarn_count_id">${yarn_count_id}</td>
+                        <td style="display:none;" class="gauge_id">${gauge_id}</td>
+                        <td style="display:none;" class="tex_id">${tex_id}</td>
+                        <td style="display:none;" class="dia_id">${dia_ids}</td>
+                        <td style="display:none;" class="outward_id">${outward_id}</td>
+                        <td style="display:none;" class="po_id">${po_id}</td>
+                        <td style="display:none;" class="prg_roll">${programRoll}</td>
+                        <td style="display:none;" class="program_id">${program_id}</td>
+                        <td style="display:none;" class="lot_no">${lot_no}</td>
+                        <td style="display:none;" class="gsm">${gsm}</td>
+                    </tr>
+                `;
+                tableBody.append(rowHTML);
+
+            });
+
+            updateFooterTotals();
+            
+            $('#editTable').show();
+        },
+        
+        
+        
+        
+        error: function (xhr) {
+            console.error("Error loading data:", xhr.responseText);
+            alert("Failed to load edit data.");
+        }
+
+        
+    });
+}
+$('#editTableBody').on('input', '.inward-roll, .inward-gross-wt', function () {
+    updateFooterTotals();
+});
+
+
+function LoadPoData_test_10062025() {
+    console.log("LoadPoData called");
+
+    const fabric_id = $('#fabric_id').val();
+    const fabric_name = $("#fabric_id option:selected").text();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    // const outward_id = $('#do_list').val();
+    const po_id = $('#po_list').val();
+    const tm_id = $('#tm_id').val();
+
+    const tableBody = $('#editTableBody');
+    tableBody.empty();
+
+    // Step 1: Capture existing edited data from the datatable
+    const existingData = {};
+    console.log('exist:',existingData);
+    $('#datatable tbody tr').each(function () {
+        const row = $(this);
+        const key = [
+            row.data('fabric'),
+            row.data('yarn'),
+            row.data('tex'),
+            row.data('gauge'),
+            row.data('dia'),
+            row.data('gsm')
+        ].map(String).map(s => s.trim()).join('_');
+
+        existingData[key] = {
+            roll: parseInt(row.find('.roll-cell').text()) || 0,
+            roll_wt: parseFloat(row.find('.rollwt-cell').text()) || 0,
+            gross_wt: parseFloat(row.find('.gross_wt-cell').text()) || 0
+        };
+    });
+
+
+    $.ajax({
+         type: 'POST', 
+        url: '/get_grey_po_deliver_update_lists/',
+        data: {
+            po_list: po_list,
+            tm_id: tm_id,
+
+            // 'used_deliver_ids': JSON.stringify(usedDeliverIds),  // Send as JSON string
+        
+            csrfmiddlewaretoken: csrfToken  
+        },
+        dataType: 'json',
+       
+
+        success: function (data) {
+            const diaData = data.order_data || [];
+            const baseDetails = data.program_details?.[0] || {};
+
+            if (!diaData.length) {
+                $('#editTable').hide();
+                alert("No fabric dia data found.");
+                return;
+            }
+
+            diaData.forEach(order => {
+                const dia = String(order.dia || '').trim();
+                const fabricId = order.fabric_id || '-';
+                const dia_ids = String(order.dia_id || '').trim();
+                const fabric_id = order.fabric_id || '-';
+
+                const programMatch = (data.program_details || []).find(detail =>
+                    String(detail.dia_id || '').trim() === dia &&
+                    String(detail.fabric_id || '') === String(fabricId)
+                );
+
+
+                const program_idss = programMatch?.program_id;
+         
+                const baseDetails = (data.program_details || []).find(detail =>
+                    String(detail.dia_id) === String(order.dia_id) &&
+                    String(detail.fabric_id) === String(order.fabric_id)
+                );
+                const yarn_count_id = baseDetails.yarn_count_id || '-';
+                const tex_id = baseDetails.tex_id || '-';
+                const gauge_id = baseDetails.gauge_id || '-';
+                // const programRoll = baseDetails.program_roll || '-';
+
+
+
+                const yarn = String(baseDetails.yarn_count || '').trim();
+                const tex = String(baseDetails.tex || '').trim();
+                const gauge = String(baseDetails.gauge || '').trim();
+                const gsm = String(baseDetails.gsm || '').trim();
+                // const programRoll = String(baseDetails.program_roll || '').trim();
+                const perRollWt = parseFloat(baseDetails.per_roll_wt || 0);
+                const dia_id = dia;
+                // const programRoll = parseFloat(programMatch?.program_roll || 0);
+                const programWt = parseFloat(programMatch?.program_total_wt || 0);
+                const programRoll = parseFloat(programMatch?.program_roll || 0);
+                console.log('roll:',programRoll);
+                const already_rec_roll = parseFloat(order.already_rec_roll || 0);
+                const already_rec_wt = parseFloat(order.already_rec_wt || 0);
+                const inward_roll = parseFloat(order.po_roll || 0);
+                const inward_total_wt = parseFloat(order.total_quantity || 0);
+                const inward_gross_wt = parseFloat(order.inward_gross_wt || order.gross_wt || 0);
+
+                const key = `${fabricId}_${yarn}_${tex}_${gauge}_${dia}_${gsm}`;
+                const matched = existingData[key];
+
+                const inwardRollVal = matched ? matched.roll : inward_roll;
+                const inwardTotalWtVal = matched ? matched.roll_wt : inward_total_wt;
+                const inwardGrossWtVal = matched ? matched.gross_wt : inward_gross_wt;
+
+                // ```````````````````````````````````````````````````````````````````````
+                const remaining_roll = parseFloat(order.remaining_roll || 0);
+                console.log(remaining_roll);
+                const remaining_roll_wt = parseFloat(order.remaining_roll_wt || 0);
+
+             
+               
+ 
+                const program_id = baseDetails?.program_id || '-';
+
+                // ✅ Now search in the nested array:
+                const programBalance = (baseDetails?.program_bal_value || []).find(
+                    p => parseInt(p.program_id) === parseInt(program_id)
+                );
+
+                console.log('program_id:', program_id);
+                console.log('programBalance:', programBalance);
+
+                let receive_roll = 0, receive_roll_wt = 0;
+                let balance_rolls = 0;
+                let balance_wt = 0;
+                if (programBalance) {
+                    const total_pg_roll = parseFloat(programBalance.pg_roll || 0);
+                    const total_pg_wt = parseFloat(programBalance.pg_wt || 0);
+                    const already_in_rolls = parseFloat(programBalance.in_rolls || 0);
+                    const already_in_wt = parseFloat(programBalance.in_wt || 0);
+                    balance_rolls = parseFloat(programBalance.balance_roll );
+                    balance_wt = parseFloat(programBalance.balance_wt );
+                    console.log('bal:',balance_rolls,balance_wt);
+
+
+
+                    receive_roll = already_in_rolls - inwardRollVal;
+                    console.log('rec-roll',receive_roll);
+                    receive_roll_wt = already_in_wt - inwardGrossWtVal;
+
+                    // balance_roll = total_pg_roll - (already_in_rolls + inwardRollVal);
+                    // balance_wt = total_pg_wt - (already_in_wt + inwardGrossWtVal);
+                }
+
+
+           
+                let fabric_display_name = '-';
+                if (Array.isArray(baseDetails.fabric) && baseDetails.fabric.length > 0) {
+                    const f = baseDetails.fabric[0];
+                    fabric_display_name = `${f.name} - ${f.fabric_name}`;
+                } else {
+                    fabric_display_name = baseDetails.fabric_name || '-';
+                }
+
+                // HTML
+                const rowHTML = `
+                    <tr data-fabric="${fabricId}" data-yarn="${yarn}" data-tex="${tex}"
+                        data-gauge="${gauge}" data-dia="${dia}" data-gsm="${gsm}">
+                        <td>${fabric_display_name}</td>
+                        <td>${yarn}</td>
+                        <td>${tex}</td>
+                        <td>${gauge}</td>
+                        <td>${gsm}</td>
+                        <td>${dia}</td>
+
+                        <td class="roll-cell">${receive_roll.toFixed(3)}</td>
+                        <td class="rollwt-cell">${receive_roll_wt.toFixed(3)}</td>
+                        <td class="bal-roll-cell">${balance_rolls.toFixed(3)}</td>
+                        <td class="bal-rollwt-cell">${balance_wt.toFixed(3)}</td>
+
+
+
+                       
+                        <td><input type="number" class="form-control text-center inward-roll" value="${inwardRollVal}" min="0" step="1"></td>
+                        <td><input type="number" class="form-control text-center inward-total-wt" value="${inwardTotalWtVal}" step="0.01"></td>
+                        <td><input type="number" class="form-control text-center inward-gross-wt" value="${inwardGrossWtVal}" step="0.01"></td>
+                        <td style="display:none;" class="fabric_id">${fabric_id}</td>
+                        <td style="display:none;" class="yarn_count_id">${yarn_count_id}</td>
+                        <td style="display:none;" class="gauge_id">${gauge_id}</td>
+                        <td style="display:none;" class="tex_id">${tex_id}</td>
+                        <td style="display:none;" class="dia_id">${dia_ids}</td>
+                        <td style="display:none;" class="outward_id">${outward_id}</td>
+                        <td style="display:none;" class="po_id">${po_id}</td>
+                        <td style="display:none;" class="prg_roll">${programRoll}</td>
+                    </tr>
+                `;
+                tableBody.append(rowHTML);
+            });
+            
+            $('#editTable').show();
+        },
+
+
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            alert("Failed to load data. Please check console.");
+        }
+    });
+}
+
+
+
+
+
+// ``````````````` store table values  ``````````````````
+
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    $('#editTable tbody tr').each(function(index) {
+        var fabric = $(this).find('td:eq(0)').text().trim();
+        // var yarn_count = $(this).find('td:eq(1)').text().trim();
+        // var tex = $(this).find('td:eq(2)').text().trim();
+        // var gauge = $(this).find('td:eq(3)').text().trim();
+        // var gsm = $(this).find('td:eq(4)').text().trim();
+        var dia = $(this).find('td:eq(1)').text().trim();
+
+        // var lot_roll = $(this).find('td:eq(6)').text().trim();
+        // var lot_roll_wt = $(this).find('td:eq(7)').text().trim();
+
+        var total_received_roll = $(this).find('td:eq(2)').text().trim();
+        var total_received_roll_wt = $(this).find('td:eq(3)').text().trim();
+
+
+        var balance_roll = $(this).find('td:eq(4)').text().trim();
+        var balance_roll_wt = $(this).find('td:eq(5)').text().trim();
+
+
+        var roll_input = $(this).find('td:eq(6) input');   
+        var roll = roll_input.length ? roll_input.val().trim() : '0'; 
+
+      
+        console.log('g-wt:',gross_wt_input);
+        // var roll = $(this).find('td:eq(10) input').val().trim();
+        // var wt_per_roll = $(this).find('td:eq(11)').text().trim();
+
+
+        var rollwt_input = $(this).find('td:eq(8) input');
+        console.log('rollwt_input:',rollwt_input);
+        var wt_per_roll = rollwt_input.length ? rollwt_input.val().trim() : '0';
+
+
+        var gross_wt_input = $(this).find('td:eq(7) input');
+        console.log('gross_wt_input:',gross_wt_input);
+        var gross_wt = gross_wt_input.length ? gross_wt_input.val().trim() : '0';
+
+        // var tmId = $(this).find('td:eq(13)').text().trim();
+        // var id = $(this).find('td:eq(16)').text().trim();
+        var fabric_id = $(this).find('td:eq(9)').text().trim();
+        
+        var yarn_count_id = $(this).find('td:eq(10)').text().trim();
+        var gauge_id = $(this).find('td:eq(11)').text().trim(); 
+        
+        var tex_id = $(this).find('td:eq(12)').text().trim();
+
+        var dia_id = $(this).find('td:eq(13)').text().trim();
+        var outward_id = $(this).find('td:eq(14)').text().trim();
+        var po_id = $(this).find('td:eq(15)').text().trim();
+        var program_id = $(this).find('td:eq(17)').text().trim();
+        var lot_no = $(this).find('td:eq(18)').text().trim();
+        var gsm = $(this).find('td:eq(19)').text().trim();
+        console.log(`Row ${index + 1} - Data:`, { fabric_id, gross_wt, roll, wt_per_roll });
+
+        if (fabric_id) {
+            TableData.push({
+                "fabric_id": fabric_id,
+                "yarn_count_id": yarn_count_id,
+                "gauge_id": gauge_id,
+                "tex_id": tex_id,
+                "gsm": gsm,
+                "dia_id": dia_id,
+                "fabric_name": fabric,
+                "roll": roll || 0,
+                "total_wt": wt_per_roll || 0,
+                "quantity": 0,
+                "gross_wt": gross_wt || 0,
+                "po_id": po_id,
+                'outward_id':outward_id,
+                'program_id':program_id || 0,
+                'lot_no':lot_no,
+            });
+        } else {
+            console.warn(`Row ${index + 1}: Missing fabric_id, skipping...`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+// `````````````````````````````````````````
+
+function LoadPO() {
+    var supplier_id = $('#supplier_id').val(); 
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#po_list').empty().append('<option value="">Select</option>');
+    // $('#through_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST 
+        url: '/get_grey_fabric_po_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(data) {
+            // $('#po_list').empty().append('<option value="">Select</option>');
+            $('#lot_name').empty().append('<option value="">Select</option>');
+        
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#po_list').append('<option value="' + po.id + '">' + po.po_number + ' - ' + po.name + '</option>');
+
+                
+                });
+
+            }
+
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+
+function LoadDO() {
+    var supplier_id = $('#supplier_id').val(); 
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#do_list').empty().append('<option value="">Select</option>');
+    $('#lot_no').empty().append('<option value="">Select</option>');
+    // $('#through_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST  
+        url: '/get_lot_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#lot_no').append('<option value="' + po.lot_no + '">' + po.lot_no + '</option>');
+
+                });
+            }
+        
+            // if (data.orders && data.orders.length > 0) {
+            //     data.orders.forEach(function(po) {
+            //         $('#do_list').append('<option value="' + po.id + '">' + po.do_number + ' - ' + po.lot_no  +  '(' + po.total_quantity + '.kg)' + '</option>');
+
+            //     });
+            // }  
+            LoadOutward_List();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+} 
+
+
+// $(document).ready(function () {
+//     $('#lot_no').on('change', function () {
+//         const isGreyChecked = $('#is_yarn').is(':checked');
+//         const selectedLot = $(this).val();
+
+//         if (isGreyChecked && selectedLot) {
+//             LoadOutward_List(); // Only load if grey fabric is checked and lot selected
+//         } else {
+//             console.log("Grey fabric not checked or lot not selected.");
+//         }
+//     });
+// });
+
+
+
+
+
+// function LoadOutward_List() {
+//     var supplier_id = $('#supplier_id').val(); 
+//     var lot_name = $('#lot_no').val(); 
+//     // $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+//     $('#do_list').empty().append('<option value="">Select</option>');
+//     // $('#lot_name').empty().append('<option value="">Select</option>');
+//     // $('#through_id').empty().append('<option value="">Select</option>');
+//     console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+//     $.ajax({
+//         type: 'POST',  // Change to POST 
+//         url: '/get_outward_lists/',
+//         data: {
+//             'supplier_id': supplier_id,
+//             'lot_no':lot_name,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+//         },
+
+//         success: function(data) {
+          
+        
+//             if (data.orders && data.orders.length > 0) {
+//                 data.orders.forEach(function(po) {
+//                     $('#do_list').append('<option value="' + po.id + '">' + po.do_number + ' - ' + po.lot_no  +  '(' + po.total_quantity + '.kg)' + '</option>');
+
+//                 });
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error loading PO lists:', error);
+//         } 
+//     });
+// }
+
+
+
+
+
+// ``````````````````````````
+if ("{{ parent_stock_instance.inward_date }}" && "{{ parent_stock_instance.inward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.inward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#inward_date').val(formattedDate).trigger("change");
+}
+
+
+if ("{{ parent_stock_instance.receive_date }}" && "{{ parent_stock_instance.receive_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.receive_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#receive_date').val(formattedDate).trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.po_id}}" && "{{parent_stock_instance.po_id}}" !== "") {
+    $('#po_list').val("{{parent_stock_instance.po_id}}").trigger("change");
+    LoadPoData();
+}
+
+
+// function LoadLot() {
+//     var po_list = $('#po_list').val();  
+//     console.log('Supplier-ID:', po_list); 
+//     $('#purchaseTable tbody').empty('');
+
+
+
+//     // // Get all delivery IDs already used in purchaseTable
+//     // let usedDeliverIds = [];
+//     // $('#purchaseTable tbody tr').each(function () {
+//     //     let deliver_id = $(this).find('#deliver_id').text();
+//     //     if (deliver_id) {
+//     //         usedDeliverIds.push(deliver_id);
+//     //     }
+//     // }); 
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_grey_po_deliver_update_lists/',
+//         data: {
+//             'po_list': po_list,
+//             'used_deliver_ids': 0 , //JSON.stringify(usedDeliverIds),  // Send as JSON string
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+     
+
+//         success: function(data) {
+//             $('#do_list').empty().append('<option value="">Select</option>');
+//             $('#lot_no').empty().append('<option value="">Select</option>');
+
+
+
+
+            //   if (data.orders && data.orders.length > 0) {
+            //     data.orders.forEach(function(po) {
+            //         $('#lot_no').append('<option selected value="' + po.id + '">' + po.lot_no + ' - ' + po.name + '</option>');
+
+                
+            //     });
+
+            // }
+
+
+//             // ✅ Load Deliver To dropdown
+//             if (data.delivery_to && data.delivery_to.length > 0) {
+//                 data.delivery_to.forEach(function(item) {
+//                     $('#deliver_to').append('<option value="' + item.party_id + '">' + item.party_name + '</option>');
+//                 });
+//             }
+
+//             // ✅ Load Program dropdown
+//             if (data.program && data.program.length > 0) {
+//                 data.program.forEach(function(po) {
+//                     $('#prg_id').append(
+//                         `<option value="${po.id}">${po.knitting_number} - ${po.name} - [${po.total_quantity}]</option>`
+//                     );
+//                 });
+//             }
+
+//             // ✅ Update PO Bag and Quantity
+//             $('#po_bag_total').text(parseFloat(data.po_bag || 0).toFixed(2));
+//             $('#po_quantity_total').text(parseFloat(data.po_quantity || 0).toFixed(2));
+//             $('#inward_bag_total').text(parseFloat(data.inward_bag || 0).toFixed(2));
+//             $('#inward_quantity_total').text(parseFloat(data.inward_quantity || 0).toFixed(2));
+
+//             const balance_bag = (parseFloat(data.po_bag) || 0) - (parseFloat(data.inward_bag) || 0);
+//             const balance_quantity = (parseFloat(data.po_quantity) || 0) - (parseFloat(data.inward_quantity) || 0);
+//             $('#balance_bag_total').text(balance_bag.toFixed(2));
+//             $('#balance_quantity_total').text(balance_quantity.toFixed(2));
+
+
+
+//             if ((!data.deliveries || data.deliveries.length === 0) && Array.isArray(data.program_details) && data.program_details.length > 0) {
+//                 // Ensure selectedProgramIds is an array of numbers
+//                 let selectedProgramIds = [];
+//                 if (Array.isArray(data.program_id)) {
+//                     selectedProgramIds = data.program_id.map(Number);
+//                 } else if (data.program_id) {
+//                     selectedProgramIds = [Number(data.program_id)];
+//                 } else if (data.program && data.program.length > 0) {
+//                     // fallback: take program ids from data.program array
+//                     selectedProgramIds = data.program.map(p => Number(p.id));
+//                 }
+
+
+
+//                 data.program_details.forEach((detail, index) => {
+//                 console.log("Detail", index, "program_id:", detail.program_id, "dia:", detail.dia);
+//                 // const detailProgramId = Number(detail.program_id);
+
+//                 let detailProgramIds = [];
+//             if (Array.isArray(detail.program_id)) {
+//                 detailProgramIds = detail.program_id.map(Number);
+//             } else {
+//                 detailProgramIds = [Number(detail.program_id)];
+//             }
+
+//             if (detailProgramIds.some(id => selectedProgramIds.includes(id))) {
+           
+//         } else {
+//             console.log("Skipping detail with program_id:", detail.program_id);
+//         }
+//     });
+
+
+
+//     }
+
+
+//     },
+
+
+
+//     error: function(xhr, status, error) {
+//         console.error('Error loading po lists:', error);
+//     }
+//     });
+// }
+    
+
+// if ("{{parent_stock_instance.lot_no}}" && "{{parent_stock_instance.lot_no}}" !== "") {
+//     $('#lot_no').val("{{parent_stock_instance.lot_no}}").trigger("change");
+// }
+
+
+const presetLotNo = "{{ parent_stock_instance.lot_no|default:'' }}";
+
+if (presetLotNo) {
+    // Wait until options are populated
+    setTimeout(() => {
+        $('#lot_no').val(presetLotNo).trigger("change");
+    }, 100);
+}
+
+function renderFloat(data) {
+    return parseFloat(data || 0).toFixed(3);
+}
+
+
+
+
+// // $(document).ready(function () {
+//     $('#lot_no').on('input', function () {
+
+//         const selectedLot = $(this).val();
+//         const isGreyChecked = $('#is_grey_fabric').is(':checked');
+
+//         if (isGreyChecked && selectedLot !== "") {
+//             LoadOutward_List(selectedLot);
+//         } else {
+//             $('#do_list').empty().append('<option value="">Select</option>');
+//             console.log("Grey fabric not checked or lot not selected.");
+//         }
+//     });
+// // });
+
+// function LoadOutward_List(lot_no) {
+//     const supplier_id = $('#supplier_id').val();
+//     const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+//     if (!supplier_id || !lot_no) {
+//         console.warn("Missing supplier or lot number.");
+//         return;
+//     }
+
+//     $('#do_list').empty().append('<option value="">Select</option>');
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_yarn_outward_lot_lists/',
+//         data: {
+//             'supplier_id': supplier_id,
+//             'lot_no': lot_no,
+//             'csrfmiddlewaretoken': csrfToken
+//         }, 
+//         success: function (data) { 
+//             if (data.orders && data.orders.length > 0) {
+//                 data.orders.forEach(function (po) {
+//                     const optionText = `${po.do_number} - ${po.lot_no} (${po.total_quantity} kg)`;
+//                     $('#do_list').append(`<option value="${po.id}">${optionText}</option>`);
+//                 });
+//             } else {
+//                 console.log("No orders found for selected lot.");
+//             }
+//         },
+//         error: function (xhr, status, error) {
+//             console.error('Error loading DO list:', error);
+//         }
+//     });
+// }
+
+
+
+// $(document).ready(function () {
+// $(document).ready(function () {
+   
+
+// ``````````````` edit delete ```````````````````
+
+
+
+    function inward_detail_edit(id) {
+        var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $.post('/grey-inw_detail_edit/', { id: id, csrfmiddlewaretoken: tkn }, function (res) {
+            $('#tx_id').val(res.id); // Populate tm_id with the item's id
+            $('#po_id').val(res.po_id); // Populate tm_id with the item's id
+            $('#outward_id').val(res.outward_id); // Populate tm_id with the item's id
+            $('#tm_id').val(res.tm_id); // Populate tm_id with the item's id
+            $('#roll').val(res.roll);
+            $('#gsm').val(res.gsm);
+            $('#roll_wt').val(res.total_wt);
+            $('#gross_wt').val(res.gross_wt);
+          
+            // $('#serial_number').val(res.serial_number);
+            $('#fabric_id').val(res.fabric_id).trigger("change");
+            $('#yarn_count_id').val(res.yarn_count_id).trigger("change");
+            $('#gauge_id').val(res.gauge_id).trigger("change");
+            $('#tex_id').val(res.tex_id).trigger("change");
+            $('#dia_id').val(res.dia_id).trigger("change");
+            $('#po_list').val(res.po_id).trigger("change");
+            $('#do_list').val(res.outward_id).trigger("change");
+            // $('#deliver_to').val(res.deliver_to).trigger("change");
+
+            // LoadDeliverTo(function () {
+                // $('#deliver_to').val(res.outward_party_id).trigger("change");
+                // $('#edit_deliver_to').val(res.outward_party_id).trigger("change");
+            // });
+            // Set the update flag to true to indicate we are editing
+            $('#update_flag').val('true');
+
+            // Optionally show a message or change button text
+            $('#update').text('Update'); // Change button text to 'Update' for clarity
+        });
+    }
+
+
+
+
+
+    function updateSummary(data) {
+        console.log("Updating summary with data:", data);
+
+        $('#qty_total_placeholder').text(data.total_quantity || 0);
+        $('#gross_total_placeholder').text(data.total_gross || 0);
+    }
+
+    // $('#add_new').on('submit', function (e) {
+    //     e.preventDefault();
+
+    //     if (roll <= 0) {
+    //     notifier.show(
+    //         'Error!', 
+    //         'Cannot add. Roll value must be greater than 0.', 
+    //         'error', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );  
+    //     return;
+    // }
+
+
+    
+    //     var formData = new FormData(this);
+    //     formData.append('tm_id', $('#tm_id').val());
+    //     formData.append('po_id', $('#po_id').val());
+    //     formData.append('outward_id', $('#outward_id').val());
+    //     formData.append('supplier_id', $('#supplier_id').val());
+
+
+
+
+    //     $.ajax({
+    //         url: '/update-grey-inward-item/', // Adjust URL as needed
+    //         type: 'POST',
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (response) {
+    //             if (response.success) {
+    //                 notifier.show(
+    //                     'Well Done!', 
+    //                     'PO updated successfully.',
+    //                     'success',
+    //                     "{% static 'assets/images/notification/ok-48.png' %}",
+    //                     4000
+    //                 );
+    //                 // // Refresh DataTable
+    //                 refresh_data();
+
+    //                 // Update Summary
+    //                 // updateSummary(response);
+
+    //                 // Clear Form Fields
+    //                 // $('#product_id').val('').trigger("change");
+    //                 // $('#deliver_to').val('').trigger("change");
+    //                 // $('#bag').val('');
+    //                 // $('#per_bag').val('');
+    //                 // $('#receive_no').val('');
+    //                 // $('#receive_date').val('');
+    //                 // $('#quantity').val('');
+    //                 $('#update_flag').val('false');
+    //                 $('#update').text('Add');
+    //             } else {
+    //                 // alert(response.error_message || 'An error occurred. Please try again.');
+    //                 notifier.show(
+    //                     'Error!',
+    //                     'Failed to update po:' + response.error_message,
+    //                     'danger',
+    //                     "{% static 'assets/images/notification/high_priority-48.png' %}",
+    //                     4000
+    //                 );
+    //             }
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('Request Failed:', error);
+    //             // alert('Error in processing the request');
+    //             notifier.show(
+    //                 'Error!',
+    //                 'Error in processing the request.',
+    //                 'danger',
+    //                 "{% static 'assets/images/notification/high_priority-48.png' %}",
+    //                 4000
+    //             );
+    //         }
+    //     });
+    // });
+
+function AddInward(){
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var tm_id = $('#tm_id').val();
+    var mdata = new FormData(this);  // ✅ Initialize before using
+
+    mdata.append('tm_id', tm_id);
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'success',  
+            "/static/assets/images/notification/ok-48.png", 
+            4000
+        ); 
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+
+        mdata.append('chemical_data', TableData); 
+
+        $.ajax({
+            type: "POST", 
+            url : "/update-grey-inward-item/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log("Server Response:", data);
+
+                if (data.success) {
+                    notifier.show( 
+                        'Well Done!', 
+                        'Added Successfully!', 
+                        'success', 
+                        "/static/assets/images/notification/ok-48.png", 
+                        4000
+                    );  
+                    // location.reload();
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to add', 
+                        'danger', 
+                        "/static/assets/images/notification/ok-48.png", 
+                        4000
+                    ); 
+                }
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "/static/assets/images/notification/high_priority-48.png", 
+                    4000
+                );  
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+}
+
+    function inward_detail_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/grey-fabric-inward-detail-delete/",
+                method: "POST",
+                data: {
+                    id: id,
+                    tm_id: $("#tm_id").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                dataType: "json",
+              
+                success: function (data) {
+                    console.log('Response:', data);
+                    if (data.message === 'yes') {
+                        showToast('success', 'Purchase Order Deleted!.');
+                        console.log('Calling refresh_data');
+                        refresh_data();
+                    } else {
+                        alert('Failed');
+                    }
+                },
+
+            });
+
+        }
+    }
+
+
+
+$('.single-select').select2();
+
+</script>

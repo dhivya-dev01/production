@@ -1,0 +1,639 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+/* Sidebar Styling */ 
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -40%; /* Initially hidden */
+    width: 40%; /* Make it 45% of the screen width */
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 1050;
+}
+
+/* Header Styling */
+.sidebar-header { 
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f9fa;
+}
+
+/* Sidebar Content Styling */
+.sidebar-body {
+    padding: 15px;
+}
+
+/* Footer Styling */
+.sidebar-footer {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+
+/* ````````````````````input spinner remove `````````````````` */
+
+/* Remove spinner for Chrome, Safari, Edge, and Opera */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove spinner for Firefox */
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+</style>
+
+
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body"> 
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Folding Program  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/folding-program"> Folding Program</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                           
+                                                                <!-- ``````````````````` tm table values (quality - prg) -->
+<!-- 
+                                                                 <div class="col-md-2 mt-3">
+                                                                    <label for="prg_no" class="form-label">Program No.</label>
+                                                                    <input id="program_no" name="program_no" type="text" class="form-control" value="{{prg_no}}">
+                                                                  
+                                                                </div> -->
+
+
+
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                        
+                                                                    
+                                                            </div>
+                                                            <!-- <div class="row">
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_1" class="form-label">
+                                                                        <span>XS / 45 / 75</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_1" name="size_1">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_2" class="form-label">
+                                                                         <span>S / 50 / 80</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_2" name="size_2">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_3" class="form-label">
+                                                                         <span>M / 55 / 85</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_3" name="size_3">
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_4" class="form-label">
+                                                                        <span>L / 60 / 90</span>
+
+
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_4" name="size_4">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_5" class="form-label">
+                                                                        <span>XL / 65 / 95</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_5" name="size_5">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_6" class="form-label">
+                                                                        <span>XXL / 70 / 100</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_6" name="size_6">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_7" class="form-label">
+                                                                        <span>3XL / 75 / 105</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_7" name="size_7">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="size_8" class="form-label">
+                                                                        <span>4XL / 80 / 110</span>
+                                                                    </label>
+                                                                    <input type="number" class="form-control" id="size_8" name="size_8">
+                                                                </div>
+
+
+                                                                <div class="col-md-1 mt-4">
+                                                                    <input type="hidden" id="edit_id" name="edit_id" >
+                                                                    <button type="button" id="add_folding" class="btn btn-primary mt-3">+Add</button>
+                                                                </div>
+
+
+                                                            </div> -->
+                                                            <div class="row mt-2">
+
+
+                                                                 <div class="d-flex flex-wrap align-items-end gap-2">
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_1" class="form-label"><span>XS / 45 / 75</span></label>
+                                                                        <input type="number" class="form-control" id="size_1" name="size_1">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_2" class="form-label"><span>S / 50 / 80</span></label>
+                                                                        <input type="number" class="form-control" id="size_2" name="size_2">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_3" class="form-label"><span>M / 55 / 85</span></label>
+                                                                        <input type="number" class="form-control" id="size_3" name="size_3">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_4" class="form-label"><span>L / 60 / 90</span></label>
+                                                                        <input type="number" class="form-control" id="size_4" name="size_4">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_5" class="form-label"><span>XL / 65 / 95</span></label>
+                                                                        <input type="number" class="form-control" id="size_5" name="size_5">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_6" class="form-label"><span>XXL / 70 / 100</span></label>
+                                                                        <input type="number" class="form-control" id="size_6" name="size_6">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_7" class="form-label"><span>3XL / 75 / 105</span></label>
+                                                                        <input type="number" class="form-control" id="size_7" name="size_7">
+                                                                    </div>
+
+                                                                    <div class="d-flex flex-column">
+                                                                        <label for="size_8" class="form-label"><span>4XL / 80 / 110</span></label>
+                                                                        <input type="number" class="form-control" id="size_8" name="size_8">
+                                                                    </div>
+
+                                                                    <!-- <div class="d-flex flex-column">
+                                                                        <input type="hidden" id="edit_id" name="edit_id">
+                                                                        <button type="button" id="add_folding" class="btn btn-primary">+Add</button>
+                                                                    </div> -->
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-2">
+
+                                                                    <div class="col-md-12" align="center">
+                                                                        <input type="hidden" id="edit_id" name="edit_id">
+                                                                        <button type="button" id="add_folding" class="btn btn-primary mt-3">+Add</button>
+                                                                    </div> 
+
+                                                            </div>
+
+      
+                                                    
+                                                        </div> 
+                                                        <div class="row mt-2">
+                                                            <div class="table-responsive table-desi">
+
+                                                                 <table id="datatable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Id</th>
+                                                                            <th>Actions</th>
+                                                                            <th class="wrap">Quality</th>
+                                                                            <th class="wrap">Style</th>
+                                                                
+                                                                            <!-- <th>Size 1</th>
+                                                                            <th>Size 2</th>
+                                                                            <th>Size 3</th>
+                                                                            <th>Size 4</th>
+                                                                            <th>Size 5</th>
+                                                                            <th>Size 6</th>
+                                                                            <th>Size 7</th>
+                                                                            <th>Size 8</th> -->
+
+                                                                            <th>
+                                                                                <div>XS</div>
+                                                                                <div>45</div>
+                                                                                <div>75</div>
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>S</div>
+                                                                                <div>50</div>
+                                                                                <div>80</div>
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>M</div>
+                                                                                <div>55</div>
+                                                                                <div>85</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>L</div>
+                                                                                <div>60</div>
+                                                                                <div>90</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>XL</div>
+                                                                                <div>65</div>
+                                                                                <div>95</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>XXL</div>
+                                                                                <div>70</div>
+                                                                                <div>100</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>3XL</div>
+                                                                                <div>75</div>
+                                                                                <div>105</div>
+
+                                                                            </th>
+                                                                            <th>
+                                                                                <div>4XL</div>
+                                                                                <div>80</div>
+                                                                                <div>110</div>
+
+                                                                            </th>
+                                                        
+
+
+
+                                                                            <th>Status</th>
+
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody> 
+                                                                </table>
+                                                                
+                                                            
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- <div class="row">
+                        
+                                                            <div class="col-md-12">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                        
+                                                        </div> -->
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+  
+$(document).ready(function () {
+    $('#add_folding').on('click', function () {
+        const qualityId = $('#quality_id').val();
+        const styleId = $('#style_id').val();
+        const editId = $('#edit_id').val();  // Check for edit mode
+
+        // Validate required fields
+        if (!qualityId || !styleId) {
+            
+            notifier.show(
+            'Error!', 
+            `Please select both Quality and Style`, 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+            // alert('Please select both Quality and Style');
+            return;
+        }
+
+        // Gather form data
+        const formData = {
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+            quality_id: qualityId,
+            style_id: styleId,
+            size_1: $('#size_1').val() || 0,
+            size_2: $('#size_2').val() || 0,
+            size_3: $('#size_3').val() || 0,
+            size_4: $('#size_4').val() || 0,
+            size_5: $('#size_5').val() || 0,
+            size_6: $('#size_6').val() || 0,
+            size_7: $('#size_7').val() || 0,
+            size_8: $('#size_8').val() || 0
+        };
+
+        // Include edit ID if updating
+        if (editId) {
+            formData.edit_id = editId;
+        }
+
+        // Decide URL based on edit or add
+        const url = editId ? '/update-folding-program/' : '/add-folding-program/';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            success: function (response) {
+                if (editId) {
+                    notifier.show(
+                        'Well Done!',
+                        'Updated successfully!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+                } else { 
+                    notifier.show(
+                        'Well Done!',
+                        'Added successfully!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+                }
+                refresh_data();
+
+                $('#add_new')[0].reset();
+                $('#edit_id').val('');  
+                $('#quality_id').trigger('change');
+                $('#style_id').trigger('change');
+                
+                // Clear edit_id after update
+                // Optionally refresh table or UI
+            },
+
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
+                 notifier.show(
+                        'Error!',
+                        'Something went wrong, Try Again Later!',
+                        'success',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+            }
+        });
+    });
+});
+
+
+
+
+
+
+var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [], 
+ 
+        "columns": [
+            { "data": "id", "title": " ID #" }, 
+            { "data": "action", "title": "Action" }, 
+            // { "data": "prg_no", "title": "Folding No." }, 
+            { "data": "quality", "title": " Quality" },
+            { "data": "style", "title": " Style" },
+            { "data": "size_1", "title": "XS<br>45<br>75" },
+            { "data": "size_2", "title": " S<br>50<br>80" },
+            { "data": "size_3", "title": " M <br>55 <br> 85" },
+            { "data": "size_4", "title": "L <br> 60 <br> 90" },
+            { "data": "size_5", "title": " XL <br> 65 <br> 95" },
+            { "data": "size_6", "title": "XXL <br> 70 <br> 100" },
+            { "data": "size_7", "title": " 3XL <br> 75 <br> 105" },
+            { "data": "size_8", "title": " 4XL <br> 80 <br> 110" },
+            { "data": "status", "title": "Status" }
+        ], 
+        "ajax": {  
+            "url": '/folding-program-ajax-report/',
+            "type": "POST",
+            "data": function(data){
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            },
+            "dataSrc": function(json) { 
+                if (json.message === 'error') {
+                    
+                    console.log('access denied')
+                    return [];
+                }
+
+                // Log and return the valid data
+                console.log(json);
+                return json.data;
+            }
+        }
+    });
+
+ 
+
+    function refresh_data() {
+    if ($.fn.DataTable.isDataTable("#datatable")) { 
+        $('#datatable').DataTable().ajax.reload(null, false);  // ✅ Refresh without resetting pagination
+    }
+}
+
+
+
+
+function folding_prg_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/folding-program-edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.id); // Populate tm_id with the item's id
+      
+        $('#size_1').val(res.size_1);
+        $('#size_2').val(res.size_2);
+        $('#size_3').val(res.size_3);
+        $('#size_4').val(res.size_4);
+        $('#size_5').val(res.size_5);
+        $('#size_6').val(res.size_6);
+        $('#size_7').val(res.size_7);
+        $('#size_8').val(res.size_8);
+        
+        
+        $('#quality_id').val(res.quality_id).trigger("change"); 
+        $('#style_id').val(res.style_id).trigger("change"); 
+
+    });
+} 
+
+
+
+function folding_prg_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/folding-prg-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            // tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                notifier.show(
+                    'Well Done!', 
+                    'Deleted successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // alert('success');
+                refresh_data();
+            } else {
+                
+                notifier.show(
+                    'Error!', 
+                    'Failes to delete!.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+$('.single-select').select2();  
+
+
+</script>

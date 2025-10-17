@@ -1,0 +1,913 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Fabric Setting  &nbsp;  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#add_modal">Add</button></h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Masters</a></li>
+                                            <li class="breadcrumb-item"><a href="/fabric-program">Fabric Setting </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                    <div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog  modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Add Fabric Setting</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="add_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+
+                                                            <div class="col-md-6 mt-2">
+                                                                <label for="gsm" class="form-label">Name</label>
+                                                                <input type="text" id="name" name="name" class="form-control">
+                                                            </div>
+
+
+                                                            <div class="col-md-6 mb-3 ">
+                                                                <label class="col-form-label">Fabric</label>
+                                                                <select class="form-control single-select" id="fabric" name="fabric" >
+                                                                    <option >Select</option>
+                                                                    {% for c in fabric %} 
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %} 
+
+                                                                </select> 
+                                                            </div>         
+                                                             
+                                                            <div class="col-md-6 mb-3 ">
+                                                                <label class="col-form-label"> Count</label>
+                                                        
+                                                                <select class="form-control single-select" id="count" name="count" required>
+                                                                    <option >Select</option>
+                                                                    {% for c in count %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+
+                                                                </select>
+                                                            
+                                                            </div>    
+
+                                                            <div class="col-md-6 mb-3 ">
+                                                                <label class="col-form-label"> Gauge</label>
+                                                        
+                                                                <select class="form-control single-select" id="gauge" name="gauge" required>
+                                                                    <option >Select</option>
+                                                                    {% for c in gauge %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+
+                                                                </select>
+                                                            
+                                                            </div>    
+                                                            <div class="col-md-6 mb-3 ">
+                                                                <label class="col-form-label"> Tex/ Loop Length</label>
+                                                        
+                                                                <select class="form-control single-select" id="tex" name="tex" required>
+                                                                    <option >Select</option>
+                                                                    {% for c in tex %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+
+                                                                </select> 
+                                                            
+                                                            </div>     
+
+                                                            <div class="col-md-6 mt-2">
+                                                                <label for="gsm" class="form-label">Gray GSM</label>
+                                                                <input type="text" id="gray_gsm" name="gray_gsm" class="form-control">
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3 ">
+                                                                <label class="col-form-label"> Color</label>
+                                                                <select class="form-control single-select" id="color_id" name="color_id" required multiple>
+                                                                    <!-- <option >Select</option> -->
+                                                                    {% for c in color %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+
+                                                                </select> 
+                                                            </div> 
+                                                         
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">Dia</label>
+                                                                <!-- <input type="text" class="form-control " id="dia" name="dia" data-role="tagsinput" placeholder="Enter Dia"> -->
+                                                                <select class="form-control single-select" id="dia_id" name="dia_id" required multiple>
+                                                                    <!-- <option >Select</option> -->
+                                                                    {% for c in dia %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+ 
+                                                                </select> 
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </form> 
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div id="edit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Edit Fabric Setting</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                           
+
+                                                <form id="edit_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="gsm" class="form-label">Name</label>
+                                                                <input type="text" id="edit_name" name="name" class="form-control">
+                                                            </div>
+
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="col-form-label">Fabric</label>
+                                                                <select class="form-control edit" id="edit_fabric" name="fabric">
+                                                                    <option value="">Select</option>  <!-- Default option -->
+                                                                </select> 
+                                                            </div>
+                                                
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="col-form-label">Count</label>
+                                                                <select class="form-control edit" id="edit_count" name="count">
+                                                                    <option value="">Select</option>
+                                                                    {% for c in count %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="col-form-label">Gauge</label>
+                                                                <select class="form-control edit" id="edit_gauge" name="gauge">
+                                                                    <option value="">Select</option>
+                                                                    {% for c in gauge %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+                                                                </select> 
+                                                            </div>
+                                                
+                                                            <div class="col-md-6 mb-3">
+                                                                <label class="col-form-label">Tex/ Loop Length</label>
+                                                                <select class="form-control edit" id="edit_tex" name="tex">
+                                                                    <option value="">Select</option>
+                                                                    {% for c in tex %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                
+                                                            <div class="col-md-6 mt-2">
+                                                                <label for="gsm" class="form-label">Gray GSM</label>
+                                                                <input type="text" id="edit_gray_gsm" name="gray_gsm" class="form-control">
+                                                            </div>
+
+
+                                                            <!-- <div class="col-md-6 mb-3 ">
+                                                                <label class="col-form-label"> Color</label>
+                                                                <select class="form-control edit" id="edit_color_id" name="color_id"  multiple>
+                                                                    <option >Select</option>
+                                                                    {% for c in color %}
+                                                                    <option value="{{c.id}}">{{c.name}}</option>
+                                                                    {% endfor %}
+
+                                                                </select> 
+                                                            </div>  -->
+                                                         
+
+                                                            <div class="col-md-12 mb-3 ">
+                                                                <label class="col-form-label"> Color</label>
+                                                                <select class="form-control edit" id="edit_color_id" name="color_id" multiple>
+                                                                    <option value="">Select</option>
+                                                                    {% for c in color %}
+                                                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+
+                                                            <div class="col-md-12 mb-3 ">
+                                                                <label class="col-form-label"> Dia</label>
+                                                                <select class="form-control edit" id="edit_dia_id" name="dia_id" multiple>
+                                                                    <option value="">Select</option>
+                                                                    {% for c in dia %}
+                                                                    <option value="{{ c.id }}">{{ c.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+
+                                                                
+
+                                                            
+
+                                                            <!-- <div class="col-md-6 mb-3">
+                                                                <label class="form-label">Dia</label>
+                                                                <input type="text" class="form-control " id="edit_dia" name="dia" data-role="tagsinput" placeholder="Enter Dia">
+                                                            </div>
+ -->
+
+                                                
+                                                            <div class="col-md-12 mt-2">
+                                                                <label for="edit_is_active" class="form-label">Status</label> 
+                                                                <select class="form-control edit" id="edit_is_active" name="is_active">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Inactive</option>                 
+                                                                </select> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="id" id="edit_id">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                    </div>
+                                                </form>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> 
+ 
+
+
+                                    <!-- dia modal -->
+
+
+                                    <div id="dia_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLiveLabel">Edit Dia</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                           
+
+                                                <form id="edit_form">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                      
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">Dia</label>
+                                                                <input type="text" class="form-control " id="edit_dia_value" name="dia"  placeholder="Enter Dia">
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="fabric-id_id" id="edit_fabric_id">
+                                                        <input type="hidden" id="edit_id" name="edit_id">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" id="submit_button" class="btn btn-primary" onclick="saveEditForm()">Add</button>
+
+
+
+                                                    </div>
+                                                </form>
+
+
+                                                <div class="card-body">
+                                                    {% csrf_token %}
+                                                    <div class="dt-responsive table-responsive table-hover">
+                                                        <input type="hidden" id="edit_fabric_id" name="fabric_id"> 
+                                                        <table id="dia_datatable" class="table table-striped table-bordered nowrap w-100">
+                                                            
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Dia</th>                                                      
+                                                                    <th>Action</th>
+            
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>                            
+                                                            </tbody>
+                                                        </table>                                        
+                                                    </div>
+            
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> 
+ 
+
+
+
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered wrap w-100">
+                                                
+                                                <thead>
+                                                    <tr>
+                                                        <th>Action</th>
+                                                        <th>Name</th>
+                                                        <th> Fabric </th>                                                        
+                                                        <th> Count</th>
+                                                        <th>Gauge</th>
+                                                        <th>Tex</th>
+                                                        <th>Gray GSM</th>  
+                                                        <th>Dia</th>            
+                                                        <th>Color</th>                                          
+                                                        <th>Active</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+
+                                        
+                                    </div>
+
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+<script>
+
+
+ 
+     $('.edit').select2({
+        dropdownParent: $('#edit_modal')
+    });
+ 
+    $('.single-select').select2({
+        dropdownParent: $('#add_modal')
+    });
+ 
+
+
+
+//    $(document).ready(function() {
+
+    var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        "columns": [
+            { "data": "action", "title": "Action" },            
+            { "data": "name", "title": " Name " },
+            { "data": "fabric", "title": "Fabric  " },
+            { "data": "count", "title": "Count " },
+            { "data": "gauge", "title": "Gauge " },
+            { "data": "tex", "title": "Tex " },
+            { "data": "gray_gsm", "title": "Gray GSM " },
+            { "data": "dia", "title": "Dia " ,
+                "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+                }},
+            { "data": "color", "title": "Color " ,
+                "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+                }},
+            { "data": "status", "title": "Status" }
+        ],
+        "ajax": {
+            "url": '/fabric_prg-list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            }
+        }
+    });
+
+// });
+
+
+function refresh_data(){
+        table.ajax.reload();
+    }
+
+
+$("#add_form").submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/fabric_prg-add/',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response.data === 'Success') {
+                    notifier.show(
+                    'Well Done!', 
+                    'Fabric program added successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );        
+                
+                    $('#add_form').trigger('reset'); 
+					
+					$('#fabric').val('').trigger("change");
+					$('#count').val('').trigger("change");
+					$('#gauge').val('').trigger("change");
+					$('#tex').val('').trigger("change");
+					$('#color_id').val('').trigger("change");
+					$('#dia_id').val('').trigger("change");
+
+
+                    $('#add_modal').modal('hide'); 
+ 
+                    refresh_data(); 
+                } else {
+                    notifier.show(
+              'Error!', 
+              'Failed to add fabric program .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );                }
+            },
+            error: function(xhr, status, error) {
+                sweetalert('error', 'Failed to add Bag. An error occurred.');  
+            }
+        });
+    });
+ 
+ 
+   
+ 
+
+    function prg_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/fabric_prg-edit/', {id: id, csrfmiddlewaretoken: tkn}, function(res) {
+        if (res.error) {
+            alert(res.error);
+            return;
+        }
+
+        // Populate modal fields
+        $('#edit_id').val(res.id);
+        $('#edit_name').val(res.name);
+        $('#edit_gray_gsm').val(res.gray_gsm);
+        $('#edit_is_active').val(res.is_active).trigger("change");
+
+        // Populate Fabric dropdown
+        var fabricSelect = $('#edit_fabric');
+        fabricSelect.empty();
+        fabricSelect.append('<option value="">Select</option>'); 
+        res.fabric.forEach(function(fabric) {
+            var selected = fabric.id == res.fabric_id ? 'selected' : '';
+            fabricSelect.append('<option value="' + fabric.id + '" ' + selected + '>' + fabric.name + '</option>');
+        });
+
+        // Set other fields
+        $('#edit_count').val(res.count_id).trigger("change");
+        $('#edit_gauge').val(res.gauge_id).trigger("change");
+        $('#edit_tex').val(res.tex_id).trigger("change");
+
+        // ✅ Fix: Convert color_id string to an array before setting it
+        var selectedColors = res.color_id ? res.color_id.split(',') : [];
+        var selectedDia = res.dia_id ? res.dia_id.split(',') : [];
+        $('#edit_dia_id').val(selectedDia).trigger("change");
+        $('#edit_color_id').val(selectedColors).trigger("change");
+
+        // $('#edit_dia').val(res.dia).trigger("change");
+
+        // Show the modal
+        $('#edit_modal').modal('show');
+    }).fail(function(xhr, status, error) {
+        console.log('Request failed:', error);
+        alert('An error occurred while processing the request.');
+    });
+}
+
+ 
+
+
+
+function prg_dia_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    
+    $.post('/fabric_prg_dia_edit/', {id: id, csrfmiddlewaretoken: tkn}, function(res) {
+        // Always populate hidden fabric program ID
+        $('#edit_fabric_id').val(id);  
+
+        // Clear the input field
+        $('#edit_dia').val('');  
+
+        if (res.error) {
+            console.log(res.error); // Log error instead of alert
+        } else if (res.dia_list.length > 0) {
+            $('#edit_dia').val(res.dia_list.join(', ')); // Join values as comma-separated
+        }
+
+        // Load the table (even if empty)
+        LoadDia();
+
+        // Open the modal
+        $('#dia_modal').modal('show');
+    }).fail(function(xhr, status, error) {
+        console.log('Request failed:', error);
+        alert('An error occurred while processing the request.');
+        $('#dia_modal').modal('show'); // Ensure modal still opens
+    });
+}
+
+
+// `````````````````````````````
+function dia_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    
+    $.post('/dia-edit/', {id: id, csrfmiddlewaretoken: tkn}, function(res) {
+        if (res.error) {
+            alert(res.error);
+            return;
+        }
+
+        // Populate input fields in the modal
+        $('#edit_id').val(res.id); 
+        $('#edit_fabric_id').val(res.fabric_prg_id);
+        $('#edit_dia_value').val(res.dia);  // Set the dia value
+        $('#edit_is_active').val(res.is_active).trigger("change");    
+
+        console.log('Dia Value:', res.dia);       
+        $('#submit_button').text('Update');  // Change button text
+
+        // Ensure modal opens after setting values
+        $('#dia_modal').modal('show');
+        
+    }).fail(function(xhr, status, error) {
+        console.log('Request failed:', error);
+        alert('An error occurred while processing the request.');
+    });
+}
+
+
+
+
+function saveEditForm() {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var diaValue = $('#edit_dia_value').val().trim(); 
+    var fabricId = $('#edit_fabric_id').val();
+    var editId = $('#edit_id').val();  // Empty if adding new entry
+
+    if (diaValue === '') {
+        alert("Dia value cannot be empty.");
+        return;
+    }
+
+    $.post('/save-dia-edit/', { 
+        id: editId,  // If empty, backend will insert new record
+        dia: diaValue, 
+        fabric_prg_id: fabricId, 
+        csrfmiddlewaretoken: tkn 
+    }, function(res) {
+        if (res.success) {
+            notifier.show(
+                'Well Done!', 
+                res.message,  // "Dia Updated" or "Dia Added"
+                'success', 
+                "{% static 'assets/images/notification/ok-48.png' %}", 
+                4000
+            );
+
+
+            $('#edit_form').trigger('reset'); 
+            $('#edit_dia_value').val('');  
+
+            $('#submit_button').text('Add');  // Change button text
+
+            // Refresh the table to show updated data
+            $('#dia_datatable').DataTable().ajax.reload(null, false); 
+            $('#datatable').DataTable().ajax.reload(null, false); 
+            // Close modal
+            // $('#dia_modal').modal('hide');
+
+        } else {
+            alert(res.error || "Failed to update Dia.");
+        }
+    }).fail(function(xhr, status, error) {
+        console.log('Request failed:', error);
+        alert('An error occurred while saving the update.');
+    });
+}
+
+
+
+
+function dia_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/dia-delete/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.message === 'yes') {
+                       
+                notifier.show(
+                  'Well Done!', 
+                  'Dia Deleted successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+                $('#dia_datatable').DataTable().ajax.reload(null, false); 
+
+                refresh_data(); 
+            } else {
+                notifier.show(
+                'Error!', 
+                'Failed to delete dia.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            }
+            },
+        });
+
+    }
+}
+
+
+function LoadDia() {
+    var fabricId = $('#edit_fabric_id').val(); 
+
+    $('#dia_datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, // Reinitialize the table each time
+        "order": [],
+        "columns": [
+            { "data": "dia", "title": "Dia" },
+            { "data": "action", "title": "Action" },
+           
+        ],
+        "ajax": {
+            "url": '/fabric_dia_list/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.fabric = fabricId;
+            }
+        }
+    });
+}
+
+
+
+
+
+$('#edit_form').submit(function(e) {
+    e.preventDefault();  // Prevent default form submission
+
+    var formData = new FormData(this);  // Serialize form data
+    var selectedColors = $('#edit_color_id').val(); // Get all selected color IDs
+
+    console.log("Selected Colors:", selectedColors); // Debugging
+
+    // Ensure multiple values are properly added to formData
+    formData.delete('color_id');  // Remove any existing value
+    if (selectedColors) {
+        selectedColors.forEach(color => {
+            formData.append('color_id', color); // Append multiple values correctly
+        });
+    }
+
+
+    var selectedDia = $('#edit_dia_id').val(); // Get all selected color IDs
+
+    console.log("Selected Colors:", selectedDia); // Debugging
+
+    // Ensure multiple values are properly added to formData
+    formData.delete('dia_id');  // Remove any existing value
+    if (selectedDia) {
+        selectedDia.forEach(color => {
+            formData.append('dia_id', color); // Append multiple values correctly
+        });
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/fabric_prg-update/',  
+        data: formData,
+        processData: false,
+        contentType: false, 
+        success: function(response) {
+            console.log("Response:", response);
+            // alert("Fabric Program Updated!");
+            if (response.message === 'success') {
+    
+                notifier.show(
+                    'Well Done!', 
+                    'Fabric Program  updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+            
+
+
+            $('#edit_modal').modal('hide');
+			$('#edit_form').trigger('reset');
+			
+			$('#edit_fabric').val('').trigger("change");
+			$('#edit_count').val('').trigger("change");
+			$('#edit_gauge').val('').trigger("change");
+			$('#edit_tex').val('').trigger("change");
+			$('#edit_color_id').val('').trigger("change");
+			$('#edit_dia_id').val('').trigger("change");
+
+              refresh_data();
+                } 
+                else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to update fabric program .', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+                $('#edit_modal').modal('hide');
+                $('#edit_form').trigger('reset');
+                refresh_data();
+            },
+
+
+
+
+        error: function(xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
+});
+
+
+
+    // $("#edit_form").submit(function (e) {
+    //     e.preventDefault();
+    //     var formData = new FormData(this);
+ 
+    //     var dataArray = [];
+    //     for (var pair of formData.entries()) {
+    //         dataArray.push(pair);
+    //     }
+ 
+    //     var serializedData = {};
+ 
+    //     dataArray.forEach(function(pair) {
+    //         serializedData[pair[0]] = pair[1];
+    //     });
+ 
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '/fabric_prg-update/',
+    //         data:  serializedData,
+    //         success: function (response) { 
+    //             if (response.message === 'success') {
+                    
+    //             notifier.show(
+    //               'Well Done!', 
+    //               'Fabric Program  updated successfully.', 
+    //               'success', 
+    //               "{% static 'assets/images/notification/ok-48.png' %}", 
+    //               4000
+    //           );
+    //           $('#edit_modal').modal('hide');
+    //           $('#edit_form').trigger('reset');
+    //           refresh_data();
+    //             } 
+    //             else {
+                    // notifier.show(
+                    //     'Error!', 
+                    //     'Failed to update fabric program .', 
+                    //     'danger', 
+                    //     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    //     4000
+                    // );
+    //             }
+    //             $('#edit_modal').modal('hide');
+    //             $('#edit_form').trigger('reset');
+    //             refresh_data();
+    //         },
+    //         error: function(xhr, errmsg, err){
+    //             notifier.show(
+    //           'Error!', 
+    //           'Failed to update fabric program .', 
+    //           'danger', 
+    //           "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //           4000
+    //       );
+    //             $('#edit_modal').modal('hide');
+    //         }
+    //     });
+    // });
+ 
+ 
+    function prg_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/fabric_prg-delete/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.message === 'yes') {
+                       
+                notifier.show(
+                  'Well Done!', 
+                  'Deleted successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+                        refresh_data(); 
+                    } else {
+                        notifier.show(
+                        'Error!', 
+                        'Failed to delete.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                    }
+                },
+            });
+ 
+        }
+    }
+ 
+ 
+
+    
+</script>

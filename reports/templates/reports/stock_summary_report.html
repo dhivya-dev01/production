@@ -1,0 +1,663 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+    .sidebar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.sidebar-table th,
+.sidebar-table td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.sidebar-table thead {
+    background-color: #f5f5f5;
+}
+
+
+</style>
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content"> 
+                <div class="main-body">
+                    <div class="page-wrapper"> 
+                        
+                        <div class="row"> 
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <!-- Breadcrumb moved here -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="page-header-title">
+  
+                                                <h4 class="m-b-10 me-1  ">Yarn Stock Summary Report</h4>
+                                            </div> 
+
+
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Report</li>
+                                            <li class="breadcrumb-item"><a href="/stock-summary-report">Yarn Stock Summary Report</a></li>
+                                        </ul>
+                                        
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div> 
+                                    </div>
+ 
+                                    <div class="card-body">  
+                                        <div class="row">
+
+
+
+                                            <div class="col-md-2 mt-2">
+                                                <label class="form-label" for="yarn_count_id">Yarn Count</label>
+                                                <!-- <select id="yarn_count_id" name="yarn_count_id" class="form-control  single-select" onchange="Loaddata()"> -->
+                                                <select id="yarn_count_id" name="yarn_count_id" class="form-control  single-select" >
+                                                    <option value="">Select </option>
+                                                    {% for k in yarn %}
+                                                    <option value="{{k.id}}"> {{k.name}} </option>
+
+                                                    {% endfor %}
+                                                    
+                                                </select> 
+                                            </div>
+
+                                            <!-- <div class="col-md-2 mt-2">
+                                                <label class="form-label" for="party_id">Party</label>
+
+                                                <select id="party_id" name="party_id" class="form-control  single-select" >
+                                                    <option value="">Select </option>
+                                                    {% for k in party %}
+                                                    <option value="{{k.id}}"> {{k.name}} </option>
+
+                                                    {% endfor %}
+                                                    
+                                                </select> 
+                                            </div> -->
+
+                                        
+                                            <div class="col-md-2 mt-4">
+                                                <button type="button" class="btn btn-gradient-success mt-3" onclick="Loaddata()">Load Stock</button> 
+
+                                            </div>
+
+                                        </div>                                      
+                                        <div class="dt-responsive table-hover">
+
+                                            <!-- <table id="purchaseTable" class="table table-bordered">
+                                                {% csrf_token %}
+                                                <thead>
+                                                    <tr>
+                                                        <th>Yarn Count</th>
+                                                        <th>PO Name</th>
+                                                       
+                                                        <th>Bag</th>
+                                                        <th>Per Bag</th>
+                                        
+                                                        <th>Total Inward</th> 
+                                                        <th>Total Outward</th>
+                                                        <th>Available</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table> -->
+
+
+                                            <table id="purchaseTable" class="table table-bordered">
+                                                {% csrf_token %}
+                                                <thead>
+                                                    <tr>
+                                                        <th>Yarn Count</th>
+                                                        <th>PO Name</th>
+                                                        <!-- <th>Bag</th> 
+                                                        <th>Per Bag</th> -->
+                                                        <th>Total Inward</th>
+                                                        <th>Total Outward</th>
+                                                        <th>Available</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+
+
+
+
+                                            <!-- <table id="purchaseTable" class="table table-striped table-bordered wrap w-100" cellpadding="0" cellspacing="0">
+                                             
+                                             {% csrf_token %} 
+                                             
+                                             <thead>
+                                                    <tr>
+                                                        <th>Yarn Count</th>
+                                                        <th>Bag</th>
+                                                        <th>per Bag Wt.</th>
+                                                        <th>Gross Quantity</th>
+                                                        <th>Party</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                         -->
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>
+                        </div>
+
+                        <style>
+
+                            .sidebar {
+                                position: fixed;
+                                top: 0;
+                                right: -550px;
+                                width: 500px;
+                                border-collapse: collapse;
+                                height: 100%;
+                                background: #f7f7f7;
+                                box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+                                transition: right 0.3s ease;
+                                padding: 20px; 
+                                z-index: 9999; 
+                            }
+
+                            .sidebar.show {
+                                right: 0; 
+                            }
+                            .sidebar-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                            }
+                            .sidebar-header h5 {
+                                margin: 0;
+                            }
+                            .sidebar-body p {
+                                margin: 10px 0;
+                            }
+
+                            
+                            /* Optional: Add this for backdrop effect */
+                            .sidebar-backdrop {
+                                position: fixed;
+                                top: 70px; /* same as sidebar top */
+                                left: 0;
+                                width: 100%;
+                                height: calc(100% - 70px);
+                                background-color: rgba(0, 0, 0, 0.4);
+                                z-index: 9998;
+                                display: none;
+                            }
+
+                            .sidebar-backdrop.show {
+                                display: block;
+                            }
+
+
+                        </style>
+
+
+                        <!-- <div id="quantitySidebar" class="sidebar" style="width: 500px;">
+                           
+
+
+                            
+                            <div class="sidebar-header"> 
+                                <h5>Yarn Details</h5>
+                                <button type="button" onclick="$('#quantitySidebar').removeClass('show')">×</button>
+                            </div>
+                            <p><strong style="font-style: bolder;">Yarn Count:</strong> 
+                                <span id="sidebar-yarn-count"></span></p>
+                            <p><strong>PO Name:</strong> <span id="sidebar-po-name"></span></p>
+                            <p><strong>Type:</strong> <span id="sidebar-quantity-type"></span></p>
+                            <p><strong>Total Qty:</strong> <span id="sidebar-quantity-value"></span></p>
+                            <h4><span id="sidebar-date-type"></span> List:</h4>
+                            <div id="sidebar-details-list">
+
+                            </div>
+                        </div> 
+
+                        <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+                                         -->
+
+                        <div id="quantitySidebar" class="sidebar" style="width: 500px;">
+                            <div class="sidebar-header"> 
+                                <h5>Yarn Details</h5>
+                                <button type="button" onclick="$('#quantitySidebar').removeClass('show')">×</button>
+                            </div>
+
+                            <!-- ✅ Yarn Info in Table -->
+                            <table style="width: 100%; margin-bottom: 15px;">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Yarn Count:</strong></td>
+                                        <td><span id="sidebar-yarn-count"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>PO Name:</strong></td>
+                                        <td><span id="sidebar-po-name"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Type:</strong></td>
+                                        <td><span id="sidebar-quantity-type"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Qty:</strong></td>
+                                        <td><span id="sidebar-quantity-value"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Subheading -->
+                            <h4><span id="sidebar-date-type"></span> List:</h4>
+
+                            <!-- Dynamic Content Goes Here -->
+                            <div id="sidebar-details-list">
+                                <!-- Fetched outward data goes here -->
+                            </div>
+                        </div>
+
+                        <!-- Backdrop -->
+                        <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+
+
+
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+    
+  
+
+<script>
+$(document).ready(function () {
+   
+    Loaddata();
+});
+
+
+
+function formatDateDMY(dateStr) {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-based
+    const year = String(date.getFullYear()).slice(); // Get last two digits
+    return `${day}-${month}-${year}`;
+}
+ 
+
+// <td>{{ row.inward_date|date:"d-m-y" }}</td>
+
+
+
+
+function Loaddata() {
+    var yarn_count_id = $('#yarn_count_id').val(); // Get the selected yarn count ID
+    var party_id = $('#party_id').val(); // Get the selected yarn count ID
+    console.log('Yarn-count-ID:', yarn_count_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get-yarn-summary-list/', 
+        data: {
+            'yarn_count_id': yarn_count_id, // Send the yarn_count_id or empty string for all
+            'party_id':party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+            var table = $('#purchaseTable').DataTable();
+            table.clear();
+
+            if (data.status === 'success' && Array.isArray(data.data) && data.data.length > 0) { 
+                // Fill missing values with default fallback
+                const cleanData = data.data.map(row => ({
+                    yarn_count_id: row.yarn_count_id || '',
+                    yarn_count: row.yarn_count || '',
+                    po_name: row.po_name || '',
+                    // po_bag: row.po_bag || 0,
+                    // po_bag_wt: row.po_bag_wt ? parseFloat(row.po_bag_wt).toFixed(2) : '0.00',
+                    total_in_quantity: row.total_in_quantity ? parseFloat(row.total_in_quantity).toFixed(2) : '0.00',
+                    total_out_quantity: row.total_out_quantity ? parseFloat(row.total_out_quantity).toFixed(2) : '0.00',
+                    balance_in_quantity: row.balance_in_quantity ? parseFloat(row.balance_in_quantity).toFixed(2) : '0.00'
+                }));
+
+                table.rows.add(cleanData).draw();
+            } else {
+                table.rows.add([]).draw();
+            }
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Error loading yarn summary:', error);
+        }
+    });
+}
+
+   
+
+var table = $('#purchaseTable').DataTable({
+    language: {
+        emptyTable: "No data available" 
+    },
+    processing: true,
+    pageLength: 50,
+    destroy: true,
+    order: [],  
+    columns: [
+        { data: "yarn_count", title: "Yarn Count" },
+        { data: "po_name", title: "PO Name" }, 
+        {
+            data: "total_in_quantity", 
+            title: "Total Inward",
+            render: function (data, type, row) {
+                return `<a href="#" class="quantity-click" data-type="inward" 
+                            data-yarn_id="${row.yarn_count_id}" 
+                            data-yarn="${row.yarn_count}" 
+                            data-po="${row.po_name}"  
+                            data-qty="${data}">${parseFloat(data).toFixed(2)}</a>`;
+            }
+        }, 
+        {
+            data: "total_out_quantity", 
+            title: "Total Outward",
+            render: function (data, type, row) {
+                return `<a href="#" class="quantity-click" data-type="outward" 
+                            data-yarn_id="${row.yarn_count_id}" 
+                            data-yarn="${row.yarn_count}" 
+                            data-po="${row.po_name}" 
+                            data-qty="${data}">${parseFloat(data).toFixed(2)}</a>`;
+            }
+        },
+        {
+            data: "balance_in_quantity",
+            title: "Available",
+            render: function (data) {
+                return parseFloat(data).toFixed(2);
+            }
+        }
+    ]
+});
+
+
+
+
+
+function openSidebar() {
+    $('#quantitySidebar').addClass('show');
+    $('#sidebarBackdrop').addClass('show');
+}
+
+function closeSidebar() {
+    $('#quantitySidebar').removeClass('show');
+    $('#sidebarBackdrop').removeClass('show');
+}
+
+
+$(document).on('click', '.quantity-click', function (e) {
+    console.log('sidebar-opened:'); 
+    e.preventDefault();
+
+    var yarnCountId = $(this).data('yarn_id'); 
+    var yarnCount = $(this).data('yarn'); 
+    var poName = $(this).data('po');
+    var quantity = $(this).data('qty');
+    var type = $(this).data('type');
+    console.log('yarn-type:',type);
+
+    // Populate sidebar static content
+    $('#sidebar-yarn-count').text(yarnCount); 
+    $('#sidebar-po-name').text(poName);
+    $('#sidebar-quantity-type').text(type === 'inward' ? 'Inward Quantity' : 'Outward Quantity');
+    $('#sidebar-date-type').text(type === 'inward' ? 'Inward' : 'Outward');
+    $('#sidebar-quantity-value').text(parseFloat(quantity).toFixed(2));
+
+    // Clear existing list
+    $('#sidebar-details-list').empty(); 
+
+    if (type === 'outward') { 
+
+        $.ajax({
+            url: '/get_yarn_out_list',
+            method: 'GET',
+            data: {
+                yarn_count_id : yarnCountId,
+                po_name : poName,
+
+             },
+          
+             
+            success: function (response) {
+                if (Array.isArray(response) && response.length > 0) { 
+                    let totalBags = 0;
+                    let totalInQty = 0;
+                    let totalOutQty = 0;
+                    let totalQty = 0;
+
+                    let tableHtml = `
+                        <table class="sidebar-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Party</th>
+                                    <th>Bag</th>
+                                    <th>Per Bag</th>
+                                    <th>Inward Qty</th>
+                                    <th>Out Qty</th>
+                                    <th>Available Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    response.forEach(function (entry) {
+                        const bag = parseFloat(entry.bag) || 0;
+                        const perBag = parseFloat(entry.per_bag) || 0;
+                        const qty = parseFloat(entry.quantity) || 0;
+                        const balance = parseFloat(entry.balance_in_quantity) || 0;
+                        const in_qty = balance + qty || 0;
+
+                        totalBags += bag;
+                        totalQty += balance;
+                        totalInQty += in_qty;
+                        totalOutQty += qty;
+
+                        tableHtml += `
+                            <tr>
+                                <td>${entry.delivery_date || '-'}</td>
+                                <td>${entry.party_name || '-'}</td>
+                                <td>${bag}</td>
+                                <td>${perBag.toFixed(2)}</td>
+                                <td>${in_qty.toFixed(2)}</td>
+                                <td>${qty.toFixed(2)}</td>
+                                <td>${balance.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    tableHtml += `
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2" style="text-align:right;">Total</th>
+                                    <th>${totalBags}</th>
+                                    <th></th>
+                                    <th>${totalInQty.toFixed(2)}</th>
+                                    <th>${totalOutQty.toFixed(2)}</th>
+                                    <th>${totalQty.toFixed(2)}</th>
+                                  
+                                </tr>
+                            </tfoot>
+                        </table>
+                    `;
+
+                    $('#sidebar-details-list').html(tableHtml);
+                } else {
+                    $('#sidebar-details-list').html("<p>No records found.</p>");
+                }
+            },
+
+
+
+            // success: function (response) {
+            //     if (Array.isArray(response) && response.length > 0) { 
+            //         let totalBags = 0;
+            //         let totalQty = 0;
+
+            //         let tableHtml = `
+            //             <table class="sidebar-table">
+            //                 <thead>
+            //                     <tr>
+            //                         <th>Date</th>
+            //                         <th>Party</th>
+            //                         <th>Bag</th>
+            //                         <th>Per Bag</th>
+            //                         <th>Out Qty</th>
+            //                         <th>Available Qty</th>
+            //                     </tr>
+            //                 </thead>
+            //                 <tbody>
+            //         `;
+
+            //         response.forEach(function (entry) {
+            //             const bag = parseFloat(entry.bag) || 0;
+            //             const perBag = parseFloat(entry.per_bag) || 0;
+            //             const qty = parseFloat(entry.quantity) || 0;
+
+            //             totalBags += bag;
+            //             totalQty += qty;
+
+            //             tableHtml += `
+            //                 <tr>
+            //                     <td>${entry.delivery_date || entry.inward_date || '-'}</td>
+            //                     <td>${entry.party_name || '-'}</td>
+            //                     <td>${bag}</td>
+            //                     <td>${perBag.toFixed(2)}</td>
+            //                     <td>${qty.toFixed(2)}</td>
+            //                 </tr>
+            //             `;
+            //         });
+
+            //         // Add total row
+            //         tableHtml += `
+            //                 </tbody>
+            //                 <tfoot>
+            //                     <tr>
+            //                         <th colspan="2" style="text-align:right;">Total</th>
+            //                         <th>${totalBags}</th>
+            //                         <th></th>
+            //                         <th>${totalQty.toFixed(2)}</th>
+            //                     </tr>
+            //                 </tfoot>
+            //             </table>
+            //         `;
+
+            //         $('#sidebar-details-list').html(tableHtml);
+            //     } else {
+            //         $('#sidebar-details-list').html("<p>No records found.</p>");
+            //     }
+            // },
+
+
+
+
+            error: function () {
+                $('#sidebar-details-list').html("<p>Error loading data.</p>"); 
+            }
+        });  
+
+       
+    }
+
+    // Show sidebar
+    $('#quantitySidebar').addClass('show');
+
+        openSidebar(); //
+});
+
+$(document).on('click', '#quantitySidebar button', function () {
+    closeSidebar();
+});
+
+
+
+// Optional: Close when clicking outside sidebar
+$(document).on('click', '#sidebarBackdrop', function () {
+    closeSidebar();
+});
+
+
+
+// Optional: Close on ESC key
+$(document).on('keydown', function (e) {
+    if (e.key === "Escape") {
+        closeSidebar();
+    }
+});
+
+
+
+// ``````````````````````````````````````````````
+
+
+
+// Handle quantity cell click
+// $(document).on('click', '.quantity-click', function (e) {
+//     e.preventDefault();
+
+//     var yarnCount = $(this).data('yarn');
+//     var poName = $(this).data('po');
+//     var quantity = $(this).data('qty');
+//     var type = $(this).data('type'); // 'inward' or 'outward'
+
+//     // Populate sidebar content
+//     $('#sidebar-yarn-count').text(yarnCount);
+//     $('#sidebar-po-name').text(poName);
+//     $('#sidebar-quantity-type').text(type === 'inward' ? 'Inward Quantity' : 'Outward Quantity');
+//     $('#sidebar-date-type').text(type === 'inward' ? 'Inward Date' : 'Outward Date');
+//     $('#sidebar-quantity-value').text(parseFloat(quantity).toFixed(2));
+
+//     // $('#sidebar-party-name').text(partyName) || "party";
+
+//     // Show sidebar (your implementation can vary)
+//     $('#quantitySidebar').addClass('show');
+// });
+
+
+
+ function refresh_data() {
+    if ($.fn.DataTable.isDataTable("#datatable")) { 
+        $('#datatable').DataTable().ajax.reload(null, false);  // ✅ Refresh without resetting pagination
+    }
+ }
+
+    $('.single-select').select2();
+
+</script>

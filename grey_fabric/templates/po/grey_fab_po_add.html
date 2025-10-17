@@ -1,0 +1,1572 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+    element.style {
+    position: relative;
+    width: 240px;
+    vertical-align: top;
+    background-color: transparent;
+}
+
+
+</style>
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content"> 
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="page-header-title">
+                                            <h4 class="m-b-10">Grey Fabric PO </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/grey-fab-po">Grey Fabric PO</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                  
+                                 <div class="card">  
+                                     <div class="card-body row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-md-8 mt-2">
+                                                     <!-- 
+                                                            <div class="col-md-2 mt-2">
+                                                                <input class="form-check-input" type="checkbox" id="is_delivery" name="is_delivery" >
+                                                                <label class="form-label" for="is_delivery">Is Delivery</label>  
+                                                                
+                                                            </div> -->
+                                                 
+                                                    <form id="add_new" method="POST"> 
+                                                            {% csrf_token %}
+
+                                                               <!-- <h6>PO No. {{purchase_number}}</h6> -->
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-4 mt-2">
+                                                                <label for="number" class="form-label"><span style="color: red;">*</span> PO No.</label>
+
+                                                                <input class="form-control col-1" type="text" name="po_number" value="{{purchase_number}}" id="po_number" disabled>
+                                                            </div>
+                                                    
+                                                            
+
+                                                            <div class="col-md-4 mt-2">
+                                                                <label for="order_date" class="form-label"><span style="color: red;">*</span> PO Date</label>
+                                                                <input class="form-control" type="date" name="purchase_date" id="purchase_date" required>
+                                                            </div>
+
+                                                            <div class="col-md-4 mt-2">
+                                                                <label for="order_date" class="form-label"><span style="color: red;">*</span> Lot Name</label>
+                                                                <!-- <input class="form-control" type="text" name="name" id="name" required> -->
+                                                                 <input class="form-control" id="fabricName" dir="ltr" style="position: relative;width: 286px; vertical-align: top; background-color: transparent;" name="name" type="text" placeholder="PO NAME">
+
+                                                            </div>
+                                                        </div>
+
+
+                                                            
+
+                                                        <div class="row ">
+
+
+                                                            <div class="col-md-4 mt-2"> 
+                                                                <label for="product_id" class="form-label"><span style="color: red;">*</span> Party </label>
+                                                                <select id="supplier_id" name="party_id" class="form-control single-select" required>
+                                                                    <option value="">Select</option>
+                                                                    {% for k in mill %}   <!-- mill or trader -->
+                                                                    <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-4 mt-2">
+                                                                <label for="prg" class="form-label">Knitting Program</label>
+                                                                <select id="program_id" name="program_id" class="form-control single-select" onchange="LoadProgram()">
+                                                                    <option value="">Select</option>
+                                                                    {% for k in knitting %}
+                                                                    <option value="{{ k.id }}">{{ k.name }}  - {{ k.knitting_number }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                                
+                                                            </div>
+
+                                                            <div class="col-md-4 mt-2">
+                                                                <label for="order_date" class="form-label"><span style="color: red;">*</span> Lot No.</label>
+                                                                <!-- <input class="form-control" type="text" name="name" id="name" required> -->
+                                                                 <input class="form-control" id="lot_no"  name="lot_no" type="text" placeholder="lot no" required>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row ">
+
+
+
+                                                            <div class="col-md-4 mt-2">
+                                                                    <label for="rate" class="form-label"><span style="color: red;">*</span> Rate (Incl.GST)</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="actual_rate" name="actual_rate"  oninput="validateDecimal2(this)" required>
+                                                                </div>
+
+                                                                <div class="col-md-4 mt-2">
+                                                                     <label for="rate" class="form-label"> Discount (&#8377;)</label>
+                                                                    <input type="number" step="0.1" class="form-control" value="0" id="discount" name="discount" oninput="validateDecimal2(this)" >
+                                                                </div>
+                                                            
+                                                            
+                                                            
+                                                              
+                                                                
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="rate" class="form-label"><span style="color: red;">*</span> Net price  (Incl.GST)</label>
+                                                                    <input type="number" step="0.001" class="form-control" id="rate" name="rate" oninput="validateDecimal2(this)" required>
+                                                                </div>
+
+                                                               
+
+<!-- 
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="amount" class="form-label"><span style="color: red;">*</span> Amount</label>
+                                                                    <input type="number" step="0.1" class="form-control" id="amount" name="amount" oninput="validateDecimal3(this)"  readonly required>
+                                                                </div>
+  -->
+                                                          
+                                                     
+                                                      
+                                                                <!-- <div class="col-md-6 mt-2 ">
+                                                                    <label for="remarks" class="form-label"> Remarks </label>
+                                                                    <textarea type="text" class="form-control" name="remarks" id="remarks" rows="2"></textarea>
+                                                                </div> -->
+
+                        
+                                                                
+                                                                <!-- <div class="col-md-3 mt-5" align="center">
+                                                                    <button type="button" id="cancel" class="btn btn-danger"  onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="submit_button" class="btn btn-primary">Save</button>
+                                                                </div> -->
+                                                            </div>
+
+
+
+                                                         
+                                                            <div class="col-md-12 mt-4">
+
+                                                                
+                                                                <div class=" table-responsive table-desi mt-2">
+                                                                    <table class="table table-bordered w-100" id="knitting_details">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                 
+                                                                                <th>Item</th>
+                                                                                <th>Yarn Count</th>
+                                                                                <th>Gauge</th>
+                                                                                <th>Tex</th>
+                                                                                <th>GSM</th>
+                                                                                <th>Dia</th>
+                                                                                <th>Rolls</th>
+                                                                                <th>Wt. Per Roll</th>
+                                                                                <th>Quantity</th>
+                                                                               
+                                                                            </tr> 
+                                                                        </thead> 
+                                                                        <tbody>
+                                                                            
+                                                                            
+                                                                        
+                                                                        </tbody> 
+
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <th colspan="6" class="text-end">Total:</th>
+                                                                                <th id="total_rolls"></th>
+                                                                                <th></th>
+                                                                                <th id="total_quantity"></th>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div> 
+
+
+                                                                
+
+
+                                                                <!-- po-deliver table -->
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-2">
+
+                                                                </div>
+                                                                <div class="col-md-6 mt-2 ">
+                                                                    <!-- <label for="remarks" class="form-label"> Remarks </label> -->
+                                                                    <textarea type="text" class="form-control" name="remarks" id="remarks" rows="2" placeholder="Remarks"></textarea>
+                                                                </div>
+
+                                                                <div class="col-md-4 mt-4" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger"  onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="submit_button" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                              
+                                                
+                                                        
+                                                
+                                                           
+            
+                    
+                                                    </div>
+
+
+                                                  
+
+                                                    <div class="col-md-4 " style="border-left: 1px solid #e2e5e8; padding-left: 10px;">  
+                                                
+                                                        <h6>Delivery Information &nbsp;                                                              
+                                                            <input class="form-check-input " type="checkbox" id="is_delivery" name="is_delivery" >
+                                                        </h6>
+                                                        <section class="">
+                                                            <div class="">
+                                                                <div class="row ">
+                                                       
+                                                                    <div class="col-md-6 ">
+                                                                        <label for="knitting" class="form-label"><span style="color: red;">*</span> Party</label>
+                                                                        <select id="knitting" name="knitting" class="single-select"> <!-- bleaching or dyeing -->
+                                                                            <option value="company">Select</option>
+                                                                            {% for k in out_party %}
+                                                                            <option value="{{k.id}}">{{k.name}}</option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+
+
+                                                                    <div class="col-md-6 ">
+                                                                        <label for="ph_email" class="form-label"><span style="color: red;">*</span> Delivery Date</label>
+                                                                        <input class="form-control" id="deliver_date" name="deliver_date" type="date">
+                                                                    </div>
+
+
+
+                                                                    <div class="col-md-6 mt-2">
+                                                                        <!-- <label for="per_bag" class="form-label"><span style="color: red;">*</span> Roll Wt.(kg) </label> -->
+                                                                        <input type="hidden" class="form-control" id="deliver_roll_wt" name="deliver_roll_wt" onchange="validateDecimal3()" >
+                                                                    </div>
+
+
+
+                                                                    <div class="col-md-2 mt-4"  style="text-align: center;">
+                                                                        <input class="form-control" id="delivery_bag_wt" name="delivery_bag_wt" type="hidden" >
+                                                                        <input class="form-control" id="delivery_amount" name="delivery_amount" type="hidden" >
+                                                                        <input class="form-control" id="delivery_quantity" name="delivery_quantity" type="hidden" >
+                                                                        <button type="button" align="center" class="btn btn-raised btn-primary mt-3 " onclick="addDeliveryRow()">+</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                                
+
+
+                                                            <div class="row mt-4">
+                                                                <div class="col-sm">
+                                                                    
+                                                                        <div class="dt-responsive table-responsive table-hover">
+                                                                            <table id="delivery_table"  class="table table-striped table-bordered nowrap">
+                                                                                {% csrf_token %}
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Party</th> 
+                                                                                    <th>Delivery Date</th>
+                                                                                    <!-- <th>Dia</th>
+                                                                                    <th>Roll</th> -->
+                                                                                    <th>Roll Wt</th>
+                                                                                    <!-- <th>Amount</th> -->
+                                                                                    <th style="display: none;">Party id</th>
+                                                                                    <!-- <th style="display: none;">Dia id</th> -->
+                                                                                    <th>Action</th>
+                                                                                </tr> 
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </section>
+                                                    </div>
+                                                </div>
+
+
+                                                </div> 
+
+
+                                               
+
+                                             
+                                            </div> 
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+// typeahead call footer js
+
+
+// ```````````````````` delivery part ``````````````````````````
+
+
+
+$(document).ready(function () {
+    function toggleFields() { 
+        const isChecked = $('#is_delivery').is(':checked');
+        $('#knitting, #deliver_date, #deliver_roll, #deliver_roll_wt, #dia')
+            .prop('disabled', !isChecked);
+    }
+
+    // Run on page load
+    toggleFields();
+
+    // Run on checkbox change
+    $('#is_delivery').change(function () {
+        toggleFields();
+    });
+});
+
+    // ````````````````````````````````````````````````````````````````
+
+
+function LoadFabricValues() {
+    var product_id = $('#fabric_id').val(); 
+    console.log('Product-ID:', product_id); // Debugging output
+
+    if (!product_id) {
+        console.warn("No Product ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    // ✅ Preserve po_quantity value
+    // let currentPoQuantity = $('#po_quantity').val();
+    // console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+
+    $.ajax({
+        type: 'POST',   
+        url: '/get_fabric_program_lists/',
+        data: {
+            'product_id': product_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+            // console.log("Before updating fields, po_quantity:", $('#po_quantity').val());
+
+            // Do NOT clear po_quantity
+            $('#count').empty();
+            $('#dia').empty();
+            $('#gauge').empty(); 
+            $('#tex').empty();
+            $('#gsm').val('');
+            $('#roll').val('');
+            $('#roll_wt').val('');
+            $('#roll').val(5);
+
+            // Populate dropdowns only if data exists
+            if (data.count) {
+                $('#count').html('<option value="' + data.count.id + '">' + data.count.count + '</option>');
+            }
+
+            // ✅ Handle multiple dia values (Array)
+            // if (data.dia) { 
+            //     $('#dia_id').append('<option value="' + data.dia.id + '">' + data.dia.name + '</option>');
+            // }
+
+
+            
+            if (data.dia && Array.isArray(data.dia)) {
+                let diaOptions = '';
+                data.dia.forEach(function(dia) {
+                    diaOptions += '<option value="' + dia.id + '">' + dia.name + '</option>';
+                });
+                $('#dia').html(diaOptions);
+            } 
+
+
+
+            if (data.gauge) {
+                $('#gauge').html('<option value="' + data.gauge.id + '">' + data.gauge.name + '</option>');
+            }
+
+            if (data.tex) {
+                $('#tex').html('<option value="' + data.tex.id + '">' + data.tex.name + '</option>');
+            }
+
+            if (data.gsm) {
+                $('#gsm').val(data.gsm.gray_gsm); 
+            }
+
+            // if (data.totals) {
+            //     console.log("Totals Received:", data.totals);
+            //     // $('#roll').val(data.totals.total_rolls);
+            //     $('#roll').val(5);
+            //     $('#roll_wt').val(data.totals.total_wt);
+            // }
+            // ✅ Restore po_quantity value
+            // $('#po_quantity').val(currentPoQuantity);
+            // console.log("Restored po_quantity after AJAX:", $('#po_quantity').val());
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+
+// // JS part
+// let diaManuallySelected = false;
+// window.diaRollMap = {}; // Store DIA id => roll data globally
+
+// function LoadProgram() {
+//     var program_id = $('#program_id').val();
+//     if (!program_id) {
+//         console.warn("No program ID selected");
+//         return;
+//     }
+
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+//     let currentPoQuantity = $('#po_quantity').val();
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_knitting_fabric_lists/',
+//         data: {
+//             'program_id': program_id,
+//             'csrfmiddlewaretoken': csrfToken
+//         },
+//         dataType: 'json',
+//         success: function(data) {
+//             // Clear old data
+//             $('#dia').empty();
+//             window.diaRollMap = {};
+
+//             // Load DIA options from data
+//             if (data.dia_rolls && Array.isArray(data.dia_rolls)) {
+//                 let diaOptions = '';
+//                 data.dia_rolls.forEach(function(dia) {
+//                     const diaId = String(dia.dia_id);
+//                     diaOptions += `<option value="${diaId}">${dia.dia_name}</option>`;
+//                     window.diaRollMap[diaId] = dia;
+//                 });
+//                 $('#dia').html(diaOptions);
+
+//                 // Only set default if user hasn't manually selected yet
+//                 if (!diaManuallySelected && data.dia_rolls.length > 0) {
+//                     const defaultDiaId = String(data.dia_rolls[0].dia_id);
+//                     $('#dia').val(defaultDiaId).trigger('change');
+//                     console.log('Set default DIA to:', defaultDiaId);
+//                 }
+//             }
+
+//             // Populate other fields as you had
+//             // ...
+
+
+//             $('#fabric_id').empty();
+//             $('#count').empty();
+//             $('#dia').empty();
+//             $('#gauge').empty(); 
+//             $('#tex').empty();
+//             $('#gsm').val('');
+
+//             // Populate fields
+//             if (data.fabric_program) {
+//                 $('#fabric_id').html('<option value="' + data.fabric_program.id + '">' + data.fabric_program.name + '</option>');
+//             }
+//             if (data.count) {
+//                 $('#count').html('<option value="' + data.count.id + '">' + data.count.count + '</option>');
+//             }
+
+//             if (data.dia_rolls && Array.isArray(data.dia_rolls)) {
+//                 let diaOptions = '';
+//                 window.diaRollMap = {}; // ✅ Global Map Reset
+//                 data.dia_rolls.forEach(function(dia) {
+//                     diaOptions += '<option value="' + dia.dia_id + '">' + dia.dia_name + '</option>';
+//                     window.diaRollMap[dia.dia_id] = dia; // ✅ Store for lookup
+//                 });
+//                 $('#dia').html(diaOptions);
+
+//                 // Auto-select first DIA and update fields
+//                 if (data.dia_rolls.length > 0) {
+//                     const firstDia = data.dia_rolls[0];
+//                     $('#deliver_roll').val(firstDia.total_rolls);
+//                     $('#deliver_roll_wt').val(firstDia.total_wt);
+//                 }
+//             }
+
+//             if (data.gauge) {
+//                 $('#gauge').html('<option value="' + data.gauge.id + '">' + data.gauge.name + '</option>');
+//             }
+
+//             if (data.tex) {
+//                 $('#tex').html('<option value="' + data.tex.id + '">' + data.tex.name + '</option>');
+//             }
+
+//             if (data.gsm) {
+//                 $('#gsm').val(data.gsm.gray_gsm);
+//             }
+
+//             if (data.totals) {
+//                 $('#roll').val(data.totals.total_rolls);
+//                 $('#roll_wt').val(data.totals.total_wt);
+//                 $('#roll').trigger('input');
+//             }
+
+//             $('#po_quantity').val(currentPoQuantity); // Restore PO quantity if needed
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error loading fabric details:', error);
+//         }
+//     });
+// }
+
+// // When user changes DIA selection
+// $('#dia').off('change').on('change', function() {
+//     diaManuallySelected = true; // Mark that user has selected manually
+//     const selectedDiaId = $(this).val();
+//     const selectedDiaText = $('#dia option:selected').text();
+//     console.log('User selected DIA:', selectedDiaId, selectedDiaText);
+
+//     const rollData = window.diaRollMap[selectedDiaId];
+//     if (rollData) {
+//         $('#deliver_roll').val(rollData.total_rolls);
+//         $('#deliver_roll_wt').val(rollData.total_wt);
+//     } else {
+//         $('#deliver_roll').val('');
+//         $('#deliver_roll_wt').val('');
+//     }
+// });
+
+
+
+
+function LoadProgram() {
+    let prg_id = $("#program_id").val();
+
+    if ($.fn.DataTable.isDataTable('#knitting_details')) {
+        $('#knitting_details').DataTable().destroy();
+    }
+
+    $('#knitting_details').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true,
+        "order": [],
+        "ajax": {
+            "url": '/knit-prg-list/',
+            "type": "POST",
+            "data": function (data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.prg_id = prg_id;
+            },
+            "dataSrc": function (json) {
+                if (json.message === 'error') {
+                    console.log('Access denied');
+                    return [];
+                }
+
+                // Group rows by fabric_id_raw
+                let grouped = {};
+                json.data.forEach((row, index) => {
+                    const key = row.fabric_id_raw;
+                    if (!grouped[key]) {
+                        grouped[key] = { count: 0, indexes: [] };
+                    }
+                    grouped[key].count += 1;
+                    grouped[key].indexes.push(index);
+                });
+
+                // Annotate each row with rowspan and first-row flags
+                json.data.forEach((row, index) => {
+                    const key = row.fabric_id_raw;
+                    row._rowspan = grouped[key].count;
+                    row._rowGroupFirst = (grouped[key].indexes[0] === index);
+                });
+
+                return json.data;
+            }
+        },
+        "columns": [
+            {
+                "data": null,
+                "title": "Item",
+                "render": function (data, type, row) {
+                    if (!row._rowGroupFirst) return '';
+                    return `
+                        <div>
+                            <strong>FABRIC:</strong> ${row.fabric_id}<br>
+                            <strong>YARN:</strong> ${row.count}<br>
+                            <strong>TEX:</strong> ${row.tex}<br>
+                            <strong>GAUGE:</strong> ${row.gauge}<br>
+                            <strong>GSM:</strong> ${row.gsm}
+                        </div>
+                    `;
+                }
+            },
+            { "data": "count", "title": "Yarn count", visible: false },
+            { "data": "gauge", "title": "Gauge", visible: false },
+            { "data": "tex", "title": "Tex", visible: false },
+            { "data": "gsm", "title": "GSM", visible: false },
+            { "data": "dia", "title": "Dia" },
+            { "data": "rolls", "title": "Rolls" },
+            { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+            { "data": "quantity", "title": "Quantity" },
+            { "data": "fabric_id_raw", visible: false },
+            { "data": "count_id_raw", visible: false },
+            { "data": "gauge_id_raw", visible: false },
+            { "data": "tex_id_raw", visible: false },
+            { "data": "dia_id_raw", visible: false }
+        ],
+        "createdRow": function (row, data, dataIndex) {
+            if (data._rowGroupFirst) {
+                $('td', row).eq(0).attr('rowspan', data._rowspan);
+            } else {
+                $('td', row).eq(0).remove(); // remove duplicate cell
+            }
+        },
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();
+
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[,]/g, '')) || 0 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            var totalRolls = api.column(6, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            var totalQty = api.column(8, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            $('#total_rolls').html(totalRolls.toFixed(2));
+            $('#total_quantity').html(totalQty.toFixed(2));
+        }
+    });
+}
+
+
+
+
+function LoadProgram_test7625() {
+    let prg_id = $("#program_id").val();
+
+    // Check if the table is already initialized
+    if ($.fn.DataTable.isDataTable('#knitting_details')) {
+        $('#knitting_details').DataTable().destroy();  // Destroy old instance
+    }
+
+    $('#knitting_details').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, // Allow reinitialization
+        "order": [],
+        "ajax": {
+            "url": '/knit-prg-list/',
+            "type": "POST",
+            "data": function (data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.prg_id = prg_id;
+            },
+            "dataSrc": function (json) {
+    if (json.message === 'error') {
+        console.log('Access denied');
+        return [];
+    }
+
+    // Add index and group counts for rowspan
+    let grouped = {};
+    json.data.forEach((row, index) => {
+        const key = row.fabric_id_raw;
+        if (!grouped[key]) {
+            grouped[key] = { count: 0, indexes: [] };
+        }
+        grouped[key].count += 1;
+        grouped[key].indexes.push(index);
+    });
+
+    json.data.forEach((row, index) => {
+        const key = row.fabric_id_raw;
+        row._rowspan = grouped[key].count;
+        row._rowGroupFirst = (grouped[key].indexes[0] === index);
+    });
+
+    return json.data;
+},
+
+            // ``````````
+            "dataSrc": function (json) {
+                if (json.message === 'error') {
+                    console.log('Access denied');
+                    return [];
+                }
+                console.log(json);
+                return json.data;
+            }
+        },
+        // "columns": [
+        //     { "data": "fabric_id", "title": "Item" },
+        //     { "data": "count", "title": "Yarn count" }, 
+        //     { "data": "gauge", "title": "Gauge" },
+        //     { "data": "tex", "title": "Tex" },
+        //     { "data": "gsm", "title": "GSM" },
+        //     { "data": "dia", "title": "Dia" },
+        //     { "data": "rolls", "title": "Rolls" },
+        //     { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+        //     { "data": "quantity", "title": "Quantity" },
+
+        //     // Raw ID columns (can be hidden)
+        //     // { data: 'gsm', visible: false },
+        //     { data: 'fabric_id_raw', visible: false },
+        //     { data: 'count_id_raw', visible: false },
+        //     { data: 'gauge_id_raw', visible: false },
+        //     { data: 'tex_id_raw', visible: false },
+        //     { data: 'dia_id_raw', visible: false }
+        //     // { "data": "rate", "title": "Rate" },
+        //     // { "data": "total_amount", "title": "Total Amount" }
+        // ],
+        
+        "columns": [
+    {
+        "data": null, 
+        "title": "Item",
+        // "render": function (data, type, row) {
+        //     return `${row.fabric_id}<br>${row.count},<br>${row.tex}<br>${row.gauge},<br>${row.gsm}`;
+        // }
+        "render": function (data, type, row) {
+       return `
+    <div>
+        <strong>FABRIC:</strong> ${row.fabric_id}<br>
+        <strong>YARN:</strong> ${row.count}<br>
+        <strong>TEX:</strong> ${row.tex}<br>
+        <strong>GAUGE:</strong> ${row.gauge}<br>
+        <strong>GSM:</strong> ${row.gsm}
+    </div>
+`;
+
+    }
+    },
+    { "data": "count", "title": "Yarn count", visible: false },  // Hidden, now included in first column
+    { "data": "gauge", "title": "Gauge", visible: false },
+    { "data": "tex", "title": "Tex", visible: false },
+    { "data": "gsm", "title": "GSM", visible: false },
+    { "data": "dia", "title": "Dia" },
+    { "data": "rolls", "title": "Rolls" },
+    { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+    { "data": "quantity", "title": "Quantity" },
+
+    { data: 'fabric_id_raw', visible: false },
+    { data: 'count_id_raw', visible: false },
+    { data: 'gauge_id_raw', visible: false },
+    { data: 'tex_id_raw', visible: false },
+    { data: 'dia_id_raw', visible: false }
+],
+
+
+
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Helper to get column total
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[,]/g, '')) || 0 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Sum rolls (column 7)
+            var totalRolls = api.column(6, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Sum quantity (column 9)
+            var totalQty = api.column(8, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $('#total_rolls').html(totalRolls.toFixed(2));
+            $('#total_quantity').html(totalQty.toFixed(2));
+        },
+    });
+}
+
+
+// ````````````````````````````````````` load knitting party ``````````````````````````````
+// function LoadMill() {
+//     const supplierId = $('#supplier_id').val();
+//     console.log('Supplier ID:', supplierId);
+
+//     if (!supplierId) {
+//         $('#through_id').empty().append('<option value="">Select</option>');
+//         return;
+//     }
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_mills/',
+//         data: {
+//             'party_id': supplierId,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+//         },
+//         success: function(data) {
+//             const $through_id = $('#through_id');
+//             $through_id.empty().append('<option value="">Select</option>');
+
+//             if (data.mills && data.mills.length > 0) {
+//                 data.mills.forEach(function(mill, index) {
+//                     $through_id.append(
+//                         $('<option>', {
+//                             value: mill.id,
+//                             text: mill.name
+//                         })
+//                     );
+//                 });
+
+//                 // ✅ Auto-select the first real option (after "Select")
+//                 $through_id.val(data.mills[0].id).trigger('change');
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error loading mills:', error);
+//         }
+//     });
+// }
+
+
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    const isChecked = $('#is_delivery').is(':checked');
+    // var KnittingTableData = storeKnittingTableValues();
+    
+    // // Submit data with form or AJAX as needed
+    // console.log('k-data:',KnittingTableData);
+    // mdata.append('knitting_data', JSON.stringify(KnittingTableData));
+
+   
+
+    var DeliveryTableData = storeDeliveryTblValues();
+
+    // ✅ Only check for delivery table data if checkbox is checked
+    if (isChecked && DeliveryTableData.length === 0) {
+        notifier.show(
+            'Error!',
+            'Table is empty. Kindly add the delivery details in table.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        let mdata = new FormData(this);  // ✅ Use the form element
+
+        // Only append delivery data if checkbox is checked
+        if (isChecked) {
+            mdata.append('delivery_data', JSON.stringify(DeliveryTableData));
+        } else {
+            mdata.append('delivery_data', '[]'); // Empty array as string
+        }
+
+        var data = storeKnittingTableValues();
+        mdata.append('knitting_data', JSON.stringify(data));
+
+        // // Get total values
+        // var totalQty = $('#qty_total_placeholder').text();
+        // var subTotal = $('#sub_total_placeholder').text();
+        // var taxTotal = $('#tax_placeholder').text();
+        // var roundOff = $('#round_off').text();
+        // var totalPayable = $('#total_payable').text();
+
+        // // Append to FormData
+        // mdata.append('total_quantity', totalQty);
+        // mdata.append('sub_total', subTotal);
+        // mdata.append('tax_total', taxTotal);
+        // mdata.append('round_off', roundOff);
+        // mdata.append('total_payable', totalPayable);
+
+        $.ajax({
+            type: "POST",
+            url: "/add-grey-fab-po/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr) {
+                $('#submit').attr('disabled', true).text('Processing...');
+                xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+            },
+            success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'Success') {
+                    notifier.show(
+                        'Well Done!',
+                        'PO added!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+
+                    // Reset form and table
+                    $('#add_new').trigger('reset');
+                    $('#delivery_table tbody').empty();
+
+                    $('#po_number').val(response.po_number);
+                    $('#program_id').val('').trigger("change");
+                    $('#k_party_id').val('').trigger("change");
+                    $('#count').val('').trigger("change");
+                    $('#gauge').val('').trigger("change");
+                    $('#tex').val('').trigger("change");
+                    $('#kniting').val('').trigger("change");
+                    $('#dia').val('').trigger("change");
+                    $('#supplier_id').val('').trigger("change");
+                    $('#fabric_id').val('').trigger("change");
+                } else {
+                    notifier.show(
+                        'Error!',
+                        'Failed to add',
+                        'danger',
+                        "{% static 'assets/images/notification/error-48.png' %}",
+                        4000
+                    );
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+
+function getCSRFToken() {
+    const csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
+    return csrfToken ? csrfToken[1] : null;
+}
+
+
+// // `````````````````` calculate discount in percentage-% `````````````````````````````````````````
+
+
+// ````````````` discount calculate in rupees `````````````````````
+
+// $(document).ready(function () {
+//     function calculateQuantity() {
+//         let roll = parseFloat($('#roll').val()) || 0;
+//         let roll_wt = parseFloat($('#roll_wt').val()) || 0;
+//         let quantity = roll * roll_wt;
+
+//         $('#quantity').val(quantity.toFixed(2));
+//     }
+
+//     $('#roll, #roll_wt').on('input', calculateQuantity);
+// });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const actualRateField = document.getElementById('actual_rate');
+    const discountField = document.getElementById('discount');
+    const rateField = document.getElementById('rate');
+    const quantityField = document.getElementById('quantity');
+    const bagField = document.getElementById('roll');
+    const perBagField = document.getElementById('roll_wt');
+    const grossWtField = document.getElementById('gross_wt'); 
+    // const amountField = document.getElementById('amount');
+
+    function calculateQuantity() {
+        const bag = parseFloat(bagField.value) || 0;
+        const perBag = parseFloat(perBagField.value) || 0;
+        const quantity = bag * perBag;
+
+        quantityField.value = quantity.toFixed(2);
+        calculateRateAndAmount();
+    }
+
+    function calculateRateAndAmount() {
+        const actualRate = parseFloat(actualRateField.value) || 0;
+        const discount = parseFloat(discountField.value) || 0;
+
+        // Discount is now considered in rupees, not percentage
+        const discountedRate = actualRate - discount;
+        rateField.value = discountedRate.toFixed(2);
+
+        const quantity = parseFloat(quantityField.value) || 0;
+        const grossWt = parseFloat(grossWtField?.value) || 0;
+        let amount = 0;
+
+        if (quantity > 0) {
+            amount = discountedRate * quantity;
+        } else if (grossWt > 0) {
+            amount = discountedRate * grossWt;
+        }
+
+        amountField.value = amount.toFixed(2);
+    }
+
+    actualRateField.addEventListener('input', calculateRateAndAmount);
+    discountField.addEventListener('input', calculateRateAndAmount);
+    bagField.addEventListener('input', calculateQuantity);
+    perBagField.addEventListener('input', calculateQuantity);
+});
+
+    
+// `````````````````````````````````````` ```````````````````````````````````
+
+
+function getPurchaseTableRolls() {
+    let totalRoll = parseInt($("#add_new [name='roll']").val().trim()) || 0; // Get value from add_new form
+    return totalRoll > 0 ? totalRoll : -1; // Return -1 if no valid purchase rolls exist
+}
+
+
+
+ 
+function getDeliveryTableRolls() {
+    let totalRoll = 0;
+
+    $("#delivery_table tbody tr").each(function () {
+        // let rowFabricId = $(this).data("fabric-id");
+        let roll = parseInt($(this).find("td:eq(2)").text().trim()) || 0;
+
+        // if (rowFabricId == fabricId) {
+        
+            totalRoll += roll;
+       
+    });
+
+    return totalRoll;
+}
+
+
+// function addDeliveryRow() {
+//     // let rollsToAdd = parseInt($("#deliver_roll").val().trim()) || NaN;
+//     // let rollWt = parseFloat($("#add_new [name='roll_wt']").val()) || 0;
+
+//     // if (isNaN(rollsToAdd) || rollsToAdd <= 0) {
+//     //     notifier.show(
+//     //         'Error!', 
+//     //         'Please select a valid fabric and enter a valid number of rolls!', 
+//     //         'danger', 
+//     //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//     //         4000
+//     //     ); 
+//     //     return;
+//     // }
+
+//     let purchaseRolls = getPurchaseTableRolls();
+//     let currentDeliveryRolls = getDeliveryTableRolls();
+
+//     if (purchaseRolls === -1) {
+//         notifier.show(
+//             'Error!', 
+//             'Yarn Count is not available in the purchase records. Kindly select the yarn count!', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         return;
+//     }
+
+//     // let remainingRolls = purchaseRolls - currentDeliveryRolls;
+//     // console.log('remaining-rolls:', remainingRolls);
+
+//     // if (rollsToAdd > remainingRolls) {
+//     //     notifier.show(
+//     //         'Error!', 
+//     //         `You can only add ${remainingRolls} more rolls. Cannot exceed purchased rolls.`, 
+//     //         'danger', 
+//     //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//     //         4000
+//     //     ); 
+//     //     return;
+//     // }
+
+//     let deliverDate = $("#deliver_date").val();
+//     let partyId = $("#knitting").val();
+//     // let diaId = $("#dia").val();
+//     // let dia = $("#dia option:selected").text();
+//     let party = $("#knitting option:selected").text();
+//     console.log('party-', party, partyId);
+
+//     // ** Check for duplicate diaId in delivery_table **
+//     let duplicate = false;
+//     $("#delivery_table tbody tr").each(function() {
+//         // Assuming diaId is in the 7th <td> (index 6), matching your code
+//         let existingDiaId = $(this).find('td').eq(6).text();
+//         if (existingDiaId === diaId) {
+//             duplicate = true;
+//             return false; // break .each loop
+//         }
+//     });
+
+//     // if (duplicate) {
+//     //     notifier.show(
+//     //         'Error!', 
+//     //         `DIA "${dia}" already exists in the delivery table!`, 
+//     //         'warning', 
+//     //         "{% static 'assets/images/notification/warning-48.png' %}", 
+//     //         4000
+//     //     );
+//     //     return;
+//     // }
+
+
+//     // Store calculated values in hidden fields
+//     $("#deliver_roll_wt").val(rollWt.toFixed(2));
+
+//     // Append new row
+//     let newRow = `<tr>
+//                     <td>${party}</td>
+//                     <td>${deliverDate}</td>
+//                     <td>${rollWt.toFixed(2)}</td> 
+//                     <td style="display:none">${partyId}</td>
+//                     <td><button class='btn btn-danger btn-xs' onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+//                   </tr>`;
+
+//     $("#delivery_table tbody").append(newRow);
+//     $('#knitting').val('').trigger("change");
+//     $('deliver_roll_wt').val('');
+// }
+
+
+function addDeliveryRow() {
+    let rollWt = parseFloat($("#deliver_roll_wt").val().trim()) || 0;
+    let programTotalQty = parseFloat($('#total_quantity').text().trim()) || 0;
+
+    // <!-- if (rollWt <= 0) { -->
+    //     <!-- notifier.show( -->
+    //         <!-- 'Error!',  -->
+    //         <!-- 'Please enter a valid roll weight.',  -->
+    //         <!-- 'danger',  -->
+    //         <!-- "{% static 'assets/images/notification/high_priority-48.png' %}",  -->
+    //         <!-- 4000 -->
+    //     <!-- );  -->
+    //     <!-- return; -->
+    // <!-- } -->
+
+    // Sum current delivery quantities
+    let totalDeliveredQty = 0;
+    $("#delivery_table tbody tr").each(function () {
+        let qty = parseFloat($(this).find('td').eq(2).text()) || 0;
+        totalDeliveredQty += qty;
+    });
+
+    if ((totalDeliveredQty + rollWt) > programTotalQty) {
+        let remainingQty = (programTotalQty - totalDeliveredQty).toFixed(2);
+        notifier.show(
+            'Error!',
+            `You can only add up to ${remainingQty} kg more. Total program quantity is ${programTotalQty.toFixed(2)} kg.`,
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    let deliverDate = $("#deliver_date").val();
+    let partyId = $("#knitting").val();
+    let party = $("#knitting option:selected").text();
+
+    if (!deliverDate || !partyId || partyId === "company") {
+        notifier.show(
+            'Error!',
+            'Please select a party and enter delivery date.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // Add the row
+    let newRow = `<tr>
+                    <td>${party}</td>
+                    <td>${deliverDate}</td>
+                    <td>${rollWt.toFixed(2)}</td> 
+                    <td style="display:none">${partyId}</td>
+                    <td><button class='btn btn-danger btn-xs' onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+                  </tr>`;
+
+    $("#delivery_table tbody").append(newRow);
+
+    // Clear fields
+    $('#knitting').val('').trigger("change");
+    $('#deliver_roll_wt').val('');
+}
+
+
+
+// function addDeliveryRow() {
+//     // let fabricId = $("#deliver_fabric_id").val();
+//     // let fabricName = $("#deliver_fabric_id option:selected").text();
+//     let rollsToAdd = parseInt($("#deliver_roll").val().trim()) || NaN;
+
+//     // Ensure `bag_wt` and `rate` are correctly fetched from the add_new form
+//     let rollWt = parseFloat($("#add_new [name='roll_wt']").val()) || 0;
+
+//     if (  isNaN(rollsToAdd) || rollsToAdd <= 0) {
+//         // alert("❌ Please select a valid fabric and enter a valid number of rolls!");
+//         notifier.show(
+//             'Error!', 
+//             'Please select a valid fabric and enter a valid number of rolls!', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         return;
+//     }
+
+//     let purchaseRolls = getPurchaseTableRolls();
+//     let currentDeliveryRolls = getDeliveryTableRolls();
+
+//     if (purchaseRolls === -1) {
+//         // alert("⚠️ This fabric is not available in the purchase records. Cannot proceed.");
+//         notifier.show(
+//             'Error!', 
+//             ' Yarn Count is not available in the purchase records. Kindly select the yarn count!', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         return;
+//     }
+
+//     let remainingRolls = purchaseRolls - currentDeliveryRolls;
+//     console.log('remaining-rolls:',remainingRolls);
+
+//     if (rollsToAdd > remainingRolls) {
+//         notifier.show(
+//             'Error!', 
+//             'You can only add ${remainingRolls} more rolls. Cannot exceed purchased rolls.', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         // alert(`❌ You can only add ${remainingRolls} more rolls. Cannot exceed purchased rolls.`);
+//         return;
+//     }
+
+
+
+//     // let partyId = $("#knitting").val();
+//     // let diaId = $("#dia").val();
+//     // let dia = $("#dia option:selected").text();
+//     // let party = $("#party option:selected").text();
+//     // console.log('party-',party, partyId);
+//     let deliverDate = $("#deliver_date").val();
+
+//     let partyId = $("#knitting").val();
+//     let diaId = $("#dia").val();
+//     let dia = $("#dia option:selected").text();
+//     let party = $("#knitting option:selected").text();  // fixed here
+//     console.log('party-', party, partyId);
+
+
+//     // **New Calculations**
+//     let deliveryQuantity = rollsToAdd * rollWt;  // (bags * weight per bag)
+//     // let deliveryAmount = deliveryQuantity * rate;  // (quantity * rate)
+
+//     // Store calculated values in hidden fields
+//     $("#delivery_bag_wt").val(rollWt.toFixed(2));
+//     $("#delivery_quantity").val(deliveryQuantity.toFixed(2));
+//     // $("#delivery_amount").val(deliveryAmount.toFixed(2));
+
+//     let newRow = `<tr >
+//                     <td>${party}</td>
+//                     <td>${deliverDate}</td>
+//                     <td>${dia}</td>
+//                     <td>${rollsToAdd}</td>
+//                     <td>${rollWt.toFixed(2)}</td> 
+//                     <td style="display:none">${partyId}</td>
+//                     <td style="display:none">${diaId}</td>
+//                     <td><button class='btn btn-danger btn-xs' onclick="removeRow(this)"><i class="feather icon-trash-2"></i></button></td>
+//                   </tr>`;
+
+//     $("#delivery_table tbody").append(newRow);
+//     $('#kniting').val('').trigger("change");
+
+// }
+
+
+
+// knitting_details
+
+function storeKnittingTableValues() {
+    let program_id = $("#program_id").val();
+    let TableData = [];
+
+    let table = $('#knitting_details').DataTable();
+
+    table.rows().every(function () {
+        let data = this.data();
+
+        TableData.push({
+            program_id: program_id,
+            fabric_id: data.fabric_id_raw,
+            count_id: data.count_id_raw,
+            gauge_id: data.gauge_id_raw,
+            tex_id: data.tex_id_raw,
+            gsm: data.gsm,
+            dia_id: data.dia_id_raw,
+            roll: data.rolls,
+            roll_wt: data.wt_per_roll,
+            quantity: data.quantity
+        });
+    });
+
+    return TableData;
+    console.log('table-data:',TableData);
+}
+
+
+function storeDeliveryTblValues() {
+    let TableData = [];
+    $('#delivery_table tbody tr').each(function () {
+        TableData.push({
+            "knitting": $(this).find('td:eq(0)').text(), 
+            "delivery_date": $(this).find('td:eq(1)').text(),
+            // "dia": $(this).find('td:eq(2)').text(),
+            // "roll": $(this).find('td:eq(3)').text(),
+            "roll_wt": $(this).find('td:eq(2)').text(),  
+            "knitting_id": $(this).find('td:eq(3)').text(),
+        });
+    });
+
+    console.log('Stored Delivery Table Data:', TableData);
+    return TableData;
+}
+
+    
+$('.single-select').select2({
+        dropdownParent: $('#add_new')
+    }); 
+    
+
+  
+var first = true; 
+
+function remove_row(mrow) { 
+    $(mrow).closest('tr').remove();
+} 
+
+ 
+// ```````````````````````````````````````````````````````````````
+
+
+function resetFields() {
+    $('#product_id').val('').trigger("change");
+    document.getElementById('bag_value').value = ''; 
+    document.getElementById('per_bag').value = ''; 
+    document.getElementById('quantity').value = ''; 
+    document.getElementById('rate').value = ''; 
+    document.getElementById('actual_rate').value = ''; 
+    document.getElementById('discount').value = ''; 
+    document.getElementById('gross_wt').value = ''; 
+    document.getElementById('amount').value = ''; 
+}
+
+
+
+function removeRow(button) {
+    // Remove the row
+    $(button).closest('tr').remove();
+
+    // Update totals after removing the row
+    calculateTotalValue();
+}
+ 
+
+
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+
+    // Tax rate as a percentage 
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#productstable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseInt($(this).find('td:eq(3)').text()) || 0; // Quantity
+        const rate = parseFloat($(this).find('td:eq(4)').text()) || 0; // Rate
+        const amount = parseFloat($(this).find('td:eq(9)').text()) || 0; // Amount
+       
+        // Calculate tax amount as 5% of the amount
+        const taxAmount = (amount * taxRate) / 100; 
+
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += amount;
+        totalTax += taxAmount;  // Adding calculated tax to total tax
+
+        // Update tax summary (if any tax logic is needed)
+        if (taxAmount > 0) {
+            if (!taxSummary[taxRate]) {
+                taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+            }
+            // Assuming SGST and CGST split equally for simplicity
+            const sgstAmount = taxAmount / 2;
+            taxSummary[taxRate].sgst += sgstAmount;
+            taxSummary[taxRate].cgst += sgstAmount;
+            taxSummary[taxRate].totalTax += taxAmount;
+        }
+    });
+
+    // Calculate round-off value and grand total
+    const totalAmount = subTotal + totalTax;
+    const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+
+    // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+    const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2)); 
+    $('#tax_placeholder').text(totalTax.toFixed(2));
+    $('#round_off').text(adjustedRoundOff.toFixed(2));
+    $('#total_payable').text(grandTotal);
+
+    // Update tax summary table (if needed)
+    $('#tax_summary_body').empty();
+    for (const [rate, data] of Object.entries(taxSummary)) {
+        $('#tax_summary_body').append(`
+            <tr>
+                <td>${rate}%</td>
+                <td>${data.sgst.toFixed(2)}</td>
+                <td>${data.cgst.toFixed(2)}</td>
+                <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+                <td>${data.totalTax.toFixed(2)}</td>
+            </tr>
+        `);
+    }
+}
+
+
+
+
+
+ 
+$('.single-select').select2();
+
+            // Get current date and time
+            const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('purchase_date').value = currentDateString;
+    document.getElementById('deliver_date').value = currentDateString;
+
+
+
+
+    
+    
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+// });
+
+
+ </script>

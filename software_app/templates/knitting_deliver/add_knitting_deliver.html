@@ -1,0 +1,1328 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Yarn Outward  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Yarn</a></li>
+                                            <li class="breadcrumb-item"><a href="/yarn-deliver"> Yarn Outward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <form id="add_new" >
+                                                        {% csrf_token %} 
+                                                        <div class="row mt-2">
+                                                            
+                                                        <div class="col-md-12">
+
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="delivery_no" class="form-lebel">DO No.</label>
+                                                                    <input type="text" class="form-control" value="{{delivery_number}}" disabled>
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">DO Date</label>
+                                                                    <input class="form-control" type="date" name="delivery_date" id="delivery_date" required>
+                                                                </div>
+                                                    
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label"><span style="color:red">*</span> Lot No.</label>
+
+                                                                    <input type="text" class="form-control" name="lot_no" id="lot_no" maxlength="10" required pattern="[A-Za-z0-9]+"
+                                                                         title="Only letters and numbers allowed" required>
+
+                                                                    <small id="lot_no_error" class="text-danger" style="display: none;"></small>
+
+
+
+                                                                    <!-- <input type="text" class="form-control" name="lot_no" id="lot_no" maxlength="10" required> -->
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Party</label> <!-- is_knittnig=1 -->
+                                                                    <!-- <select id="party_id" name="party_id" class="form-control single-select" required onchange="loadLot()"> -->
+                                                                        <select id="party_id" name="party_id" class="form-control single-select" required >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+                                                                <input type="hidden" id="count_id" name="count_id">
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Knitting Program</label>
+                                                                    <select id="prg_id" name="prg_id" class="form-control single-select"  onchange="loadLot()" required>
+                                                                        <option>Select</option>
+                                                                        {% for k in program %}
+                                                                        <option value="{{ k.id }}">{{ k.knitting_number }} </option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+                                                                    
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Inward List </label>
+                                                                    <input type="hidden" name="po_id" id="po_id">
+                                                                    <select id="inward_id" name="inward_id" class="form-control single-select" multiple>
+                                                                        <!-- <option value="">Select</option> -->
+                                                                        <!-- {% for k in inward_list %}
+                                                                        <option value="{{ k.id }}">{{ k.inward_number }}</option> 
+                                                                        {% endfor %}  --> 
+                                                                    </select> 
+                                                                </div>
+
+                                                                
+                                                                <!-- <input type="hidden" name="lot_no" id="lot_no" > -->
+                                                            </div>
+                                                                
+
+                                                                <!-- tx table fields -->
+                                                            <div class="row">
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id"
+                                                                            class="form-label">Yarn Count</label> 
+                                                                        <select id="yarn_count_id" name="product_id"
+                                                                            class="form-control single-select">
+                                                                            <option value="">Select</option>
+                                                                            {% for k in count %}
+                                                                            <option value="{{ k.id }}">{{ k.name }}
+                                                                            </option>
+                                                                            {% endfor %}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="bag" class="form-label"> Bags</label>
+                                                                    <input type="number" class="form-control"
+                                                                    id="bag" name="bag" oninput="validateDecimal2(this)" >
+                                                               
+                                                                    
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="per_bag" class="form-label"> per bag Wt. (kg)</label>
+                                                                    <input type="number" class="form-control"
+                                                                        id="per_bag" name="per_bag"  oninput="validateDecimal2(this)">
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2 ">
+                                                                    <label for="quantity" 
+                                                                        class="form-label">Quantity (kg)</label> 
+                                                                    <input type="number" class="form-control"
+                                                                        name="quantity" id="quantity"   oninput="validateDecimal2(this)" >
+                                                                </div>
+
+                                                            
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="rate" class="form-label">Gross Wt (kg)</label>
+                                                                    <input type="number" step="0.01"
+                                                                        class="form-control" id="gross_wt" name="gross_wt"  oninput="validateDecimal2(this)" >
+                                                                </div>
+
+
+                                                          
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" id="tm_inward_id" name="tm_inward_id" >
+                                                                    <input type="hidden" id="po_id" name="po_id" >
+                                                                    <button class="btn btn-primary mt-3" type="button" onclick="addManualRow()">+ Add</button>
+
+                                                                </div>
+
+                                                            </div>
+                                                            
+                    
+                     
+                                                    
+                                                        </div>  
+                                             
+                                                    </div>
+
+                                                
+                                                        <div class="">
+                                                            <div class="table-responsive table-desi">
+ 
+                                                                <table id="purchaseTable" class="table table-bordered w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Yarn Count</th>
+                                                                            <th>Lot No</th>
+                                                                            <th>Bags</th>
+                                                                            <th>Per Bag Wt</th>
+                                                                            <th>Quantity (kg)</th>
+                                                                            <th>Gross wt(kg)</th>
+                                                                            <th>Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody> 
+                                                                </table>
+
+                                                          
+                                                            
+                                                            </div>
+                                                        </div>
+														<div class=" mt-3" style="text-align: center;" >
+                                                            <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+
+                                                        
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card -->
+
+                                    
+                                </div>
+                                <div class="card">
+                                    <div class="card-body row mt-2">
+                                        <div class="  col-md-12">
+
+                                            
+                                            <div class=" table-responsive table-desi">
+                                                    <h6 style="text-align: center;">KNITTING PROGRAM</h6>
+                                                <table class="table table-bordered w-100" id="knitting_details">
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th>Knitting</th> -->
+                                                            
+                                                            <th>Item</th>
+                                                            <th>Yarn Count</th>
+                                                            <th>Gauge</th>
+                                                            <th>Tex</th>
+                                                            <th>Dia</th>
+                                                            <th>Rolls</th>
+                                                            <th>Wt. Per Roll</th>
+                                                            <th>Quantity</th>
+                                                            <!-- <th>Rate</th>
+                                                            <th>Total Amount</th> -->
+                                                            <!-- <th>Status</th> -->
+                                                        </tr> 
+                                                    </thead> 
+                                                    <tbody>
+                                                        
+                                                        
+                                                    
+                                                    </tbody> 
+                                                </table>
+                                            </div> 
+
+
+                                            
+
+
+                                            <!-- po-deliver table -->
+                                        </div>
+                                        
+                        
+                                
+                        
+                                    </div>
+
+                                </div>
+                                <!-- end table card -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+                                                        
+                                                        
+{% include 'includes/footer.html' %}
+
+<script>
+
+
+$("#lot_no").on("keyup", function () {
+    // clearTimeout(debounceTimer); // Clear previous timer
+
+    // debounceTimer = setTimeout(function () {
+        checkDuplicateName();
+    // }, 500); // Wait 500ms after user stops typing
+});
+
+
+function checkDuplicateName() {
+    var itemName = $("#lot_no").val().trim().toUpperCase();
+  
+    if (itemName === "" ) {
+        return; // Don't check if fields are empty
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/accessory/check-lot/",  // API endpoint to check duplicate
+        data: {
+            lot_no: itemName,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            if (response.exists) {
+                $("#lot_no").addClass("is-invalid"); // Highlight input field
+                $("#lot_no_error").text("This LOT NO. already exists in the selected item group.").show();
+            } else {
+                $("#lot_no").removeClass("is-invalid"); // Remove error highlight
+                $("#lot_no_error").hide();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error checking item:", error);
+        }
+    });
+}
+
+
+document.getElementById('lot_no').addEventListener('input', function () {
+    this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () { 
+    const bagField = document.getElementById('bag');
+    const perBagField = document.getElementById('per_bag');
+    const quantityField = document.getElementById('quantity'); 
+    const gross_wtField = document.getElementById('gross_wt');
+
+    function calculateQuantity() {
+        const bag = parseFloat(bagField.value) || 0;
+        const perBag = parseFloat(perBagField.value) || 0;
+        const quantity = bag * perBag;
+
+        quantityField.value = quantity.toFixed(2);
+        gross_wtField.value = quantity.toFixed(2);
+    }
+
+    // Add event listeners to update quantity dynamically
+    bagField.addEventListener('input', calculateQuantity);
+    perBagField.addEventListener('input', calculateQuantity);
+});
+
+ 
+
+
+// ✅ Move `Loadbag_wt` outside so it's globally accessible
+
+function Loadbag_wt() {
+    var bagId = $('#bag').val();
+    console.log('Selected Bag ID:', bagId);
+
+    if (!bagId) {
+        console.warn("No bag selected");
+        $('#per_bag').val('');
+        $('#quantity').val('');
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_bag_wt/',
+        data: {
+            'bag': bagId,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function (data) {
+            console.log('Received Data:', data);
+
+            $('#per_bag').val(''); // Clear previous value
+
+            if (data.bag && data.bag.wt) { 
+                $('#per_bag').val(data.bag.wt);
+                calculateQuantity(); // ✅ Call function globally
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching bag weight:', error);
+        }
+    });
+}
+
+
+
+
+// ``````````````````````````````````````` INWARD LIST ```````````````````````````
+
+
+
+function loadLot() {
+    let prg_id = $("#prg_id").val();
+    let party_id = $("#party_id").val();
+
+    if (!prg_id || !party_id) {
+        $("#delivery_details tbody").empty();
+        $("#knitting_details tbody").empty();
+        return;
+    }
+
+    $("#count_id").val('');
+    $("#inward_id").val('').trigger('change');
+    $("#inward_id").empty().append(`<option value="">Select Inward</option>`);
+    $("#po_id").val('');
+
+    $.ajax({
+        type: "POST",
+        url: "/get_lot_no/",
+        data: {
+            'party_id': party_id,
+            'prg_id': prg_id,
+            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            console.log('Lot response:', response);
+
+            $("#count_id").val(response.count_id);
+
+            if (response.inward_list && response.inward_list.length > 0) {
+                response.inward_list.forEach(function(item) {
+                    let option = `<option value="${item.inward_id}" data-po="${item.po_id}">
+                                    ${item.inward_number}
+                                  </option>`;
+                    $("#inward_id").append(option);
+                });
+            }
+
+            if (!response.count_id || response.count_id.length === 0) {
+                $("#delivery_details tbody").empty();
+                $("#knitting_details tbody").empty();
+            } else {
+                loadKnittingDetails();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error loading lot data:", error);
+        }
+    });
+}
+
+
+
+function loadKnittingDetails() {
+    let prg_id = $("#prg_id").val();
+
+    // Check if the table is already initialized
+    if ($.fn.DataTable.isDataTable('#knitting_details')) {
+        $('#knitting_details').DataTable().destroy();  // Destroy old instance
+    }
+
+    $('#knitting_details').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, // Allow reinitialization
+        "order": [],
+        "ajax": {
+            "url": '/knit-prg-list/',
+            "type": "POST",
+            "data": function (data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.prg_id = prg_id;
+            },
+            "dataSrc": function (json) {
+                if (json.message === 'error') {
+                    console.log('Access denied');
+                    return [];
+                }
+                console.log(json);
+                return json.data;
+            }
+        },
+        "columns": [
+            { "data": "fabric_id", "title": "Item" },
+            { "data": "count", "title": "Yarn count" },
+            { "data": "gauge", "title": "Gauge" },
+            { "data": "tex", "title": "Tex" },
+            { "data": "dia", "title": "Dia" },
+            { "data": "rolls", "title": "Rolls" },
+            { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+            { "data": "quantity", "title": "Quantity" },
+            // { "data": "rate", "title": "Rate" },
+            // { "data": "total_amount", "title": "Total Amount" }
+        ]
+    });
+}
+
+
+
+$('#inward_id').on('change', function () {
+    const inward_id = $(this).val();
+    if (!inward_id) {
+        $("#delivery_details tbody").empty();  // clear if deselected
+        return;
+    }
+
+    const po_id = $(this).find(":selected").data("po") || '';
+    $("#po_id").val(po_id);
+    const party_id = $("#party_id").val();
+    const prg_id = $("#prg_id").val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_inward_details/',
+        data: {
+            'inward_id': JSON.stringify(inward_id),
+            'party_id': party_id,
+            'prg_id': prg_id,
+            'po_id': po_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            const dataList = response.data || [];
+
+            $("#delivery_details tbody").empty();  // clear previous
+            $("#knitting_details tbody").empty();
+
+            if (dataList.length === 0) {
+                alert('No data found for selected inward.');
+                return;
+            }
+
+            dataList.forEach(item => {
+                addRow(
+                    item.yarn_count,
+                    $("#lot_no").val() || item.lot_no || '',
+                    parseFloat(item.bag),
+                    parseFloat(item.per_bag),
+                    parseFloat(item.quantity),
+                    parseFloat(item.gross_wt),
+                    item.tm_id,
+                    item.yarn_count_id,
+                    item.tm_id,
+                    item.inward_id,
+                    item.po_id
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching inward details:", error);
+        }
+    });
+});
+
+
+
+
+
+function loadPODeliverDetails(lotNo) {
+    var inward = $('#inward_id').val('');
+    var party_id = $('#party_id').val('');
+    $.ajax({
+        type: "POST",
+        url: "/get_po_delivery_details/",  // Django endpoint for delivery details
+        data: {
+            "inward_id": lotNo,
+            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            let tableBody = $("#po_delivery_details tbody");
+            tableBody.empty(); // Clear previous data from tbody
+
+            if (response.data.length > 0) {
+                // Display Total Quantity and Total Weight in the first rows
+                $("#total_program_qty").text(response.total_program_quantity); // Set total quantity
+                $("#total_program_wt").text(response.total_weight); // Set total weight
+
+                // Dynamically add rows for program, delivered, and balance
+                response.data.forEach(item => {
+                    let row = `<tr>
+                        <td>${item.po_number || ''}</td>
+                        <td>${item.deliver_to || ''}</td>
+                        <td>${item.yarn_count || ''}</td>
+                        <td>${item.bag || ''}</td>
+                        <td>${item.per_bag || ''}</td>
+                        <td>${item.quantity || ''}</td>
+                    </tr>`;
+                    
+                    tableBody.append(row);
+                }); 
+
+                    
+            } else {
+                tableBody.append("<tr><td colspan='4'>No delivery details found</td></tr>");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching delivery details:", error);
+        }
+    });
+}
+
+
+
+// ````````````````````````````````test ````````````````````
+
+
+function LoadInward() {
+    var supplier_id = $('#party_id').val(); 
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({
+        type: 'POST',  // Change to POST 
+        url: '/get_inward_lists/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        success: function(data) {
+            $('#inward_id').empty().append('');
+            $("#prg_id").val('').trigger("change"); 
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    // $('#inward_id').append('<option value="' + po.id + '">' + po.po_number + '-' + (po.name) + '</option>');
+                    $('#inward_id').append('<option value="' + po.id + '">' + po.inward_number + '</option>');
+
+                });
+
+                // Ensure that total_bag is displayed correctly
+                $('#bag_total_placeholder').text(data.total_bag.toFixed(2));
+                $("#prg_id").val('data.program_id').trigger("change"); 
+
+                // Ensure that total_quantity is correctly parsed and displayed
+                let totalQuantity = parseFloat(data.total_quantity);
+                if (!isNaN(totalQuantity)) {
+                    $('#qty_total_placeholder').text(totalQuantity.toFixed(2));
+                } else {
+                    $('#qty_total_placeholder').text('0.00');  // Default in case of invalid value
+                }
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+// ```````````````````````````````````````````````end inward `````````````````````````
+
+
+
+
+function loadDeliveryDetails(lotNo) {
+    $.ajax({
+        type: "POST",
+        url: "/get_delivery_details/",  // Django endpoint for delivery details
+        data: {
+            "lot_no": lotNo,
+            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            let tableBody = $("#delivery_details tbody");
+            tableBody.empty(); // Clear previous data from tbody
+
+            if (response.data.length > 0) {
+                // Display Total Quantity and Total Weight in the first rows
+                $("#total_program_qty").text(response.total_program_quantity); // Set total quantity
+                $("#total_program_wt").text(response.total_weight); // Set total weight
+
+                // Dynamically add rows for program, delivered, and balance
+                response.data.forEach(item => {
+                    let row = `<tr>
+                        <td>Total Qty</td>
+                        <td>${item.program}</td>
+                        <td>${item.delivered}</td>
+                        <td>${item.balance}</td>
+                    </tr>`;
+                    
+                    tableBody.append(row);
+                });
+            } else {
+                tableBody.append("<tr><td colspan='4'>No delivery details found</td></tr>");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching delivery details:", error);
+        }
+    });
+}
+
+
+
+
+function loadDeliveryDetails_test(lotNo) {
+    $.ajax({
+        type: "POST",
+        url: "/get_delivery_details/",  // Django endpoint for delivery details
+        data: {
+            "lot_no": lotNo,
+            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            let tableBody = $("#delivery_details tbody");
+            tableBody.empty(); // Clear previous data
+
+            if (response.data.length > 0) {
+                response.data.forEach(item => {
+                    let row = `<tr>
+                        <td>${item.program}</td>
+                        <td>${item.total_quantity}</td>
+                        <td>${item.delivered}</td>
+                        <td>${item.balance}</td>
+                    </tr>`;
+                    tableBody.append(row);
+                });
+
+                // Update the totals row
+                let totalsRow = `<tr class="fw-bold">
+                    <td>Total</td>
+                    <td>${response.total_program_quantity}</td>
+                    <td>${response.total_delivered_quantity}</td>
+                    <td>${response.gross_total}</td>
+                </tr>`;
+                tableBody.append(totalsRow);
+            } else {
+                tableBody.append("<tr><td colspan='4'>No delivery details found</td></tr>");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching delivery details:", error);
+        }
+    });
+}
+
+
+function LoadProgram() {
+    var party_id = $('#party_id').val(); 
+    console.log('Party-ID:', party_id);
+
+    $.ajax({
+        type: 'POST',  
+        url: '/get_program_lists/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+            let $prg_id = $('#prg_id');
+            let $product_id = $('#product_id');
+            // let $knitting_id = $('#knitting_id');
+
+            $prg_id.empty().append('<option value="">Select</option>');
+            $product_id.empty().append('<option value="">Select</option>');
+
+            if (data.length > 0) {
+                data.forEach(function(po) {
+                    $prg_id.append(
+                        `<option value="${po.id}" data-fabric-id="${po.fabric_id || ''}">
+                            ${po.knitting_number}
+                        </option>`
+                    );
+                });
+
+                // Automatically trigger change event to load the product
+                $prg_id.val($prg_id.find('option:eq(1)').val()).trigger('change');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading program lists:', error);
+        } 
+    });
+}
+
+// Function to load product (fabric) based on selected knitting program
+function loadProductByFabric(fabric_id) {
+    let $product_id = $('#product_id');
+
+    if (!fabric_id) {
+        $product_id.empty().append('<option value="">Select</option>');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_details/',
+        data: {
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(response) {
+            $product_id.empty().append('<option value="">Select</option>');
+
+            if (response.uom && response.uom.length > 0) {
+                response.uom.forEach(function(item) {
+                    $product_id.append(`<option value="${item.id}">${item.name}</option>`);
+                });
+
+                // Trigger change event on product dropdown
+                $('#product_id').prop('selectedIndex', 1).trigger('change');
+
+                // $product_id.trigger('change');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+}
+
+// Event listener for dynamically loaded #prg_id
+$(document).on('change', '#prg_id', function() {
+    let fabric_id = $(this).find(':selected').data('fabric-id');
+    loadProductByFabric(fabric_id);
+});
+
+
+
+
+
+
+function LoadDeliver() {
+    var process_id = $('#process_id').val();  
+    console.log('Process-ID:', process_id); 
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_process_deliver_lists/',  // Ensure this matches Django view URL
+        data: {
+            'process_id': process_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        dataType: 'json', // Ensure JSON response
+        success: function(data) {
+            $('#deliver_id').empty().append('<option value="">Select</option>');
+            if (data.deliveries && data.deliveries.length > 0) {
+                data.deliveries.forEach(function(deliver) {
+                    $('#deliver_id').append('<option value="' + deliver.id + '">' + deliver.name + '</option>');
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading deliver lists:', error);
+        }
+    });
+}
+
+
+function loadPurchases(supplierId, poIds) {
+    const currentLoadedItems = new Set();
+
+    $.ajax({
+        type: "GET",
+        url: "/load_knitting_program_detail/",
+        data: {
+            party_id: supplierId,
+            'prg_id[]': poIds // Send selected IDs as an array
+        },
+        success: function (data) {
+            console.log("Orders received:", data.orders); // Debugging
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function (item) {
+                    const uniqueKey = `${item.product_id}_${item.tm_id}_${item.id}`;
+
+                    if (!loadedItemsMap[uniqueKey]) {
+                        console.log("Adding Row for:", item); // Debugging
+
+                        addRow(
+                            item.product, item.count, item.gauge, item.tex, item.gsm, 
+                            item.dia, item.rolls, item.wt_per_roll, item.rate, // ✅ Fix order
+                            item.quantity, item.amount, item.tax_value, 
+                            item.id, item.tm_id, item.po_id, item.product_id
+                        );
+
+                        loadedItemsMap[uniqueKey] = true;
+                        calculateTotalValue();
+                    }
+
+                    currentLoadedItems.add(uniqueKey);
+                });
+            } else {
+                alert('No unassigned items found or all items are already assigned.');
+            }
+
+            // Clean up loaded items
+            for (const key in loadedItemsMap) {
+                if (!currentLoadedItems.has(key)) {
+                    delete loadedItemsMap[key];
+                }
+            }
+        },
+        error: function (xhr, status, error) {
+            alert('Error loading purchases: ' + error);
+        }
+    });
+}
+
+// // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    $('#purchaseTable tbody tr').each(function (index) {
+        // Extract values from table row
+        var product = $(this).find('td:eq(0)').text().trim(); // Product name
+        var lot_no = $(this).find('td:eq(1)').text().trim();  // Lot No as text
+        var bag = parseFloat($(this).find('td:eq(2)').text().trim()) || 0;
+        var per_bag = parseFloat($(this).find('td:eq(3)').text().trim()) || 0;
+        var quantity = parseFloat($(this).find('td:eq(4)').text().trim()) || 0;
+        var gross_wt = parseFloat($(this).find('td:eq(5)').text().trim()) || 0;
+
+        // ✅ Ensure hidden input values exist, or default to an empty string
+        // var tmId = $(this).find('.tm_id').val() ? $(this).find('.tm_id').val().trim() : "0";
+        // var id = $(this).find('.id').val() ? $(this).find('.id').val().trim() : "";
+        var product_id = $(this).find('.product_id').val() ? $(this).find('.product_id').val().trim() : "";
+        var inward_id = $(this).find('.inward_id').val() ? $(this).find('.inward_id').val().trim() : "";
+        var po_id = $(this).find('.po_id').val() ? $(this).find('.po_id').val().trim() : "";
+
+        // ✅ Validate required fields 
+        if (product && quantity > 0) {
+            TableData.push({
+                "product": product,
+                "bag": bag,
+                "per_bag": per_bag.toFixed(2),
+                "quantity": quantity,
+                "gross_wt": gross_wt.toFixed(2),
+                // "tm_id": tmId, 
+                // "/id": id,
+                "product_id": product_id, 
+                "lot_no": lot_no  ,
+                'inward_id':inward_id,
+                'po_id':po_id,
+            });
+        } else { 
+            console.error(`Row ${index + 1} is missing required data:`, {
+                product_name: product || "Missing", 
+                quantity: quantity || "Missing",
+                gross_wt: gross_wt || "Missing",
+                // tm_id: tmId || "Missing",
+                // id: id || "Missing"
+            });
+        }
+    });
+
+    // Calculate total after storing values
+    calculateTotalValue();
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+
+// ``````````````````````````````` manualy clicked row to add ````````````````````````````````
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const product = $("#yarn_count_id option:selected").text();
+    const productId = $("#yarn_count_id").val();
+    const bag = parseFloat($("#bag").val()) || 0;
+    const lot_no = $("#lot_no").val().trim();
+    const perBag = parseFloat($("#per_bag").val()) || 0;
+    const quantity = parseFloat($("#quantity").val()) || 0;
+    const grossWt = parseFloat($("#gross_wt").val()) || 0;
+    const inwardId = $("#tm_inward_id").val() || 0;
+    const poId = $("#po_id").val() || 0;
+    const tmId = 0;
+    const id = 0;
+
+    // Prevent adding row if required fields are empty
+    if (!productId || bag <= 0 || perBag <= 0 || quantity <= 0) {
+        notifier.show( 
+            'Error', 
+            'Please fill in all required fields before adding.', 
+            'warning', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    // Check if 'lot_no' is empty, if so, show alert
+    if (!lot_no) {
+        notifier.show( 
+            'Error', 
+            'Lot number is required.', 
+            'warning', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    // Check if inward_id already exists in any of the existing rows
+    const existingRows = document.querySelectorAll("#purchaseTable tbody tr");
+    let inwardIdExists = false;
+
+    existingRows.forEach(row => {
+        const rowInwardId = row.querySelector(".inward_id").value;
+        console.log("Checking inward_id:", rowInwardId); // Debugging to see the inward_id being checked
+        if (rowInwardId == inwardId) {
+            inwardIdExists = true;
+        }   
+    });
+
+    if (inwardIdExists) {
+        notifier.show( 
+            'Error', 
+            'This Inward ID has already been added.', 
+            'warning', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    // If no duplicate found, add the row
+    addRow(product, lot_no, bag, perBag, quantity, grossWt, id, productId, tmId, inwardId, poId);
+    calculateTotalValue();
+}
+
+
+
+
+
+function addRow(product, lot_no, bag, perBag, quantity, grossWt, id, productId, tmId, inwardId, poId) {
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    if (!tableBody) {
+        console.error("Table body not found!");
+        return;
+    }
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;  
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-product-id", productId);
+    newRow.setAttribute("data-row-id", rowId);
+    $('#lot_no').val().trim();
+    newRow.innerHTML = `
+        <td>${product}</td>
+        <td>${lot_no}</td>
+        <td>${bag}</td>
+        <td>${perBag.toFixed(2)}</td>
+        <td>${quantity.toFixed(2)}</td> 
+        <td>${grossWt.toFixed(2)}</td>
+        
+        <td style="display:none"><input type="hidden" class="id" value="${id}" /></td> 
+        <td style="display:none"><input type="hidden" class="tm_id" value="${tmId}" /></td>
+        <td style="display:none"><input type="hidden" class="product_id" value="${productId}" /></td>
+        <td style="display:none"><input type="hidden" class="inward_id" value="${inwardId}" /></td>
+        <td style="display:none"><input type="hidden" class="po_id" value="${poId}" /></td>
+
+        <td>
+            <button class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>
+            <button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+        </td>
+    `;
+
+    tableBody.appendChild(newRow);
+    calculateTotalValue();
+    resetFields();
+
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+        newRow.remove();
+        calculateTotalValue();
+    });
+
+    newRow.querySelector(".edit-row").addEventListener("click", function () {
+        
+        // Populate input fields with the row's data for editing
+        $("#yarn_count_id").val(productId).trigger('change');
+        $("#lot_no").val(lot_no);
+        $("#bag").val(bag);
+        $("#per_bag").val(perBag);
+        $("#quantity").val(quantity);
+        $("#gross_wt").val(grossWt);
+        $("#tm_inward_id").val(inwardId);
+
+        newRow.remove();
+        
+        // Change the Add button to update functionality
+        $("#addButton").off("click").on("click", function () {
+            updateRow(rowId, productId);
+        });
+    });
+}
+
+function updateRow(rowId, productId) {
+    const product = $("#yarn_count_id option:selected").text();
+    const lot_no = $("#lot_no").val().trim(); 
+    const bag = parseFloat($("#bag").val()) || 0;
+    const perBag = parseFloat($("#per_bag").val()) || 0;
+    const quantity = parseFloat($("#quantity").val()) || 0;
+    const grossWt = parseFloat($("#gross_wt").val()) || 0;
+    const inwardId = $("#tm_inward_id").val() || 0;
+
+    // Update the row's data
+    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+    row.querySelector("td:nth-child(1)").textContent = product;
+    row.querySelector("td:nth-child(2)").textContent = lot_no;
+    row.querySelector("td:nth-child(3)").textContent = bag;
+    row.querySelector("td:nth-child(4)").textContent = perBag.toFixed(2);
+    row.querySelector("td:nth-child(5)").textContent = quantity.toFixed(2);
+    row.querySelector("td:nth-child(6)").textContent = grossWt.toFixed(2);
+
+    // Update hidden inputs
+    row.querySelector(".product_id").value = productId;
+    row.querySelector(".inward_id").value = inwardId;
+
+    // Reset the form and switch back the Add button
+    resetFields();
+    $("#addButton").off("click").on("click", addManualRow);
+
+    calculateTotalValue();
+}
+
+function resetFields() {
+    document.getElementById('bag').value = ''; 
+    document.getElementById('per_bag').value = ''; 
+    document.getElementById('quantity').value = ''; 
+    document.getElementById('gross_wt').value = ''; 
+}
+
+// ````````````````````````````````````````
+
+// Function to calculate row-wise amount dynamically
+function calculateRow(event) {
+    const rowId = event.target.dataset.rowId;
+    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+
+    const rate = parseFloat(row.querySelector('.rate').value) || 0;
+    const quantity = parseFloat(row.querySelector('td:eq(4)').text()) || 0; 
+
+    const amount = (rate * quantity).toFixed(2);
+    row.querySelector('.amount').textContent = amount;
+
+    calculateTotalValue();
+}
+
+
+
+
+
+
+// Calculate the total of all rows 
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+  
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#purchaseTable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseFloat($(this).find('td:eq(4)').text()) || 0; // Quantity from input field
+        const gross_wt = parseFloat($(this).find('td:eq(5)').text()) || 0; // Rate from input field
+ 
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += gross_wt;
+
+
+    });
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+
+}
+
+
+// `````````````````````````````````````````````````````````````````````
+
+
+
+
+// ```````````````````````````````````````````````````````
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var prgId = $('#prg_id').val();
+    if (!prgId || prgId === "Select") {
+        notifier.show(
+            'Error!',
+            'Please select a Knitting Program.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return; // Prevent submission if Knitting Program is not selected
+    }
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+
+        var totalQty = $('#qty_total_placeholder').text();
+        var subTotal = $('#sub_total_placeholder').text();
+        var taxTotal = $('#tax_placeholder').text();
+        var roundOff = $('#round_off').text();
+        var totalPayable = $('#total_payable').text();
+
+        // Append total values to FormData
+        mdata.append('total_quantity', totalQty);  // This is where total_quantity is added 
+        mdata.append('sub_total', subTotal); 
+        mdata.append('tax_total', taxTotal);
+        mdata.append('round_off', roundOff);
+        mdata.append('total_payable', totalPayable);
+
+       
+
+        $.ajax({
+            type: "POST", 
+            url: "/add-knitting-deliver/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data === 'yes') {
+                    notifier.show( 
+                        'Well Done!', 
+                        'Yarn Delivery added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                    $('#add_new').trigger('reset');
+ 
+                    location.href='/yarn-deliver';
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        }); 
+    }
+});
+
+
+$('.single-select').select2(); 
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('delivery_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+
+</script>

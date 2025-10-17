@@ -1,0 +1,848 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content"> 
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card"> 
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Accessory PO
+                                                  <!-- &nbsp; <button class="btn btn-primary btn-xs"  data-bs-toggle="modal" data-bs-target="#bag_modal">Bag</button> -->
+                                                
+                                                </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Accessories</a></li>
+                                            <li class="breadcrumb-item"><a href="/accessory-po">Accessory PO</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                 <div class="card">  
+                                     <div class="card-body row">
+                                        <div class="col-sm-12">
+                                            
+                                            <form id="add_new" method="POST"> 
+
+                                                <div class="row">
+                                                    <div class="col-md-9 mt-2">
+                                                    
+                                                    
+                                                            {% csrf_token %}
+                                                        <div class="row mt-4">
+
+                                                            <div class="col-md-3 mt-2">
+                                                                <label for="order_date" class="form-label">PO No.</label>
+                                                                <input class="form-control" type="text" name="purchase_number" id="purchase_number" value="{{po_number}}">
+                                                            </div>
+
+
+                                                            <div class="col-md-3 mt-2">
+                                                                <label for="order_date" class="form-label">PO Date</label>
+                                                                <input class="form-control" type="date" name="purchase_date" id="purchase_date" required> 
+                                                            </div>
+
+                                                            <div class="col-md-3 mt-2"> 
+                                                                <label for="product_id" class="form-label">Party </label>
+                                                                <select id="supplier_id" name="supplier_id" class="form-control form-select single-select" required>
+                                                                    <option value="">Select</option>
+                                                                    {% for k in party %}
+                                                                    <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+
+
+                                                            <!-- <div class="col-md-3 mt-2">
+                                                                <label for="order_date" class="form-label">PO Name</label>
+                                                                 <input class="form-control" id="fabricName" dir="ltr" style="position: relative;width: 240px; vertical-align: top; background-color: transparent;" name="purchase_name" type="text" placeholder="PO NAME">
+                                                            </div> -->
+
+                                                        </div>
+                                                        <div class="row">
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="product_id" class="form-label">Item Group</label>
+                                                                    <select id="item_group_id" name="item_group_id" class="form-control form-select single-select" >
+                                                                        <!-- onchange="uom_load()" -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in item_group %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="product_id" class="form-label">Item </label>
+                                                                    <select id="item_id" name="item_id" class="form-control form-select single-select" onchange="LoadAccData()">
+                                                                        <!-- onchange="uom_load()" -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in item %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="quality_id" class="form-label">Quality </label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control form-select single-select" >
+                                                                        <!-- onchange="uom_load()" -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="size_id" class="form-label">Size </label>
+                                                                    <select id="size_id" name="size_id" class="form-control form-select single-select" >
+                                                                        <!-- onchange="uom_load()" -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in size %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select> 
+                                                                </div>
+
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="color_id" class="form-label">Color </label>
+                                                                    <select id="color_id" name="color_id" class="form-control form-select single-select" >
+                                                                        <!-- onchange="uom_load()" -->
+                                                                        <option value="">Select</option>
+                                                                        {% for k in color %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="rate" class="form-label">Rate</label>
+                                                                    <input type="number" step="0.001" class="form-control" id="rate" name="rate" oninput="validateDecimal3(this)" >
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-2 mb-3">
+                                                                    <label for="quantity" class="form-label">Quantity</label>
+                                                                    <input type="number" class="form-control" name="quantity" id="quantity" oninput="validateDecimal2(this)"  >
+                                                                </div>
+
+                                                                <div class="col-md-3 mt-2">
+                                                                    <label for="amount" class="form-label">Amount</label>
+                                                                    <input type="number" step="0.001" class="form-control" id="amount" name="amount" oninput="validateDecimal3(this)"  readonly>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    <button type="button" class="btn btn-primary mt-3" onclick="addRow()">+Add</button>
+                                                                </div>
+ 
+                                                            </div> 
+                    
+                    
+                    
+                                                    </div>
+
+
+                                                  
+
+                                                    <div class="col-md-3">
+                                                        
+                                                        <div class=" m-b-30">
+                                                            <div class="card-body">            
+                                                                <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="2">Summary Table</th>
+                                                                        </tr> 
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td> Total Quantity</td>
+                                                                            <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Sub Total</td>
+                                                                            <td align="end" colspan="2" id="sub_total_placeholder">0.000</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Total Tax</td>
+                                                                            <td align="end" colspan="2" id="tax_placeholder">0.000</td>
+                                                                        </tr>
+    
+                                                                        <tr>
+                                                                            <td>Round off</td>
+                                                                            <td align="end" colspan="2" id="round_off">0.000</td>
+                                                                        </tr>
+                                                                        <tr> 
+                                                                            <td>Grand Total</td>
+                                                                            <td style="background-color: #428bca; color: black; font-size: 21px" align="end" colspan="2" id="total_payable">0.00</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>     
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div> 
+
+
+                                                <div class="">
+                                                    <div class="table-responsive table-desi">
+
+                                                        <table id="productstable" class="table table-bordered w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Item Group</th>
+                                                                    <th>Item</th>
+                                                                    <th>Quality</th>
+                                                                    <th>Size</th>
+                                                                    <th>Color</th>
+                                                                    <th>Rate</th>
+																	<th>Quantity</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody> 
+                                                        </table>
+
+                                                  
+                                                    
+                                                    </div> 
+                                                </div>
+ 
+                                               
+                                                <div class="row">
+ 
+
+                                                    <div class="col-md-6 mt-2 ">
+                                                        <!-- <label for="price_list" class="form-label">Remarks </label> -->
+                                                        <textarea type="text" class="form-control" name="remarks" id="remarks" rows="2" placeholder="REMARKS"></textarea>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-2 mt-3" style="text-align: center; margin-left: 10px;">
+                                                        <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                        <button type="submit" id="submit_button" class="btn btn-primary">Save</button>
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div> 
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+      
+$(document).on('change', '#item_group_id', function() {
+
+    // Call the function to load purchases based on the selected supplier and purchase orders
+    // LoadDeliver();
+    LoadItem();
+});
+
+
+
+
+function LoadItem() {
+    var item_group_id = $('#item_group_id').val();
+    console.log('Item-Group-ID:', item_group_id); // Debugging output
+
+    if (!item_group_id) {
+        console.warn("No Item Group ID selected"); 
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_acc_item_list/',
+        data: { 'item_group_id': item_group_id },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear existing options and add default "Select" option
+            $('#item_id').empty().append('<option value="">Select</option>');
+
+            // Populate dropdowns only if data exists
+            if (data.success && data.items.length > 0) {
+                $.each(data.items, function(index, item) {
+                    $('#item_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } else {
+                console.warn('No items found for this group.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading item details:', error);
+        }
+    });
+}
+
+
+
+
+function LoadAccData() {
+    var item_id = $('#item_id').val();
+    console.log('Item-Group-ID:', item_id); // Debugging output
+
+    if (!item_id) {
+        console.warn("No Item Group ID selected"); 
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_acc_list/',
+        data: { 'item_id': item_id },  
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output 
+
+            // Clear existing options and add default "Select" option
+            $('#quality_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            $('#color_id').empty().append('<option value="">Select</option>');
+
+            // Populate dropdowns only if data exists
+            if (data.success && data.qualities.length > 0) {
+                $.each(data.qualities, function(index, item) {
+                    $('#quality_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+
+              if (data.success && data.sizes.length > 0) {
+                $.each(data.sizes, function(index, item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+            
+
+              if (data.success && data.colors.length > 0) {
+                $.each(data.colors, function(index, item) {
+                    $('#color_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+            
+            
+            
+            else {
+                console.warn('No items found for this group.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading item details:', error);
+        }
+    });
+}
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission 
+    console.log("Submit button clicked");  // Debugging 
+
+    var TableData = storeTblValues(); 
+    console.log('delivery-tbl-data:', TableData);
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'success', 
+            "{% static 'assets/images/notification/ok-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+  
+
+
+    if (confirm("Are you sure you want to save?")) {
+        // let mdata = new FormData(this);  // ✅ Define FormData using the form element
+
+        // storeTbl = JSON.stringify(storeTbl);
+        // mdata.append('delivery_data', storeTbl); 
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+
+
+
+        var totalQty = $('#qty_total_placeholder').text();
+        var subTotal = $('#sub_total_placeholder').text();
+        var taxTotal = $('#tax_placeholder').text();
+        var roundOff = $('#round_off').text();
+        var totalPayable = $('#total_payable').text();
+
+        // Append total values to FormData
+        mdata.append('total_quantity', totalQty);  
+        mdata.append('sub_total', subTotal);
+        mdata.append('tax_total', taxTotal);
+        mdata.append('round_off', roundOff);
+        mdata.append('total_payable', totalPayable);
+
+        $.ajax({
+            type: "POST",
+            url: "/purchase-order-add/",
+            data: mdata, 
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr) {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...'); 
+                // Set the CSRF token in the request header
+                xhr.setRequestHeader('X-CSRFToken', getCSRFToken());
+            },
+            success: function(data) { 
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+       
+
+                if (data.status === 'Success') {  // ✅ Corrected condition
+                    notifier.show( 
+                        'Well Done!', 
+                        'PO added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+                    // $('#add_new')[0].reset();
+                    // $('#delivery_table').DataTable().ajax.reload(null, false);
+                    // Clear dynamically added rows in the table
+                    $('#add_new').trigger('reset'); 
+					$('#item_id').val('').trigger("change");
+					$('#item_group_id').val('').trigger("change");
+					$('#quantity').val('');
+					$('#rate').val('');
+					$('#amount').val('');
+					$('#size_id').val('').trigger("change");
+					$('#color_id').val('').trigger("change");
+                    $('#productstable tbody').empty();
+
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add',  
+                        'danger',  
+                        "{% static 'assets/images/notification/error-48.png' %}", 
+                        4000 
+                    ); 
+                }
+
+
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) { 
+                console.log("AJAX Error:", textStatus, errorThrown);
+                alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+
+function getCSRFToken() {
+    const csrfToken = document.cookie.match(/csrftoken=([^;]+)/);
+    return csrfToken ? csrfToken[1] : null;
+}
+
+
+
+// ````````````` discount calculate in rupees `````````````````````
+document.addEventListener('DOMContentLoaded', function () {
+    const rateField = document.getElementById('rate');
+    const quantityField = document.getElementById('quantity');
+    const amountField = document.getElementById('amount');
+
+    function calculateAmount() {
+        const rate = parseFloat(rateField.value) || 0;
+        const quantity = parseFloat(quantityField.value) || 0;
+        const amount = rate * quantity;
+
+        amountField.value = amount.toFixed(3);
+    }
+
+    // Attach event listeners to trigger calculation
+    rateField.addEventListener('input', calculateAmount);
+    quantityField.addEventListener('input', calculateAmount);
+});
+
+    
+
+// `````````````````````````````````````````````````````````````````````````
+function editRow(mrow) {
+    editIndex = $(mrow).closest('tr').index();
+    var row = $(mrow).closest('tr'); 
+
+    // Fetch values from the row
+    var item_group_id = row.find('td:eq(5) span').text().trim();
+    var item_id = row.find('td:eq(6) span').text().trim();
+    var item_group_name = row.find('td:eq(0)').text().trim();
+    var item_name = row.find('td:eq(1)').text().trim();
+    var quantity = row.find('td:eq(2)').text().trim();
+    var rate = row.find('td:eq(3)').text().trim();
+    var amount = row.find('td:eq(4)').text().trim();
+
+    console.log("Editing Row: ", { item_group_id, item_id, quantity, rate, amount });
+
+    if (!item_id) {
+        alert("Error: Item ID not found in the row!");
+        return;
+    }
+
+    // Set item group dropdown and trigger event
+    let itemGroupDropdown = $("#item_group_id");
+    if (itemGroupDropdown.find("option[value='" + item_group_id + "']").length > 0) {
+        itemGroupDropdown.val(item_group_id).trigger("change.select2");
+    } else {
+        let newGroupOption = new Option(item_group_name, item_group_id, true, true);
+        itemGroupDropdown.append(newGroupOption).trigger("change.select2");
+    }
+
+    // Set item dropdown and trigger event
+    let itemDropdown = $("#item_id");
+    if (itemDropdown.find("option[value='" + item_id + "']").length > 0) {
+        itemDropdown.val(item_id).trigger("change.select2");
+    } else {
+        let newOption = new Option(item_name, item_id, true, true);
+        itemDropdown.append(newOption).trigger("change.select2");
+    }
+
+    // Set form fields correctly
+    $("#quantity").val(quantity).trigger("input");  
+    $("#rate").val(rate).trigger("input");          
+    $("#amount").val(amount);
+
+    // Remove row after setting values
+    row.remove(); 
+    calculateTotalValue();
+    updateAmount();
+}
+function updateAmount() {
+    let quantity = parseFloat($("#quantity").val()) || 0;
+    let rate = parseFloat($("#rate").val()) || 0;
+    let amount = quantity * rate;
+    $("#amount").val(amount.toFixed(3));
+}
+
+// Ensure calculation happens when changing quantity or rate
+$("#quantity, #rate").on("input", function () {
+    updateAmount();
+});
+
+
+
+
+function storeTblValues() {
+    let TableData = [];
+
+    $('#productstable tbody tr').each(function () {
+        let item_group_name = $(this).find('td:eq(0)').text().trim();
+        let item_name = $(this).find('td:eq(1)').text().trim();
+        let quality_name = $(this).find('td:eq(2)').text().trim();
+        let size_name = $(this).find('td:eq(3)').text().trim();
+        let color_name = $(this).find('td:eq(4)').text().trim();
+        let quantity = $(this).find('td:eq(5)').text().trim();
+        let rate = $(this).find('td:eq(6)').text().trim();
+        let amount = $(this).find('td:eq(7)').text().trim();
+        let item_group_id = $(this).find('td:eq(8) span').text().trim();
+        let item_id = $(this).find('td:eq(9) span').text().trim();
+        let quality_id = $(this).find('td:eq(10) span').text().trim();
+        let size_id = $(this).find('td:eq(11) span').text().trim();
+        let color_id = $(this).find('td:eq(12) span').text().trim();
+
+        if (item_id && quantity && rate && amount) {
+            TableData.push({
+                "item_group_id": item_group_id,
+                "item_group_name": item_group_name,
+                "item_id": item_id,
+                "quality_id":quality_id,
+                "size_id":size_id,
+                "color_id":color_id,
+                "item_name": item_name,
+                "quantity": quantity,
+                "rate": rate,
+                "amount": amount
+            });
+        }
+    });
+
+    console.log('Stored Product Table Data:', TableData);
+    return TableData;
+}
+
+
+
+// ```````````````````````````````````````````````````````````````
+
+
+
+function addRow() {
+    var itemSelect = $("#item_id");
+    var itemId = itemSelect.val();
+    var itemText = itemSelect.find("option:selected").text();
+
+    var item_groupSelect = $("#item_group_id");
+    var item_groupId = item_groupSelect.val();
+    var item_groupText = item_groupSelect.find("option:selected").text();
+
+
+    var qualitySelect = $("#quality_id");
+    var qualityId = qualitySelect.val();
+    var qualityText = qualitySelect.find("option:selected").text();
+
+    var sizeSelect = $("#size_id");
+    var sizeId = sizeSelect.val();
+    var sizeText = sizeSelect.find("option:selected").text();
+
+    var colorSelect = $("#color_id");
+    var colorId = colorSelect.val();
+    var colorText = colorSelect.find("option:selected").text();
+
+    var quantity = parseFloat($("#quantity").val()) || 0;
+    var rate = parseFloat($("#rate").val()) || 0;
+    var amount = parseFloat($("#amount").val()) || 0;
+
+    // if (!itemId || !item_groupId || !sizeId || !color_id|| !rate || !quantity) { 
+    if (!itemId || !item_groupId || !sizeId || !color_id) { 
+        notifier.show('Error!',
+                "Please fill all fields before adding a row.",
+                'danger',  
+                "{% static 'assets/images/notification/error-48.png' %}", 
+                4000 
+            
+                );
+        return;
+    }
+
+    var tableBody = $("#productstable tbody");
+    var rowExists = false;
+
+    tableBody.find("tr").each(function() {
+        var rowItemGroupId = $(this).find("td:eq(8) span").text();
+        var rowItemId = $(this).find("td:eq(9) span").text();
+        var rowRate = parseFloat($(this).find("td:eq(6)").text()) || 0;
+        var rowsizeId = parseFloat($(this).find("td:eq(11)").text()) || 0;
+        var rowcolorId = parseFloat($(this).find("td:eq(12)").text()) || 0;
+
+        // Check if all three match: item_group_id, item_id, and rate
+        if (rowItemGroupId === item_groupId && rowItemId === itemId && rowRate === rate && rowsizeId === sizeId  && rowcolorId === colorId) {
+            var currentQuantity = parseFloat($(this).find("td:eq(2)").text()) || 0;
+            var newQuantity = currentQuantity + quantity;
+            var newAmount = newQuantity * rate;
+
+            $(this).find("td:eq(5)").text(newQuantity);
+            $(this).find("td:eq(7)").text(formatNumber(newAmount));
+
+            rowExists = true;
+            return false; // Break loop once found
+        }
+    });
+
+    function formatNumber(value) {
+        return parseFloat(value).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+    }
+
+    if (!rowExists) {
+        var newRow = `
+            <tr>
+                <td class="text-start">${item_groupText}</td> 
+                <td class="text-start">${itemText}</td>
+                <td class="text-start">${qualityText}</td>
+                <td class="text-start">${sizeText}</td>
+                <td class="text-start">${colorText}</td>
+                <td class="text-center">${quantity}</td>
+                <td class="text-end">${formatNumber(rate)}</td>
+                <td class="text-end">${formatNumber(amount)}</td>   
+                
+                <td style="display:none" id="item_group_id"><span>${item_groupId}</span></td>
+                <td style="display:none" id="item_id"><span>${itemId}</span></td> 
+                <td style="display:none" id="quality_id"><span>${qualityId}</span></td>
+                <td style="display:none" id="size_id"><span>${sizeId}</span></td>
+                <td style="display:none" id="color_id"><span>${colorId}</span></td> 
+
+                <td>
+                    <button class="btn btn-xs btn-danger" type="button" onclick="removeRow(this)">
+                        <i class="feather icon-trash-2"></i>
+                    </button>
+                    <button class="btn btn-xs btn-primary" type="button" onclick="editRow(this)">
+                        <i class="feather icon-edit"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        tableBody.append(newRow);
+            calculateTotalValue();
+
+    }
+
+    calculateTotalValue();
+    resetFields(); 
+}
+
+
+ 
+function resetFields() {
+    // <!-- $('#item_id').val('').trigger("change"); -->
+    // <!-- $('#item_group_id').val('').trigger("change"); -->
+	$('#quantity').val('');
+	// $('#rate').val('');
+	$('#amount').val('');
+	// <!-- $('#size_id').val('').trigger("change"); -->
+	$('#color_id').val('').trigger("change");
+    
+}
+
+
+
+function removeRow(button) {
+    // Remove the row
+    $(button).closest('tr').remove();
+
+    // Update totals after removing the row
+    calculateTotalValue();
+}
+ 
+
+
+
+function calculateTotalValue() {
+    let totalQuantity = 0; 
+    let subTotal = 0;
+    let totalTax = 0;
+
+    const taxRate = 5; // 5% tax 
+
+    $('#productstable tbody > tr').each(function() { 
+        const quantity = parseFloat($(this).find('td:eq(5)').text().replace(/,/g, '')) || 0;
+        const rate = parseFloat($(this).find('td:eq(6)').text().replace(/,/g, '')) || 0;
+        const amount = parseFloat($(this).find('td:eq(7)').text().replace(/,/g, '')) || 0;
+
+        const taxAmount = (amount * taxRate) / 100;
+
+        totalQuantity += quantity;
+        subTotal += amount;
+        totalTax += taxAmount;
+    }); 
+
+    const totalAmount = subTotal + totalTax; 
+    const roundOff = totalAmount - Math.floor(totalAmount);
+    const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    // const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(3);
+    const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(3);
+
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(3));
+    $('#tax_placeholder').text(totalTax.toFixed(3));
+    $('#round_off').text(adjustedRoundOff.toFixed(3)); 
+    $('#total_payable').text(grandTotal);
+}
+ 
+
+
+ 
+
+ 
+$('.single-select').select2();
+
+            // Get current date and time
+            const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('purchase_date').value = currentDateString;
+
+
+    
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    
+
+ </script>

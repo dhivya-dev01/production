@@ -1,0 +1,486 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+<style>
+    .sidebar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.sidebar-table th,
+.sidebar-table td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: left;
+}
+
+.sidebar-table thead {
+    background-color: #f5f5f5;
+}
+
+
+</style>
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content"> 
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        
+                        <div class="row"> 
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <!-- Breadcrumb moved here -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="page-header-title">
+  
+                                                <h4 class="m-b-10 me-1  ">Dyed Fabric Summary Report</h4>  
+                                            </div> 
+
+
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Report</li>
+                                            <li class="breadcrumb-item"><a href="/grey-fabric-summary-report">Dyed Fabric Summary Report</a></li>
+                                        </ul>
+                                        
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                       <style>
+
+                                        .sidebar {
+                                            position: fixed;
+                                            top: 70px; /* ⬅️ Adjust this if you have a fixed top navbar/header */
+                                            right: -550px;
+                                            width: 500px;
+                                            height: calc(100% - 70px); /* Matches the offset from top */
+                                            background: #f7f7f7;
+                                            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+                                            transition: right 0.3s ease;
+                                            padding: 20px;
+                                            z-index: 9999;
+                                            overflow: hidden; /* Prevents scrollbar on the entire sidebar */
+                                            display: flex;
+                                            flex-direction: column;
+                                        }
+
+                                        .sidebar.show {
+                                            right: 0;
+                                        }
+
+                                        .sidebar-header {
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            flex-shrink: 0;
+                                        }
+
+                                        .sidebar-header h5 {
+                                            margin: 0;
+                                        }
+
+                                        .sidebar-body {
+                                            flex: 1; /* Take all available vertical space */
+                                            overflow-y: auto; /* Enable vertical scroll if content overflows */
+                                            margin-top: 10px;
+                                            padding-right: 5px; /* Prevent content from hiding behind scrollbar */
+                                        }
+
+                                        .sidebar-body p {
+                                            margin: 10px 0;
+                                        }
+
+                                        /* Optional: Add this for backdrop effect */
+                                        .sidebar-backdrop {
+                                            position: fixed;
+                                            top: 70px; /* same as sidebar top */
+                                            left: 0;
+                                            width: 100%;
+                                            height: calc(100% - 70px);
+                                            background-color: rgba(0, 0, 0, 0.4);
+                                            z-index: 9998;
+                                            display: none;
+                                        }
+
+                                        .sidebar-backdrop.show {
+                                            display: block;
+                                        }
+
+
+                                    </style>
+
+
+                                    <div id="quantitySidebar" class="sidebar">
+                                        <div class="sidebar-header">
+                                            <h5>Grey Fabric Details</h5>
+                                            <button type="button" onclick="$('#quantitySidebar').removeClass('show')">×</button>
+                                        </div>
+
+                                        <div class="sidebar-body">
+                                            <p><strong>Lot No.:</strong> <span id="sidebar-lot"></span></p>
+                                            <p><strong>Total Qty:</strong> <span id="sidebar-quantity-value"></span></p>
+                                            <h4><span id="sidebar-date-type"></span> List:</h4>
+                                            
+                                            <div id="sidebar-details-list">
+                                                <!-- Fetched data goes here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
+
+                                    <!-- ```````````````````````````````````````````````````````````````` -->
+ 
+                                    <div class="card-body">  
+                                        <div class="row">
+
+                                             <div class="col-md-2 mt-2">
+                                                <label class="form-label" for="lot_no">Lot No.</label>
+                                                <select id="lot_no" name="lot_no" class="form-control  single-select" >
+                                                    <option value="">Select </option>
+                                                    {% for k in lot_no %}
+                                                    <option value="{{k.lot_no}}"> {{k.lot_no}} </option>
+
+                                                    {% endfor %}
+                                                    
+                                                </select> 
+                                            </div>
+
+                                            <div class="col-md-2 mt-4">
+                                                <button type="button" class="btn btn-gradient-success mt-3" onclick="loadGreyLotSummary()">Load Stock</button> 
+
+                                            </div>
+
+                                        </div>                                      
+                                        <div class="dt-responsive table-hover">
+                                            <table id="purchaseTable" class="table table-striped table-bordered wrap w-100" cellpadding="0" cellspacing="0">
+                                             
+                                             {% csrf_token %} 
+                                             
+                                             <thead> 
+                                                    <tr>
+                                                        <th>Lot No.</th>
+                                                        <!-- <th>Party</th> -->
+                                                        <th>Total Outward </th>
+                                                        <th>Total Received </th>
+                                                        <th>Pending</th> 
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>
+                        </div>
+
+
+                        
+                            
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+    
+  
+
+<script>
+
+
+
+function loadGreyLotSummary() {
+    const table = $('#purchaseTable').DataTable();
+    table.ajax.reload(); // Triggers the dynamic data function below
+}
+
+
+$(document).ready(function () {
+    $('#purchaseTable').DataTable({
+        language: {
+            emptyTable: "No grey fabric lot summary found!"
+        },
+        processing: true,
+        pageLength: 50,
+        destroy: true,
+        order: [],
+        ajax: {
+            url: '/get-dyed-fabric-lot-summary-list/',
+            type: 'POST',
+            data: function (d) {
+                d.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                d.lot_no = $('#lot_no').val();
+            },
+            dataSrc: function (json) {
+                if (json.status === "error") {
+                    alert(json.message);
+                    return [];
+                }
+                return json.data;
+            }
+        },
+        columns: [
+            { data: "lot_no", title: "Lot No" },
+            {
+                data: "outward_wt",
+                title: "Total Outward Wt",
+                render: function (data, type, row) {
+                    return `<a href="#" class="quantity-click" 
+                        data-type="outward" 
+                        data-lot="${row.lot_no}" 
+                        data-qty="${data}">
+                        ${parseFloat(data || 0).toFixed(2)}
+                    </a>`;
+                }
+            },
+            {
+                data: "inward_wt",
+                title: "Total Inward Wt",
+                render: function (data, type, row) {
+                    return `<a href="#" class="quantity-click" 
+                        data-type="inward" 
+                        data-lot="${row.lot_no}" 
+                        data-qty="${data}">
+                        ${parseFloat(data || 0).toFixed(2)}
+                    </a>`;
+                }
+            },
+            {
+                data: "balance_wt",
+                title: "Available Quantity",
+
+                render: function (data, type, row) {
+                    return `<a href="#" class="quantity-click" 
+                        data-type="pending" 
+                        data-lot="${row.lot_no}" 
+                        data-qty="${data}">
+                        ${parseFloat(data || 0).toFixed(2)}
+                    </a>`;
+                }
+              
+            }
+        ]
+    });
+});
+
+
+
+function openSidebar() {
+    $('#quantitySidebar').addClass('show');
+    $('#sidebarBackdrop').addClass('show');
+}
+
+function closeSidebar() {
+    $('#quantitySidebar').removeClass('show');
+    $('#sidebarBackdrop').removeClass('show');
+}
+
+$(document).on('click', '.quantity-click', function (e) {
+    e.preventDefault();
+
+
+    const lot_no = $(this).data('lot');
+    const quantity = $(this).data('qty');
+    const type = $(this).data('type');
+
+
+    // Populate sidebar header
+    $('#sidebar-lot').text(lot_no);
+    $('#sidebar-quantity-type').text(
+        type === 'inward' ? 'Inward Quantity' :
+        type === 'outward' ? 'Outward Quantity' :
+        'Available Quantity'
+    );
+    $('#sidebar-date-type').text( 
+        type === 'inward' ? 'Inward' :
+        type === 'outward' ? 'Outward' :
+        'Balance'
+    );
+    $('#sidebar-quantity-value').text(parseFloat(quantity).toFixed(2));
+
+    // Clear existing
+    $('#sidebar-details-list').empty();
+
+    // Pick URL based on type
+    let url = '';
+    if (type === 'inward') {
+        url = '/get_dyed_fabric_lot_list/';
+    } else if (type === 'outward') {
+        url = '/get_dyed_lot_out_list/';
+    } else if (type === 'pending') {
+        url = '/get_gf_available_balance/';
+    }
+
+    // Fetch data
+    $.ajax({
+        url: url,
+        method: 'GET',
+        data: {
+            lot_no: lot_no,
+            type: type
+        },
+        success: function (response) {
+            if (!Array.isArray(response) || response.length === 0) {
+                $('#sidebar-details-list').html("<p>No records found.</p>");
+                return;
+            }
+
+            let totalQty = 0;
+            let tableHtml = `<table class="sidebar-table"><thead><tr>`;
+
+            // Build table headers
+            if (type === 'inward') {
+                tableHtml += `
+                    <th>Inward No.</th>
+                    <th>Date</th>
+                    <th>Party</th>
+                    <th>Color</th>
+                    <th>Dia</th>
+                    <th>Qty</th>`;
+            } else if (type === 'outward') {
+                tableHtml += `
+                    <th>Outward No.</th>
+                    <th>Date</th>
+                    <th>Party</th>
+                    <th>Color</th>
+                    <th>Dia</th>
+                    <th>Qty</th>`;
+            } else if (type === 'pending') {
+                tableHtml += `
+                    <th>Party</th>
+                    <th>Color</th>
+                    <th>Dia</th>
+                    <th>Inward Qty</th>
+                    <th>Outward Qty</th>
+                    <th>Pending Qty</th>`;
+            }
+
+            tableHtml += `</tr></thead><tbody>`;
+
+            // Build table rows
+            if (type === 'inward' || type === 'outward') {
+                const key = type === 'inward' ? 'inward_no' : 'outward_no';
+                const dateKey = type === 'inward' ? 'receive_date' : 'delivery_date';
+
+                const groupedData = {};
+                response.forEach(entry => {
+                    const groupNo = entry[key] || 'N/A';
+                    if (!groupedData[groupNo]) groupedData[groupNo] = [];
+                    groupedData[groupNo].push(entry);
+                });
+
+                Object.entries(groupedData).forEach(([groupNo, entries]) => {
+                    entries.forEach((entry, index) => {
+                        const qty = parseFloat(entry.inward_qty || entry.quantity || 0);
+                        totalQty += qty;
+
+                        tableHtml += `
+                            <tr>
+                                ${index === 0 ? `<td rowspan="${entries.length}">${groupNo}</td>` : ''}
+                                <td>${entry[dateKey] || '-'}</td>
+                                <td>${entry.party_name || '-'}</td>
+                                <td>${entry.color || '-'}</td>
+                                <td>${entry.dia || '-'}</td>
+                                <td>${qty.toFixed(2)}</td>
+                            </tr>`;
+                    });
+                });
+            } else if (type === 'pending') {
+                // Pending (available balance) rows
+                response.forEach(entry => {
+                    const inQty = parseFloat(entry.total_in_wt || 0);
+                    const outQty = parseFloat(entry.total_out_wt || 0);
+                    const pendingQty = parseFloat(entry.pending_outward || 0);
+                    totalQty += pendingQty;
+
+                    tableHtml += `
+                        <tr>
+                            <td>${entry.party || entry.party_name || '-'}</td>
+                            <td>${entry.color || '-'}</td>
+                            <td>${entry.dia || '-'}</td>
+                            <td>${inQty.toFixed(2)}</td>
+                            <td>${outQty.toFixed(2)}</td>
+                            <td>${pendingQty.toFixed(2)}</td>
+                        </tr>`;
+                });
+            }
+
+            // Close table with footer
+            const colspan = type === 'pending' ? 5 : 5;
+            const footerLabel = type === 'pending' ? 'Total Pending' : 'Total';
+
+            tableHtml += ` 
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="${colspan}" style="text-align:right;">${footerLabel}</th>
+                        <th>${totalQty.toFixed(2)}</th>
+                    </tr>
+                </tfoot>
+            </table>`;
+
+            $('#sidebar-details-list').html(tableHtml);
+        },
+        error: function () {
+            $('#sidebar-details-list').html("<p>Error loading data.</p>");
+        }
+    });
+
+    // Show sidebar
+    $('#quantitySidebar').addClass('show');
+    openSidebar(); // 
+});
+
+$(document).on('click', '#quantitySidebar button', function () {
+    closeSidebar();
+});
+
+// Optional: Close when clicking outside sidebar
+$(document).on('click', '#sidebarBackdrop', function () {
+    closeSidebar();
+});
+
+// Optional: Close on ESC key
+$(document).on('keydown', function (e) {
+    if (e.key === "Escape") {
+        closeSidebar();
+    }
+});
+
+
+
+
+function refresh_data() {
+    if ($.fn.DataTable.isDataTable("#datatable")) { 
+        $('#datatable').DataTable().ajax.reload(null, false);  // ✅ Refresh without resetting pagination
+    }
+}
+
+   
+$('.single-select').select2();
+
+</script>

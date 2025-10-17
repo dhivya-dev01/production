@@ -1,0 +1,3025 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+    
+
+    
+    /* #program_table th,  */
+    #purchaseTable td {
+        padding: 1px !important;
+        /* text-align: center; */
+        vertical-align: middle;
+        text-align:center;
+
+    }
+
+    #purchaseTable input[type="number"] {
+        margin: 0 auto;
+        display: block;
+
+        text-align:center;
+
+    }
+
+
+    .table thead th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 4px;
+    text-align:center;
+}
+
+
+    .table body th {
+    border-bottom: 1px solid #e2e5e8;
+    font-size: 13px;
+    color: #111;
+    background: #eff3f6;
+    text-transform: uppercase;
+    padding: 3px;
+    text-align:center;
+}
+
+
+.footer{
+    padding: 1px !important;
+    /* text-align: center; */
+    vertical-align: middle;
+    text-align: center;
+
+}
+</style>
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10"> Accessory Outward  Update</h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Accessory</a></li>
+                                            <li class="breadcrumb-item"><a href="/accessory-out"> Accessory Outward </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">   
+
+                                        <div class="card-body">  
+                                            <div class="col-sm-12">
+                                                
+                                                <form id="update_outward">
+                                                    {% csrf_token %}
+
+                                                    <div class="row">  
+                                                    
+
+                                                        <div class="col-md-12">
+                                               
+
+                                                            <!-- Radio Buttons --> 
+                                                            <div class="row ">
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward No.</label>
+                                                                    <input type="hidden" value="{{parent_stock_instance.id}}" id="tm_id" name="tm_id">
+                                                                    <input type="text" class="form-control" id="outward_no" name="outward_no" value="{{parent_stock_instance.outward_no}}" >
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward Date</label>
+                                                                    <input type="date" class="form-control" id="outward_date" name="outward_date">
+                                                                </div>
+
+
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_production" name="material_type" value="production"
+                                                                    {% if parent_stock_instance.is_production == 1 %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_production"> Production</label>    
+                                                                </div>
+ 
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_direct" name="material_type" value="direct"
+                                                                    {% if parent_stock_instance.is_direct  == 1 %} checked {% endif %}>
+                                                                    <label class="form-label" for="is_direct"> Direct</label>  
+                                                                </div>
+
+                                                               
+                                                                <div class="col-md-1 mt-5">
+                                                                    <input class="form-check-input" type="radio" id="is_dyeing" name="material_type" value="dyeing"
+                                                                    {% if parent_stock_instance.is_dyeing == 1 %} checked {% endif %}>
+
+                                                                    <label class="form-label" for="is_dyeing"> Dyeing</label>  
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2" id="production_type_div">
+                                                                    <label class="form-label">Production</label>
+                                                                    <select id="production_type" name="production_type" class="form-control single-select">
+                                                                        <option value="">Select</option> 
+                                                                        <option value="STITCHING">Stitching</option> 
+                                                                        <option value="PACKING">Packing</option> 
+                                                                        <option value="SP">Stitching & Packing</option> 
+                                                                    </select> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mt-2">
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Party</label>
+                                                                    <select id="supplier_id" name="supplier_id" class="form-control single-select" disabled onchange="LoadSupplierOutward()">
+                                                                        <option>Select</option>
+                                                                        {% for c in party %}
+                                                                        <option value="{{c.id}}">{{c.name}}</option>
+                                                                        {% endfor %}
+
+                                                                    </select> 
+                                                                </div>
+
+
+                                                                
+
+
+                                                                <!-- Stitching Dropdown -->
+                                                                <div class="col-md-2 mt-2" id="stiching_div" style="display: {% if parent_stock_instance.stiching_outward_id > 0 %} block {% else %} none {% endif %};">
+                                                                    <label class="form-label">Stiching</label>
+                                                                    <select class="form-control single-select" id="stiching_id" name="stiching_id" onchange="LoadQualityStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for p in stiching %}
+                                                                            <option value="{{ p.id }}">{{ p.outwrad_no }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- Packing Dropdown -->
+                                                                <div class="col-md-2 mt-2" id="packing_div" style="display: {% if parent_stock_instance.packing_outward_id > 0 %} block {% else %} none {% endif %};">
+                                                                    <label class="form-label">Packing</label>
+                                                                    <select class="form-control single-select" id="packing_id" name="packing_id" onchange="LoadPackingQualityStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for p in packing %}
+                                                                            <option value="{{ p.id }}">{{ p.outward_no }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- Stitching & Packing Dropdown -->
+                                                                <div class="col-md-2 mt-2" id="sp_div" style="display: {% if parent_stock_instance.production_type == 'SP' %} block {% else %} none {% endif %};">
+                                                                    <label class="form-label">Stiching & Packing</label>
+                                                                    <select class="form-control single-select" id="sp_id" name="sp_id" onchange="LoadSPQualityStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for p in sp %}
+                                                                            <option value="{{ p.id }}">{{ p.outward_no }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+
+                                                                 <div class="col-md-2 mt-2" id="quality_div">
+                                                                    <label class="form-label">Quality</label>
+                                                                    <select class="form-control single-select" id="quality_id" name="quality_id" onchange="LoadMxQualityStyle()" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in quality %}
+                                                                            <option value="{{ p.id }}">{{ p.name }}</option>
+                                                                        {% endfor %}
+                                                                        
+                                                                    </select> 
+                                                                </div>   
+
+                                                                <div class="col-md-2 mt-2" id="style_div">
+                                                                    <label class="form-label">Style</label>
+                                                                    <select class="form-control single-select" id="style_id" name="style_id">
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in style %}
+                                                                            <option value="{{ p.id }}">{{ p.name }}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+
+                                                                <!-- Dyeing Dropdown -->
+                                                                <!-- <div class="col-md-2 mt-2" id="dyeing_div" style="display: none;">
+                                                                    <label class="form-label">Dyeing Outward</label>
+                                                                    <select class="form-control single-select" id="dyeing_outward_id" name="dyeing_outward_id">
+                                                                        <option value="">Select</option>
+                                                                        {% for p in dyeing %}
+                                                                        <option value="{{p.id}}">{{p.outward_no}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div> -->
+
+                                                                 
+ 
+                                                                <div class="col-md-2 mt-2" style="display:none;">
+                                                                    <label class="form-label">Acc Ratio Setting</label>
+                                                                    <select class="form-control single-select" id="program_id" name="program_id" >
+
+                                                                        <option value="">Select</option>
+                                                                        <!-- {% for p in program %}
+                                                                        <option value="{{p.id}}">{{p.accessory_no}}</option>
+                                                                        {% endfor %} -->
+ 
+                                                                    </select>
+                                                                </div>  
+
+                                                                <div class="col-md-2 mt-2" id="acc_item_group_div" style="display: none;">
+                                                                    <label class="form-label">Acc Item Group</label>
+                                                                    <select class="form-control single-select" id="acc_item_group" name="acc_item_group" onchange="LoadItem()">
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in item_group %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+
+
+
+                                                                <div class="col-md-2 mt-2" id="acc_item_div" style="display: none;">
+                                                                    <label class="form-label">Acc Item</label>
+                                                                    <select class="form-control single-select" id="acc_item" name="acc_item" onchange="LoadAccData()">
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in acc_item %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>   
+
+                                                                <div class="col-md-2 mt-2" id="acc_quality_div" style="display: none;">
+                                                                    <label class="form-label">Acc Quality</label>
+                                                                    <select class="form-control single-select" id="acc_quality" name="acc_quality" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in acc_quality %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %} 
+ 
+                                                                    </select>
+                                                                </div>  
+
+
+                                                                <div class="col-md-2 mt-2" id="acc_size_div" style="display: none;">
+                                                                    <label class="form-label">Acc Size</label>
+                                                                    <select class="form-control single-select" id="acc_size" name="acc_size" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in acc_size %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+ 
+
+
+                                                                <div class="col-md-2 mt-2" id="color_div" style="display: none;">
+                                                                    <label class="form-label">Color</label>
+                                                                    <select class="form-control single-select" id="color_id" name="color_id" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in acc_item %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+                                                                <div class="col-md-2 mt-2" id="size_div" style="display: none;">
+                                                                    <label class="form-label">Size</label>
+                                                                    <select class="form-control single-select" id="size_id" name="size_id" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in size %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+                                                                <div class="col-md-2 mt-2" id="uom_div" style="display: none;">
+                                                                    <label class="form-label">UOM</label>
+                                                                    <select class="form-control single-select" id="uom_id" name="uom_id" >
+
+                                                                        <option value="">Select</option>
+                                                                        {% for p in uom %} 
+                                                                        <option value="{{p.id}}">{{p.name}}</option>
+                                                                        {% endfor %}
+ 
+                                                                    </select>
+                                                                </div>  
+
+                                                                <div class="col-md-2 mt-2" id="quantity_div" style="display: none;">
+                                                                    <label class="form-label">Quantity</label>
+                                                                    <input type="number" step="0.001" class="form-control" id="quantity" name="quantity">
+
+                                                                </div>  
+
+                                                                <div class="col-md-12 mt-2"  align="center">
+                                                                    <input type="hidden" id="prg_id" name="prg_id">
+                                                                    <!-- <input type="hidden" id="quality_id" name="quality_id">
+                                                                    <input type="hidden" id="style_id" name="style_id"> -->
+                                                                    <button id="load_outward"  type="button" class="btn btn-primary mt-4">+Load</button>
+
+                                                                    <!-- <button id="load_outward" onclick="Loaddata()" class="btn btn-primary mt-4">+Load</button> -->
+                                                                </div>
+    
+ 
+                                                            </div>
+
+                                                            
+
+
+                                                        </div>
+                                            
+                                                    </div> 
+                                                
+                                                    <div class="">  
+                                                    
+
+                                                        <div class="col-md-12 mt-2">
+                                               
+                                                            <div class="table-responsive ">   
+
+                                                                <table id="purchaseTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="display:none;">Group</th>
+                                                                            <th>Item</th>
+                                                                            <th style="display:none;">Acc Quality</th>
+                                                                            <th>Acc Size</th>
+                                                                            <th>Program Type</th>
+                                                                            <th style="display:none;">Quality</th>
+                                                                            <th style="display:none;">Style</th>
+                                                                            <th>Color</th> 
+                                                                            <th>Size</th>
+                                                                            <th class="program-qty" style="display:none;">Program Qty</th>
+                                                                            <th style="display:none;">Product Pieces</th>
+                                                                            <th>UOM</th>
+                                                                            <th class="already-rec-qty">Already Out Qty</th>
+                                                                            <th class="out-qty">Out Qty</th>
+                                                                            <th class="balance-qty">Balance Qty</th>
+                                                                            <th>Action</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <!-- Rows will be added here --> 
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <td colspan="6" style="text-align: right;"><strong>Total</strong></td>
+                                                                            <td style="text-align: right;"><span id="footer-already-qty-total">0</span></td>
+                                                                            <td style="text-align: right;"><span id="footer-out-qty-total" style="margin-right:10px;">0</span></td>
+                                                                            <td style="text-align: right; "><span id="footer-balance-qty-total">0</span></td>
+                                                                            <td></td> <!-- For the Action column -->
+                                                                        </tr>
+                                                                    </tfoot>
+
+
+                                                                    </table>
+
+
+                                                    
+                                                                    
+                                                            </div> 
+                                                        </div> 
+                                                    </div>
+
+                                                <div class="row"> 
+                                                      
+                                                       
+
+                                                    <div class="col-md-4">
+                                                        <div class=" m-b-30">
+                                                        
+                                                            
+                                                        </div>
+                                                    </div> 
+                                                    
+                                                    <div class="row ms-2">
+                                                        <div class="col-md-12" style="text-align: center;" >
+                                                            <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                            <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"> -->
+        
+                                                            <!-- <button type="submit" id="submit" onclick="update_outward()" class="btn btn-primary">Save</button> -->
+                                                            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+
+                                            
+                                            </div> 
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+</div>
+
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+    
+$(document).ready(function() {
+    $('#supplier_id').on('change', LoadSupplierOutward);
+    load_outward_data(); 
+        // $('#load_outward').click(); // Auto-clicks the button on page load
+
+});
+
+ 
+
+
+$(document).ready(function () {
+    // Define the handler function
+    function handleMaterialTypeChange() {
+        const selected = $('input[name="material_type"]:checked').val();
+
+        // Reset all dependent fields
+        $('#party, #acc_item_div, #acc_quality_div, #acc_size_div, #color_div, #size_div, #uom_div, #quantity_div').hide();
+        $('#party, #production_type_div, #quality_div, #style_div').show();
+
+        if (selected === 'direct') {
+            $('#party, #quality_div, #style_div,#acc_item_div, #acc_size_div, #acc_quality_div, #color_div, #size_div, #uom_div, #quantity_div, #acc_item_group_div, #quality_div, #packing_div, #style_div, #stiching_div, #sp_div').show();
+            // loadPartyList('direct'); 
+        } else if (selected === 'dyeing') {
+            $('#party, #dyeing_outward_div,#quality_div, #style_div, #acc_item_group_div, #acc_item_div, #acc_quality_div, #acc_size_div, #color_div, #size_div, #uom_div, #quantity_div').show();
+            $(' #production_type_div, #packing_div, #stiching_div').hide();
+            LoadQuality(); 
+
+            // loadPartyList('dyeing');
+        } else if (selected === 'production') {
+            // $('#quality_div, #style_div, #production_type_div, #packing_div, #stiching_div, #sp_div').show();
+            $('#quality_div, #style_div, #production_type_div').show();
+        }
+    } 
+ 
+
+    // Bind change event 
+    $('input[name="material_type"]').on('change', handleMaterialTypeChange);
+ 
+    // Trigger on page load
+    handleMaterialTypeChange();
+});
+
+
+
+
+
+
+    function LoadQuality() {
+    
+
+        $.ajax({ 
+            type: 'POST',
+            url: '/get_quality/',  // <-- Make sure this is the correct URL!
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+            success: function(data) {
+
+
+                if (data.orders && data.orders.length > 0) {
+                    data.orders.forEach(function(po) {
+                        $('#quality_id').append('<option value="' + po.quality_id + '">' + po.quality_name + '</option>');
+                        // $('#quality_id').append('<option selected value="' + po.quality_id + '">' + po.quality_name + '</option>');
+                    });
+                }
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading stitching list:', error);
+            }
+        });
+    }
+
+
+
+    
+function LoadMxQualityStyle() {
+    var quality_id = $('#quality_id').val();
+    console.log('Quality-ID:', quality_id); // ✅ Debugging log
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_item_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            console.log('Received Data:', data); // ✅ Debugging log
+
+            // Clear previous options
+            $('#style_id').empty().append('<option value="">Select Style</option>');
+            // $('#size_id').empty().append('<option value="">Select Size</option>');
+
+            // Populate Styles
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function (style) {
+                    $('#style_id').append('<option value="' + style.id + '">' + style.name + '</option>');
+                });
+            }
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        }
+    });
+}
+
+
+
+function LoadAccData() {
+    var item_id = $('#acc_item').val();
+    console.log('Item-Group-ID:', item_id); // Debugging output
+
+    if (!item_id) {
+        console.warn("No Item Group ID selected"); 
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_acc_list/',
+        data: { 'item_id': item_id },  
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output 
+
+            // Clear existing options and add default "Select" option
+            $('#acc_quality_id').empty().append('<option value="">Select</option>');
+            $('#acc_size').empty().append('<option value="">Select</option>');
+            $('#color_id').empty().append('<option value="">Select</option>');
+
+            // Populate dropdowns only if data exists
+            if (data.success && data.qualities.length > 0) {
+                $.each(data.qualities, function(index, item) {
+                    $('#acc_quality').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+
+
+            if (data.success && data.sizes.length > 0) {
+                $.each(data.sizes, function(index, item) {
+                    $('#acc_size').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+            
+
+            if (data.success && data.colors.length > 0) {
+                $.each(data.colors, function(index, item) {
+                    $('#color_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } 
+
+            
+            
+            
+            
+            else {
+                console.warn('No items found for this group.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading item details:', error);
+        }
+    });
+}
+
+// $(document).ready(function() {
+    // Check for the conditions dynamically 
+    if ({{ parent_stock_instance.stiching_outward_id }} > 0) {
+        $('#stiching_div').show();
+    }
+
+    if ({{ parent_stock_instance.packing_outward_id }} > 0) {
+        $('#packing_div').show();
+    }
+
+    if ({{ parent_stock_instance.sp_id }} > 0) {
+        $('#sp_div').show();
+    }
+
+    if ("{{ parent_stock_instance.production_type }}" === 'SP') {
+        $('#sp_div').show();
+    }
+
+    Loaddata();
+
+    load_outward_data();
+// });
+ 
+
+
+
+ 
+
+
+    
+if ("{{ parent_stock_instance.outward_date }}" && "{{ parent_stock_instance.outward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.outward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#outward_date').val(formattedDate).trigger("change");
+}
+
+if ("{{parent_stock_instance.production_type}}" && "{{parent_stock_instance.production_type}}" !== "") {
+    $('#production_type').val("{{parent_stock_instance.production_type}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#supplier_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+  
+
+
+
+
+
+
+function reset(){
+    $('#supplier_id').val('').trigger('change');
+    $('#po_list').val('').trigger('change');
+}
+
+
+
+
+// `````````````````````````````````````````````````````````````````````````
+
+
+ 
+
+function LoadAccessoryItems(){
+
+    var material_type = $('#material_type').val();
+    console.log('prd-type:', material_type); // Debugging output
+
+    if (!material_type) {
+        console.warn("No production type selected"); 
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token 
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_accessory_item_group/',
+        data: { 'type': material_type },   
+        dataType: 'json', 
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output 
+
+            // Clear existing options and add default "Select" option
+            $('#acc_item_group').empty().append('<option value="">Select</option>');
+
+            // Populate dropdowns only if data exists
+
+            if (data.success && data.item_group.length > 0) { 
+                $.each(data.item_group, function(index, item) {
+                    $('#acc_item_group').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }   
+
+            else {
+                console.warn('No items found for this group.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading item details:', error);
+        }
+    });
+}
+
+
+
+
+$(document).ready(function () {
+
+    // Material type change: Production or Dyeing
+    // $('input[name="material_type"]').on('change', function () {
+    //     const selected = $(this).val();
+
+    //     // Reset all   
+
+    //     $('#production_type').val('').trigger("change");
+
+    //     $('#production_type_div').hide().val('');
+    //     $('#production_type').val('');
+    //     $('#stiching_div,    #packing_div,#sp_div, #dyeing_div').hide();
+
+    //     if (selected === 'production') {
+    //         $('#production_type_div').show();
+    //     } else if (selected === 'dyeing') {
+    //         $('#dyeing_div').show();
+    //         loadPartyList('dyeing');
+    //         // LoadDyeing(); 
+    //     }
+    // });
+
+
+
+    $('input[name="material_type"]').on('change', function () {
+        const selected = $(this).val();  
+ 
+        // Reset all dependent fields
+        $('#party, #acc_item_div, #acc_quality_div ,#acc_size_div, #color_div, #size_div, #uom_div, #quantity_div').hide();
+        $('#party,  #production_type_div, #quality_div, #style_div').show();
+  
+        if (selected === 'direct') {
+            $('#party, #acc_item_div, #acc_size_div, #acc_quality ,#color_div, #size_div, #uom_div, #quantity_div, #acc_item_group_div, #quality_div,#packing_div, #style_div, #stiching_div, #sp_div').show();
+            // $('#quality_div,#packing_div, #style_div, #stiching_div, #sp_div').hide();
+            loadPartyList('direct');  
+  
+        } else if (selected === 'dyeing') {  
+            $('#party, #dyeing_outward_div, #acc_item_group_div,#acc_quality ,#acc_item_div,#acc_quality_div, #acc_size_div, #color_div, #size_div, #uom_div, #quantity_div').show();
+            $('#quality_div, #style_div, #production_type_div, #packing_div, #stiching_div').hide();
+            loadPartyList('dyeing'); 
+            LoadDyeingTableData();
+            // LoadDyeing(); 
+        } else if (selected === 'production') { 
+            $('#quality_div, #style_div, #production_type_div, #packing_div, #stiching_div, #sp_div').show();
+        }
+    });
+
+
+    // Production type selection
+    // $('#production_type').on('change', function () {
+    //     const type = $(this).val();
+
+    //     // Hide all first
+    //     $('#stiching_div, #packing_div,#sp_div, #dyeing_div').hide();
+
+    //     if (type === 'STICHING') {
+    //         $('#stiching_div').show();
+    //         loadPartyList('STICHING');
+    //         LoadStiching();
+    //     } else if (type === 'PACKING') {
+    //         $('#packing_div').show();
+    //         loadPartyList('PACKING');
+    //         LoadPacking(); // fixed spelling
+    //     } else if (type === 'SP') {
+    //         $('#sp_div').show();
+    //         loadPartyList('SP');
+    //         LoadStichingPacking(); // fixed spelling 
+    //     }
+
+
+    // });
+
+     $('#production_type').on('change', function () {
+            const type = $(this).val();
+
+            $('#purchaseTable tbody').empty();
+            $('#stiching_div, #packing_div,#sp_div').hide(); 
+
+            const material_type = $('input[name="material_type"]:checked').val(); 
+
+     
+            if (type === 'stiching') { 
+                console.log('type:', type); 
+                $('#stiching_div').show();
+                loadPartyList('stiching');
+                LoadStiching(); 
+               
+                // LoadAccessoryItems();
+
+            } else if (type === 'packing') {
+                $('#packing_div').show();
+                loadPartyList('packing');
+                LoadPacking(); 
+                // LoadAccessoryItems();
+
+            } else if (type === 'sp') {
+                $('#sp_div').show();
+                loadPartyList('sp'); 
+                LoadStichingPacking();   
+
+
+                // $('#load_outward').on('click', function () {
+                //     Loaddata(); // Manually triggered when user clicks "+Load" button
+                // }); 
+
+
+                // LoadAccessoryItems(); 
+            }
+
+        });
+
+
+   
+});
+
+
+// ✅ Trigger Loaddata() on page load
+$(document).ready(function () {
+//     $('#load_outward').on('click', function () {
+//     Loaddata(); // Manually triggered when user clicks "+Load" button
+// });
+
+
+    // LoadItemData();
+    // Loaddata(); // Automatically run on page load
+});
+
+// ✅ Also bind Loaddata to the button click
+// $('#load_outward').on('click', function () {
+//     Loaddata(); // Manually triggered when user clicks "+Load" button
+//     load_outward_data();
+// });
+
+
+
+// ✅ Core function to load data based on material/production type
+function Loaddata() {
+    const materialType = $('input[name="material_type"]:checked').val();
+    const productionType = $('#production_type').val();
+
+    if (materialType === 'dyeing') {
+        LoadDyeingData();
+        // LoadAccItem();
+    } else if (materialType === 'production') {
+        if (productionType === 'STICHING') {
+            LoadItemData();
+        } else if (productionType === 'PACKING') {
+            LoadPackingData();
+        } else if (productionType === 'SP') {
+            LoadSPData();
+            $('#load_outward').click(); // Auto-clicks the button on page load
+
+        }
+    }
+}
+
+// function Loaddata(){
+// const materialType = $('input[name="material_type"]:checked').val();
+//         const productionType = $('#production_type').val();
+
+//         if (materialType === 'dyeing') {
+//             LoadDyeingData();
+//         } else if (materialType === 'production') {
+//             if (productionType === 'STICHING') {
+//                 LoadItemData();
+//             } else if (productionType === 'PACKING') {
+//                 LoadPackingData();
+//             } else if (productionType === 'SP') {
+//                 LoadSPData();
+//             }
+//         }
+// }
+ 
+
+function LoadSupplierOutward() {
+    const materialType = $('input[name="material_type"]:checked').val();
+    const productionType = $('#production_type').val();
+    // .toUpperCase();  // Convert to uppercase
+    console.log('toUpperCase:',productionType);
+    // Handle material type first
+    if (materialType === 'dyeing') {
+        // LoadDyeing();
+        return;  // Exit early as no need to check production type for dyeing
+    }
+
+    // If material_type is 'production', check the production type
+    if (materialType === 'production') {
+        switch (productionType) { 
+            case 'STICHING':  
+                LoadStiching();
+                break;
+            case 'PACKING': 
+                LoadPacking();
+                break;
+            case 'SP': 
+                LoadStichingPacking();
+                break;  
+            default:
+                // Handle the case where productionType is not selected or invalid
+                console.warn('Unknown production type selected');
+                break;
+        }
+    } else {
+
+        console.warn('Unknown material type selected');
+    }
+}
+
+
+
+
+ 
+ 
+function loadPartyList(materialType) {
+    $.ajax({   
+        type: 'POST', 
+        url: '/get_delivery_party_list/', 
+        data: {
+            'material_type': materialType,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val() // if CSRF token is used
+        },
+        dataType: 'json',
+        success: function(data) {
+            var $supplierSelect = $('#supplier_id');
+            $supplierSelect.html('<option value="">Select</option>');
+
+            if (data.length > 0) {
+                $.each(data, function (_, party) {
+                    $supplierSelect.append($('<option>', {
+                        value: party.id,
+                        text: party.name
+                    }));
+                });
+            }  
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching party list:', error);
+        }
+    });
+}
+
+
+
+
+function LoadDyeing() {
+    console.log('dyeing:');
+    const supplier_id = $('#supplier_id').val();
+
+    if (!supplier_id) {
+        console.log("No supplier selected, skipping LoadStiching.");
+        return;
+    }
+
+    console.log('Loading stitching list for Supplier-ID:', supplier_id);
+
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#stiching_id').empty().append('<option value="">Select</option>');
+    $('#quality_id').val('');
+    $('#style_id').val('');
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_dyeing_list/',  // <-- Make sure this is the correct URL!
+        data: {  
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#dyeing_id').append('<option value="' + po.id + '">' + po.outward_no + '</option>');
+                });
+            }
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+ 
+function LoadStiching() {
+    console.log('stiching:');
+    const supplier_id = $('#supplier_id').val();
+
+    if (!supplier_id) {
+        console.log("No supplier selected, skipping LoadStiching.");
+        return;
+    }
+
+    console.log('Loading stitching list for Supplier-ID:', supplier_id);
+
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#stiching_id').empty().append('<option value="">Select</option>');
+    $('#quality_id').val('');
+    $('#style_id').val('');
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_stiching_list_by_supplier/',  // <-- Make sure this is the correct URL!
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#stiching_id').append('<option value="' + po.id + '">' + po.outward_no + '</option>');
+                });
+            }
+
+            if ("{{parent_stock_instance.stiching_outward_id}}" && "{{parent_stock_instance.stiching_outward_id}}" !== "") {
+                $('#stiching_id').val("{{parent_stock_instance.stiching_outward_id}}").trigger("change");
+            }
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+function LoadPacking() {
+    console.log('Packing:');
+    const supplier_id = $('#supplier_id').val();
+    console.log('party-id:',supplier_id);
+
+    if (!supplier_id) {
+        console.log("No supplier selected, skipping LoadStiching.");
+        return;
+    }
+
+    console.log('Loading stitching list for Supplier-ID:', supplier_id);
+
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#packing_id').empty().append('<option value="">Select</option>');
+    $('#quality_id').val('');
+    $('#style_id').val('');
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_packing_list/',  // <-- Make sure this is the correct URL!
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#packing_id').append('<option value="' + po.id + '">' + po.outward_no + '</option>');
+                });
+            }
+
+            if ("{{parent_stock_instance.packing_outward_id}}" && "{{parent_stock_instance.packing_outward_id}}" !== "") {
+                $('#packing_id').val("{{parent_stock_instance.packing_outward_id}}").trigger("change");
+            }
+
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+function LoadStichingPacking() {
+
+    console.log('Packing:');
+    const supplier_id = $('#supplier_id').val();
+
+    if (!supplier_id) {
+        console.log("No supplier selected, skipping LoadStiching.");
+        return;
+    }
+
+    console.log('Loading stitching list for Supplier-ID:', supplier_id);
+
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#packing_id').empty().append('<option value="">Select</option>');
+    $('#quality_id').val('');
+    $('#style_id').val('');
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_stiching_packing_list/',  // <-- Make sure this is the correct URL!
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) { 
+                    $('#sp_id').append('<option value="' + po.id + '">' + po.outward_no + '</option>');
+                });
+            }
+ 
+
+
+            if ("{{parent_stock_instance.sp_id}}" && "{{parent_stock_instance.sp_id}}" !== "") {
+                $('#sp_id').val("{{parent_stock_instance.sp_id}}").trigger("change");
+                // LoadSPData();
+                        $('#load_outward').click(); // Auto-clicks the button on page load
+ 
+            }
+
+            LoadQualityStyle();
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+
+
+function LoadQualityStyle() {
+    const stiching_id = $('#stiching_id').val();
+  
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_stiching_quality_style/',  // <-- Make sure this is the correct URL!
+        data: {
+            'stiching_id': stiching_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#quality_id').val(po.quality_id);
+                });
+            }
+
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#style_id').val(po.style_id);
+                });
+            } 
+
+            LoadAccProgram();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+
+function LoadItem() {
+    var item_group_id = $('#acc_item_group').val();
+    console.log('Item-Group-ID:', item_group_id); // Debugging output
+
+    if (!item_group_id) {
+        console.warn("No Item Group ID selected"); 
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val(); // CSRF Token
+
+    $.ajax({
+        type: 'GET',
+        url: '/get_acc_item_list/',
+
+        // url:'/get_accessory_items/',
+        
+        data: { 'item_group_id': item_group_id },
+        dataType: 'json',
+        success: function(data) { 
+            console.log('Received Data:', data); // Debugging output 
+
+            // Clear existing options and add default "Select" option
+            $('#acc_item').empty().append('<option value="">Select</option>');
+
+            // Populate dropdowns only if data exists
+            if (data.success && data.items.length > 0) {
+                $.each(data.items, function(index, item) {
+                    $('#acc_item').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } else {
+                console.warn('No items found for this group.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading item details:', error);
+        }
+    });
+}
+
+
+
+
+
+function LoadPackingQualityStyle() {
+    const packing_id = $('#packing_id').val();
+  
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_packing_quality_style/',  // <-- Make sure this is the correct URL!
+        data: {
+            'packing_id': packing_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#quality_id').val(po.quality_id);
+                });
+            }
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#style_id').val(po.style_id);
+                });
+            } 
+
+            LoadPackingAccProgram();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+// function LoadAccessory() {
+function LoadAccProgram() {
+    const stiching_id = $('#stiching_id').val();
+    const quality_id = $('#quality_id').val();
+    const style_id = $('#style_id').val();
+
+
+    // $('#program_id').empty().append('<option value="">Select</option>');
+    $('#program_id').empty().append('');
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_accessory_program_list/',  // <-- Make sure this is the correct URL!
+        data: {
+            'stiching_id': stiching_id,
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#program_id').append('<option selected value="' + po.id + '">' + po.accessory_no + '</option>');
+                });
+            }
+
+                $('#load_outward').click(); // Auto-clicks the button on page load
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+
+
+// function LoadAccessory() {
+function LoadPackingAccProgram() {
+    const packing_id = $('#packing_id').val();
+    const quality_id = $('#quality_id').val();
+    const style_id = $('#style_id').val();
+
+    $('#program_id').empty().append('');
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_packing_accessory_program_list/',  // <-- Make sure this is the correct URL!
+        data: {
+            'packing_id': packing_id,
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#program_id').append('<option selected value="' + po.id + '">' + po.accessory_no + '</option>');
+                });
+            }
+
+
+        
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+
+function LoadSPQualityStyle() {
+    const stiching_id = $('#sp_id').val();
+  
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_stiching_quality_style/',  // <-- Make sure this is the correct URL!
+        data: {
+            'stiching_id': stiching_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#quality_id').val(po.quality_id);
+                });
+            } 
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#style_id').val(po.style_id);
+                });
+            } 
+
+
+
+            LoadSPAccProgram();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+
+function LoadSPAccProgram() {
+    const stiching_id = $('#sp_id').val();
+    const quality_id = $('#quality_id').val();
+    const style_id = $('#style_id').val();
+
+
+    // $('#program_id').empty().append('<option value="">Select</option>');
+    $('#program_id').empty().append('');
+
+    $.ajax({ 
+        type: 'POST',
+        url: '/get_accessory_program_list/',  // <-- Make sure this is the correct URL!
+        data: {
+            'stiching_id': stiching_id,
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#program_id').append('<option selected value="' + po.id + '">' + po.accessory_no + '</option>');
+                });
+            }
+
+
+        
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading stitching list:', error);
+        }
+    });
+}
+
+
+let dyeingDataLoaded = false; // Track if data was loaded already
+
+console.log('track:',dyeingDataLoaded);
+ 
+// $('#load_outward').on('click', function () {
+//     const materialType = $('input[name="material_type"]:checked').val();
+//     const productionType = $('#production_type').val();
+
+//     if (materialType === 'dyeing') {
+//         if (!dyeingDataLoaded) {
+//             LoadDyeingData(); // First time: load from server
+//             dyeingDataLoaded = true;
+//             AddRowData(); // Next times: use form values
+
+//         } else { 
+//             AddRowData(); // Next times: use form values
+//         }
+//     } else if (materialType === 'production') {
+//         if (productionType === 'STITCHING') {
+//             LoadItemData();
+//         } else if (productionType === 'PACKING') {
+//             LoadPackingData();
+//         } else if (productionType === 'SP') {
+//             // LoadSPData();
+//         }
+//     }
+// });
+
+
+$('#load_outward').on('click', function () {
+    const materialType = $('input[name="material_type"]:checked').val();
+    const productionType = $('#production_type').val();
+
+    if (materialType === 'dyeing') {
+        if (!dyeingDataLoaded) {
+            LoadDyeingData(() => {
+                dyeingDataLoaded = true;
+                AddRowData();  // Call only after data has loaded
+            });
+        } else {
+            AddRowData();
+        }
+    } else if (materialType === 'production') {
+        if (productionType === 'STITCHING') {
+            LoadItemData();
+        } else if (productionType === 'PACKING') {
+            LoadPackingData(); 
+        }else if (productionType === 'SP'){
+            LoadSPData();
+        }
+    }
+});
+
+
+function AddRowData() {
+    console.log('Row data called');
+    // Collect form values
+    const item = $('#acc_item option:selected').text();
+    const acc_size_name = $('#acc_size option:selected').text();
+    const color = $('#color_id option:selected').text();
+    const size = $('#size_id option:selected').text();
+    const uom = $('#uom_id option:selected').text();
+    const quality = $('#quality_id option:selected').text();
+    const style = $('#style_id option:selected').text();
+
+    const other_outward_qty = 0;
+    const current_outward_qty = parseFloat($('#quantity').val()) || 0;
+    const balance_qty = 0;
+
+    const program_type = $('#program_id option:selected').text() || '';
+    const product_pieces = 0;
+    const group = $('#acc_item_group option:selected').text();
+    const acc_quality = $('#acc_quality option:selected').text();
+
+    // Hidden or ID values
+    const item_id = $('#acc_item').val();
+    const group_id = $('#acc_item_group').val();
+    const prg_qty = 0;
+    const quality_id = $('#quality_id').val();
+    const size_id = $('#size_id').val();
+    const color_id = $('#color_id').val();
+    const acc_size_id = $('#acc_size').val();
+    const acc_quality_id = $('#acc_quality').val();
+
+    console.log('item-datas:',item, acc_size_name, color, size, uom, quality, style, other_outward_qty, current_outward_qty, balance_qty, program_type, product_pieces, group,
+        acc_quality
+    );
+    // Call the same addRow() function
+    addRow(
+        item,
+        acc_size_name,
+        color,
+        size,
+        uom,
+        quality,
+        style,
+        other_outward_qty,
+        current_outward_qty,
+        balance_qty,
+        program_type,
+        product_pieces,
+        group,
+        acc_quality,
+        item_id,
+        group_id,
+        prg_qty,
+        quality_id,
+        size_id,
+        color_id,
+        acc_size_id,
+        acc_quality_id
+    ); 
+}
+
+
+
+//  $('#load_outward').on('click', function () {
+//         const materialType = $('input[name="material_type"]:checked').val();
+//         const productionType = $('#production_type').val();
+
+//         if (materialType === 'dyeing') {
+//             LoadDyeingData();
+//         } else if (materialType === 'production') {
+//             if (productionType === 'STITCHING') {
+//                 LoadItemData();
+//             } else if (productionType === 'PACKING') {
+//                 LoadPackingData();
+//             } else if (productionType === 'SP') { 
+//                 // LoadSPData();
+//             }
+//         } 
+//     });
+
+
+    function load_outward_data(){ 
+        
+
+
+        // $('#load_outward').on('click', function () {
+                const materialType = $('input[name="material_type"]:checked').val();
+                const productionType = $('#production_type').val();
+
+                if (materialType === 'dyeing') {
+                    LoadDyeingData();
+                } else if (materialType === 'production') {
+                    if (productionType === 'STITCHING') {
+                        LoadItemData();
+                    } else if (productionType === 'PACKING') {
+                        LoadPackingData();
+                    } else if (productionType === 'SP') {
+                        LoadSPData();
+                    }
+                } 
+            // });
+
+    }
+
+    
+
+function LoadPackingData() {
+
+    var tm_id = $('#tm_id').val();
+    var party_id = $('#supplier_id').val();
+    var packing_id = $('#packing_id').val();
+    var quality_id = $('#quality_id').val();
+    var style_id = $('#style_id').val();
+    var program_id = $('#program_id').val();
+
+    $('#purchaseTable tbody').empty(); // Clear table
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_packing_out_details_edit/',
+        data: {
+            'tm_id':tm_id,
+            'packing_id': packing_id,
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'party_id': party_id,
+            'program_id': program_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+ 
+
+        success: function(data) {
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                $('#purchaseTable tbody').empty(); // Clear table
+                
+                data.data.forEach(detail => {
+                    addRow(
+                        detail.item,
+                        detail.acc_size_name,      
+                        
+                        detail.color,
+                        detail.size,
+                        detail.uom,
+                        detail.quality,
+                        detail.style,
+                        detail.already_rec_qty,
+                        detail.st_qty,
+                        detail.balance_qty,  // <-- Pass balance_qty here
+                        detail.program_type,
+                        detail.product_pieces,
+                        detail.group,
+                        detail.acc_quality,
+                        detail.item_id,
+                        detail.group_id,
+                        detail.prg_qty, 
+                        detail.quality_id,
+                        detail.size_id,
+                        detail.color_id,
+                        detail.acc_size_id,
+                        
+                        
+                        
+                    );
+                });
+            }
+        },
+
+
+
+        error: function(xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+
+
+    // Add the logic to load the packing data
+}
+
+
+
+
+function LoadSPData() {
+    const tm_id = $('#tm_id').val();
+    const party_id = $('#supplier_id').val();
+    const sp_id = $('#sp_id').val();
+    const quality_id = $('#quality_id').val();
+    const style_id = $('#style_id').val();
+    const program_id = $('#program_id').val();
+
+    $('#purchaseTable tbody').empty(); // Clear table
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_stiching_packing_out_details_edit/',   // ensure this matches your Django URL
+        data: {
+            tm_id:tm_id,
+            stiching_id: sp_id,
+            quality_id: quality_id,
+            style_id: style_id, 
+            party_id: party_id,
+            program_id: program_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+
+         success: function(data) {
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                $('#purchaseTable tbody').empty(); // Clear table
+                
+                data.data.forEach(detail => {
+                    addRow(
+                        detail.item,
+                        detail.acc_size_name,      
+                        
+                        detail.color,
+                        detail.size,
+                        detail.uom,
+                        detail.quality,
+                        detail.style,
+                        detail.already_rec_qty,
+                        detail.st_qty,
+                        detail.balance_qty,  // <-- Pass balance_qty here
+                        detail.program_type,
+                        detail.product_pieces,
+                        detail.group,
+                        detail.acc_quality,
+                        detail.item_id,
+                        detail.group_id,
+                        detail.prg_qty,
+                        detail.quality_id,
+                        detail.size_id,
+                        detail.color_id,
+                        detail.acc_size_id,
+                        detail.acc_quality_id,
+                        
+                        
+                        
+                    );
+                });
+            }
+        },
+
+
+
+        error: function (xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+}
+
+
+
+function LoadSPData_edit() {
+    const party_id = $('#supplier_id').val();
+    const sp_id = $('#sp_id').val();
+    const quality_id = $('#quality_id').val();
+    const style_id = $('#style_id').val();
+    const program_id = $('#program_id').val();
+    console.log('prg-id-value:',program_id);
+
+    $('#purchaseTable tbody').empty(); // Clear table 
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_stiching_out_details_edit/',
+        data: {
+            stiching_id: sp_id,
+            quality_id: quality_id,
+            style_id: style_id,
+            party_id: party_id,
+            program_id: program_id,
+            csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function(data) {
+            console.log('response:', data);
+
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                data.summary.forEach(group => {
+                    const filteredRows = data.data.filter(d => {
+                        if (group.program_type === 'COLOR') {
+                            return d.color_id === group.key_id;
+                        } else if (group.program_type === 'SIZE') {
+                            return d.size_id === group.key_id;
+                        }
+                        return false;
+                    });
+
+                    let aggregatedMap = {};
+
+                    filteredRows.forEach(detail => {
+                        let key = detail.item_id + '|' + detail.acc_size;
+                        if (group.program_type === 'COLOR') {
+                            key += '|' + detail.color_id;
+                        } else if (group.program_type === 'SIZE') {
+                            key += '|' + detail.size_id;
+                        }
+
+                        if (!aggregatedMap[key]) {
+                            aggregatedMap[key] = {
+                                ...detail,
+                                child_stiching_qty: parseFloat(detail.child_stiching_qty) || 0
+                            };
+                        } else {
+                            aggregatedMap[key].child_stiching_qty += parseFloat(detail.child_stiching_qty) || 0;
+                        }
+                    });
+
+                    Object.values(aggregatedMap).forEach(detail => {
+                        addRow({
+                            item: detail.item,
+                            acc_size_name: detail.acc_size,
+                            color: detail.color,
+                            size: detail.size,
+                            uom: detail.uom,
+                            already_received: group.st_qty || 0,
+                            outward_qty: group.already_rec_qty || 0,
+                            balance_qty: group.balance_qty || 0,
+                            item_id: detail.item_id,
+                            size_id: detail.size_id,
+                            color_id: detail.color_id,
+                            group_id: detail.group_id,
+                            po_id: detail.po_id || ''
+                        });
+                    });
+                });
+            }
+
+
+        $('#load_outward').trigger('click'); // or $('#load_outward').click();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+} 
+   
+function LoadSPData_3_10() {
+
+    var party_id = $('#supplier_id').val();
+    var sp_id = $('#sp_id').val();
+    var quality_id = $('#quality_id').val();
+    var style_id = $('#style_id').val();
+    var program_id = $('#program_id').val();
+
+    $('#purchaseTable tbody').empty(); // Clear table  
+ 
+    $.ajax({ 
+        type: 'POST',
+        // url: '/get_stiching_out_details/',
+        url: '/get_stiching_out_details_edit/',
+        data: {
+            'stiching_id': sp_id,
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'party_id': party_id,
+            'program_id': program_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        // success: function(data) {
+        //     if (Array.isArray(data.data) && data.data.length > 0) {
+        //         const groupedData = {}; 
+
+
+        //         Object.values(data.data).forEach(detail => {
+        //             addRow(
+        //                 detail.item,
+        //                 detail.acc_size,
+        //                 detail.acc_size_name,
+        //                 detail.prg_qty,
+        //                 detail.quality_id,
+        //                 detail.size_id,
+        //                 detail.color_id,
+        //                 detail.color,   
+
+        //                 detail.size,
+        //                 detail.quality,
+        //                 detail.style,
+        //                 detail.program_type,
+        //                 detail.product_pieces,
+        //                 detail.uom,
+        //                 detail.group,
+        //                 detail.acc_quality,
+        //                 detail.st_qty,
+        //                 detail.prg_qty,
+        //                 detail.item_id,
+        //                 detail.group_id
+        //             );
+        //         });
+        //     }
+        // },
+
+        success: function(data) {
+            console.log('response:', data);
+
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                data.summary.forEach(group => {
+                    const filteredRows = data.data.filter(d => {
+                        if (group.program_type === 'COLOR') {
+                            return d.color_id === group.key_id;
+                        } else if (group.program_type === 'SIZE') {
+                            return d.size_id === group.key_id;
+                        }
+                        return false;
+                    });
+
+                    let aggregatedMap = {};
+                    filteredRows.forEach(detail => {
+                        let key = detail.item_id + '|' + detail.acc_size + '|';
+                        if (group.program_type === 'COLOR') {
+                            key += detail.color_id;
+                        } else if (group.program_type.toUpperCase() === 'SIZE') {
+                            key += detail.size_id;
+                        }
+
+                        if (!aggregatedMap[key]) {
+                            aggregatedMap[key] = {
+                                ...detail,
+                                child_stiching_qty: parseFloat(detail.child_stiching_qty) || 0
+                            };
+                        } else {
+                            aggregatedMap[key].child_stiching_qty += parseFloat(detail.child_stiching_qty) || 0;
+                        }
+                    });
+
+                    Object.values(aggregatedMap).forEach(detail => {
+                        // Use group's total_qty as out_quantity in addRow
+                        addRow(
+                            detail.item,
+                            detail.acc_size,
+                            detail.color,
+                            detail.size,
+                            detail.uom,
+                            detail.quality,
+                            detail.style,
+                            0,
+                            detail.balance_qty || 0,
+                            detail.program_type,
+                            detail.product_pieces || 0,
+                            detail.group || '-',
+                            detail.acc_quality || '-',
+                            group.already_rec_qty || 0,   // <-- HERE: pass total_qty from summary as out_quantity
+                            group.st_qty || 0,   // <-- HERE: pass total_qty from summary as out_quantity
+                            group.balance_qty || 0,   // <-- HERE: pass total_qty from summary as out_quantity
+                            detail.available_quantity || 0,
+                            detail.item_id,
+                            detail.group_id,
+                            detail.po_id || '',
+                            detail.prg_qty || 0,
+                            detail.quality_id,
+                            detail.size_id,
+                            detail.color_id
+                        );
+                    });
+                });
+            }
+        },
+
+
+
+        error: function(xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+
+
+    // Add the logic to load the packing data
+}
+
+// function LoadDyeingData() {
+//     console.log("Loading dyeing data...");
+//     // Add the logic to load the dyeing data
+// }
+
+
+
+
+function LoadDyeingData() {
+
+    var tm_id = $('#tm_id').val();
+    var party_id = $('#supplier_id').val();
+    // var stiching_id = $('#stiching_id').val();
+    var quality_id = $('#quality_id').val();
+    var style_id = $('#style_id').val();
+    // var program_id = $('#program_id').val();
+
+    $('#purchaseTable tbody').empty(); // Clear table
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyeing_out_details_list/',
+        data: {
+ 
+            'tm_id':tm_id,
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+       
+        success: function(data) {
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                $('#purchaseTable tbody').empty(); // Clear table
+                
+                data.data.forEach(detail => {
+                    addRow(
+                        detail.item,
+                        detail.acc_size_name,      
+                        
+                        detail.color,
+                        detail.size,
+                        detail.uom,
+                        detail.quality,
+                        detail.style,
+                        detail.other_outward_qty,
+                        detail.current_outward_qty,
+                        detail.balance_qty,  
+                        detail.program_type,
+                        detail.product_pieces,
+                        detail.group,
+                        detail.acc_quality,
+                        detail.item_id,
+                        detail.group_id,
+                        detail.prg_qty,
+                        detail.quality_id,
+                        detail.size_id,
+                        detail.color_id,
+                        detail.acc_size_id,
+                        detail.acc_quality_id,
+
+                         
+                         
+                    );
+                });
+            }
+        },
+
+        
+
+   
+        error: function(xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+}
+
+
+
+
+
+
+
+
+// ```````````````````````````````test07062025````````````````````````````````````````````````
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const rollInput = document.getElementById("roll");
+            const rollWtInput = document.getElementById("roll_wt");
+
+            if (rollInput && rollWtInput) {
+                rollInput.addEventListener("input", calculateQuantity);
+                rollWtInput.addEventListener("input", calculateQuantity);
+            }
+        });
+
+        function calculateQuantity() {
+            const roll = parseFloat(document.getElementById("roll").value) || 0;
+            const rollWt = parseFloat(document.getElementById("roll_wt").value) || 0;
+            const totalWt = roll * rollWt;
+
+            const totalWtInput = document.getElementById("total_wt");
+            if (totalWtInput) {
+                totalWtInput.value = totalWt.toFixed(2);
+            }
+
+            calculateAmount();
+        }
+
+        function calculateAmount() {
+            const totalWt = parseFloat(document.getElementById("total_wt").value) || 0;
+            const grossWt = parseFloat(document.getElementById("gross_wt").value) || 0;
+            console.log("Total Wt:", totalWt);
+            console.log("Gross Wt:", grossWt);
+        }
+
+
+
+// $('#load_outward').on('click', function () {
+//     if ($('#is_yarn').is(':checked')) {
+//         LoadOutward(); // ✅ Call only when "Yarn" is selected
+//     } else if ($('#is_grey_fabric').is(':checked')) {
+//         LoadDeliverto(); // ✅ Call only when "Grey Fabric" is selected
+//     } else {
+//         alert("Please select a material type first."); // Optional fallback
+//     }
+// });
+
+
+
+
+
+function LoadPO() {
+    var supplier_id = $('#supplier_id').val().trim();
+    $('#lot_name').val('').trigger("change");
+    $('#po_list').val('').trigger("change");
+
+    if (!supplier_id) {
+        console.log("No supplier selected, skipping LoadDO.");
+        return;  // Exit early if supplier_id is empty
+    }
+
+
+
+    // var supplier_id = $('#supplier_id').val(); 
+    $('#PO_summaryTable').find('td[id$="_total"]').text("0.00"); // Reset summary
+    $('#po_list').empty().append('<option value="">Select</option>');
+    $('#lot_name').empty().append('<option value="">Select</option>');
+    // $('#through_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+
+    $.ajax({ 
+        type: 'POST',  // Change to POST 
+        url: '/get_accessory_po_list/',
+        data: {
+            'supplier_id': supplier_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(data) {
+            // $('#po_list').empty().append('<option value="">Select</option>');
+            $('#lot_name').empty().append('<option value="">Select</option>');
+        
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    $('#po_list').append('<option value="' + po.id + '">' + po.po_number + ' - ' + po.po_name + '</option>');
+
+                
+                });
+
+            }
+
+            $('#po_list').on('change', function () {
+                LoadLot();
+            });
+
+
+
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+function LoadLot() {
+    var po_list = $('#po_list').val();  
+    console.log('Supplier-ID:', po_list); 
+    $('#purchaseTable tbody').empty('');
+
+ 
+
+    // Get all delivery IDs already used in purchaseTable
+    let usedDeliverIds = [];
+    $('#purchaseTable tbody tr').each(function () {
+        let deliver_id = $(this).find('#deliver_id').text();
+        if (deliver_id) {
+            usedDeliverIds.push(deliver_id);
+        }
+    }); 
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_accesory_po_details/',
+        data: {
+            'po_list': po_list,
+            'used_deliver_ids': JSON.stringify(usedDeliverIds),  // Send as JSON string
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+     
+
+        success: function(data) {
+           
+
+            // ✅ Load Program dropdown
+            if (data.program && data.program.length > 0) {
+                data.program.forEach(function(po) {
+                    $('#prg_id').append(
+                        `<option value="${po.id}">${po.program_no} - ${po.name} - [${po.total_wt}]</option>`
+                    );
+                });
+            }
+
+            // ✅ Update PO Bag and Quantity
+            $('#po_bag_total').text(parseFloat(data.po_bag || 0).toFixed(2));
+            $('#po_quantity_total').text(parseFloat(data.po_quantity || 0).toFixed(2));
+            $('#inward_bag_total').text(parseFloat(data.inward_bag || 0).toFixed(2));
+            $('#inward_quantity_total').text(parseFloat(data.inward_quantity || 0).toFixed(2));
+
+            const balance_bag = (parseFloat(data.po_bag) || 0) - (parseFloat(data.inward_bag) || 0);
+            const balance_quantity = (parseFloat(data.po_quantity) || 0) - (parseFloat(data.inward_quantity) || 0);
+            $('#balance_bag_total').text(balance_bag.toFixed(2));
+            $('#balance_quantity_total').text(balance_quantity.toFixed(2));
+
+
+
+            if ((!data.deliveries || data.deliveries.length === 0) && Array.isArray(data.program_details) && data.program_details.length > 0) {
+                // Ensure selectedProgramIds is an array of numbers
+                let selectedProgramIds = [];
+                if (Array.isArray(data.program_id)) {
+                    selectedProgramIds = data.program_id.map(Number);
+                } else if (data.program_id) {
+                    selectedProgramIds = [Number(data.program_id)];
+                } else if (data.program && data.program.length > 0) {
+                    // fallback: take program ids from data.program array
+                    selectedProgramIds = data.program.map(p => Number(p.id));
+                }
+
+
+
+                data.program_details.forEach((detail, index) => {
+                console.log("Detail", index, "program_id:", detail.program_id, "dia:", detail.dia);
+                // const detailProgramId = Number(detail.program_id);
+
+                let detailProgramIds = [];
+            if (Array.isArray(detail.program_id)) {
+                detailProgramIds = detail.program_id.map(Number);
+            } else {
+                detailProgramIds = [Number(detail.program_id)];
+            }
+
+            if (detailProgramIds.some(id => selectedProgramIds.includes(id))) {
+           
+        } else {
+            console.log("Skipping detail with program_id:", detail.program_id);
+        }
+    });
+
+
+
+    }
+
+
+    },
+
+
+
+    error: function(xhr, status, error) {
+        console.error('Error loading po lists:', error);
+    }
+    });
+}
+    
+// ``````````
+
+function LoadDeliverTo() {
+
+    var po_list = $('#po_list').val();  
+    console.log('Supplier-ID:', po_list); 
+    var lot_no = $('#lot_name').val(); // Usually an array if multiple select
+
+    $('#purchaseTable tbody').empty('');
+
+    $('#lot_name').empty().append('<option value="">Select</option>');
+
+
+    // Get all delivery IDs already used in purchaseTable
+    let usedDeliverIds = [];
+    $('#purchaseTable tbody tr').each(function () {
+        let deliver_id = $(this).find('#deliver_id').text();
+        if (deliver_id) {
+            usedDeliverIds.push(deliver_id);
+        }
+    }); 
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_accesory_po_details/',
+        data: {
+            'po_list': po_list,
+            'used_deliver_ids': JSON.stringify(usedDeliverIds),  // Send as JSON string
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+     
+
+        success: function(data) {
+           
+           if (Array.isArray(data.po_details) && data.po_details.length > 0) {
+                data.po_details.forEach((detail, index) => {
+
+                    addRow(
+                        detail.item_group || '',
+                        detail.item || '',
+                        detail.po_quantity,
+                        detail.po_rate,
+                        detail.po_amount,
+                        detail.received_quantity,
+                        detail.received_rate,
+                        detail.received_amount,
+                        detail.inward_quantity || 0,
+                        detail.inward_rate || 0,
+                        detail.inward_amount || 0,
+                        detail.item_group_id || '',
+                        detail.item_id || '',
+                    
+                        po_list || 0 ,
+                        detail.quality_id || '',
+                        detail.size_id || '',
+                        detail.color_id || '',
+                    );
+                });
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading po lists:', error);
+        }
+    });
+}
+    
+
+
+
+
+
+
+function LoadProgram() {
+    let po_id = $("#po_list").val(); 
+
+    // Check if the table is already initialized
+    if ($.fn.DataTable.isDataTable('#purchaseTable')) {
+        $('#purchaseTable').DataTable().destroy();  // Destroy old instance
+    }
+
+    $('#purchaseTable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, // Allow reinitialization
+        "order": [],
+        "ajax": { 
+            "url": '/grey-fab-po-detail-list/',
+            "type": "POST",
+            "data": function (data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.po_id = po_id;
+            },
+            "dataSrc": function (json) {
+                if (json.message === 'error') {
+                    console.log('Access denied');
+                    return [];
+                }
+                console.log(json);
+                return json.data;
+            }
+        },
+        "columns": [
+            { "data": "fabric_id", "title": "Item" },
+            { "data": "count", "title": "Yarn count" },
+            { "data": "gauge", "title": "Gauge" },
+            { "data": "tex", "title": "Tex" },
+            { "data": "gsm", "title": "GSM" },
+            { "data": "dia", "title": "Dia" },
+            { "data": "rolls", "title": "Rolls" },
+            { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+            { "data": "quantity", "title": "Quantity" },
+
+            // Raw ID columns (can be hidden)
+            // { data: 'gsm', visible: false }, 
+            { data: 'fabric_id_raw', visible: false },
+            { data: 'count_id_raw', visible: false }, 
+            { data: 'gauge_id_raw', visible: false },
+            { data: 'tex_id_raw', visible: false },
+            { data: 'dia_id_raw', visible: false }
+            // { "data": "rate", "title": "Rate" },
+            // { "data": "total_amount", "title": "Total Amount" }
+        ],
+        
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Helper to get column total
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    parseFloat(i.replace(/[,]/g, '')) || 0 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Sum rolls (column 7)
+            var totalRolls = api.column(6, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Sum quantity (column 9)
+            var totalQty = api.column(8, { page: 'current' }).data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            $('#total_rolls').html(totalRolls.toFixed(2));
+            $('#total_quantity').html(totalQty.toFixed(2));
+        },
+    });
+}
+
+// ````````````````````````````````````````````
+
+
+// ````````````````````````````````````add in row ````````````````````````````````
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const item = $("#acc_item option:selected").text() || '-';
+    const itemId = $("#acc_item").val() || 0; 
+
+    const production_type = $('#production_type').val() || '-';
+    console.log('production_type:', production_type);
+
+    const itemgroup = $("#acc_item_group option:selected").text() || '-';
+    const itemgroupId = $("#acc_item_group").val() || 0;
+
+    const acc_size = $("#acc_size option:selected").text() || '-';
+    const acc_sizeId = $("#acc_size").val() || 0;
+
+    const uom = $("#uom_id option:selected").text() || '-';
+    const uomId = $("#uom_id").val() || 0;
+
+    const color = $("#color_id option:selected").text() || '-';
+    const colorId = $("#color_id").val() || 0;
+
+    const size = $("#size_id option:selected").text() || '-';
+    const sizeId = $("#size_id").val() || 0;
+
+    const quantity = parseFloat($("#quantity").val()) || 0;
+
+    // Optional: if acc_quality is used
+    const acc_quality = $("#acc_quality  option:selected").text() || '-';  // assuming this input exists
+    const acc_quality_id = $("#acc_quality").val() || '-'; // assuming this input exists
+
+    if (quantity <= 0) {
+        notifier.show(
+            'Error!',
+            'Cannot add. Quantity must be greater than 0.',
+            'error',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // Now call addRow with correct argument order
+    addRow(
+        item,            // item
+        acc_size,        // acc_size_name
+        color,           // color
+        size,            // size
+        uom,             // uom
+        0,               // quality
+        0,               // style
+        0,               // already_rec_qty
+        0,               // balance_qty
+        0, // program_type
+        1,               // product_pieces
+        itemgroup,       // group
+        acc_quality,     // acc_quality
+        quantity,        // out_quantity
+        0,               // available_quantity
+        itemId,          // item_id
+        itemgroupId,     // group_id
+        '',              // po_id
+        1,               // prg_qty
+        acc_quality_id,               // quality_id
+        sizeId,          // size_id
+        colorId,          // color_id
+        acc_sizeId,
+    );
+}
+
+
+
+const loadedItemsMap = {};
+//  let rowCounter = 0;
+
+
+
+
+function LoadItemData() {
+
+    var tm_id = $('#tm_id').val();
+    var party_id = $('#supplier_id').val();
+    var stiching_id = $('#stiching_id').val();
+    var quality_id = $('#quality_id').val();
+    var style_id = $('#style_id').val();
+    var program_id = $('#program_id').val();
+
+    $('#purchaseTable tbody').empty(); // Clear table
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_stiching_out_details_edit/',
+        data: {
+
+            'tm_id':tm_id,
+            // 'stiching_id': stiching_id, 
+            // 'quality_id': quality_id, 
+            // 'style_id': style_id,
+            'party_id': party_id,
+            // 'program_id': program_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+       
+        success: function(data) {
+            if (Array.isArray(data.data) && data.data.length > 0) {
+                $('#purchaseTable tbody').empty(); // Clear table
+                
+                data.data.forEach(detail => {
+                    addRow(
+                        detail.item,
+                        detail.acc_size_name,      
+                        
+                        detail.color,
+                        detail.size,
+                        detail.uom,
+                        detail.quality,
+                        detail.style,
+                        detail.already_rec_qty,
+                        detail.st_qty,
+                        detail.balance_qty,  // <-- Pass balance_qty here
+                        detail.program_type,
+                        detail.product_pieces,
+                        detail.group,
+                        detail.acc_quality,
+                        detail.item_id,
+                        detail.group_id,
+                        detail.prg_qty,
+                        detail.quality_id,
+                        detail.size_id,
+                        detail.color_id,
+                        detail.acc_size_id,
+                        detail.acc_quality_id,
+                        
+                        
+                        
+                    );
+                });
+            }
+        },
+
+        
+
+
+        error: function(xhr, status, error) {
+            console.error('Error loading details:', error);
+        }
+    });
+}
+
+
+
+// ````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+let rowCounter = 0; // global counter 
+  
+function addRow(
+    item, acc_size_name, color, size, uom, quality, style,
+    already_rec_qty, st_qty, balance_qty, program_type, product_pieces,
+    group, acc_quality,
+    item_id, group_id, po_id, prg_qty, quality_id, size_id, color_id,acc_size_id,acc_quality_id
+) {
+    const pt = (program_type || '').toLowerCase();
+
+    const already_qty = parseFloat(already_rec_qty) || 0;
+    const bal_qty = parseFloat(balance_qty) || 0;
+    const quantity = parseFloat(st_qty) || 0;
+
+    // Maximum allowed outward qty (cannot exceed balance)
+    const maxOutQty = quantity - already_qty;
+
+    // Initial outward quantity value capped at max allowed
+    const out_qty_val = maxOutQty > 0 ? maxOutQty : 0;
+ 
+    let displayColor = '-'; 
+    let displaySize = '-';
+
+    if (pt === 'color') {
+        displayColor = color || '-';
+    } else if (pt === 'size') {
+        displaySize = size || '-';
+    } else if (pt === 'total quantity') {
+        // Both stay '-'
+    } else {
+        displayColor = color || '-';
+        displaySize = size || '-';
+    }
+
+    const newRow = document.createElement("tr");
+//  max="${maxOutQty}" 
+    newRow.innerHTML = `
+        <td style="display:none;">${group || '-'}</td> 
+        <td>${item || '-'}</td> 
+        <td style="display:none;">${acc_quality || '-'}</td> 
+        <td>${acc_size_name || '-'}</td>
+        <td>${program_type || '-'}</td>
+        <td style="display:none;">${quality || '-'}</td> 
+        <td style="display:none;">${style || '-'}</td>
+        <td>${displayColor}</td>
+        <td>${displaySize}</td>
+        <td class="program-qty" style="display:none; text-align: right;">${parseFloat(prg_qty || 0).toFixed(3)}</td>
+        <td style="display:none;">${parseFloat(product_pieces || 1)}</td> 
+        <td>${uom || '-'}</td>
+        <td class="already-rec-qty" style="text-align: right;">${already_qty.toFixed(3)}</td>
+        <td class="out-qty" style="text-align:right">
+            <input 
+                type="number" 
+               
+               
+                step="0.001" 
+                value="${out_qty_val.toFixed(3)}" 
+                class="form-control outward-qty w-100" 
+                style="border:none;text-align:right;" 
+            /> 
+        </td>
+        <td class="balance-qty" style="text-align: right;">${bal_qty.toFixed(3)}</td>
+        <td style="display:none;"><input type="hidden" class="quality-id" value="${quality_id}"></td>
+        <td style="display:none;"><input type="hidden" class="size-id" value="${size_id}"></td>
+        <td style="display:none;"><input type="hidden" class="color-id" value="${color_id}"></td>
+        <td style="display:none;"><input type="hidden" class="item-id" value="${item_id}"></td>
+        <td style="display:none;"><input type="hidden" class="item-group-id" value="${group_id}"></td>
+        <td style="display:none;"><input type="hidden" class="po-id" value="${po_id}"></td> 
+        <td style="display:none;"><input type="hidden" class="prg-type" value="${program_type}"></td>
+        <td style="display:none;"><input type="hidden" class="acc-size-id" value="${acc_size_id}"></td>
+        <td style="display:none;"><input type="hidden" class="acc_quality_id" value="${acc_quality_id}"></td>
+        <td>
+            <button class="btn btn-danger btn-xs remove-row">
+                <i class='feather icon-trash-2'></i> 
+            </button>
+        </td>
+    `;
+
+    const tbody = document.querySelector("#purchaseTable tbody");
+    if (!tbody) {
+        console.error("Table tbody not found!");
+        return;
+    }
+    tbody.appendChild(newRow);
+
+    const outwardInput = newRow.querySelector(".outward-qty");
+    const balanceCell = newRow.querySelector(".balance-qty");
+
+    outwardInput.addEventListener("input", () => {
+        let inputVal = parseFloat(outwardInput.value) || 0;
+
+        // Clamp input value between 0 and maxOutQty
+        if (inputVal < 0) inputVal = 0;
+        if (inputVal > maxOutQty) inputVal = maxOutQty;
+
+        outwardInput.value = inputVal.toFixed(3);
+
+        // Update balance: balance = max allowed qty - input
+        const updatedBalance = maxOutQty - inputVal;
+        balanceCell.textContent = updatedBalance.toFixed(3);
+
+        updateFooterTotals();
+    });
+
+    newRow.querySelector(".remove-row").addEventListener("click", () => {
+        newRow.remove();
+        updateFooterTotals();
+    });
+
+    updateFooterTotals();
+}
+
+
+
+
+// Re-calculate totals in footer
+function updateFooterTotals() {
+    let totalReceived = 0, totalOutward = 0, totalBalance = 0;
+    document.querySelectorAll('#purchaseTable tbody tr').forEach(row => {
+        totalReceived += parseFloat(row.querySelector('.received-qty').textContent) || 0;
+        totalOutward  += parseFloat(row.querySelector('.outward-qty').value) || 0;
+        totalBalance  += parseFloat(row.querySelector('.balance-qty').textContent) || 0;
+    });
+    document.getElementById('footer-received-total').textContent = totalReceived.toFixed(3);
+    document.getElementById('footer-outward-total').textContent  = totalOutward.toFixed(3);
+    document.getElementById('footer-balance-total').textContent  = totalBalance.toFixed(3);
+}
+
+
+
+
+
+
+
+function updateFooterTotals() {
+    let poQtyTotal = 0, poAmtTotal = 0, poRateTotal = 0;
+    let recvQtyTotal = 0, recvAmtTotal = 0, recvRateTotal = 0;
+    let inwQtyTotal = 0, inwAmtTotal = 0, inwRateTotal = 0;
+    // let balnQtyTotal = 0, balnRateTotal = 0, balnAmtTotal = 0;  // ADD THIS LINE
+
+    document.querySelectorAll("#purchaseTable tbody tr").forEach(row => {
+        poQtyTotal += parseFloat(row.querySelector(".po-qty")?.textContent) || 0;
+        poRateTotal += parseFloat(row.querySelector(".po-rate")?.textContent) || 0;
+        poAmtTotal += parseFloat(row.querySelector(".po-amount")?.textContent) || 0;
+
+        recvQtyTotal += parseFloat(row.querySelector(".received-qty")?.textContent) || 0;
+        recvRateTotal += parseFloat(row.querySelector(".received-rate")?.textContent) || 0;
+        recvAmtTotal += parseFloat(row.querySelector(".received-amount")?.textContent) || 0;
+
+
+        // balnQtyTotal += parseFloat(row.querySelector(".balance-qty")?.textContent) || 0;
+        // balnRateTotal += parseFloat(row.querySelector(".balance-rate")?.textContent) || 0;
+        // balnAmtTotal += parseFloat(row.querySelector(".balance-amount")?.textContent) || 0;
+
+        inwQtyTotal += parseFloat(row.querySelector(".inward-qty")?.value) || 0;
+        inwRateTotal += parseFloat(row.querySelector(".inward-rate")?.value) || 0;
+        inwAmtTotal += parseFloat(row.querySelector(".inward-amount")?.textContent) || 0;
+    });
+
+}
+
+
+
+// ````````````````````````` store table function `````````````````````````
+
+
+
+
+function storeTblValues() {
+    const TableData = [];
+
+    $('#purchaseTable tbody tr').each(function (index) {
+        const $row = $(this);
+
+        const item_group = $row.find('td:eq(0)').text().trim();
+        const item = $row.find('td:eq(1)').text().trim();
+        const acc_quality = $row.find('td:eq(2)').text().trim();
+        const acc_size_name = $row.find('td:eq(3)').text().trim();
+        const program_type = $row.find('td:eq(4)').text().trim();
+        const color = $row.find('td:eq(7)').text().trim();
+        const size = $row.find('td:eq(8)').text().trim();
+        const product_pieces = $row.find('td:eq(10)').text().trim();
+        const uom = $row.find('td:eq(11)').text().trim();
+
+        const already_qty = parseFloat($row.find('.already-rec-qty').text().trim()) || 0;
+        const outward_qty = parseFloat($row.find('.outward-qty').val()) || 0;
+        const balance_qty = parseFloat($row.find('.balance-qty').text().trim()) || 0;
+
+        const quality_id = $row.find('.quality-id').val() || '';
+        const size_id = $row.find('.size-id').val() || '';
+        const color_id = $row.find('.color-id').val() || '';
+        const item_id = $row.find('.item-id').val() || '';
+        const item_group_id = $row.find('.item-group-id').val() || '';
+        const po_id = $row.find('.po-id').val() || '';
+        const prg_type = $row.find('.prg-type').val() || '';
+
+        if (item_group && item) {
+            TableData.push({
+                item_group,
+                item,
+                acc_quality,
+                acc_size_name,
+                program_type,
+                color,
+                size,
+                uom,
+                product_pieces,
+                quantity: outward_qty,
+                // already_quantity: already_qty,
+                // balance_quantity: balance_qty,
+                item_id,
+                item_group_id,
+                po_id,
+                program_type: prg_type, 
+                quality_id,
+                size_id,
+                color_id,
+            });
+        } else {
+            console.warn(`Row ${index + 1} skipped due to missing item or group.`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+
+
+// ````````````````````````````` submit function ````````````````````````````````````````
+
+document.getElementById('update_outward').addEventListener('submit', update_outward);
+
+
+function update_outward(event) {
+    event.preventDefault();  // Prevent form submission reload
+    
+    console.log("Submit button clicked");
+
+    var TableData = storeTblValues();
+    console.log('store-tbl-data:', TableData);
+
+    var production_type = document.getElementById('production_type').value;
+    console.log('data:', production_type);
+
+    if (TableData.length === 0) {
+        console.log('table is empty, please insert the data.');
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        var form = document.getElementById('update_outward'); // Get the form element
+        var mdata = new FormData(form);  // Correct usage: pass the form element to FormData
+ 
+        mdata.append('chemical_data', JSON.stringify(TableData));
+        mdata.append('production_type', production_type);
+
+        $.ajax({
+            type: "POST",
+            url: "/update-accessory-outward/",
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'success') {
+                    notifier.show(
+                        'Well Done!',
+                        data.message || 'Added Successfully!',
+                        'success',
+                        "{% static 'assets/images/notification/ok-48.png' %}",
+                        4000
+                    );
+
+                    $('#inward_no').prop('disabled', false);
+                    $('#inward_no').val(data.inward_number);
+                    $('#inward_no').prop('disabled', true); 
+
+
+                   
+                    // location.reload();
+                } else {
+                    notifier.show(
+                        'Error!',
+                        data.message || 'Failed to add',
+                        'danger',
+                        "{% static 'assets/images/notification/high_priority-48.png' %}",
+                        4000
+                    );
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!',
+                    'Error adding data',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+}
+
+
+
+// function update_outward(){
+//     // e.preventDefault(); // Prevent default form submission
+//     console.log("Submit button clicked"); // Debugging
+    
+//     var TableData = storeTblValues();
+//     console.log('store-tbl-data:', TableData);
+//     var production_type = $('#production_type').val();
+
+//     console.log('data:',production_type); 
+
+//     if (TableData.length === 0) {
+//         // notifier.show(
+//         //     'Error!', 
+//         //     'Table is empty. Please insert the program details.', 
+//         //     'error', 
+//         //     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//         //     4000
+//         // ); 
+//         console.log('table is empty, please insert the data.'); 
+
+//         return;
+//     }
+// // update_outward
+//     if (confirm("Are you sure you want to save?")) {
+//         TableData = JSON.stringify(TableData); 
+//         var mdata = new FormData(this);
+//         mdata.append('chemical_data', TableData); 
+//         console.log('m-dsta:',mdata);
+//         mdata.append('production_type', production_type);
+
+//         // var totalQty = $('#qty_total_placeholder').text();
+//         // var totalGross = $('#gross_total_placeholder').text();
+//         // var inw_no =$('#inward_no').val();
+//         // Append total values to FormData
+//         // mdata.append('total_quantity', totalQty);  // This is where total_quantity is added 
+//         // mdata.append('total_gross', totalGross);  // This is where total_quantity is added 
+//         // mdata.append('inward_no', inw_no);  // This is where total_quantity is added 
+
+       
+
+//         $.ajax({ 
+//             type: "POST", 
+//             url: "/update-accessory-outward/",
+//             data: mdata,
+//             processData: false,
+//             contentType: false,
+//             beforeSend: function() {
+//                 console.log("Sending AJAX request...");
+//                 $('#submit').attr('disabled', true).text('Processing...');
+//             },
+//             success: function(data) { 
+//                 console.log("Server Response:", data);
+//                 $('#submit').attr('disabled', false).text('Save');
+
+//                 if (data.status === 'success') {
+//                     notifier.show(  
+//                         'Well Done!', 
+//                         data.message || 'Added Successfully!', 
+//                         'success', 
+//                         "{% static 'assets/images/notification/ok-48.png' %}", 
+//                         4000
+//                     );  
+ 
+// 					// <!-- $('#inward_no').val(data.inward_number); -->
+// 				   // Temporarily enable, set the value, and disable again 
+// 					$('#inward_no').prop('disabled', false);  // Enable the input
+// 					$('#inward_no').val(data.inward_number);  // Set the value
+// 					$('#inward_no').prop('disabled', true);   // Disable it again 
+					
+					
+//                     // $('#add_new').trigger('reset'); 
+//                     //     // Clear dynamically added rows in the  table
+//                     $('#update_outward').trigger('reset'); 
+//                     $('#purchaseTable tbody').empty(); 
+//                     $('#PO_summaryTable tbody').empty(); 
+//                     $('#supplier_id').val('').trigger("change");
+
+//                     $('#product_id').val('').trigger("change");
+//                     $('#po_list').val('').trigger("change");
+
+//                     $('#deliver_to').val('').trigger("change");
+
+//                     location.reload();
+//                 } else {
+//                     notifier.show(
+//                         'Error!', 
+//                         data.message || 'Failed to add', 
+//                         'danger', 
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     ); 
+//                 }
+//             },
+//             error: function(jqXHR, textStatus, errorThrown) {
+//                 console.log("AJAX Error:", textStatus, errorThrown);
+//                 notifier.show( 
+//                         'Error!', 
+//                         'Error adding data', 
+//                         'danger', 
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     );  
+//                 // alert('Error Adding data');
+//                 $('#submit').attr('disabled', false).text('Save');
+//             }
+//         });
+//     }
+// };
+
+
+
+// ```````````````````````````````````````````````````````````
+
+
+$('.single-select').select2();
+
+    
+
+
+</script>

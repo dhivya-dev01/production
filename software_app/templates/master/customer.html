@@ -1,0 +1,218 @@
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <!-- Breadcrumb moved here -->
+                                        <div class="d-flex align-items-center"> 
+                                            <div class="page-header-title">
+
+                                                <h4 class="m-b-10 me-1  ">Party</h4>
+                                            </div>
+                                            <a href="/party-add" class="btn btn-gradient-primary btn-sm">Add</a>
+                                            <button type="button" class="btn btn-gradient-secondary btn-sm" onclick="refresh_data()">Refresh</button>
+
+                                            <!-- <button type="button" class="btn btn-gradient-primary btn-sm " data-bs-toggle="modal" data-bs-target="#add_modal">Add</button> -->
+                                            <!-- <button type="button" class="btn btn-gradient-success btn-sm" onclick="refresh_data()">Refresh</button> -->
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Dashboard</li>
+                                            <li class="breadcrumb-item"><a href="/party">Party</a></li>
+                                        </ul>
+                                        
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i class="feather icon-maximize"></i> maximize</span><span style="display:none"><i class="feather icon-minimize"></i> Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display:none"><i class="feather icon-plus"></i> expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">                                        
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered wrap w-100">
+                                             
+                                             {% csrf_token %} 
+                                             
+                                             <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th>Action</th>
+                                                        <th>Name</th>
+                                                        <th>CP Name</th>
+                                                        <th>CP Mobile</th>
+                                                        <th>Party Type</th>
+                                                        <th>Supply Items</th>
+                                                        <!-- <th>Address</th>
+                                                        <th>Phone</th> -->
+														<th>GSTIN</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+                                    </div>
+                                </div>                                      
+                            </div>
+                        </div>
+
+                        <!-- Add Category Modal -->
+                                  
+                            
+                            
+                            
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+    
+<script>
+    $('.select2').select2({ 
+        dropdownParent: $('#edit_modal')
+    });
+    $('.select').select2({
+        dropdownParent: $('#add_modal')
+    });
+    
+</script>
+
+<script>
+
+
+    
+  
+
+var table = $('#datatable').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, 
+        "order": [],
+        "columns": [
+            { "data": "id", "title": " ID #" },
+            { "data": "action", "title": "Action" }, 
+            { "data": "name", "title": " Name" },
+            { "data": "cp_name", "title": "CP Name" },
+            { "data": "cp_mobile", "title": " CP Mobile" },
+            { "data": "party_type", "title": " Party Type" },
+            { "data": "supply_items", "title": " Supply Items" },
+            // { "data": "address", "title": "Address" ,
+            //     "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+            //     }},
+            // { "data": "phone", "title": " Phone Number" },
+            { "data": "gstin", "title": " GSTIN" },
+            { "data": "status", "title": "Status" }
+        ], 
+        "ajax": {
+            "url": '/party-list/',
+            "type": "POST",
+            "data": function(data){
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            },
+            "dataSrc": function(json) {
+                if (json.message === 'error') {
+                    
+                    console.log('access denied')
+                    return [];
+                }
+
+                // Log and return the valid data
+                console.log(json);
+                return json.data;
+            }
+        }
+    });
+
+    function refresh_data()
+    {
+        table.ajax.reload();
+    }
+
+
+
+
+
+function party_edit(id) {
+    var encodedId = btoa(id); 
+    console.log('detail-encodedId:',encodedId);
+
+    window.location.href = '/party_details_edit/?id=' + encodedId;
+}
+
+
+
+$(document).ready(function(){});
+
+
+
+function party_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+        $.ajax({
+            url: "/party_delete/",
+            method: "POST",
+            data: { 
+                id: id, 
+                csrfmiddlewaretoken: '{{ csrf_token }}' 
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.message === 'error') {  // Updated to data.message
+                    notifier.show(
+                        'Access Denied!', 
+                        'You do not have permission to update customer details',  
+                        'danger', 
+                        "{% static 'assets/images/notification/medium_priority-48.png' %}", 
+                        4000
+                    );
+                } else if (data.message === 'yes') {  // Corrected to data.message
+                    notifier.show(
+                        'Well Done!', 
+                        'Customer deleted successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );
+                    refresh_data(); 
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed to delete customer.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                }
+            },
+        });
+    }
+}
+
+
+</script>

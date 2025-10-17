@@ -1,0 +1,871 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+    <style>
+
+        .transparent-input {
+            background: transparent;
+            border: none;
+            text-align: right;
+            width: 100%;
+            font-weight: bold;
+        }
+        .transparent-input:focus {
+            outline: none;
+        }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+    </style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Folding Delivery Update </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Production</a></li>
+                                            <li class="breadcrumb-item"><a href="/folding-delivery"> Folding Delivery</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li> 
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+
+
+                                    <!-- `````````````````````````````````````````````````````````  modal  `````````````````````````````````````````````````````````` -->
+
+
+
+                                    <div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLiveLabel">Cutting Entry</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form id="add_form">
+                                                        <div class="modal-body">
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                        <table id="purchaseTable" class="table table-bordered table-striped w-100">
+                                                                            <thead></thead>
+                                                                            <tbody></tbody>
+                                                                            <!-- <tfoot> will be appended dynamically -->
+                                                                        </table>
+
+                                                                    </div>                                                       
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- ``````````````````````````````````````````````````` end modal ```````````````````````````````````````````````````````````````` -->
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Folding No.</label>
+                                                                    <input type="text" class="form-control" value="{{parent_stock_instance.outward_no}}" readonly>
+                                                                    <input type="hidden" id="tm_id" name="tm_id" class="form-control" value="{{parent_stock_instance.id}}" >
+                                                                    <input type="hidden" id="out_id" name="out_id" class="form-control" value="{{parent_stock_instance.stitching_outward_id}}" >
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Folding Date</label>
+                                                                    <input class="form-control" type="date" name="outward_date" id="outward_date" required>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Party</label>
+                                                                    <!-- <select id="party_id" name="party_id" class="form-control single-select" onchange="LoadEntry()" disabled> -->
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" disabled>
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                           
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="entry_id" class="form-label">Stitching Delivery </label>
+                                                                    <!-- onchange="LoadQualityStyle(); setWorkOrderNo()" -->
+                                                                    <select id="entry_id" name="entry_id" class="form-control form-select single-select" disabled onchange="LoadEntryDetail(); setWorkOrderNo() ">
+                                                                        <option value="">Select</option>
+                                                                        {% for s in stitching %}
+                                                                        <option value="{{s.id}}">{{s.outward_no}} - {{s.work_order_no}}</option>
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+
+                                                                </div>
+                                                                <div class="col-md-2 mt-4">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="submit" id="update" onclick="updateTm_Data()" class="btn btn-primary mt-3">Update</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="lot_no" class="form-label">Lot No.</label>
+                                                                    <select id="lot_no" name="lot_no" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for l in lot %}
+                                                                        <option value="{{l.lot_no}}">{{l.lot_no}}</option>
+                                                                        {% endfor %}
+                                                                    
+                                                                    </select>
+
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for l in fabric %}
+                                                                        <option value="{{l.fabric_id}}">{{l.name}}</option>
+                                                                        {% endfor %}
+                                                                   
+                                                                    </select>
+
+                                                                </div>
+
+
+
+                                                                 <div class="col-md-2 mt-3">
+                                                                    <label for="quality_id" class="form-label">Quality </label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="style_id" class="form-label">Style </label>
+                                                                    <select id="style_id" name="style_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                   
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+                                                    
+                                                        </div> 
+                                                        
+
+                                                        
+                                                            
+                                                        <div class="">
+                                                            <div class="table-responsive table-desi">
+
+                                                          
+                                                                <table id="foldingProgramTable" class="table table-bordered">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Color</th>
+                                                                        
+                                                                            <th>Total Weight</th>
+                                                                            <th>Already Delivered</th>
+                                                                            <th style="display:none;">Balance Wt</th>
+                                                                            <th>Outward WT</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th>Total</th>
+                                                                            <th id="totalWeight">0</th>
+                                                                            <th id="totalDelivered">0</th>
+                                                                            <th style="display:none;" id="totalBalance">0</th>
+                                                                            <th id="totalOutward">0</th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                                </div>
+
+                        
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                                <style>
+                                                                    .summary-container {
+                                                                        max-width: 500px;
+                                                                        margin: 20px auto;
+                                                                        background: linear-gradient(135deg, #6a11cb, #2575fc);
+                                                                        color: white;
+                                                                        padding: 15px;
+                                                                        border-radius: 10px;
+                                                                        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                                                                    }
+                                                                
+                                                                    .summary-table {
+                                                                        width: 100%;
+                                                                        background: white;
+                                                                        color: black;
+                                                                        border-radius: 10px;
+                                                                        overflow: hidden;
+                                                                        padding: 10px;
+                                                                    }
+                                                                
+                                                                    .summary-table th {
+                                                                        /* background: white; */
+                                                                        color: black    ;
+                                                                        padding: 10px;
+                                                                        text-align: center;
+                                                                    }
+                                                                
+                                                                    .summary-table td {
+                                                                        padding: 8px;
+                                                                        font-weight: bold;
+                                                                    }
+                                                                
+                                                                    .highlight {
+                                                                        background: #428bca;
+                                                                        color: white;
+                                                                        font-weight: bold;
+                                                                        text-align: right;
+                                                                    }
+                                                                
+                                                                    .transparent-input {
+                                                                        width: 100%;
+                                                                        border: none;
+                                                                        outline: none;
+                                                                        background: transparent;
+                                                                        text-align: right;
+                                                                        font-weight: bold;
+                                                                        font-size: 16px;
+                                                                        color: black;
+                                                                    }
+                                                                
+                                                                    .transparent-input:focus {
+                                                                        border-bottom: 2px solid #428bca;
+                                                                    }
+                                                                </style>
+                                                               
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %} 
+
+
+<script>
+
+
+
+
+if ("{{ parent_stock_instance.outward_date }}" && "{{ parent_stock_instance.outward_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.outward_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#outward_date').val(formattedDate).trigger("change"); 
+}
+ 
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+
+if ("{{parent_stock_instance.fabric_id}}" && "{{parent_stock_instance.fabric_id}}" !== "") {
+    $('#fabric_id').val("{{parent_stock_instance.fabric_id}}").trigger("change"); 
+}
+
+
+
+if ("{{parent_stock_instance.quality_id}}" && "{{parent_stock_instance.quality_id}}" !== "") {
+    $('#quality_id').val("{{parent_stock_instance.quality_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.style_id}}" && "{{parent_stock_instance.style_id}}" !== "") {
+    $('#style_id').val("{{parent_stock_instance.style_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.stitching_outward_id}}" && "{{parent_stock_instance.stitching_outward_id}}" !== "") {
+    $('#entry_id').val("{{parent_stock_instance.stitching_outward_id}}").trigger("change");
+    LoadEntryDetail();
+}
+
+
+
+$(document).ready(function () {
+    const stitchingOutwardId = "{{ parent_stock_instance.stitching_outward_id|default:'' }}";
+
+    // Load if entry is already set (e.g., during edit)
+    if (stitchingOutwardId) {
+        $('#entry_id').val(stitchingOutwardId).trigger('change');
+
+        // Delay to ensure onchange is processed
+        setTimeout(function () {
+            LoadEntryDetail(); // Optional if loadFoldingProgramDetails handles everything
+        }, 100);
+    }
+
+    // On change of entry_id dropdown
+    $('#entry_id').on('change', function () {
+        const entryId = $(this).val();
+
+        if (entryId) {
+            loadFoldingProgramDetails(entryId); // Your custom function
+            setWorkOrderNo(); // If needed
+        }
+    });
+});
+
+// console.log('outward:',parent_stock_instance.stitching_outward_id);
+
+
+
+function updateTm_Data(){
+    
+$('#add_new').on('submit', function(e) { 
+    e.preventDefault();
+
+    var formData = new FormData(this);
+   
+    const tm_id = $('#tm_id').val();  // parent stitching delivery ID
+
+
+    formData.append('outward_date', $('#outward_date').val());
+    
+
+    $.ajax({
+        url: '/folding-delivery-master-update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#name').val('');
+                $('#program_date').val('');
+                
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update po:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+}
+
+
+
+
+function LoadEntry() {
+    var party_id = $('#party_id').val(); 
+    $('#entry_id').empty().append('<option value="">Select</option>');
+    console.log('Supplier-ID:', party_id); // Adjusted for clarity
+
+    $.ajax({ 
+        type: 'POST',  // Change to POST 
+        // url: '/get_st_delivery_list/',
+        url:'/get_st_folding_available_list/',
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+
+
+
+        success: function(data) {
+            // $('#po_list').empty().append('<option value="">Select</option>');
+        
+
+             
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(po) {
+                    // $('#entry_id').append('<option value="' + po.id + '">' + po.cutting_no +  '</option>');
+                    $('#entry_id').append('<option value="' + po.id + '">' + po.outward_no + ' - ' + po.work_order_no + '</option>');
+
+                
+                });
+            }
+                         
+            if ("{{parent_stock_instance.stitching_outward_id}}" && "{{parent_stock_instance.stitching_outward_id}}" !== "") {
+                $('#entry_id').val("{{parent_stock_instance.stitching_outward_id}}").trigger("change");
+            }
+
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading PO lists:', error);
+        } 
+    });
+}
+
+
+
+function setWorkOrderNo() {
+    var selectedText = $('#entry_id option:selected').text();
+    
+    if (selectedText.includes(' - ')) {
+        var parts = selectedText.split(' - ');
+        var workOrderNo = parts[1].trim();
+        $('#work_order_no').val(workOrderNo);
+    } else {
+        $('#work_order_no').val('');
+    }
+}
+
+
+
+function LoadEntryDetail() {
+    const entryId = $('#entry_id').val();
+    if (!entryId) return;
+
+    $.ajax({
+        url: '/get_entry_details/', // 👉 Create this Django view
+        type: 'POST',
+        data: { entry_id: entryId },
+        success: function (response) {
+            // Load Lot No options
+            const lotOptions = response.lot_numbers.map(lot =>
+                `<option value="${lot}">${lot}</option>`
+            ).join('');
+            $('#lot_no').html(`<option value="">Select</option>` + lotOptions);
+
+            // Default select first Lot No
+            if (response.lot_numbers.length > 0) {
+                $('#lot_no').val(response.lot_numbers[0]);
+            }
+
+            // Default Fabric from that lot
+            // $('#fabric_id').html(`<option value="${response.default_fabric}">${response.default_fabric}</option>`);
+            $('#fabric_id').val(response.default_fabric);
+
+                 
+    
+
+
+            // Set work_order_no if needed
+            $('#work_order_no').val(response.work_order_no);
+
+            // ✅ Now call to load table
+            // loadFo   ldingTable(entryId, response.default_fabric, response.lot_numbers[0]);
+        }
+    });
+}
+
+
+
+
+$('#entry_id').on('change', function () {
+    const entryId = $(this).val();
+    if (entryId) {
+        loadFoldingProgramDetails(entryId);
+    }
+});
+
+
+function loadFoldingProgramDetails(entryId) {
+    var tm_id = $('#tm_id').val();
+    console.log('tm-id:', tm_id);
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_st_delivery_folding_details_update/',
+        data: {
+            'entry_id': entryId,
+            'tm_id': tm_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (response) {
+            if (response.status !== 'success') {
+                alert('Failed to load data.');
+                return;
+            }
+
+            // Populate dropdowns
+            const { fabric, quality, style } = response;
+            if (fabric && typeof fabric === 'object') {
+                $('#fabric_id').empty().append(`<option selected value="${fabric.id}">${fabric.name}</option>`);
+            }
+            if (quality && typeof quality === 'object') {
+                $('#quality_id').empty().append(`<option selected value="${quality.id}">${quality.name}</option>`);
+            }
+            if (style && typeof style === 'object') {
+                $('#style_id').empty().append(`<option selected value="${style.id}">${style.name}</option>`);
+            }
+
+            const tableBody = $('#foldingProgramTable tbody');
+            const tableFoot = $('#foldingProgramTable tfoot');
+            tableBody.empty();
+            tableFoot.empty();
+
+            const currentPageDeliverWt = parseFloat(response.current_page_deliverwt || 0);
+            console.log('Current Page Deliver WT:', currentPageDeliverWt);
+            $('#currentPageDeliverWt').text(currentPageDeliverWt.toFixed(2));
+
+            // Totals
+            let totalFinalQty = 0;
+            let totalAlreadyReceived = 0;
+            let totalOutward = 0;
+
+            // Iterate through the data
+            response.data.forEach(row => {
+                const cutting_wt = parseFloat(row.cutting_wt || 0);
+                const final_qty = parseFloat(row.final_qty || 0);
+                const deliveredWt = parseFloat(row.delivered_wt || 0);
+                const already_rec_wt = parseFloat(row.already_rec_wt || 0);
+                const balanceWt = parseFloat(row.balance_wt || 0);
+                const colorId = row.color_id; 
+
+                // update totals
+                totalFinalQty += final_qty;
+                totalAlreadyReceived += already_rec_wt;
+                totalOutward += deliveredWt;
+
+                const newRow = `
+                    <tr>
+                        <td style="display:none;" class="fabric-id">${fabric.id}</td>
+                        <td>${row.color_name}</td>
+                        <td style="text-align:right;">${final_qty.toFixed(2)}</td>
+                        <td style="text-align:right;">${already_rec_wt.toFixed(2)}</td>
+                        <td style="display:none">${balanceWt.toFixed(2)}</td>
+                        <td>
+                            <input type="number" value="${deliveredWt.toFixed(2)}" 
+                                   class="form-control outward-input" 
+                                   style="border:none; text-align:right;">
+                        </td>
+                        <td style="display:none;">${colorId}</td>
+                        <td style="display:none;">${cutting_wt}</td>
+                    </tr>
+                `;
+                tableBody.append(newRow);
+            });
+
+            // Add tfoot totals row
+            const totalRow = `
+                <tr style="font-weight:bold; background:#f9f9f9;">
+                    <td style="text-align:right;">Totals:</td>
+                    <td style="text-align:right;">${totalFinalQty.toFixed(2)}</td>
+                    <td style="text-align:right;">${totalAlreadyReceived.toFixed(2)}</td>
+                    <td style="text-align:right;" id="totalOutward">${totalOutward.toFixed(2)}</td>
+                </tr>
+            `;
+            tableFoot.append(totalRow);
+
+            // Update outward total dynamically
+            $('#foldingProgramTable').on('input', '.outward-input', function () {
+                let outwardSum = 0;
+                $('.outward-input').each(function () {
+                    outwardSum += parseFloat($(this).val() || 0);
+                });
+                $('#totalOutward').text(outwardSum.toFixed(2));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error loading folding details:', error);
+        }
+    });
+}
+
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    $('#foldingProgramTable tbody tr').each(function(index) {
+        // You are getting the fabric ID from the wrong column (index 0). 
+        // Based on your HTML, it's a hidden cell with class "fabric-id"
+        // Let's get the fabric ID properly.
+        var fabric = $(this).find('.fabric-id').text().trim();
+        
+        // This is the main issue. You were trying to get text from the <td>.
+        // Instead, get the value from the <input> element inside the <td>.
+        var outward_wt = $(this).find('input[type="number"]').val();
+
+        // Get the color ID from the correct hidden cell
+        var color_id = $(this).find('td:eq(6)').text().trim();
+
+        console.log(`Row ${index + 1} - Data:`, { color_id, outward_wt }); 
+
+        // Ensure both color_id and outward_wt have a value before pushing.
+        if (color_id && outward_wt) {
+            TableData.push({
+                'fabric': fabric, // Include fabric ID if needed
+                'outward_wt': parseFloat(outward_wt) || 0, // Convert to float
+                'color_id': color_id,
+            });
+        } else {
+            console.warn(`Row ${index + 1}: Missing data, skipping...`);
+        }
+    });
+
+    console.log('TABLE-DATA:', TableData);
+    return TableData;
+}
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+
+        const entry_id = $('#entry_id').val();  // parent stitching delivery ID
+
+
+        mdata.append('entry_id', $('#entry_id').val());
+
+
+
+        mdata.append('chemical_data', TableData);
+
+
+        $.ajax({
+            type: "POST",  
+            url: "/folding-delivery-update/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+             success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.success === 'true') {
+                    notifier.show( 
+                        'Well Done!', 
+                        data.message || 'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+
+
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        }); 
+    }
+});
+
+
+
+
+// ````````````````````````````````````````````
+    $('.single-select').select2(); 
+
+            // Get current date and time
+    // const currentDate = new Date();
+    // const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+
+    // // Set default values for date and time fields
+    // document.getElementById('folding_date').value = currentDateString;
+
+
+</script>

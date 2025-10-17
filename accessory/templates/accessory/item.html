@@ -1,0 +1,1606 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+
+
+<style>
+    .color_action {
+        width: 30px !important; 
+        white-space: nowrap; /* Prevents wrapping */
+        text-align: center;
+    }
+</style>
+
+
+<div id="edit_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLiveLabel">Edit Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="edit_form">
+                <div class="modal-body">  
+                    {% csrf_token %}                                            
+                    <div class="row">
+                        
+                        <div class="col-md-4">
+                            <label class="form-label"><span style="color: red;">*</span> Acc Group</label>
+                            <select class="form-control edit" id="edit_item_group_id" name="item_group_id">
+                                <option>Select</option>
+                                {% for g in item_group %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select> 
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="edit_name" class="form-label"><span style="color: red;">*</span>Accessory Item Name</label>
+                            <input class="form-control" type="text" id="edit_name" name="name" required>
+                            <input class="form-control" type="hidden" id="edit_old_name" name="old_name" required>
+                            <small id="edit_name_error" class="text-danger" style="display: none;"></small>
+
+                        </div>
+
+
+                        <div class="col-md-4 mb-3">
+                            <label for="edit_is_active" class="form-label">Status</label> 
+                            <select class=" form-control edit" id="edit_is_active" name="is_active" style="text-transform: lowercase;">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>                 
+                            </select> 
+                        </div> 
+
+                        <!-- <div class="col-md-1 mt-4"> 
+                            <input type="hidden" id="tm_id" name="tm_id">
+
+                            <button type="submit" id="add_update_quality" class="btn btn-primary mt-1">+Add</button>
+                        </div> -->
+
+
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Quality</label>
+                            <select class="form-control edit" id="edit_quality_id" name="quality_id" >
+                                <option>Select</option>
+                                {% for g in quality %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Size</label>
+                            <select class="form-control edit" id="edit_size_id" name="size_id" >
+                                <option>Select</option>
+                                {% for g in size %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Color</label>
+                            <select class="form-control edit" id="edit_color_id" name="color_id" multiple>
+                                <option>Select</option>
+                                {% for g in color %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-1 mt-4">
+
+                            <button type="submit" id="add_update_size" class="btn btn-primary mt-1">+Add</button>
+                        </div>
+
+                        
+                    </div>
+                    <div class="row">
+
+                   
+                        <div class="col-md-12 mt-2">
+                            <div class="dt-responsive table-responsive table-hover">
+                                <table id="update_size_table" class="table table-striped table-bordered nowrap w-100">
+                                    <thead>
+                                        <tr>  
+                                            
+                                            <th>Action</th>
+                                            <th>Accessory Quality</th>
+                                            <th>Accessory Size</th>
+                                            <th>Accessory Color</th>
+                                            <th style="display: none;">Quality ID</th>
+                                            <th style="display: none;">Size ID</th>
+                                            <th style="display: none;">Color ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                            
+                                    </tbody>
+                                </table>                                        
+                            </div>
+                        </div>
+                        
+
+                        
+                        
+                    </div>
+    
+ 
+                                                                                                        
+                    </div>
+                
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="edit_id">
+                    <input type="hidden" name="tm_id" id="tm_id">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div> </div>
+            </form>
+        </div>
+    </div>
+
+</div> 
+
+
+
+
+
+
+
+<div id="add_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLiveLabel">Add Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add_form">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="row">
+                        
+                            
+                        <div class="col-md-4 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Group</label>
+                            <select class="form-control single-select" id="item_group_id" name="item_group_id">
+                                <option>Select</option>
+                                {% for g in item_group %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+
+                        <div class="col-md-8 mb-3 ">
+                            <label class="col-form-label"><span style="color: red;">*</span>Accessory Item Name</label>
+                    
+                            <input class="form-control" type="text" id="name" name="name" required>
+                            <small id="name_error" class="text-danger" style="display: none;"></small>
+
+                        
+                        </div> 
+
+
+
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Quality</label>
+                            <select class="form-control single-select" id="quality_id" name="quality_id" >
+                                <option>Select</option>
+                                {% for g in quality %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+<!--                         
+                        <div class="col-md-1 mt-4">
+
+                            <button type="submit" id="add_quality" class="btn btn-primary mt-1">+Add</button>
+                        </div> -->
+
+
+
+                        
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Size</label>
+                            <select class="form-control single-select" id="size_id" name="size_id" >
+                                <option>Select</option>
+                                {% for g in size %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="form-label"><span style="color: red;">*</span>Acc Color</label>
+                            <select class="form-control single-select" id="color_id" name="color_id" multiple >
+                                <!-- <option>Select</option> -->
+                                {% for g in color %}
+                                <option value="{{g.id}}">{{g.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+
+
+
+                        <div class="col-md-1 mt-4">
+
+                            <button type="submit" id="add_size" class="btn btn-primary mt-1">+Add</button>
+                        </div>
+
+                    </div>
+                    <div class="row">
+<!-- 
+                        <div class="col-md-4 mt-2">
+                            <div class="dt-responsive table-responsive table-hover">
+                                <table id="quality_table" class="table table-striped table-bordered nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th style="display: none;">Accessory Item ID #</th>
+                                            <th>Accessory Quality</th>
+                                            
+                                            <th>Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>                            
+                                    </tbody>
+                                </table>                                        
+                            </div>
+
+                        </div> -->
+
+                        <div class="col-md-8 mt-2">
+                            <div class="dt-responsive table-responsive table-hover">
+                                <table id="size_table" class="table table-striped table-bordered nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th style="display: none;">Accessory Item ID #</th>
+                                            <th>Accessory Quality</th>
+                                            <th style="display: none;">Accessory Quality ID #</th>
+
+                                            <th>Accessory Size</th>
+                                            <th style="display: none;">Accessory Item ID #</th>
+                                            <th>Accessory Color</th>
+                                            <th style="width: 30px;">Action</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>                            
+                                    </tbody>
+                                </table>                                        
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- `````````````` end modal ````````````````````````` -->
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10">Accessory Item   &nbsp;  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#add_modal">Add</button> 
+                                               &nbsp; <button type="button" class="btn btn-sm btn-secondary" onclick="refresh_table_data()">Refresh</button></h4>
+
+                                                <!-- &nbsp; <button type="button" class="btn btn-sm btn-secondary" onclick="refresh_data()">Refresh</button></h4> -->
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Accessories</a></li>
+                                            <li class="breadcrumb-item"><a href="/item">Accessory Item  </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+
+                      
+
+
+                                   
+
+                                    
+                                    <div class="card-body">
+                                        {% csrf_token %}
+                                        <div class="dt-responsive table-responsive table-hover">
+                                            <table id="datatable" class="table table-striped table-bordered nowrap w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID #</th>
+                                                        <th>Accessory Group</th>
+                                                        <th>Accessory Item</th>
+                                                        <th>Quality</th>
+                                                        <th>Size</th>
+                                                        <th>Color</th>
+														<!-- <th> Color</th> -->
+                                                        <th>Status</th>
+                                                       
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                            
+                                                </tbody>
+                                            </table>                                        
+                                        </div>
+
+                                        
+                                    </div>
+
+                                 
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .color_action{
+
+        width: 30px;
+    }
+</style>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+$(document).ready(function () {
+    $('#add_quality').on('click', addQuality);
+    $('#add_size').on('click', addSize);
+
+    
+
+
+
+    
+    function addQuality(event) {
+        event.preventDefault();
+        var qualityId = $('#quality_id').val();
+        var qualityName = $('#quality_id option:selected').text();
+
+        if (qualityId && qualityName !== 'Select') {
+            // Check if the quality ID already exists in the table
+            var exists = false;
+            $('#quality_table tbody tr').each(function () {
+                var existingQualityId = $(this).find('td:first').text();
+                if (existingQualityId === qualityId) {
+                    exists = true;
+                    return false; // Exit loop once a match is found
+                }
+            });
+
+            if (exists) {
+                notifier.show(
+                    'Error!', 
+                    'This quality already exists in the table.', 
+                    'danger',  
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000 
+                ); 
+            } else {
+                var row = $('<tr>');
+                row.append('<td style="display: none;">' + qualityId + '</td><td>' + qualityName + '</td>' +
+                            '<td>' +
+                               '<button class="btn btn-xs btn-primary edit-add-qty-row"><i class="feather icon-edit"></i></button> ' +
+                               '<button class="btn btn-xs btn-danger delete-row"><i class="feather icon-trash-2"></i></button>' +
+                           '</td>');
+                // addDeleteButton(row);
+                addEditButton(row); // Add edit functionality
+                // Prepend the row to the top of the table
+                $('#quality_table tbody').prepend(row);
+                $('#quality_id').val('').trigger("change");
+            }
+        } else {
+            alert("Please select a valid quality.");
+        }
+    }
+
+    // Function to handle delete button click
+    function addDeleteButton(row) {
+        row.find('.delete-row').on('click', function() {
+            $(this).closest('tr').remove();
+        });
+    }
+
+    // Function to handle edit button click
+    function addEditButton(row) {
+        row.find('.edit-add-qty-row').on('click', function() {
+            var selectedRow = $(this).closest('tr');
+            var qualityId = selectedRow.find('td:first').text();
+            var qualityName = selectedRow.find('td:nth-child(2)').text();
+
+            // Set the values to the input fields to edit
+            $('#quality_id').val(qualityId).trigger('change');
+            // You can add more input fields if necessary to modify other attributes
+
+            // Remove the row from the table (you'll add it again with updated values)
+            selectedRow.remove();
+
+            // Optional: You may also update the button text to "Update" instead of "Add" 
+            // for user clarity when editing.
+        });
+    }
+
+
+
+
+
+
+function addSize(event) {
+    event.preventDefault();
+    var qualityId = $('#quality_id').val();
+    var qualityName = $('#quality_id option:selected').text();
+
+    var sizeId = $('#size_id').val();
+    var sizeName = $('#size_id option:selected').text();
+
+
+    var selectedColors = $('#color_id').val(); // Array of selected colors
+
+    if (qualityId && qualityName !== 'Select' && sizeId && sizeName !== 'Select' &&  selectedColors.length > 0) {
+        selectedColors.forEach(function (colorId) {
+            var colorName = $('#color_id option[value="' + colorId + '"]').text();
+            var exists = false;
+
+            // Check if the same (size, color) pair already exists
+            $('#size_table tbody tr').each(function () {
+                var existingQualityId = $(this).find('td:first').text();
+                var existingSizeId = $(this).find('td:nth-child(3)').text(); // 3rd column (color_id)
+                var existingColorId = $(this).find('td:nth-child(5)').text(); // 5rd column (color_id)
+
+                if (existingQualityId === qualityId && existingSizeId === sizeId && existingColorId === colorId) {
+                    exists = true;
+                    return false; // Exit loop once a match is found
+                }
+            });
+
+            if (!exists) {
+                var row = $('<tr>');
+                row.append('<td style="display: none;">' + qualityId + '</td><td>' + qualityName + '</td>' +
+                            '<td style="display: none;">' + sizeId + '</td><td>' + sizeName + '</td>' +
+                           '<td style="display: none;">' + colorId + '</td><td>' + colorName + '</td>' + 
+
+                           '<td>' +
+                               '<button class="btn btn-xs btn-primary edit-row"><i class="feather icon-edit"></i></button> ' +
+                               '<button class="btn btn-xs btn-danger delete-row"><i class="feather icon-trash-2"></i></button>' +
+                           '</td>');
+                $('#size_table tbody').prepend(row);
+            }
+        });
+
+        if (selectedColors.length > 0) {
+            // $('#quality_id').val('').trigger("change");
+            $('#size_id').val('').trigger("change");
+            $('#color_id').val('').trigger("change");
+        }
+    } else {
+        alert("Please select a valid size and at least one color.");
+    }
+}
+
+
+$(document).on('click', '.delete-row', function () {
+    $(this).closest('tr').remove();
+});
+
+
+
+$(document).on('click', '.edit-row', function () {
+    var row = $(this).closest('tr');
+    var qualityId = row.find('td:first').text();
+    var qualityName = row.find('td:nth-child(2)').text();
+    var sizeId = row.find('td:nth-child(3)').text();
+    var sizeName = row.find('td:nth-child(4)').text();
+    var colorId = row.find('td:nth-child(5)').text();
+    var colorName = row.find('td:nth-child(6)').text();
+
+    // Populate dropdowns with selected values
+    $('#quality_id').val(qualityId).trigger("change");
+    $('#size_id').val(sizeId).trigger("change");
+    $('#color_id').val(colorId).trigger("change");
+
+    // Remove the row from the table
+    row.remove();
+});
+
+
+function addDeleteButton(row) {
+        var deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+        deleteButton.on('click', function () {
+            row.remove();
+        });
+
+        var deleteCell = $('<td>');
+        deleteCell.append(deleteButton);
+        row.append(deleteCell);
+    }
+    
+    
+    });
+
+<!-- ```````````````````````````````````` -->
+    $('.single-select ').select2({
+        dropdownParent: $('#add_modal')
+    });
+ 
+ 
+     $('.edit').select2({
+        dropdownParent: $('#edit_modal')
+    });
+ 
+
+ 
+    // ```````````````````````````````````````````   ``````````````````````````````````````````
+
+
+
+    var table = $('#datatable').DataTable({
+        "processing": true, 
+        "pageLength": 50,
+        // "destroy": true,
+        "order": [],
+        "columns": [
+            { "data": "action", "title": "Action" },             
+            { "data": "item_group", "title": "Accessory Group " },
+            { "data": "name", "title": "Accessory Item Name " },
+            { "data": "quality", "title": "Quality"  ,
+                "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+                }},
+            { "data": "size", "title": "Size"  ,
+                "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+                }},
+            // { "data": "color", "title": "Color"  ,
+            //     "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+            //     }},
+			 { "data": "m_color", "title": " Color"  ,
+                "render": function(data, type, row) {return '<div class="wrap-text">' + data + '</div>';
+                }},
+            { "data": "status", "title": "Status" }
+        ],
+        "ajax": {
+            "url": '/item-list/', 
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            }
+        }
+    });
+
+// });
+function refresh_table_data() {
+    table.ajax.reload();  // Reload table with new data
+}
+
+
+function refresh_data(){
+        table.ajax.reload(); 
+    }
+
+
+
+    function LoadSize() {
+        var quality_id = $("#quality_id").val();  // Get selected category ID
+        
+        if (quality_id) {
+            $.ajax({
+                url: "/get_size/", // Django URL for AJAX
+                type: "GET",
+                data: { quality_id: quality_id },
+                success: function (data) {
+                    var sizeDropdown = $("#size_id");
+                    sizeDropdown.empty(); // Clear existing options
+                    sizeDropdown.append('<option value="">Select</option>'); 
+
+                    $.each(data.size, function (key, value) {
+                        sizeDropdown.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#size_id").empty().append('<option value="">Select</option>'); // Reset size dropdown
+        }
+    }
+    
+
+
+    let debounceTimer;
+
+$("#name").on("keyup", function () {
+    clearTimeout(debounceTimer); // Clear previous timer
+
+    debounceTimer = setTimeout(function () {
+        checkDuplicateName();
+    }, 500); // Wait 500ms after user stops typing
+});
+
+function checkDuplicateName() {
+    var itemName = $("#name").val().trim().toUpperCase();
+    var itemGroupId = $("#item_group_id").val();
+
+    if (itemName === "" || itemGroupId === "Select") {
+        return; // Don't check if fields are empty
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/check-duplicate/",  // API endpoint to check duplicate
+        data: {
+            name: itemName,
+            item_group_id: itemGroupId,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            if (response.exists) {
+                $("#name").addClass("is-invalid"); // Highlight input field
+                $("#name_error").text("This name already exists in the selected item group.").show();
+            } else {
+                $("#name").removeClass("is-invalid"); // Remove error highlight
+                $("#name_error").hide();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error checking item:", error);
+        }
+    });
+}
+
+
+
+
+
+
+
+$("#add_form").submit(function (e) {
+    e.preventDefault();
+
+    // Collect quality, size, and color data from the tables
+    // var qualityData = [];
+    // $('#quality_table tbody tr').each(function () {
+    //     var qualityId = $(this).find('td:first').text(); // Accessory Quality ID
+    //     var qualityName = $(this).find('td:nth-child(2)').text(); // Accessory Quality Name
+    //     qualityData.push({ id: qualityId, name: qualityName });
+    // });
+
+    var sizeData = [];
+    $('#size_table tbody tr').each(function () {
+        var qualityId = $(this).find('td:first').text(); // Accessory Size ID
+        var qualityName = $(this).find('td:nth-child(2)').text(); // Accessory Size Name
+        var sizeId = $(this).find('td:nth-child(3)').text(); // Accessory quality ID
+        var sizeName = $(this).find('td:nth-child(4)').text(); // Accessory Size Name
+       
+        var colorId = $(this).find('td:nth-child(5)').text(); // Accessory color ID
+        var colorName = $(this).find('td:nth-child(6)').text(); // Accessory Color Name
+      
+        sizeData.push({ quality_id: qualityId, quality_name: qualityName, size_id: sizeId, name: sizeName, color_id: colorId, colorname: colorName });
+    });
+
+    // // Create hidden inputs for the data to send via the form
+    // $('<input>').attr({
+    //     type: 'hidden',
+    //     name: 'quality_data',
+    //     value: JSON.stringify(qualityData)
+    // }).appendTo('#add_form');
+
+    $('<input>').attr({
+        type: 'hidden',
+        name: 'size_data',
+        value: JSON.stringify(sizeData)
+    }).appendTo('#add_form');
+
+    // Send the form via AJAX
+    $.ajax({
+        type: 'POST',
+        url: '/item-add/',  // Adjust to your URL
+        data: $(this).serialize(),
+        success: function (response) {
+            if (response.data === 'Success') { 
+                notifier.show( 
+                    'Well Done!', 
+                    'Item added successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                ); 
+                $('#add_modal').modal('hide');  
+                $('#add_form').trigger('reset'); 
+                $('#item_group_id').val('').trigger("change");  
+
+                $('#color_id').val('').trigger("change");    
+                $('#quality_id').val('').trigger("change");    
+                $('#size_id').val('').trigger("change");    
+                refresh_data(); 
+            } else {
+                notifier.show(
+                    'Error!', 
+                    'Failed to add item.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            let response = xhr.responseJSON;
+            if (response && response.message === 'error') {
+                notifier.show(
+                    'Warning!',
+                    response.error_message || 'Something went wrong.',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            } else {
+                sweetalert('error', 'Failed to add item. An unexpected error occurred.');
+            }
+        }
+    });
+});
+
+
+
+ 
+// `````````````````````````````````
+
+
+var tm_id = $('#tm_id'); 
+
+function LoadSub_Table() {
+    var csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var tm_value = tm_id.val(); // Get the actual value
+
+    // Check if the table is already initialized, then destroy it to avoid duplication
+    if ($.fn.DataTable.isDataTable('#update_quality_table')) {
+        $('#update_quality_table').DataTable().destroy();
+    }
+    
+    // Initialize Quality Table
+    $('#update_quality_table').DataTable({
+        "processing": true, 
+        "pageLength": 50,
+        "order": [],
+        "columns": [
+            { "data": "quality", "title": "Quality",
+                "render": function(data) { return '<div class="wrap-text">' + data + '</div>'; }
+            },   
+            
+            { "data": "action", "title": "Action" },             
+
+        ],
+        "ajax": {
+            "url": '/item-quality-list/', 
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = csrf_token;
+                data.tm_id = tm_value;  
+            }
+        }
+    });
+
+    // Check if the table is already initialized, then destroy it to avoid duplication
+    if ($.fn.DataTable.isDataTable('#update_size_table')) {
+        $('#update_size_table').DataTable().destroy();
+    }
+
+ 
+ 
+    $('#update_size_table').DataTable({
+        "processing": true, 
+        "pageLength": 50,
+        "order": [],
+        // "columnDefs": [
+        //     { "width": "30px", "targets": 2 } // Set width for the 3rd column (Action)
+        // ],
+        "columns": [  
+            
+            { "data": "action", "title": "Action" },             
+            { "data": "quality", "title": "Quality",},
+
+            { "data": "size", "title": "Size",},
+            { "data": "color", "title": "Color",
+                "render": function(data) { return '<div class="wrap-text">' + data + '</div>'; }
+            },
+        ],
+        "ajax": {
+            "url": '/item-size-list/', 
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = csrf_token;
+                data.tm_id = tm_value;  
+            }
+        }
+    });
+
+}
+
+
+
+// Item Edit Function
+function item_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    
+    $.post('/item-edit/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.item_id); 
+        $('#tm_id').val(res.item_id);  
+        $('#edit_name').val(res.name);
+        $('#edit_old_name').val(res.name);
+        $('#edit_item_group_id').val(res.item_group_id).trigger("change");    
+        // $('#edit_quality_id').val(res.quality_ids).trigger("change");
+        $('#edit_is_active').val(res.is_active).trigger("change");    
+
+        // Show the modal
+        $('#edit_modal').modal('show');
+
+        // Reset dropdowns
+        // $('#edit_color_id').val('').trigger("change");
+        // $('#edit_quality_id').val('').trigger("change");
+        // $('#edit_size_id').val('').trigger("change");
+
+        // Load Sub Tables
+        LoadSub_Table();
+    });
+}
+
+function refresh_size(size_names, size_ids, color_names, color_ids, size_color_mapping) { 
+    // Clear the existing rows
+    $('#update_size_table tbody').empty();
+
+    // Iterate over size_ids to build rows
+    size_ids.forEach(function(sizeId, index) {
+        var sizeName = size_names[index]; 
+        var mappedColors = size_color_mapping[sizeId] || [];  // Get mapped color IDs (array)
+
+        // Ensure color mapping is properly split and processed
+        var individualColorIds = mappedColors.flatMap(colorIdString => colorIdString.split(',').map(id => id.trim()));
+
+        // Remove duplicates
+        individualColorIds = [...new Set(individualColorIds)];
+
+        // Create a row for each size-color pair
+        individualColorIds.forEach(colorId => {  
+            var colorIndex = color_ids.indexOf(colorId);
+            var colorName = colorIndex !== -1 ? color_names[colorIndex] : "-";
+
+            var row = $('<tr>');
+            row.append('<td>' + sizeName + '</td>');  // Size Name
+            row.append('<td>' + colorName + '</td>'); // Individual Color Name
+            row.append('<td class="size-id" style="display:none" data-id="' + sizeId + '">' + sizeId + '</td>');  // Hidden Size ID
+            row.append('<td class="color-id" style="display:none" data-id="' + colorId + '">' + colorId + '</td>');  // Hidden Color ID
+            row.append('<td><button type="button" class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>    <button type="button" class="btn btn-danger btn-xs delete-row"><i class="feather icon-trash-2"></i></button></td>');
+
+            $('#update_size_table tbody').append(row);
+        });
+    });
+}
+
+
+
+
+
+// ✅ Function to populate Quality table correctly
+function populateTable(tableSelector, names, ids) {
+    var namesArray = Array.isArray(names) ? names : [];
+    var idsArray = Array.isArray(ids) ? ids : [];
+    
+    var tableBody = $(tableSelector);
+    tableBody.empty();  // Clear existing rows before adding new data
+
+    if (namesArray.length === 0 || idsArray.length === 0) {
+        console.log("No quality data available to display.");  // Debugging line
+        return;
+    }
+
+    namesArray.forEach(function(name, index) {
+        var row = $('<tr>');
+        row.append('<td>' + name + '</td>'); // Show name
+        row.append('<td class="quality-id" style="display:none" data-id="' + idsArray[index] + '">' + idsArray[index] + '</td>');  // Store ID
+        row.append('<td><button type="button" class="btn btn-primary btn-xs edit-quality-row"><i class="feather icon-edit"></i></button>   <button type="button" class="btn btn-danger btn-xs delete-row"><i class="feather icon-trash-2"></i></button></td>');
+
+        tableBody.append(row); 
+    });
+}
+
+
+
+$(document).on('click', '.edit-quality-row', function() {
+    var row = $(this).closest('tr');
+    var qualityId = row.find('.quality-id').data('id');
+    var sizeId = row.find('.size-id').data('id');
+    var colorId = row.find('.color-id').data('id');
+
+    // Populate dropdowns with selected values
+    $('#edit_quality_id').val(sizeId).trigger("change");
+    $('#edit_size_id').val(sizeId).trigger("change");
+    $('#edit_color_id').val([colorId]).trigger("change"); // Set color for multiple select
+
+    // Remove the row from the table for editing
+    row.remove();
+});
+
+// 
+// jQuery to handle the edit button click
+$(document).on('click', '.btn-edit', function() {
+    var itemId = $(this).data('id');  // Get the item ID from the button's data-id attribute
+    item_edit(itemId);  // Call the item_edit function with the item ID
+});
+
+// Handle deletion of table rows (quality, size, or color)
+$(document).on('click', '.delete-row', function() {
+    var row = $(this).closest('tr');
+    row.remove();  // Remove the row
+});
+// ``````````````````````````````````
+
+
+// ```````````````````````````test update code``````````````````````````````
+
+
+// let debounceTimer;
+
+$("#edit_name").on("keyup", function () {
+    // clearTimeout(debounceTimer); // Clear previous timer
+
+    // debounceTimer = setTimeout(function () {
+        checkDuplicateName();
+    // }, 500); // Wait 500ms after user stops typing
+});
+
+function checkDuplicateName() {
+    var itemName = $("#edit_name").val().trim().toUpperCase();
+    var oldName = $("#edit_old_name").val().trim().toUpperCase();
+    var itemGroupId = $("#edit_item_group_id").val();
+
+    if (itemName === "" || itemGroupId === "Select") {
+        return; // Don't check if fields are empty
+    }
+
+    // 🔹 Skip duplicate check if the name hasn't changed
+    if (itemName === oldName) {
+        $("#edit_name").removeClass("is-invalid");
+        $("#edit_name_error").hide();
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/check-duplicate/",  // API endpoint to check duplicate
+        data: {
+            name: itemName,
+            item_group_id: itemGroupId,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response) {
+            if (response.exists) {
+                $("#edit_name").addClass("is-invalid"); // Highlight input field
+                $("#edit_name_error").text("This name already exists in the selected item group.").show();
+            } else {
+                $("#edit_name").removeClass("is-invalid"); // Remove error highlight
+                $("#edit_name_error").hide();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error checking item:", error);
+        }
+    });
+}
+
+// ✅ Handle form submission for editing
+$('#edit_form').submit(function(e) {
+    e.preventDefault();  // Prevent default form submission
+
+  
+
+    // Send form via AJAX
+    $.ajax({
+        type: 'POST',
+        url: '/item-update/',  // Adjust to your update URL
+        data: $('#edit_form').serialize(),
+        success: function(response) {
+            console.log("Response:", response);
+
+
+            if ($.fn.DataTable.isDataTable('#datatable')) {
+
+                notifier.show( 
+                    'Well Done!',
+                    'Item updated successfully.',
+                    'success',
+                    "{% static 'assets/images/notification/ok-48.png' %}",
+                    4000
+                ); 
+
+                $('#edit_form').trigger('reset');
+                // $(' #edit_size_id, #edit_color_id').val('').trigger("change");
+                // $('#update_size_table tbody').empty();
+                $('#edit_modal').modal('hide');
+                refresh_table_data();
+
+                  
+                } else {
+                    console.error("DataTable is not initialized.");
+                }
+                
+        },
+        error: function(xhr, status, error) {
+            let response = xhr.responseJSON;
+            if (response && response.message === 'error') {
+                notifier.show(
+                    'Warning!',
+                    response.error_message || 'Something went wrong.',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            } else {
+                sweetalert('error', 'Failed to update item. An unexpected error occurred.');
+            }
+        }
+    });
+});
+
+
+
+
+
+
+ 
+    function item_delete(id) {
+        if (confirm('Are you sure you want to delete this data?')) {
+            $.ajax({
+                url: "/item-delete/",
+                method: "POST",
+                data: { 
+                    id: id, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.message === 'yes') {
+                       
+                notifier.show(
+                  'Well Done!', 
+                  'Deleted successfully.', 
+                  'success', 
+                  "{% static 'assets/images/notification/ok-48.png' %}", 
+                  4000
+              );
+                        refresh_data(); 
+                    } else {
+                        notifier.show(
+                        'Error!', 
+                        'Failed to delete.', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    );
+                    }
+                },
+            });
+ 
+        }
+    }
+ 
+ 
+// ```````````````````````````````````````````````````` sub table edit & delete `````````````````````````````````
+
+
+
+
+function quality_delete(id) {
+    if (confirm("Are you sure you want to delete this quality?")) {
+        $.post('/delete-quality/', { id: id, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }, function(res) {
+            if (res.success) {
+                // alert(res.message);
+                notifier.show( 
+                    'Well Done!', 
+                    res.message, 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+
+            refresh_table_data();
+                LoadSub_Table();
+
+                reload_quality_table();
+            // $('#edit_form').trigger('reset');
+            $('#edit_quality_id, #edit_size_id, #edit_color_id').val('').trigger("change");
+            $('#update_quality_table tbody, #update_size_table tbody').empty();
+            // $('#edit_modal').modal('hide');
+
+            } else {
+                // alert(res.message);
+                notifier.show(
+                    'Error!', 
+                    res.message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        });
+    }
+}
+
+
+
+
+function quality_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    $.post('/edit-quality/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        $('#edit_id').val(res.id); 
+        $('#tm_id').val(res.item_id);
+        $('#edit_quality_id').val(res.quality_id).trigger("change");
+        $('#edit_is_active').val(res.is_active).trigger("change");
+
+        // Change button text to "Update" and set the event handler
+        $("#add_update_quality").text("Update").off("click").on("click", function(event) {
+            event.preventDefault();
+            updateOrAddQuality(id);
+        });
+
+        console.log('active', res.is_active);
+    });
+}
+
+
+
+
+$(document).on("click", "#add_update_quality", function(event) {
+    event.preventDefault();
+    
+    var tm_id = $('#tm_id').val();
+    var quality_id = $('#edit_quality_id').val();
+    
+    // Check if quality_id already exists in the table
+    if ($("#update_quality_table tbody tr[data-quality-id='" + quality_id + "']").length > 0) {
+        notifier.show(
+            'Well Done!', 
+            'The Quality is already exist!', 
+            'success', 
+            "{% static 'assets/images/notification/ok-48.png' %}", 
+            4000
+        );
+        // alert("This quality is already added.");
+        return;
+    }
+    
+    $("#edit_id").val("");  // Ensure ID is cleared for add
+    updateOrAddQuality(null);
+});
+
+function updateOrAddQuality(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var tm_id = $('#tm_id').val();
+    var quality_id = $('#edit_quality_id').val();
+    var is_active = $('#edit_is_active').val();
+
+    var url = id ? "/update-quality/" : "/add-quality/";
+
+    $.post(url, {
+        id: id,
+        tm_id: tm_id,
+        quality_id: quality_id,
+        is_active: is_active,
+        csrfmiddlewaretoken: tkn
+    }, function(response) {
+        if (response.success) {
+            notifier.show( 
+                'Well Done!', 
+                response.message, 
+                'success', 
+                "{% static 'assets/images/notification/ok-48.png' %}", 
+                4000
+            );
+            
+            LoadSub_Table();
+            refresh_table_data();
+
+            // Clear selection after adding
+            $('#edit_quality_id, #edit_size_id, #edit_color_id').val('').trigger("change");
+            
+            // Append new row to table
+            $("#update_quality_table tbody").append(`
+                <tr data-quality-id="${quality_id}">
+                    <td>${$("#edit_quality_id option:selected").text()}</td>
+                    <td><button class="btn btn-danger btn-sm remove-quality">Remove</button></td>
+                </tr>
+            `);
+            
+        } else {
+            notifier.show( 
+                'Error!', 
+                response.message, 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+            // alert("Error: " + response.message);
+        }
+    });
+}
+
+// Remove quality from table when clicking remove button
+$(document).on("click", ".remove-quality", function() {
+    $(this).closest("tr").remove();
+});
+
+
+
+// ```````````` size
+
+
+
+$(document).ready(function () {
+    $("#add_update_size").off("click").on("click", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        var action = $(this).text().trim(); // Check button text
+        var id = $('#edit_id').val(); // Get current ID
+
+        if (action === "+Add" || id == "0") {
+            addSize();
+        } else {
+            updateSize(id);
+        }
+    });
+});
+
+function size_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    $.post('/edit-size/', { id: id, csrfmiddlewaretoken: tkn }, function (res) {
+        $('#edit_id').val(res.id);
+        $('#edit_item_id').val(res.item_id);
+        $('#edit_quality_id').val(res.quality_id).trigger("change");
+        $('#edit_size_id').val(res.size_id).trigger("change");
+        var selectedColors = res.color_id ? res.color_id.split(',') : [];
+        $('#edit_color_id').val(selectedColors).trigger("change");
+        $('#edit_is_active').val(res.is_active).trigger("change");
+
+        // Change button text to "Update" when editing
+        $("#add_update_size").text("Update").off("click").on("click", function (event) {
+            event.preventDefault();
+            updateSize(id);
+        });
+
+        console.log('Editing Size ID:', res.id);
+    });
+}
+
+// function addSize() {
+//     var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+//     var tm_id = $('#tm_id').val();
+//     var quality_id = $('#edit_quality_id').val();
+//     var size_id = $('#edit_size_id').val();
+//     var color_ids = $('#edit_color_id').val().join(','); // Convert array to CSV
+
+//     console.log("Calling addSize() with:", quality_id, size_id, color_ids);
+
+//     $.post('/add-size/', { 
+//         tm_id: tm_id, 
+//         quality_id: quality_id, 
+//         size_id: size_id, 
+//         color_id: color_ids, 
+//         csrfmiddlewaretoken: tkn 
+//     }, function (response) {
+//         if (response.success) {
+//             LoadSub_Table();
+//             refresh_table_data();
+//             $('#edit_id').val('0'); 
+//             $('#edit_size_id, #edit_quality_id, #edit_color_id').val('').trigger("change");
+//             $("#add_update_size").text("+Add").off("click").on("click", addSize);
+//         } else {
+//             notifier.show('Error!',response.message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000); // Show the error message in an alert
+//             console.error("Error:", response.message);
+//         }
+//     }).fail(function (xhr) {
+//         console.error("Error:", xhr.responseText);
+//         notifier.show('Error!',"An error occurred while processing your request.", 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//          // Generic error alert
+//     });
+// }
+
+
+
+function addSize() {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var tm_id = $('#tm_id').val();
+    var quality_id = $('#edit_quality_id').val();
+    var size_id = $('#edit_size_id').val();
+    var color_ids = $('#edit_color_id').val().join(','); // Convert array to CSV
+
+    console.log("Calling addSize() with:", quality_id, size_id, color_ids);
+
+    $.post('/add-size/', { 
+        tm_id: tm_id, 
+        quality_id: quality_id, 
+        size_id: size_id, 
+        color_id: color_ids, 
+        csrfmiddlewaretoken: tkn 
+    }, function (response) {
+        if (response.success) {
+            // notifier.show('Error!',response.message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000); // Show the error message in an alert
+            notifier.show('Success!', 'Added Successfully!', 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+
+            // alert(response.message);
+            LoadSub_Table();
+            refresh_table_data();
+            $('#edit_id').val('0'); 
+            $('#edit_size_id, #edit_quality_id, #edit_color_id').val('').trigger("change");
+            $("#add_update_size").text("+Add").off("click").on("click", addSize);
+            
+        } else {
+            notifier.show('Error!',response.message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000); // Show the error message in an alert
+
+            // alert(response.message);  // Show error message if colors exist
+            console.error("Error:", response.message);
+        }
+    }).fail(function (xhr) {
+        notifier.show('Error!',"An error occurred while processing your request.", 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        console.error("Error:", xhr.responseText);
+    });
+}
+
+function updateSize(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var tm_id = $('#tm_id').val();
+    var quality_id = $('#edit_quality_id').val();
+    var size_id = $('#edit_size_id').val();
+    var color_ids = $('#edit_color_id').val() ? $('#edit_color_id').val().join(',') : '';
+    var edit_id = $('#edit_id').val();  // ID should come from DOM (hidden field)
+
+    console.log("Posting update-size with:", {
+        id: edit_id,
+        tm_id,
+        quality_id,
+        size_id,
+        color_ids,
+        csrf: tkn
+    });
+
+    $.post('/update-sizes/', { 
+        id: edit_id, 
+        tm_id: tm_id,
+        quality_id: quality_id, 
+        size_id: size_id, 
+        color_id: color_ids,  
+        csrfmiddlewaretoken: tkn 
+    }, function (response) {
+        if (response.success) {
+            notifier.show('Updated!', response.message, 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+
+            LoadSub_Table();
+            refresh_table_data();
+
+            // Reset form
+            $('#edit_id').val('0'); 
+            $('#edit_size_id, #edit_quality_id, #edit_color_id').val('').trigger("change");
+            $("#add_update_size").text("+Add").off("click").on("click", addSize);
+        } else {
+            console.log("Update failed:", response);
+            notifier.show('Error!', response.message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        }
+    }).fail(function (xhr) {
+        console.log("Request failed:", xhr.responseText);
+    });
+}
+
+
+
+
+function updateSize_25(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    var tm_id = $('#tm_id').val();
+    var quality_id = $('#edit_quality_id').val();
+    var size_id = $('#edit_size_id').val();
+    var color_ids = $('#edit_color_id').val() ? $('#edit_color_id').val().join(',') : ''; 
+
+    console.log("Calling updateSize() for ID:", tm_id, quality_id, size_id,color_ids);
+
+    $.post('/update-size/', { 
+        id: id, 
+        tm_id:tm_id,
+        quality_id: quality_id, 
+        size_id: size_id, 
+        color_id: color_ids,  
+        csrfmiddlewaretoken: tkn 
+    }, function (response) {
+        if (response.success) {
+            notifier.show('Updated!', response.message, 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+
+            LoadSub_Table();
+            refresh_table_data();
+
+            // Reset form
+            $('#edit_id').val('0'); 
+            $('#edit_size_id, #edit_quality_id, #edit_color_id').val('').trigger("change");
+            $("#add_update_size").text("+Add").off("click").on("click", addSize);
+        } else {
+            notifier.show('Error!', response.message, 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        }
+    }).fail(function (xhr) {
+        console.log("Error:", xhr.responseText);
+    });
+}
+
+// function addSize() {
+//     var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+//     var tm_id = $('#tm_id').val();
+//     var quality_id = $('#edit_quality_id').val();
+//     var size_id = $('#edit_size_id').val();
+//     var color_ids = $('#edit_color_id').val().join(','); // Convert array to CSV
+
+//     console.log("Calling addSize() with:", quality_id, size_id, color_ids);
+
+//     $.post('/add-size/', { 
+//         tm_id: tm_id, 
+//         quality_id: quality_id, 
+//         size_id: size_id, 
+//         color_id: color_ids, 
+//         csrfmiddlewaretoken: tkn 
+//     }, function (response) {
+//         if (response.success) {
+//             notifier.show('Success!', response.message, 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+
+//             LoadSub_Table();
+//             refresh_table_data();
+
+//             // Reset form and button
+//             $('#edit_id').val('0'); 
+//             $('#edit_size_id, #edit_quality_id,  #edit_color_id').val('').trigger("change");
+//             $("#add_update_size").text("+Add").off("click").on("click", addSize);
+
+//         } else {
+
+//             notifier.show(
+//                 'Error!', 
+//                 response.message, 
+//                 'danger', 
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                 4000
+//             );
+//             // alert(response.message);
+//         }
+//     }).fail(function (xhr) {
+//         console.log("Error:", xhr.responseText);
+//     });
+// }
+
+// function updateSize(id) {
+//     var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+//     var quality_id = $('#edit_quality_id').val();
+//     var size_id = $('#edit_size_id').val();
+//     var color_ids = $('#edit_color_id').val().join(',');
+
+//     console.log("Calling updateSize() for ID:", id);
+
+//     $.post('/update-size/', { 
+//         id: id, 
+//         quality_id: quality_id, 
+//         size_id: size_id, 
+//         color_id: color_ids,  
+//         csrfmiddlewaretoken: tkn 
+//     }, function (response) {
+//         if (response.success) {
+//             notifier.show('Updated!', response.message, 'success', "{% static 'assets/images/notification/ok-48.png' %}", 4000);
+
+//             LoadSub_Table();
+//             refresh_table_data();
+//             // Reset form and button after update
+//             $('#edit_id').val('0'); 
+//             $('#edit_size_id, #edit_quality_id #edit_color_id').val('').trigger("change");
+//             $('#edit_color_id').val('').trigger("change");
+//             $("#add_update_size").text("+Add").off("click").on("click", addSize);
+//         } else {
+//             notifier.show(
+//                 'Error!', 
+//                 response.message, 
+//                 'danger', 
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                 4000
+//             );
+//             // alert(response.message);
+//         }
+//     }).fail(function (xhr) {
+//         console.log("Error:", xhr.responseText);
+//     });
+// }
+
+
+
+
+function size_delete(id) {
+    if (confirm("Are you sure you want to delete this size?")) {
+        $.post('/delete-size/', { id: id, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() }, function(res) {
+            if (res.success) {
+                // alert(res.message);
+                notifier.show( 
+                    'Well Done!', 
+                    res.message, 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // reload_size_table();
+                LoadSub_Table();
+            // $('#edit_form').trigger('reset');
+            $('#edit_quality_id, #edit_size_id, #edit_color_id').val('').trigger("change");
+            // $('#update_quality_table tbody, #update_size_table tbody').empty();
+            $('#update_size_table tbody').empty();
+            // $('#edit_modal').modal('hide');
+            refresh_table_data();
+
+            } else {
+                // alert(res.message);
+                notifier.show( 
+                    'Error!', 
+                    res.message, 
+                    'success', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        });
+    }
+}
+
+    
+</script>

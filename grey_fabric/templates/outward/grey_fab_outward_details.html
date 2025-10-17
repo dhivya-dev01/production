@@ -1,0 +1,2428 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<style>
+
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+
+   #program_detail_table td input.form-control {
+        /* padding: 0.25rem 0.5rem;  */
+        padding: 0.50rem 0.5rem;
+    }
+
+    /* #program_table th,  */
+    #purchaseTable td {
+        padding: 1px !important;
+        /* text-align: center; */
+        vertical-align: middle;
+        text-align:center;
+ 
+    }
+
+    #program_detail_table input[type="number"] {
+        margin: 0 auto;
+        display: block;
+
+        /* text-align:center; */
+        border: none;
+ 
+    } 
+ 
+ #program_detail_table tbody td {
+    width: 70px;
+    /* max-width: 100px;
+    min-width: 100px; */
+    word-break: break-word;
+    /* text-align: center; */
+    vertical-align: middle;
+
+}
+
+.wt{
+    text-align: right;
+}
+
+
+</style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Grey Fabric Outward Update  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey Fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/grey-fab-outward"> Grey Fabric Outward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i> 
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                    <div class="card">
+
+                                        <div class="card-body row col-md-12"> 
+                                          
+                                            <div class="col-md-8 mt-3"> 
+                                                <form id="add_new">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <!-- Form Controls -->
+                                                            <div class="row ">
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward No.</label>
+                                                                    <input type="text" class="form-control" id="outward_no" name="outward_no" value="{{parent_stock_instance.do_number}}" disabled >
+                                                                    <input type="hidden" class="form-control" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}"  >
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Outward Date</label>
+                                                                    <input type="date" class="form-control" id="outward_date" name="outward_date">
+                                                                </div>
+                                
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select"  required>
+                                                                        <option value="">Select</option> <!--  // process-->
+                                                                        {% for k in party %} <!-- process -->
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Dyeing Program</label>
+                                                                    <select id="prg_id" name="prg_id" class="form-control single-select" required onchange=" LoadFabric()" >
+                                                                    <!-- <select id="prg_id" name="prg_id" class="form-control single-select" required onchange="LoadProgramDetails, LoadFabric()"> -->
+                                                                        <option>Select</option>
+                                                                        {% for k in dyeing %}
+                                                                        <option value="{{ k.id }}" data-program-id="{{ k.program_id }}">
+                                                                            {{ k.program_no }} - ({{ k.name }})
+                                                                        </option> 
+                                                                        {% endfor %}
+                                                                    </select>  
+
+                                                                    <input type="hidden" name="program_id" id="program_id">
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-2"> 
+                                                                    <label for="lot" class="form-label"><span style="color: red;">*</span> Lot No.</label>
+                                                                    <select class="form-control single-select" id="lot_no" name="lot_no" required   >
+                                                                    <!-- <select class="form-control single-select" id="lot_no" name="lot_no" required  onchange="LoadInward()" > -->
+                                                                        <option value="">Select</option>
+                                                                        {% for l in lot %}
+                                                                        <option value="{{l.lot_no}}">{{l.lot_no}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                            
+
+
+
+
+
+                                                                    
+                                                                
+                                                                
+                                                                </div>
+                                                                <div class="row">
+                                                               
+
+                                                                  
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label"><span style="color:red">*</span> Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control single-select" required onchange="LoadColor()">
+                                                                        {% for k in fabrics %}
+                                                                        <option value="{{ k.id }}">
+                                                                            {{ k.name }} - ({{ k.fabric_name }})
+                                                                        </option> 
+                                                                        {% endfor %}
+                                                                    </select>  
+
+                                                                </div>
+
+
+                                                                
+                                                                 <div class="col-md-6 mt-2">
+                                                                    <label for="color_id" class="form-label"><span style="color:red">*</span> Color</label>
+                                                                  
+
+                                                                    <select id="color_id" name="color_id" class="form-control single-select" multiple required>
+                                                                        {% for k in dyeing_colors %}
+                                                                            <option value="{{ k.id }}">{{ k.program_no }} - ({{ k.name }})</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+
+
+                                                                </div>
+
+                                                                <div class="col-md-2  mt-4">
+                                                                    <a id="load_data" class="btn btn-primary mt-3" onclick="LoadProgramDetails()">+ LOAD</a>
+                                                                </div>
+
+                                                            </div>
+                                                          
+                                                            <table id="purchaseTable" class="table table-bordered w-100"  style="display: none;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th rowspan="3">Fabric</th>
+                                                                  
+                                                                        <th rowspan="3">Program Name</th>
+                                                                        <th rowspan="3">Dia</th>
+
+                                                                        <th colspan="2" class="text-center">Program</th>
+                                                                        <th colspan="2" class="text-center">Stock</th>
+                                                                        <th colspan="2" class="text-center">Already Received</th>
+                                                                        <th colspan="2" class="text-center">Balance</th>
+                                                                        <th colspan="3" class="text-center">Outward</th>
+
+                                                                        <!-- Hidden Columns -->
+                                                                        <th rowspan="3" style="display: none;">fabric_id</th>
+                                                                        <th rowspan="3" style="display: none;">yarn count id</th> 
+                                                                        <th rowspan="3" style="display: none;">tex id</th>
+                                                                        <th rowspan="3" style="display: none;">gauge id</th>
+                                                                        <th rowspan="3" style="display: none;">Dia id</th>
+                                                                        <th rowspan="3" style="display: none;">Program id</th>
+
+                                                                        <th rowspan="3">Action</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Roll Wt. (kg)</th>
+
+                                                                        
+
+                                                                        <th rowspan="2">Roll</th>
+                                                                        <th rowspan="2">Gross Wt. (kg)</th>
+                                                                        <th rowspan="2"> Roll Wt. (kg)</th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Rows will be added dynamically here -->
+                                                                </tbody>
+                                                                    <tfoot>
+                                                                    <tr>
+                                                                        <td colspan="11" align="right" class="text-right"><p style="font-weight: bolder;">TOTAL</p></td>
+                                                                        <td align="center"><span id="footer-roll-total">0</span></td>
+                                                                        <td style="padding-left: 140px;"><span id="footer-gross-wt-total">0.000</span></td>
+                                                                        <td colspan="4"></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                
+                                                
+                                            
+                                                        
+                                                        </div> 
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                <div class="row mt-2">
+                                                    <div class="  col-md-12">
+
+                                                        
+                                                        <div class=" table-responsive table-desi">
+                                                                <h6 style="text-align: center;">DYEING PROGRAM</h6>
+                                                            <table id="program_detail_table" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <!-- <th>Action</th>  -->
+                                                                        <th>Dia</th>
+                                                                        <th>Color</th>
+                                                                        <th style="text-align: center;">Roll</th>
+                                                                        <th style="text-align: right;">Roll Wt.(in kg)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody></tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <th colspan="2" style="text-align:right">Totals:</th>
+                                                                        <th id="total_rolls">0.00</th>
+                                                                        <th id="total_quantity">0.00</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+
+                                                        </div> 
+
+
+                                                    
+
+
+                                                    </div>
+
+                                                    <div class="row mt-3"> 
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="col-md-12 mt-2" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                </form>
+
+                                            </div>
+
+
+
+
+
+                                 
+                                                <div class="col-md-4">
+                                                    <div class=" p-2">
+                                                        <form id="update_delivery">
+                                                            {% csrf_token %}
+
+                                                            <div class="row">
+                                                                <!-- Party Selection -->
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="delivery_party" class="form-label">
+                                                                        <span style="color: red;">*</span> Party
+                                                                    </label>
+                                                                    <select id="delivery_party_id" name="delivery_party_id" class="form-control single-select">
+                                                                        <option value="0">Select</option>
+                                                                        {% for k in compact_party %}
+                                                                            <option value="{{k.id}}">{{k.name}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <!-- Remarks -->
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="remarks" class="form-label">
+                                                                        <span style="color: red;">*</span> Remarks
+                                                                    </label>
+                                                                    <textarea class="form-control" id="remarks" name="remarks"></textarea>
+                                                                </div>
+                                                            <!-- </div> -->
+
+                                                            <!-- <div class="row"> -->
+                                                                <!-- Submit button + Hidden fields -->
+                                                                <div class="col-md-2 mt-4 text-end">
+                                                                    <!-- Hidden Inputs -->
+                                                                    <input type="hidden" class="form-control" id="delivery_bag_wt" name="delivery_bag_wt">
+                                                                    <input type="hidden" class="form-control" id="delivery_amount" name="delivery_amount">
+                                                                    <input type="hidden" class="form-control" id="delivery_quantity" name="delivery_quantity">
+                                                                    <input type="hidden" id="tm_id" name="tm_id" value="{{parent_stock_instance.id}}">
+                                                                    <input type="hidden" id="edit_id" name="edit_id" >
+                                                                    <input type="hidden" id="fab_id" name="fab_id" value="{{parent_stock_instance.fabric_id}}">
+                                                                    <input type="hidden" id="program_total_wt" value="{{ program.total_quantity }}">
+
+                                                                    <button type="submit" class="btn btn-raised btn-primary mt-2" id="deliver_update">+</button>
+                                                                </div>
+                                                            <!-- </div> -->
+                                                        </form>
+
+                                                        <!-- Delivery Table -->
+                                                        <div class="row mt-3">
+                                                            <div class="col-12 table-responsive table-hover">
+                                                                <table id="delivery_datatable" class="table table-striped table-bordered nowrap w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Action</th>
+                                                                            <th>Party</th>
+                                                                            <th>Delivery Remarks</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <!-- Rows will be dynamically added here -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            
+
+
+                                            <!-- <card-body  -->
+                                        </div>
+                                        
+
+                                    </div>
+                                <!-- end program table -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+
+// $('#prg_id').on('change', function () {
+//     // const inward_id = $(this).val(); 
+//     // if (!inward_id) {
+//         LoadProgramDetails()
+//         return;
+//     // }
+// })
+
+if ("{{ parent_stock_instance.delivery_date }}" && "{{ parent_stock_instance.delivery_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.delivery_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#outward_date').val(formattedDate).trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+
+
+if ("{{parent_stock_instance.dyeing_program_id}}" && "{{parent_stock_instance.dyeing_program_id}}" !== "") {
+    $('#prg_id').val("{{parent_stock_instance.dyeing_program_id}}").trigger("change");
+}
+
+
+
+if ("{{parent_stock_instance.lot_no}}" && "{{parent_stock_instance.lot_no}}" !== "") {
+    $('#lot_no').val("{{parent_stock_instance.lot_no}}").trigger("change");
+}
+
+
+// $('#color_id').val({{ parent_stock_instance.color_id_list|safe }}).trigger('change');
+
+// Optional: reload program details
+// setTimeout(() => {
+//     LoadProgramDetails();
+// }, 300);  // delay ensures dropdown updates before load
+
+
+
+
+$('#prg_id').on('change', function () {
+    const programId = $(this).find('option:selected').data('program-id'); // use hyphen, not underscore
+    $('#program_id').val(programId || '');
+});
+
+
+
+
+
+var id = $('#tm_id').val();
+if (id !== '' && !isNaN(id)) {  // Check if id is not empty and is a number
+    var delivery_table = $('#delivery_datatable').DataTable({
+        "language": {
+            "mesage": "Master purchase not hold any data related to child table !"
+        },
+        "processing": true,
+        "pageLength": 10, 
+        "destroy": true,
+        "order": [], 
+        
+        "columns": [
+            { "data": "action", "title": "Action"},  
+            { "data": "party", "title": "Party" },
+            { "data": "remarks", "title": " Remarks" ,"className":"text-center"},
+           
+        ],
+        "ajax": {
+            "url": '/gf-out-delivery-report/',
+            "type": "POST",
+            "data": function(data) {
+                data.csrfmiddlewaretoken = $('[name="csrfmiddlewaretoken"]').val();
+                data.id = id;  // Use validated id
+                
+            },
+        
+        }
+    });
+} else {
+    console.error("Invalid id:", id);
+    // Handle the case where id is invalid or empty
+}
+
+
+function refresh_deliverydata()
+{
+    delivery_table.ajax.reload();
+}
+
+
+
+
+
+function outward_detail_edit(id) {
+    var tkn = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.post('/edit-grey-fab-delivery/', { id: id, csrfmiddlewaretoken: tkn }, function(res) {
+        // $('#tm_po_id').val(res.tm_po_id); // Populate tm_id with the item's id
+        $('#edit_id').val(res.id);
+        $('#tm_id').val(res.tm_id);
+        $('#remarks').val(res.remarks);
+
+        $('#delivery_party_id').val(res.party_id).trigger("change");    
+
+   
+        $('#deliver_update').text('Update'); // Change button text to 'Update' for clarity
+    });
+}
+
+
+
+
+
+$('#update_delivery').on('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    formData.append('tm_id', $('#tm_id').val());
+
+    $.ajax({
+        url: '/gfdelivery_update/', // Adjust URL as needed
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                notifier.show(
+                    'Well Done!', 
+                    'Delivery Details updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );
+                // Refresh DataTable
+                refresh_data();
+                refresh_deliverydata();
+                
+
+                // Update Summary
+                // updateSummary(response);
+
+                // Clear Form Fields
+                $('#delivery_party_id').val('').trigger("change");
+                $('#remarks').val('');
+              
+                $('#update_flag').val('false');
+                $('#update').text('Add');
+            } else {
+                // alert(response.error_message || 'An error occurred. Please try again.');
+                notifier.show(
+                    'Error!', 
+                    'Failed to update delivery details:'+response.error_message, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Request Failed:', error); 
+            // alert('Error in processing the request');
+            notifier.show(
+                'Error!', 
+                'Error in processing the request.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            );
+        }
+    });
+});
+
+
+
+function outward_detail_delete(id) {
+    if (confirm('Are you sure you want to delete this data?')) {
+    $.ajax({
+        url: "/gfout-delivery-delete/",
+        method: "POST",
+        data: {
+            id: id,
+            tm_id: $("#tm_id").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: "json",
+        success: function(data) {
+            if (data.message === 'yes') {
+                showToast('success', 'Delivery Information Deleted!.');
+                // alert('success');
+                refresh_data();
+            } else {
+                notifier.show(
+                    'Error!', 
+                    // 'Failed To delete , Try again later!', 
+                    data.message || 'Failed to delete Delivery Details.', 
+
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );
+                // alert('Failed');
+                }
+            },
+        });
+
+    }
+}
+
+
+
+// LoadProgramDetails
+// ````````````````````````````````````````````````````````````````
+function LoadInward() {
+    const prg_id = $('#prg_id').val();
+
+    const lot_no = $('#lot_no').val();
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // Assuming CSRF token is present
+
+    if (prg_id) {
+        $.ajax({
+            url: '/get-grey-inward-lists/',  // Django view URL
+            type: 'POST',
+            data: {
+                'prg_id': prg_id,
+                'lot_no':lot_no,
+                'csrfmiddlewaretoken': csrfToken
+            },
+
+            success: function(response) {
+                const inwardSelect = $('#inward_id');
+                inwardSelect.empty();
+
+                inwardSelect.append('<option value="">Select</option>');
+                response.inward_list.forEach(function(item) {
+                    inwardSelect.append(`<option value="${item.id}">${item.inward_number} - (${item.total_gross_wt.toFixed(3)}) </option>`);
+                });
+            },
+
+
+            error: function(xhr) {
+                console.error('Failed to load inward list:', xhr.responseText);
+            }
+        });
+    }
+}
+
+// ```````````````````` add-Row ``````````````````````````````
+
+
+function updateOutwardTotals() {
+    let totalRoll = 0;
+    let totalGrossWt = 0;
+
+    $('.outward-roll').each(function () {
+        totalRoll += parseFloat($(this).val()) || 0;
+    });
+
+    $('.outward-roll-wt').each(function () {
+        totalGrossWt += parseFloat($(this).val()) || 0;
+    });
+
+    // Update footer
+    $('#purchaseTable tfoot th:eq(5)').text(totalRoll);
+    $('#purchaseTable tfoot th:eq(6)').text(totalGrossWt.toFixed(3));
+}
+
+
+function addRows(
+    fabric, yarn_count, tex, gauge, gsm,
+    prg_name, dia,
+    program_roll, program_roll_wt,
+    available_rolls, available_wt,
+    tot_out_rolls, tot_out_wt,
+    balance_roll, balance_roll_wt,
+    outward_roll, outward_gross_wt,
+    outward_roll_wt,
+    id, fabricId, yarn_countId, gaugeId, texId, diaId,
+    inwardId, program_id, lot_no, lot_roll, inward_roll
+) {
+    program_roll = parseFloat(program_roll) || 0;
+    program_roll_wt = parseFloat(program_roll_wt) || 0;
+    
+    available_rolls = parseFloat(available_rolls) || 0;
+    available_wt = parseFloat(available_wt) || 0;
+
+    tot_out_roll = parseFloat(tot_out_rolls) || 0;
+    tot_out_wt = parseFloat(tot_out_wt) || 0;
+
+    balance_roll = (parseFloat(balance_roll))- (parseFloat(tot_out_rolls)) || 0;
+    balance_roll_wt = (parseFloat(balance_roll_wt))- parseFloat(tot_out_wt) || 0;
+
+    console.log('balance-roll:',balance_roll);
+    console.log('balance-roll-wt:',balance_roll_wt);
+
+
+    outward_roll = parseFloat(outward_roll) || 0;
+    outward_gross_wt = parseFloat(outward_gross_wt) || 0; 
+    outward_roll_wt = parseFloat(outward_roll_wt) || 0;
+
+    const outward_total_wt = outward_roll_wt || (outward_roll * (program_roll_wt / program_roll || 0));
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-row-id", rowId);
+
+    newRow.innerHTML = ` 
+         <td>
+            ${fabric ? `<strong>FABRIC:</strong> ${fabric}<br>` : ''}
+            ${yarn_count ? `<strong>YARN COUNT:</strong> ${yarn_count}<br>` : ''}
+            ${gauge ? `<strong>GAUGE:</strong> ${gauge}<br>` : ''}
+            ${tex ? `<strong>TEX:</strong> ${tex}<br>` : ''}
+            ${gsm ? `<strong>GSM:</strong> ${gsm}` : ''}
+        </td>
+        <td>${prg_name}</td>
+        <td>${dia}</td>
+        <td>0</td>
+        <td class="prg-roll">${program_roll}</td>
+        <td class="prg-roll-wt" align="end">${program_roll_wt.toFixed(3)}</td>
+
+        <td class="inward-roll">${available_rolls}</td>
+        <td class="inward-roll-wt" align="end">${available_wt.toFixed(3)}</td>
+
+        <td class="rec-roll">
+          ${tot_out_rolls}
+        </td>
+        <td class="rec-roll-wt" align="end">
+        ${tot_out_wt.toFixed(3)}
+        </td>
+
+
+
+
+        <td class="balance-roll">${(balance_roll - outward_roll).toFixed(0)}</td>
+        <td class="balance-roll-wt" align="end">${(balance_roll_wt - outward_total_wt).toFixed(3)}</td>
+
+        <td>
+
+                 <input type="number" class="form-control form-control-sm outward_roll w-100" 
+                        value="${outward_roll}" 
+                        style="border: none; text-align: right; min-width: 0;" 
+                        min="0" step="0.01">
+
+        </td>
+     
+
+        <td style="text-align: right;margin-end:3px;" class="outward-roll-wt">  ${outward_total_wt.toFixed(3)}   </td>
+
+        <td style="display:none"><input type="hidden" class="fabric_id" value="${fabricId}"></td>
+        <td style="display:none"><input type="hidden" class="yarn_count_id" value="${yarn_countId}"></td>
+        <td style="display:none"><input type="hidden" class="tex_id" value="${texId}"></td>
+        <td style="display:none"><input type="hidden" class="gauge_id" value="${gaugeId}"></td>
+        <td style="display:none"><input type="hidden" class="dia_id" value="${diaId}"></td>
+        <td style="display:none"><input type="hidden" class="inward_id" value="${inwardId}"></td>
+        <td style="display:none"><input type="hidden" class="program" value="${program_id}"></td>
+        <td style="display:none"><input type="hidden" class="lot_no" value="${lot_no}"></td>
+        <td style="display:none"><input type="hidden" class="gsm" id="gsm" value="${gsm}"></td>
+
+        <td><button class="btn btn-danger btn-xs remove-row"><i class='feather icon-trash-2'></i></button></td>
+    `;
+
+    document.querySelector("#purchaseTable tbody").appendChild(newRow);
+
+    const outwardRollInput = newRow.querySelector(".outward-roll");
+    const outwardGrossWtInput = newRow.querySelector(".outward-gross-wt");
+
+    let lastValidRoll = outward_roll;
+    let lastValidGrossWt = outward_gross_wt;
+
+    outwardRollInput.addEventListener("input", () => {
+        const newRoll = parseFloat(outwardRollInput.value) || 0;
+        const avgWt = program_roll_wt / program_roll || 0; 
+        // const avgWt = available_rolls / program_roll_wt || 0;
+        console.log('roll-wt:',avgWt);
+        const calcGrossWt = newRoll * avgWt;
+
+        if (newRoll > available_rolls || calcGrossWt > available_wt) {
+
+            notifier.show(
+                'Error!', 
+                'Not enough stock available for this roll or weight.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            ); 
+
+
+            // alert("Not enough stock available for this roll or weight.");
+            outwardRollInput.value = lastValidRoll;
+            return;
+        }
+
+        lastValidRoll = newRoll;
+        lastValidGrossWt = calcGrossWt;
+
+        newRow.querySelector(".outward-roll-wt").textContent = calcGrossWt.toFixed(3);
+        newRow.querySelector(".balance-roll").textContent = (balance_roll - newRoll).toFixed(2);
+        newRow.querySelector(".balance-roll-wt").textContent = (balance_roll_wt - calcGrossWt).toFixed(3);
+
+            updateFooterTotals();
+            updateOutwardTotals();
+
+    });
+
+    outwardGrossWtInput.addEventListener("input", () => {
+        const newGrossWt = parseFloat(outwardGrossWtInput.value) || 0;
+                updateFooterTotals();
+                updateOutwardTotals();
+
+        if (newGrossWt > available_wt) {
+
+            notifier.show(
+                'Error!', 
+                'Not enough stock available for this gross weight.', 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                4000
+            ); 
+
+
+            // alert("Not enough stock available for this gross weight.");
+            outwardGrossWtInput.value = lastValidGrossWt;
+            return;
+
+
+        }
+
+        lastValidGrossWt = newGrossWt;
+    });
+
+    // Row background highlight
+    if (inward_roll === 0) {
+        newRow.classList.add("bg-red");
+    } else if (lot_roll !== balance_roll) {
+        newRow.classList.add("bg-yellow");
+    } else if (lot_roll >= inward_roll) {
+        newRow.classList.add("bg-green"); 
+    }
+
+    // Remove row button
+    newRow.querySelector(".remove-row").addEventListener("click", () => {
+        newRow.remove();
+
+            updateFooterTotals();
+
+    });
+}
+
+ 
+
+
+// `````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+// ```````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+
+$('#load_data').on('click', function () {
+    LoadProgramDetails();
+});
+
+
+// function LoadProgramDetails() {
+//     const prg_id = $("#prg_id").val();
+//     const color_id = $("#color_id").val();
+//     const tm_id = $("#tm_id").val();
+//     const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+//     $.post('/dyeing-prg-update-gf-outward/', { prg_id, color_id, tm_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+//         if (!response || !response.rows || !response.dias) {
+//             notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+//             return;
+//         }
+
+//         const dias = response.dias; // [[dia_id, dia_name]] 
+//         const rows = response.rows;
+
+//         let thead = `<thead><tr><th rowspan="2">Color</th>`;
+//         dias.forEach(([_, dia_name]) => {
+//             thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+//         });
+//         thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+//         dias.forEach(() => {
+//             thead += `<th>Roll</th><th>Wt</th>`;
+//         });
+//         thead += `</tr></thead>`;
+
+//         let grouped = {};
+//         rows.forEach(row => {
+//             const key = `${row.fabric}||${row.color}`;
+//             if (!grouped[key]) grouped[key] = [];
+//             grouped[key].push(row);
+//         });
+
+//         let tbody = `<tbody>`;
+//         let grandTotalRoll = 0;
+//         let grandTotalRollWt = 0;
+//         let grandOutRoll = 0;
+//         let grandOutRollWt = 0;
+
+//         // ✅ Dia-wise totals
+//         let diaWiseProgramRoll = {};
+//         let diaWiseProgramWt = {};
+//         dias.forEach(([diaId]) => {
+//             diaWiseProgramRoll[diaId] = 0;
+//             diaWiseProgramWt[diaId] = 0;
+//         });
+
+//         Object.keys(grouped).forEach((key, index) => {
+//             const [fabric, color] = key.split("||");
+//             const safeFabric = fabric.replace(/\s+/g, '_');
+//             const safeColor = color.replace(/\s+/g, '_');
+//             const rowKey = `${safeFabric}_${safeColor}_${index}`;
+//             const metaRow = grouped[key][0];
+
+//             let rowRollTotal = 0;
+//             let rowRollWtTotal = 0;
+
+//             tbody += `<tr><td rowspan="2">
+//                 <span class="fabric_id" style="display:none;">${metaRow.fabric_id}</span>
+//                 <span class="color_id" style="display:none;">${metaRow.color_id}</span>
+//                 <span class="gauge_id" style="display:none;">${metaRow.gauge_id}</span>
+//                 <span class="yarn_count_id" style="display:none;">${metaRow.yarn_count_id}</span>
+//                 <span class="tex_id" style="display:none;">${metaRow.tex_id}</span>
+//                 <span class="gsm" style="display:none;">${metaRow.gsm}</span>
+//                 <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+//                 <button type="remove" id="remove-row" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+//                 ${color}</td>`;
+
+//             dias.forEach(([diaId, diaName]) => {
+//                 const cell = metaRow[diaName] || { roll: 0, roll_wt: 0 };
+//                 const roll = parseFloat(cell.roll) || 0;
+//                 const wt = parseFloat(cell.roll_wt) || 0;
+
+//                 rowRollTotal += roll;
+//                 rowRollWtTotal += wt;
+
+//                 diaWiseProgramRoll[diaId] += roll;
+//                 diaWiseProgramWt[diaId] += wt;
+
+//                 tbody += `<td style="text-align:center;background-color:#d4f1f1;">${roll}</td>
+//                           <td style="text-align:end;background-color:#d4f1f1;">${wt.toFixed(3)}</td>`;
+//             });
+
+//             tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+//                       <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+//                       </tr><tr>`;
+
+//             let outrowRollTotal = 0;
+//             let outrowRollWtTotal = 0;
+
+//             dias.forEach(([diaId, diaName]) => {
+//                 const outwardData = metaRow.outward?.[diaName] || { roll: 0, roll_wt: 0 };
+//                 const outRoll = parseFloat(outwardData.roll) || 0;
+//                 const outWt = parseFloat(outwardData.roll_wt) || 0;
+
+//                 outrowRollTotal += outRoll;
+//                 outrowRollWtTotal += outWt;
+
+//                 tbody += `<td>
+//                     <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+//                         data-dia-id="${diaId}" 
+//                         data-target-roll="prg-edit-roll-${rowKey}"
+//                         data-target-wt="prg-edit-rollwt-${rowKey}"
+//                         style="width:120px;text-align:center;" value="${outRoll}" min="0"
+//                         oninput="updateInputTotals('${rowKey}')">
+//                 </td>
+//                 <td>
+//                     <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+//                         data-dia-id="${diaId}" 
+//                         style="text-align:right;width:120px" value="${outWt.toFixed(3)}" min="0"
+//                         oninput="updateInputTotals('${rowKey}')">
+//                 </td>`;
+//             });
+
+//             tbody += `<td style="text-align:center;background-color:#fffbdc;">${outrowRollTotal}</td>
+//                       <td style="text-align:end;background-color:#fffbdc;">${outrowRollWtTotal.toFixed(3)}</td>
+//                       </tr>`;
+
+//             grandTotalRoll += rowRollTotal;
+//             grandTotalRollWt += rowRollWtTotal;
+//             grandOutRoll += outrowRollTotal;
+//             grandOutRollWt += outrowRollWtTotal;
+//         });
+
+//         // ✅ Program Total row with dia-wise values
+//         tbody += `<tr style="background-color:#f7f7d4;font-weight:bold;">
+//             <td>Program Total</td>`;
+//         dias.forEach(([diaId]) => {
+//             tbody += `<td style="text-align:center;">${diaWiseProgramRoll[diaId]}</td>
+//                       <td style="text-align:end;">${diaWiseProgramWt[diaId].toFixed(3)}</td>`;
+//         });
+//         // <tbody += `<td style="text-align:center;" id="outward_total_roll">${grandOutRoll}</td>
+//         //    <td style="text-align:end;" id="outward_total_wt">${grandOutRollWt.toFixed(3)}</td>
+
+
+
+//         tbody += `<td style="text-align:center;" d="outward_total_roll">${grandTotalRoll}</td>
+//                   <td style="text-align:end;" id="outward_total_wt">${grandTotalRollWt.toFixed(3)}</td>
+//                   </tr>`;
+
+//         // ✅ Outward Total row (overall only)
+//         tbody += `<tr style="background-color:#e0e0e0;font-weight:bold;">
+//             <td>Outward Total</td>`;
+//         dias.forEach(() => { tbody += `<td></td><td></td>`; });
+//         tbody += `<td style="text-align:center;">${grandOutRoll}</td>
+//                   <td style="text-align:end;">${grandOutRollWt.toFixed(3)}</td>
+//                   </tr>`;
+
+//         tbody += `</tbody>`;
+//         $('#program_detail_table').html(thead + tbody);
+//         calculateOutwardTotals();
+
+//         // Populate Lot Dropdown 
+//         const lotSelect = $("#lot_no");
+//         lotSelect.empty().append(`<option value="">Select</option>`);
+//         if (response.lots?.length > 0) {
+//             response.lots.forEach((lot, index) => {
+//                 lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+//             });
+//         } else { 
+//             lotSelect.append(`<option value="">No lots found</option>`);
+//         }
+
+//         // Remove row handler
+//         $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+//             const $row = $(this).closest('tr');
+//             const $nextRow = $row.next();
+//             $row.remove();
+//             if ($nextRow) $nextRow.remove();
+//         });
+//     });
+// }
+
+//  $(document).on('input', '.roll-input, .roll-wt-input', function () {
+//     calculateOutwardTotals();
+// });
+
+// function calculateOutwardTotals() {
+//     let totalOutRoll = 0;
+//     let totalOutWt = 0;
+
+//     $(".roll-input").each(function () {
+//         totalOutRoll += parseFloat($(this).val()) || 0;
+//     });
+
+//     $(".roll-wt-input").each(function () {
+//         totalOutWt += parseFloat($(this).val()) || 0;
+//     });
+
+//     $("#outward_total_roll").text(totalOutRoll);
+//     $("#outward_total_wt").text(totalOutWt.toFixed(3));
+// }
+
+    function LoadProgramDetails() {
+        const prg_id = $("#prg_id").val();
+        const color_id = $("#color_id").val();
+        const tm_id = $("#tm_id").val();
+        const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+        $.post('/dyeing-prg-update-gf-outward/', { prg_id, color_id, tm_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+            if (!response || !response.rows || !response.dias) {
+                notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+                return;
+            }
+
+            const dias = response.dias;
+            const rows = response.rows;
+
+            let thead = `<thead><tr><th rowspan="2">Color</th>`;
+            dias.forEach(([_, dia_name]) => {
+                thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+            });
+            thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+            dias.forEach(() => {
+                thead += `<th>Roll</th><th>Wt</th>`;
+            });
+            thead += `</tr></thead>`;
+
+            let grouped = {};
+            rows.forEach(row => {
+                const key = `${row.fabric}||${row.color}`;
+                if (!grouped[key]) grouped[key] = [];
+                grouped[key].push(row);
+            });
+
+            let tbody = `<tbody>`;
+            let grandTotalRoll = 0;
+            let grandTotalRollWt = 0;
+            let grandOutRoll = 0;
+            let grandOutRollWt = 0;
+
+            // Dia-wise program roll/wt totals
+            let diaWiseProgramRoll = {};
+            let diaWiseProgramWt = {};
+
+            // Dia-wise outward totals
+            let diaWiseOutwardRoll = {};
+            let diaWiseOutwardWt = {};
+
+            dias.forEach(([diaId]) => {
+                diaWiseProgramRoll[diaId] = 0;
+                diaWiseProgramWt[diaId] = 0;
+                diaWiseOutwardRoll[diaId] = 0;
+                diaWiseOutwardWt[diaId] = 0;
+            });
+
+            Object.keys(grouped).forEach((key, index) => {
+                const [fabric, color] = key.split("||");
+                const safeFabric = fabric.replace(/\s+/g, '_');
+                const safeColor = color.replace(/\s+/g, '_');
+                const rowKey = `${safeFabric}_${safeColor}_${index}`;
+                const metaRow = grouped[key][0];
+
+                let rowRollTotal = 0;
+                let rowRollWtTotal = 0;
+
+                tbody += `<tr><td rowspan="2">
+                    <span class="fabric_id" style="display:none;">${metaRow.fabric_id}</span>
+                    <span class="color_id" style="display:none;">${metaRow.color_id}</span>
+                    <span class="gauge_id" style="display:none;">${metaRow.gauge_id}</span>
+                    <span class="yarn_count_id" style="display:none;">${metaRow.yarn_count_id}</span>
+                    <span class="tex_id" style="display:none;">${metaRow.tex_id}</span>
+                    <span class="gsm" style="display:none;">${metaRow.gsm}</span>
+                    <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+                    <button type="remove" id="remove-row" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+                    ${color}</td>`;
+
+                dias.forEach(([diaId, diaName]) => {
+                    const cell = metaRow[diaName] || { roll: 0, roll_wt: 0 };
+                    const roll = parseFloat(cell.roll) || 0;
+                    const wt = parseFloat(cell.roll_wt) || 0;
+
+                    rowRollTotal += roll;
+                    rowRollWtTotal += wt;
+
+                    diaWiseProgramRoll[diaId] += roll;
+                    diaWiseProgramWt[diaId] += wt;
+
+                    tbody += `<td style="text-align:center;background-color:#d4f1f1;">${roll}</td>
+                            <td style="text-align:end;background-color:#d4f1f1;">${wt.toFixed(3)}</td>`;
+                });
+
+                tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+                        <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+                        </tr><tr>`;
+
+                let outrowRollTotal = 0;
+                let outrowRollWtTotal = 0;
+
+                // dias.forEach(([diaId, diaName]) => {
+                //     const outwardData = metaRow.outward?.[diaName] || { roll: "", roll_wt: "" };
+                //     const outRoll = parseFloat(outwardData.roll) || 0;
+                //     const outWt = parseFloat(outwardData.roll_wt) || 0;
+
+                //     outrowRollTotal += outRoll;
+                //     outrowRollWtTotal += outWt;
+
+                //     diaWiseOutwardRoll[diaId] += outRoll;
+                //     diaWiseOutwardWt[diaId] += outWt;
+
+                //     tbody += `<td>
+                //         <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                //             data-dia-id="${diaId}" 
+                //             data-target-roll="prg-edit-roll-${rowKey}"
+                //             data-target-wt="prg-edit-rollwt-${rowKey}"
+                //             style="width:120px;text-align:center;" value="${outRoll}" min="0"
+                //             oninput="updateInputTotals('${rowKey}')">
+                //     </td>
+                //     <td>
+
+                //         <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                //             data-dia-id="${diaId}" 
+                //             data-target-wt="prg-edit-rollwt-${rowKey}"   
+                //             step="0.001" min="0"
+                //             style="text-align:right;width:120px" value="${outWt.toFixed(3)}"
+                //             oninput="updateInputTotals('${rowKey}')">
+
+
+
+
+                       
+                //     </td>`;
+                // });
+
+
+                dias.forEach(([diaId, diaName]) => {
+                    const outwardData = metaRow.outward?.[diaName] || { roll: "", roll_wt: "" };
+                    const outRoll = parseFloat(outwardData.roll) || "";
+                    const outWt = parseFloat(outwardData.roll_wt) || "";
+
+                    outrowRollTotal += parseFloat(outRoll) || 0;
+                    outrowRollWtTotal += parseFloat(outWt) || 0;
+
+                    diaWiseOutwardRoll[diaId] += parseFloat(outRoll) || 0;
+                    diaWiseOutwardWt[diaId] += parseFloat(outWt) || 0;
+
+                    tbody += `<td>
+                        <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                            data-dia-id="${diaId}" 
+                            data-target-roll="prg-edit-roll-${rowKey}"
+                            data-target-wt="prg-edit-rollwt-${rowKey}"
+                            style="width:120px;text-align:center;" 
+                            value="${outRoll}" 
+                            min="0"
+                            onfocus="this.select()" 
+                            oninput="updateInputTotals('${rowKey}')">
+                    </td>
+                    <td>
+                        <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                            data-dia-id="${diaId}" 
+                            data-target-wt="prg-edit-rollwt-${rowKey}"   
+                            step="0.001" min="0"
+                            style="text-align:right;width:120px" 
+                            value="${outWt !== '' ? parseFloat(outWt).toFixed(3) : ''}"
+                            onfocus="this.select()" 
+                            oninput="updateInputTotals('${rowKey}')">
+                    </td>`;
+                });
+
+
+
+                //  <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                //             data-dia-id="${diaId}"  step="0.001" min="0"
+
+                //             style="text-align:right;width:120px" value="${outWt.toFixed(3)}" min="0"
+                //             oninput="updateInputTotals('${rowKey}')">
+
+
+                tbody += `<td style="text-align:center;" id="row-total-roll-${rowKey}">${outrowRollTotal}</td>
+                        <td style="text-align:end;"  id="row-total-wt-${rowKey}">${outrowRollWtTotal.toFixed(3)}</td>
+
+                
+                
+            
+                        </tr>`;
+                        //     <td style="text-align:center;">${outrowRollTotal}</td>
+                        //   <td style="text-align:end;">${outrowRollWtTotal.toFixed(3)}</td>
+
+                grandTotalRoll += rowRollTotal;
+                grandTotalRollWt += rowRollWtTotal;
+                grandOutRoll += outrowRollTotal; 
+                grandOutRollWt += outrowRollWtTotal;
+            });
+
+            // Program Total row
+            tbody += `<tr style="background-color:#f7f7d4;font-weight:bold;">
+                <td>Program Total</td>`;
+            dias.forEach(([diaId]) => {
+                tbody += `<td style="text-align:center;">${diaWiseProgramRoll[diaId]}</td>
+                        <td style="text-align:end;">${diaWiseProgramWt[diaId].toFixed(3)}</td>`;
+            });
+            tbody += `<td style="text-align:center;">${grandTotalRoll}</td>
+                    <td style="text-align:end;">${grandTotalRollWt.toFixed(3)}</td>
+                    </tr>`;
+
+            // ✅ Outward Total row with dia-wise totals
+            // tbody += `<tr style="background-color:#e0e0e0;font-weight:bold;">
+            //     <td>Outward Total</td>`;
+            // dias.forEach(([diaId]) => {
+            //     tbody += `<td style="text-align:center;">${diaWiseOutwardRoll[diaId]}</td>
+            //               <td style="text-align:end;">${diaWiseOutwardWt[diaId].toFixed(3)}</td>`;
+            // });
+            // tbody += `<td style="text-align:center;" id="outward_total_roll">${grandOutRoll}</td>
+            //           <td style="text-align:end;" id="outward_total_wt">${grandOutRollWt.toFixed(3)}</td>
+            //           </tr>`;
+
+
+            tbody += `<tr style="background-color:#e0e0e0;font-weight:bold;">
+                <td>Outward Total</td>`;
+            dias.forEach(([diaId]) => {
+                tbody += `<td style="text-align:center;" id="outward_roll_${diaId}">${diaWiseOutwardRoll[diaId]}</td>
+                        <td style="text-align:end;"  id="outward_wt_${diaId}">${diaWiseOutwardWt[diaId].toFixed(3)}</td>`;
+            });
+            tbody += `<td style="text-align:center;" id="outward_total_roll">${grandOutRoll}</td>
+                    <td style="text-align:end;" id="outward_total_wt">${grandOutRollWt.toFixed(3)}</td>
+                    </tr>`;
+
+
+            tbody += `</tbody>`;
+
+            $('#program_detail_table').html(thead + tbody);
+            calculateOutwardTotals();
+
+            // Lot Dropdown
+            const lotSelect = $("#lot_no");
+            lotSelect.empty().append(`<option value="">Select</option>`);
+            if (response.lots?.length > 0) {
+                response.lots.forEach((lot, index) => {
+                    lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+                });
+            } else {
+                lotSelect.append(`<option value="">No lots found</option>`);
+            }
+
+            // Remove row handler
+            $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+                const $row = $(this).closest('tr');
+                const $nextRow = $row.next();
+                $row.remove();
+                if ($nextRow) $nextRow.remove();
+                calculateOutwardTotals(); // Recalculate after row removal
+            });
+        });
+    }
+
+    function updateInputTotals(rowKey) {
+        let totalRoll = 0;
+        let totalWt = 0;
+
+        $(`[data-target-roll="prg-edit-roll-${rowKey}"]`).each(function () {
+            totalRoll += parseFloat($(this).val()) || 0;
+        });
+
+        $(`[data-target-wt="prg-edit-rollwt-${rowKey}"]`).each(function () {
+            totalWt += parseFloat($(this).val()) || 0;
+        });
+
+        $(`#row-total-roll-${rowKey}`).text(totalRoll);
+        $(`#row-total-wt-${rowKey}`).text(totalWt.toFixed(3)); 
+
+        calculateOutwardTotals();  // ✅ Update overall totals too
+    }
+
+
+    // ✅ Recalculates overall outward totals when inputs change
+    $(document).on('input', '.roll-input, .roll-wt-input', function () {
+        calculateOutwardTotals();
+    });
+
+// function calculateOutwardTotals() {
+//     let totalOutRoll = 0;
+//     let totalOutWt = 0;
+
+//     $(".roll-input").each(function () {
+//         totalOutRoll += parseFloat($(this).val()) || 0;
+//     });
+
+//     $(".roll-wt-input").each(function () {
+//         totalOutWt += parseFloat($(this).val()) || 0;
+//     });
+
+//     $("#outward_total_roll").text(totalOutRoll);
+//     $("#outward_total_wt").text(totalOutWt.toFixed(3));
+// }
+
+
+
+function calculateOutwardTotals() {
+    let totalOutRoll = 0;
+    let totalOutWt = 0;
+
+    let diaWiseOutwardRoll = {};
+    let diaWiseOutwardWt = {};
+
+    // Initialize dia-wise keys
+    $(".roll-input, .roll-wt-input").each(function () {
+        const diaId = $(this).data("dia-id");
+        if (!(diaId in diaWiseOutwardRoll)) {
+            diaWiseOutwardRoll[diaId] = 0;
+            diaWiseOutwardWt[diaId] = 0;
+        }
+    });
+
+    // Accumulate dia-wise and overall totals
+    $(".roll-input").each(function () {
+        const diaId = $(this).data("dia-id");
+        const val = ($(this).val() || "").trim();
+        const roll = parseFloat(val) || 0;
+        totalOutRoll += roll;
+        diaWiseOutwardRoll[diaId] += roll;
+    });
+
+    $(".roll-wt-input").each(function () {
+        const diaId = $(this).data("dia-id");
+        const val = ($(this).val() || "").trim();
+        const wt = parseFloat(val) || 0;
+        totalOutWt += wt;
+        diaWiseOutwardWt[diaId] += wt;
+    });
+
+    // Update the main outward total cells
+    $("#outward_total_roll").text(totalOutRoll);
+    $("#outward_total_wt").text(totalOutWt.toFixed(3));
+
+    // Update the dia-wise columns in the "Outward Total" row
+    for (const diaId in diaWiseOutwardRoll) {
+        $(`#outward_roll_${diaId}`).text(diaWiseOutwardRoll[diaId]);
+        $(`#outward_wt_${diaId}`).text(diaWiseOutwardWt[diaId].toFixed(3));
+    }
+}
+
+// FY2025-101-17-BOBBY-12-2 PKT TRUNK-13-100-1-NAVY BLUE-SURYA\-3
+
+
+function LoadProgramDetails_bk272025() {
+    const prg_id = $("#prg_id").val();
+    const color_id = $("#color_id").val();
+    const tm_id = $("#tm_id").val();
+    const csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+
+    $.post('/dyeing-prg-update-gf-outward/', { prg_id, color_id,tm_id, csrfmiddlewaretoken: csrfToken }, function (response) {
+        if (!response || !response.rows || !response.dias) {
+            notifier.show('Error!', 'Please select a dyeing program.', 'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+            return;
+        }
+ 
+        const dias = response.dias;       // [[dia_id, dia_name]] 
+        const rows = response.rows;
+
+        let thead = `<thead><tr><th rowspan="2">Color</th>`;
+        dias.forEach(([_, dia_name]) => {
+            thead += `<th colspan="2" style="text-align:center;">${dia_name}</th>`;
+        });
+        thead += `<th rowspan="2">Total Roll</th><th rowspan="2">Total Wt</th></tr><tr>`;
+        dias.forEach(() => {
+            thead += `<th>Roll</th><th>Wt</th>`;
+        });
+        thead += `</tr></thead>`;
+
+        let grouped = {};
+        rows.forEach(row => {
+            const key = `${row.fabric}||${row.color}`;
+            if (!grouped[key]) grouped[key] = [];
+            grouped[key].push(row);
+        });
+
+        let tbody = `<tbody>`;
+        Object.keys(grouped).forEach((key, index) => {
+            const [fabric, color] = key.split("||");
+            const safeFabric = fabric.replace(/\s+/g, '_');
+            const safeColor = color.replace(/\s+/g, '_');
+            const rowKey = `${safeFabric}_${safeColor}_${index}`;
+            const colorRows = grouped[key];
+            const metaRow = colorRows[0];
+
+            // ✅ Build diaMap using dia_name (like "20")
+            const diaMap = {};
+            dias.forEach(([diaId, diaName]) => {
+                const cell = metaRow[diaName];  // ← this is correct now
+                if (cell) {
+                    diaMap[diaId] = {
+                        roll: cell.roll || 0,
+                        roll_wt: cell.roll_wt || 0
+                    };
+                } else {
+                    diaMap[diaId] = {
+                        roll: 0,
+                        roll_wt: 0
+                    };
+                }
+            });
+
+            // ➤ Display Row
+            let rowRollTotal = 0;
+            let rowRollWtTotal = 0;
+
+            tbody += `<tr><td rowspan="2">
+                <span class="fabric_id" style="display:none;">${metaRow.fabric_id}</span>
+                <span class="color_id" style="display:none;">${metaRow.color_id}</span>
+                <span class="gauge_id" style="display:none;">${metaRow.gauge_id}</span>
+                <span class="yarn_count_id" style="display:none;">${metaRow.yarn_count_id}</span>
+                <span class="tex_id" style="display:none;">${metaRow.tex_id}</span>
+                <span class="gsm" style="display:none;">${metaRow.gsm}</span>
+                <span class="dia_ids" style="display:none;">${dias.map(d => d[0]).join(',')}</span>
+                <button type="remove" id="remove-row" class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+                ${color}</td>`;
+
+            dias.forEach(([diaId]) => {
+                const data = diaMap[diaId];
+                rowRollTotal += parseFloat(data.roll) || 0;
+                rowRollWtTotal += parseFloat(data.roll_wt) || 0;
+
+                tbody += `<td style="text-align:center;background-color:#d4f1f1;">${data.roll}</td>
+                          <td style="text-align:end;background-color:#d4f1f1;">${parseFloat(data.roll_wt).toFixed(3)}</td>`;
+            });
+
+            tbody += `<td style="text-align:center;background-color:#d4f1f1;">${rowRollTotal}</td>
+                      <td style="text-align:end;background-color:#d4f1f1;">${rowRollWtTotal.toFixed(3)}</td>
+                      </tr><tr>`;
+
+            // ➤ Input Row
+            let outrowRollTotal = 0;
+            let outrowRollWtTotal = 0;
+
+            let grandTotalRoll = 0;
+            let grandTotalRollWt = 0;
+            let grandOutRoll = 0;
+            let grandOutRollWt = 0;
+
+
+
+
+          
+            dias.forEach(([diaId, diaName]) => {
+                const outwardData = metaRow.outward && metaRow.outward[diaName]
+                    ? metaRow.outward[diaName]
+                    : { roll: 0, roll_wt: 0 };
+
+                outrowRollTotal += parseFloat(outwardData.roll) || 0;
+                outrowRollWtTotal += parseFloat(outwardData.roll_wt) || 0;
+                grandTotalRoll += rowRollTotal;
+                grandTotalRollWt += rowRollWtTotal;
+                grandOutRoll += outrowRollTotal;
+                grandOutRollWt += outrowRollWtTotal;
+
+                tbody += `<td>
+                    <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                        data-dia-id="${diaId}" 
+                        data-target-roll="prg-edit-roll-${rowKey}"
+                        data-target-wt="prg-edit-rollwt-${rowKey}"
+                        style="width:120px;text-align:center;" value="${outwardData.roll}" min="0"
+                        oninput="updateInputTotals('${rowKey}')">
+                </td>
+                <td>
+                    <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                        data-dia-id="${diaId}" 
+                        style="text-align:right;width:120px" value="${parseFloat(outwardData.roll_wt).toFixed(3)}" min="0"
+                        oninput="updateInputTotals('${rowKey}')">
+                </td>`;
+
+
+                // tbody += `<td>
+                //     <input type="number" name="out_roll_${color}_${diaId}" class="roll-input"
+                //         data-target-roll="prg-edit-roll-${rowKey}"
+                //         data-target-wt="prg-edit-rollwt-${rowKey}"
+                //         style="width:120px;text-align:center;" value="${data.roll}" min="0"
+                //         oninput="updateInputTotals('${rowKey}')">
+                // </td>
+                // <td>
+                //     <input type="number" name="out_wt_${color}_${diaId}" class="roll-wt-input"
+                //         style="text-align:right;width:120px" value="${parseFloat(data.roll_wt).toFixed(3)}" min="0"
+                //         oninput="updateInputTotals('${rowKey}')">
+                // </td>`;
+            });
+
+            tbody += `<td style="text-align:center;width:90px;">${outrowRollTotal}</td>
+                      <td style="text-align:end;width:90px;">${outrowRollWtTotal.toFixed(3)}</td>
+                      </tr>`;
+        });
+        tbody += `</tbody>`;
+
+        $('#program_detail_table').html(thead + tbody);
+
+        // ✅ Populate Lot Numbers
+        const lotSelect = $("#lot_no");
+        lotSelect.empty().append(`<option value="">Select</option>`);
+        if (response.lots && response.lots.length > 0) {
+            response.lots.forEach((lot, index) => {
+                lotSelect.append(`<option value="${lot}" ${index === 0 ? 'selected' : ''}>${lot}</option>`);
+            });
+        } else {
+            lotSelect.append(`<option value="">No lots found</option>`);
+        }
+
+        // ✅ Remove row handler
+        $('#program_detail_table').off('click', '.remove-row').on('click', '.remove-row', function () {
+            const $row = $(this).closest('tr');
+            const $nextRow = $row.next();
+            $row.remove();
+            if ($nextRow) $nextRow.remove();
+        });
+    });
+}
+
+
+
+
+function updateInputTotals(rowKey) {
+    let rollSum = 0; 
+    let wtSum = 0;
+
+    $(`input[data-target-roll="prg-edit-roll-${rowKey}"]`).each(function () {
+        let val = parseFloat($(this).val()) || 0;
+        rollSum += val;
+    });
+
+    $(`input[data-target-wt="prg-edit-rollwt-${rowKey}"]`).each(function () {
+        let val = parseFloat($(this).val()) || 0;
+        wtSum += val;
+    });
+
+    $(`#prg-edit-roll-${rowKey}`).text(rollSum);
+    $(`#prg-edit-rollwt-${rowKey}`).text(wtSum.toFixed(3));
+}
+
+// ```````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+
+
+
+function LoadFabric() {
+    var prg_id = $('#prg_id').val();
+    console.log('Group ID:', prg_id);
+
+    if (!prg_id) {
+        console.warn("No Group ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_program_fabrics/',  // Updated backend URL
+        data: {
+            'prg_id': prg_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Item Data:', data);
+
+            // Clear dropdowns
+            $('#fabric_id').empty().append('');
+            $('#color_id').empty().append('');
+           
+
+            // Populate Items
+            if (data.fabrics && Array.isArray(data.fabrics)) {
+                data.fabrics.forEach(function(fabrics) {
+                    $('#fabric_id').append('<option value="' + fabrics.id + '">' + fabrics.name + '</option>');
+                });
+            }
+            LoadColor();
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading items:', error);
+        }
+    });
+}
+
+
+
+// function LoadColor() {
+//     var prg_id = $('#prg_id').val();
+//     var fabric_id = $('#fabric_id').val();
+//     console.log('Group ID:', prg_id);
+
+//     if (!prg_id) {
+//         console.warn("No Group ID selected");
+//         return;
+//     }
+
+//     var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get_dyed_program_color/',  // Updated backend URL
+//         data: {
+//             'prg_id': prg_id,
+//             'fabric_id': fabric_id,
+//             'csrfmiddlewaretoken': csrfToken
+//         },
+//         dataType: 'json',
+
+//         success: function(data) {
+//             console.log('Received Item Data:', data.colors);
+
+//             // Clear dropdowns
+//             // $('#color_id').empty().append('<option value="">Select Item</option>');
+//             $('#color_id').empty().append('');
+           
+ 
+//             // Populate Items
+//             if (data.colors && Array.isArray(data.colors)) {
+//                 data.colors.forEach(function(colors) {
+//                     $('#color_id').append('<option value="' + colors.id + '">' + colors.name + '</option>');
+//                 });
+//             }
+
+
+//             if ("{{parent_stock_instance.color_id}}" && "{{parent_stock_instance.color_id}}" !== "") {
+//                 $('#color_id').val("{{parent_stock_instance.color_id}}").trigger("change");
+//             }
+
+//             // let preselectedColors = preselectedColorIds.split(',');
+//             // $('#color_id').val(preselectedColors).trigger("change");
+//                 LoadProgramDetails();
+
+//         },
+
+//         error: function(xhr, status, error) {
+//             console.error('Error loading items:', error);
+//         }
+//     });
+// }
+
+
+function LoadColor() {
+    var prg_id = $('#prg_id').val();
+    var fabric_id = $('#fabric_id').val();
+    console.log('Group ID:', prg_id);
+
+    if (!prg_id) {
+        console.warn("No Group ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_dyed_program_color/',
+        data: {
+            'prg_id': prg_id,
+            'fabric_id': fabric_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function(data) {
+            console.log('Received Item Data:', data.colors);
+
+            // Clear and repopulate dropdown
+            $('#color_id').empty();
+
+            if (data.colors && Array.isArray(data.colors)) {
+                data.colors.forEach(function(color) {
+                    $('#color_id').append('<option value="' + color.id + '">' + color.name + '</option>');
+                });
+            }
+
+            // Handle multiple preselected color IDs
+            let preselectedColorIds = "{{ parent_stock_instance.color_id|escapejs }}";
+            if (preselectedColorIds) {
+                let colorArray = preselectedColorIds.split(',').map(id => id.trim());
+                $('#color_id').val(colorArray).trigger("change");
+            }
+
+            LoadProgramDetails();
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading items:', error);
+        }
+    });
+}
+
+
+
+// ```````````````````` addrow `````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+
+
+function storeTblValues() {
+    const groupedData = {};
+
+    $('#program_detail_table tbody tr').each(function (index, rowEl) {
+        const $row = $(rowEl);
+
+        // Only process input rows (2nd row in each group)
+        if (index % 2 !== 1) return;
+
+        const $prevRow = $row.prev();
+        const color = $prevRow.find('.color_id').text().trim();
+        const fabric = $prevRow.find('.fabric_id').closest('td').text().trim();
+
+        const hiddenData = {
+            fabric_id: $prevRow.find('.fabric_id').text().trim(),
+            yarn_count_id: $prevRow.find('.yarn_count_id').text().trim(),
+            tex_id: $prevRow.find('.tex_id').text().trim(),
+            gauge_id: $prevRow.find('.gauge_id').text().trim(),
+            gsm: $prevRow.find('.gsm').text().trim(),
+            color_id: $prevRow.find('.color_id').text().trim(),
+            fabric: fabric,
+            color: color
+        };
+
+        const inputs = [];
+        const $tds = $row.find('td');
+
+        for (let i = 0; i < $tds.length - 2; i += 2) {
+            const rollInput = $tds.eq(i).find('input');
+            const wtInput = $tds.eq(i + 1).find('input');
+
+            const roll = parseFloat(rollInput.val()) || 0;
+            const roll_wt = parseFloat(wtInput.val()) || 0;
+            const dia_id = rollInput.data('dia-id'); // ✅ Correctly fetch dia_id
+            console.log('DIA:',dia_id);
+            if ((roll > 0 || roll_wt > 0) && dia_id !== undefined) {
+                inputs.push({
+                    dia_id: dia_id,
+                    roll: roll,
+                    roll_wt: roll_wt,
+                    ...hiddenData
+                });
+            }
+        }
+
+        if (inputs.length > 0) {
+            if (!groupedData[color]) {
+                groupedData[color] = {
+                    fabric: hiddenData.fabric,
+                    color: hiddenData.color,
+                    items: []
+                };
+            }
+            groupedData[color].items.push(...inputs); 
+        }
+    });
+
+    const TableData = Object.values(groupedData);
+    console.log("PROGRAM_DETAIL_TABLE_DATA (Grouped):", TableData);
+    return TableData;
+}
+
+
+// function storeTblValues() {
+//     const groupedData = {};
+
+//     $('#program_detail_table tbody').each(function () {
+//         let $tbody = $(this);
+//         let $rows = $tbody.find('tr');
+
+//         for (let i = 0; i < $rows.length; i += 3) {
+//             const prgRow = $rows.eq(i);
+//             const inputRow = $rows.eq(i + 2);
+
+//             const fabric = prgRow.find('td:first').text().trim();
+//             const color = prgRow.find('td:eq(1)').text().trim();
+
+//             const inputs = [];
+
+//             inputRow.find('td').each(function () {
+//                 const $cell = $(this);
+//                 const inputEl = $cell.find('input');
+
+//                 if (inputEl.length > 0) {
+//                     const name = inputEl.attr('name') || '';
+//                     const value = parseFloat(inputEl.val()) || 0;
+
+//                     const diaMatch = name.match(/out_roll(?:_wt)?_(.+?)_(.+)/);
+//                     if (diaMatch) {
+//                         const dia = diaMatch[2];
+//                         const type = name.includes('_wt_') ? 'roll_wt' : 'roll';
+
+//                         let existing = inputs.find(i => i.dia === dia);
+//                         if (!existing) {
+//                             existing = {
+//                                 dia: dia,
+//                                 roll: 0,
+//                                 roll_wt: 0,
+//                                 // Optional: fetch hidden fields if needed
+//                                 fabric_id: prgRow.find('.fabric_id').text().trim() || '',
+//                                 yarn_count_id: prgRow.find('.yarn_count_id').text().trim() || '',
+//                                 tex_id: prgRow.find('.tex_id').text().trim() || '',
+//                                 gauge_id: prgRow.find('.gauge_id').text().trim() || '',
+//                                 gsm: prgRow.find('.gsm').text().trim() || '',
+//                                 dia_id: prgRow.find('.dia_id').text().trim() || '',
+//                                 color_id: prgRow.find('.color_id').text().trim() || '',
+//                                 fabric: fabric,
+//                                 color: color
+//                             };
+//                             inputs.push(existing);
+//                         }
+
+//                         existing[type] = value;
+//                     }
+//                 }
+//             });
+
+//             const filtered = inputs.filter(i => i.roll > 0 || i.roll_wt > 0);
+//             if (filtered.length > 0) {
+//                 if (!groupedData[color]) {
+//                     groupedData[color] = {
+//                         fabric: fabric,
+//                         color: color,
+//                         items: []
+//                     };
+//                 }
+//                 groupedData[color].items.push(...filtered);
+//             }
+//         }
+//     });
+
+//     const TableData = Object.values(groupedData);
+//     console.log("PROGRAM_DETAIL_TABLE_DATA (Grouped):", TableData);
+//     return TableData;
+// }
+
+
+
+
+function storeTblValues_dye_prg() {
+    const TableData = [];
+
+    $('#program_detail_table tbody').each(function () {
+        let $tbody = $(this);
+        let $rows = $tbody.find('tr');
+
+        for (let i = 0; i < $rows.length; i += 3) {
+            const prgRow = $rows.eq(i);
+            const outRow = $rows.eq(i + 1);
+            const inputRow = $rows.eq(i + 2);
+
+            const fabric = prgRow.find('td:first').text().trim();
+            const color = prgRow.find('td:eq(1)').text().trim();
+
+            const inputs = [];
+
+            inputRow.find('td').each(function (index) {
+                const $cell = $(this);
+                const inputEl = $cell.find('input');
+
+                if (inputEl.length > 0) {
+                    const name = inputEl.attr('name') || '';
+                    const value = parseFloat(inputEl.val()) || 0;
+
+                    // Extract dia name from input name (ex: out_roll_Red_16)
+                    const diaMatch = name.match(/out_roll(?:_wt)?_(.+?)_(.+)/);
+                    if (diaMatch) {
+                        const inputColor = diaMatch[1];
+                        const dia = diaMatch[2];
+                        const type = name.includes('_wt_') ? 'roll_wt' : 'roll';
+
+                        let existing = inputs.find(i => i.dia === dia);
+                        if (!existing) {
+                            existing = { dia, roll: 0, roll_wt: 0 };
+                            inputs.push(existing);
+                        }
+                        existing[type] = value;
+                    }
+                }
+            });
+
+    
+
+            inputs.forEach(input => {
+                if (input.roll > 0 || input.roll_wt > 0) {
+                    TableData.push({
+                        fabric: fabric,
+                        color: color,
+                        dia: input.dia,
+                        roll: input.roll,
+                        roll_wt: input.roll_wt.toFixed(2),
+                    });
+                }
+            });
+
+        }
+    });
+
+    console.log("PROGRAM_DETAIL_TABLE_DATA:", TableData);
+    return TableData;
+}
+
+
+
+
+// ``````````````````````````````` manualy clicked row to add ````````````````````````````````
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const yarn_count = $("#yarn_count_id option:selected").text();
+    const yarn_countId = $("#yarn_count_id").val();
+    const party_id = $("#party_id").val();
+
+    const fabric = $("#fabric_id option:selected").text();
+    const fabricId = $("#fabric_id").val();
+
+    const gauge = $("#gauge_id option:selected").text();
+    const gaugeId = $("#gauge_id").val();
+
+    const party = $("#party_id option:selected").text();
+    const partyId = $("#party_id").val();
+
+    const tex = $("#tex_id option:selected").text();
+    const texId = $("#tex_id").val();
+
+    const dia = $("#dia_id option:selected").text();
+    const diaId = $("#dia_id").val();
+
+
+
+    const gsm = parseFloat($("#gsm").val()) || 0;
+    const roll = parseFloat($("#roll").val()) || 0;
+    const lot_no = $("#lot_no").val().trim();
+    const roll_wt = parseFloat($("#roll_wt").val()) || 0;
+    const grossWt = parseFloat($("#gross_wt").val()) || 0;
+    const inwardId = $("#tm_inward_id").val() || 0;
+    const id = 0;
+
+    // Prevent adding row if required fields are empty
+    // if (!yarn_countId || !fabricId  || !gaugeId || !texId || !gsm || roll <= 0 || roll_wt <= 0 || greoss_wt <= 0) {
+    // if (!party_id <= 0) {
+    //     notifier.show( 
+    //         'Error', 
+    //         'Please fill in all required fields before adding.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    // Check if 'lot_no' is empty, if so, show alert
+    if (!lot_no) {
+        notifier.show( 
+            'Error', 
+            'Lot number is required.', 
+            'warning', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        );
+        return;
+    }
+
+    // Check if inward_id already exists in any of the existing rows
+    const existingRows = document.querySelectorAll("#purchaseTable tbody tr");
+    let inwardIdExists = false;
+
+    existingRows.forEach(row => {
+        const rowInwardId = row.querySelector(".inward_id").value;
+        console.log("Checking inward_id:", rowInwardId); // Debugging to see the inward_id being checked
+        if (rowInwardId == inwardId) {
+            inwardIdExists = true;
+        }   
+    });
+
+
+
+    // If no duplicate found, add the row
+    addRow(fabric,yarn_count,gauge,tex,gsm,dia, lot_no, roll, roll_wt, grossWt, party_id,fabricId,yarn_countId,gaugeId,texId,diaId, inwardId);
+    calculateTotalValue();
+}
+
+
+
+// Global storage for dia-wise grouped data
+const diaList = [14, 15, 16, 18];
+const groupedTable = {
+    Stock: {},
+    Program: {},
+    Color: {}
+};
+
+function addRow(
+    fabric, yarn_count, tex, gauge, gsm,
+    prg_name, dia,
+    program_roll, program_roll_wt,
+    available_rolls, available_wt,
+    tot_out_rolls, tot_out_wt,
+    balance_roll, balance_roll_wt,
+    outward_roll, outward_gross_wt,
+    outward_roll_wt,
+    id, fabricId, yarn_countId, gaugeId, texId, diaId,
+    inwardId, program_id, lot_no, lot_roll, inward_roll
+) {
+    dia = parseInt(dia);
+
+    // Normalize values
+    program_roll = parseFloat(program_roll) || 0;
+    program_roll_wt = parseFloat(program_roll_wt) || 0;
+    available_rolls = parseFloat(available_rolls) || 0;
+    available_wt = parseFloat(available_wt) || 0;
+    outward_roll = parseFloat(outward_roll) || 0;
+    outward_gross_wt = parseFloat(outward_gross_wt) || 0;
+
+    // Initialize dia slot if not exists
+    if (!groupedTable.Stock[dia]) groupedTable.Stock[dia] = { roll: 0, wt: 0 };
+    if (!groupedTable.Program[dia]) groupedTable.Program[dia] = { roll: 0, wt: 0 };
+    if (!groupedTable.Color[dia]) groupedTable.Color[dia] = { roll: 0, wt: 0 };
+
+    // Add values to grouped table
+    groupedTable.Stock[dia].roll += available_rolls;
+    groupedTable.Stock[dia].wt += available_wt;
+    groupedTable.Program[dia].roll += program_roll;
+    groupedTable.Program[dia].wt += program_roll_wt;
+    groupedTable.Color[dia].roll += outward_roll;
+    groupedTable.Color[dia].wt += outward_gross_wt;
+
+    renderGroupedTable();
+}
+
+
+function renderGroupedTable() {
+    const tbody = document.querySelector("#purchaseTable tbody");
+    tbody.innerHTML = "";
+
+    const rows = ['Stock', 'Program', 'Color'];
+    const bgColors = {
+        Stock: 'rgb(226, 228, 131)',
+        Program: 'rgb(112, 223, 223)',
+        Color: 'rgb(245, 202, 123)'
+    };
+
+    rows.forEach(type => {
+        let row = `<tr style="background-color:${bgColors[type]}"><td><strong>${type}</strong></td>`;
+        let totalRoll = 0, totalWt = 0;
+
+        diaList.forEach(dia => {
+            const entry = groupedTable[type][dia] || { roll: 0, wt: 0 };
+            row += `<td>${entry.roll}</td><td>${entry.wt.toFixed(2)}</td>`;
+            totalRoll += entry.roll;
+            totalWt += entry.wt;
+        });
+
+        row += `<td><strong>${totalRoll}</strong></td><td><strong>${totalWt.toFixed(2)}</strong></td></tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+    });
+}
+
+
+// `````````````````````````````````````````````````````````````
+
+function updateFooterTotals() {
+    let totalRoll = 0;
+    let totalGrossWt = 0;
+
+    document.querySelectorAll("#purchaseTable tbody .outward-roll").forEach(input => {
+        totalRoll += parseFloat(input.value) || 0;
+    });
+
+    document.querySelectorAll("#purchaseTable tbody .outward-roll-wt").forEach(input => {
+        totalGrossWt += parseFloat(input.value) || 0;
+    });
+
+    document.getElementById("footer-roll-total").textContent = totalRoll.toFixed(0);
+    document.getElementById("footer-gross-wt-total").textContent = totalGrossWt.toFixed(3);
+}
+
+
+// ``````````````````````````````````````````````````````````````````````````````````````
+
+
+// ``````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+function addRow_bk_13062025(fabric,yarn_count,gauge,tex,gsm,dia, lot_no, roll, roll_wt, grossWt, party_id,fabricId,yarn_countId,gaugeId,texId,diaId, inwardId) {
+   
+    // console.log('rows:',addRow);
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    if (!tableBody) {
+        console.error("Table body not found!");
+        return;
+    }
+
+
+    //  // Prevent adding row if required fields are empty
+    // if (!party_id <= 0) {
+    //     notifier.show( 
+    //         'Error', 
+    //         'Please fill in all required fields before adding.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     );
+    //     return;
+    // }
+
+    rowCounter++;
+    const rowId = `row_${rowCounter}`;  
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-product-id", fabricId);
+    newRow.setAttribute("data-row-id", rowId);
+    $('#lot_no').val().trim();
+    newRow.innerHTML = `
+        <td>${fabric}</td>
+        <td>${yarn_count}</td>
+        <td>${tex}</td>
+        <td>${gauge}</td>
+        <td>${gsm}</td>
+        <td>${dia}</td>
+        <td>${roll}</td>
+        <td>${roll_wt.toFixed(2)}</td>
+        <td>${grossWt.toFixed(2)}</td>
+        
+        <td style="display:none"><input type="hidden" class="party_id" value="${party_id}" /></td> 
+        <td style="display:none"><input type="hidden" class="fabric_id" value="${fabricId}" /></td>
+        <td style="display:none"><input type="hidden" class="yarn_count_id" value="${yarn_countId}" /></td>
+        <td style="display:none"><input type="hidden" class="gauge_id" value="${gaugeId}" /></td>
+        <td style="display:none"><input type="hidden" class="tex_id" value="${texId}" /></td>
+        <td style="display:none"><input type="hidden" class="dia_id" value="${diaId}" /></td>
+        <td style="display:none"><input type="hidden" class="inward_id" value="${inwardId}" /></td>
+        <td style="display:none"><input type="hidden" class="lot_no" value='${lot_no}'></td>
+
+        <td>
+            <button class="btn btn-primary btn-xs edit-row"><i class="feather icon-edit"></i></button>
+            <button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button>
+        </td>
+    `;
+
+    tableBody.appendChild(newRow);
+    calculateTotalValue();
+    resetFields();
+
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+        newRow.remove();
+        calculateTotalValue();
+    });
+
+    newRow.querySelector(".edit-row").addEventListener("click", function () {
+        
+        // Populate input fields with the row's data for editing
+        $("#yarn_count_id").val(yarn_countId).trigger('change');
+        $("#fabric_id").val(fabricId).trigger('change');
+        $("#gauge_id").val(gaugeId).trigger('change');
+        $("#tex_id").val(texId).trigger('change');
+        $("#dia_id").val(diaId).trigger('change');
+        $("#lot_no").val(lot_no);
+        $("#gsm").val(gsm);
+        $("#roll").val(roll);
+        $("#roll_wt").val(roll_wt);
+        $("#gross_wt").val(grossWt);
+        $("#tm_inward_id").val(inwardId);
+
+        newRow.remove();
+        
+        // Change the Add button to update functionality
+        $("#addButton").off("click").on("click", function () {
+            updateRow(rowId, productId);
+        });
+    });
+}
+
+
+
+// Calculate the total of all rows 
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0;
+    let taxSummary = {}; 
+  
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#purchaseTable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseFloat($(this).find('td:eq(6)').text()) || 0; // Quantity from input field
+        const gross_wt = parseFloat($(this).find('td:eq(8)').text()) || 0; // Rate from input field
+ 
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += gross_wt;
+
+
+    });
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+
+}
+
+
+
+function resetFields() {
+    $('#roll').val('');
+    $('#roll_wt').val('');
+    $('#gross_wt').val('');
+    $('#gsm').val('');
+    $('#fabric_id').val('').trigger('change'); 
+    $('#tex_id').val('').trigger('change');
+    $('#gauge_id').val('').trigger('change');
+    $('#dia_id').val('').trigger('change');
+    // $('#fabric_id').val('').trigger('change');
+}
+
+
+
+
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var prgId = $('#prg_id').val();
+    if (!prgId || prgId === "Select") {
+        notifier.show(
+            'Error!',
+            'Please select a Knitting Program.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return; // Prevent submission if Knitting Program is not selected
+    }
+
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+
+
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this);
+        mdata.append('chemical_data', TableData);
+
+        var do_no = $('#outward_no').val();
+
+        mdata.append('do_number', do_no);
+       
+
+        $.ajax({
+            type: "POST",  
+            url: "/update-grey-outward/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+             success: function(data) {
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'success') {
+                    notifier.show( 
+                        'Well Done!', 
+                        data.message || 'Added Successfully!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    ); 
+
+
+                    // $('#outward_no').val(data.do_number);
+                    // $('#add_new').trigger('reset');
+ 
+                    // location.href='/grey-fab-outward';
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                        'Error!', 
+                        'Error adding data', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                // alert('Error Adding data');
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        }); 
+    }
+});
+
+
+
+$('.single-select').select2();
+
+
+
+</script>

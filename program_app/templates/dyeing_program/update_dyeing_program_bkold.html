@@ -1,0 +1,1279 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12"> 
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title">
+                                            <h4 class="m-b-10"> Dyeing Program</h4>
+                                        </div> 
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Program</a></li>
+                                            <li class="breadcrumb-item"><a href="/dyeing-program">Dyeing Program  </a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+                                
+                                 
+                                    <div class="card">
+
+                                        <div class="card-body row">
+                                            <div class="col-sm-12">
+                                            
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                
+                    
+                                                        <form id="update_dyeing_form">
+                                                            {% csrf_token %} 
+                                                            <div class="row "> 
+                                                               
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Program No.</label>
+                                                                    <input type="text" class="form-control" id="program_id" name="program_id" value="{{parent_stock_instance.program_no}}" disabled>
+                                                                    <input type="hidden" class="form-control" id="program_id" name="program_id" value="{{parent_stock_instance.id}}" disabled>
+                                                                </div>
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">Program Date</label>
+                                                                    <input class="form-control" type="date" name="program_date" id="program_date" disabled>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="program_name" class="form-label">Program Name</label>
+                                                                    <input class="form-control" id="fabricName" dir="ltr" value="{{parent_stock_instance.name}}"
+                                                                     style="position: relative;width: 240px; vertical-align: top; background-color: transparent;" name="name" type="text">
+
+                                                                </div>
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="bag" class="form-label">Party </label>
+                                                                    <select id="party_id" name="party_id" class="form-control form-select single-select" disabled >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %} 
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                                </div> 
+
+                                                                 <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Lot </label>
+                                                                    <select id="lot" name="lot" class="form-control single-select" onchange="LoadLotDetails()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in lot %}
+                                                                        <option value="{{ k.id }}">{{ k.lot_no }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div> 
+                                                                  
+
+
+                                                                <div class="col-md-4 mt-2">
+                                                                    <label for="order_date" class="form-label">Remarks</label>
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" >{{parent_stock_instance.remarks}}</textarea>
+                                                                </div>
+                    
+                                                                
+                                                                              
+                                                                
+                                                           
+                                                            <div class="col-md-2 mt-4" style="text-align: center;">
+                                                                <input type="hidden" class="form-control" id="prg_id" name="prg_id" value="{{parent_stock_instance.id}}">
+
+                                                                <!-- <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button> -->
+                                                                <button type="submit" class="btn btn-primary mt-3" >Update</button>
+        
+                                                            </div>
+                                                      </div>
+                                                        </form>
+                    
+                                                        <form id="add_new">
+                                                            {% csrf_token %}
+                                                            <div class="row ">
+                                                      
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="bag" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in product %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-5">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="button" id="load_data" class="btn btn-primary" onchange="LoadFabricData()" >+ Load</button>
+                                                                </div>
+
+
+
+                                                                
+                                                            </div> 
+                                                        </form>
+                                                    </div>
+
+                                                    <!-- Summary table -->
+                                                  
+                                                </div> 
+                                           <hr>
+                                                
+                                                    <div class="mt-2">
+                                                        <!-- <div class="table-desi"> -->
+                                                            
+                                                            <div class="p-2 dt-responsive table-responsive table-hover">
+
+                                                            <input type="hidden" id="update_tm_id" value="{{ parent_stock_instance.id }}">
+                                                            <input type="hidden" id="tm_id" value="{{ parent_stock_instance.id }}">
+                                                                <table id="datatable" class="table table-striped table-bordered wrap w-100">
+                                                              {% csrf_token %}
+                                                                <thead>
+                                                                    <tr style="background-color: white; color: black;">
+                                                                        <th rowspan="2">Fabric</th>
+                                                                        <th rowspan="2">Color</th>
+                                                                        <th colspan="2">Dia</th> <!-- Dynamically generated -->
+                                                                        <th colspan="2">Total</th>
+                                                                        <th id="tx-id" style="display:none">Tx Id </th>
+                                                                        <th id="tm-id" style="display:none">Tx Id </th>
+                                                                    </tr>
+                                                                    <tr style="background-color: white; color: black;" id="diaHeaderRow">
+                                                                        <!-- Dia Headers will be added dynamically -->
+                                                                        <th>Rolls</th><th>Wt</th>
+                                                                        <th>Rolls</th><th>Wt</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody></tbody>
+                                                                <tfoot>
+                                                                    <tr style="background-color: white; color: black;">
+                                                                        <th colspan="2" >Total</th>
+                                                                        <th class="text-end totalDiaRolls">0</th>
+                                                                        <th class="text-end totalDiaWt">0</th>
+                                                                        <th class="text-end totalTotalRolls">0</th>
+                                                                        <th class="text-end totalTotalWt">0</th>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                        
+                                                    </div>
+
+                                                    <!-- <div class="" style="text-align: center;">
+                                                        <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                        <button type="submit" id="updateButton" class="btn btn-primary">Update</button>
+
+                                                    </div>
+                                              -->
+                                               
+                                            </div> 
+                                        </div>
+                                    </div> 
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+
+
+<script>
+
+
+
+$("#update_dyeing_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+ 
+        var dataArray = [];
+        for (var pair of formData.entries()) {
+            dataArray.push(pair);
+        }
+ 
+        var serializedData = {};
+ 
+        dataArray.forEach(function(pair) {
+            serializedData[pair[0]] = pair[1];
+        });
+ 
+        $.ajax({
+            type: 'POST',
+            url: '/dyeing-update/',
+            data:  serializedData,
+
+            success: function (response) { 
+                console.log("AJAX Success Response:", response);
+
+                if (response.message === 'success') {
+                    notifier.show(
+                        'Well Done!', 
+                        'Updated successfully.', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );        
+                    $('#party_id  ').val('').trigger("change");
+ 
+
+
+                    refresh_data();
+            
+                    console.log("Before Update: Remarks Field Value →", $('#remarks').val());
+
+                    if ($("#remarks").length > 0) {
+                        setTimeout(function () { // Delay if form reloads dynamically
+                            $('#remarks').val(response.remarks).trigger("change");
+                            console.log("Updated After Delay: Remarks Field Value →", $('#remarks').val());
+                        }, 500);
+                    } else {
+                        console.log("Remarks field not found in the DOM.");
+                    }
+                }
+
+
+
+
+                else {
+                    notifier.show(
+              'Error!', 
+              'Failed to update  .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+                }
+                $('#update_dyeing_form').trigger('reset');
+                refresh_data();
+            },
+            error: function(xhr, errmsg, err){
+                notifier.show(
+              'Error!', 
+              'Failed to update  .', 
+              'danger', 
+              "{% static 'assets/images/notification/high_priority-48.png' %}", 
+              4000
+          );
+            }
+        });
+    });
+ 
+
+
+
+
+if ("{{ parent_stock_instance.program_date }}" && "{{ parent_stock_instance.program_date }}" !== "") {
+    var purchaseDate = "{{ parent_stock_instance.program_date }}";
+    // Ensure it's in the correct format (YYYY-MM-DD)
+    var formattedDate = new Date(purchaseDate).toISOString().split('T')[0];
+    $('#program_date').val(formattedDate).trigger("change");
+}
+
+
+
+
+if ("{{parent_stock_instance.party_id}}" && "{{parent_stock_instance.party_id}}" !== "") {
+    $('#party_id').val("{{parent_stock_instance.party_id}}").trigger("change");
+}
+
+$(document).ready(function () {
+    $("#update").click(function () {
+        let fabric_id = $("#fabric_id").val();
+        if (!fabric_id) {
+            alert("Please select a fabric!");
+            return;
+        }
+        loadDyeingProgramData(fabric_id); // Pass fabric_id to load data
+    });
+});
+
+ 
+
+// Function to update totals when table cells change
+$(document).on("input", ".dia-rolls, .dia-wt", function () {
+    calculateTotalss("#datatable"); // Recalculate totals
+});
+
+// Function to calculate totals dynamically
+function calculateTotalss(tableId) {
+    let $table = $(tableId);
+
+    let totalDiaRolls = [],
+        totalDiaWt = [],
+        totalTotalRolls = 0,
+        totalTotalWt = 0;
+
+    // **Reset all totals in the footer**
+    $table.find(".totalDiaRolls, .totalDiaWt, .totalTotalRolls, .totalTotalWt").text("0");
+
+    // **Iterate over each row in `<tbody>`**
+    $table.find("tbody tr").each(function () {
+        let rowTotalRolls = 0;
+        let rowTotalWt = 0;
+
+        // **Sum up each Dia's Rolls**
+        $(this).find(".dia-rolls").each(function (index) {
+            let val = parseFloat($(this).text()) || 0;
+            rowTotalRolls += val;
+            totalDiaRolls[index] = (totalDiaRolls[index] || 0) + val;
+        });
+
+        // **Sum up each Dia's Weight**
+        $(this).find(".dia-wt").each(function (index) {
+            let val = parseFloat($(this).text()) || 0;
+            rowTotalWt += val;
+            totalDiaWt[index] = (totalDiaWt[index] || 0) + val;
+        });
+
+        // **Update row total**
+        $(this).find(".totalRolls").text(rowTotalRolls);
+        $(this).find(".totalWt").text(rowTotalWt.toFixed(2));
+
+        // **Add to grand totals**
+        totalTotalRolls += rowTotalRolls;
+        totalTotalWt += rowTotalWt;
+    });
+
+    // **Update column totals in `<tfoot>`**
+    $table.find(".totalDiaRolls").each(function (index) {
+        $(this).text(totalDiaRolls[index] || 0);
+    });
+
+    $table.find(".totalDiaWt").each(function (index) {
+        $(this).text((totalDiaWt[index] || 0).toFixed(2));
+    });
+
+    // **Update grand totals in `<tfoot>`**
+    $table.find(".totalTotalRolls").text(totalTotalRolls);
+    $table.find(".totalTotalWt").text(totalTotalWt.toFixed(2));
+}
+
+    
+var id = $('#tm_id').val();
+
+
+// ``````````````````````````````` datatble list ```````````````````````
+
+$(document).ready(function () {
+    loadDyeingProgramData();
+});
+
+
+
+$(document).ready(function () {
+    $("#update").click(function () {
+        let fabric_id = $("#fabric_id").val();
+        if (!fabric_id) {
+            alert("Please select a fabric!");
+            return;
+        }
+        loadDyeingProgramData(fabric_id); // Pass fabric_id to load data
+    });
+});
+
+
+$('.single-select').select2();
+
+
+
+// Function to update column totals
+function updateTableTotals() {
+    let totalRolls = 0;
+    let totalWt = 0;
+
+    $(".totalRolls").each(function () {
+        let value = parseFloat($(this).text()) || 0;
+        totalRolls += value;
+    });
+ 
+    $(".totalWt").each(function () {
+        let value = parseFloat($(this).text()) || 0;
+        totalWt += value;
+    });
+
+    $(".totalTotalRolls").text(totalRolls || "");
+    $(".totalTotalWt").text(totalWt ? totalWt.toFixed(2) + " kg" : ""); 
+}
+ 
+// ``````````````````` test 10-03-2025 ``````````````````````````
+
+
+
+
+
+
+
+function calculateTotals(tableId) {
+    let $table = $(tableId);
+
+    let totalDiaRolls = [], 
+        totalDiaWt = [], 
+        totalTotalRolls = 0, 
+        totalTotalWt = 0;
+
+    // Reset all totals
+    $table.find(".totalDiaRolls, .totalDiaWt, .totalTotalRolls, .totalTotalWt").text("0");
+
+    // Iterate over each row in the tbody
+    $table.find("tbody tr").each(function () {
+        let rowTotalRolls = 0;
+        let rowTotalWt = 0;
+
+        // Loop through each roll column in the row
+        $(this).find(".dia-rolls").each(function (index) {
+            let val = parseFloat($(this).text().trim()) || 0;
+            rowTotalRolls += val;
+            totalDiaRolls[index] = (totalDiaRolls[index] || 0) + val;
+        });
+
+        // Loop through each weight column in the row
+        $(this).find(".dia-wt").each(function (index) {
+            let val = parseFloat($(this).text().trim()) || 0;
+            rowTotalWt += val;
+            totalDiaWt[index] = (totalDiaWt[index] || 0) + val;
+        });
+
+        // Update row total (Last two columns)
+        $(this).find(".totalRolls").text(rowTotalRolls || "");
+        $(this).find(".totalWt").text(rowTotalWt ? rowTotalWt.toFixed(2) + " kg" : "");
+
+        // Add to grand totals
+        totalTotalRolls += rowTotalRolls;
+        totalTotalWt += rowTotalWt;
+    });
+
+    // Update dia-wise column totals
+    $table.find(".totalDiaRolls").each(function (index) {
+        $(this).text(totalDiaRolls[index] || 0);
+    });
+
+    $table.find(".totalDiaWt").each(function (index) {
+        $(this).text((totalDiaWt[index] || 0) + " kg");
+    });
+
+    // Update grand totals in <tfoot>
+    $table.find(".totalTotalRolls").text(totalTotalRolls);
+    $table.find(".totalTotalWt").text(totalTotalWt + " kg");
+}
+
+function refresh_dyeing_data(){
+    loadDyeingProgramData.ajax.reload();
+}
+// Function to load dyeing program data
+function loadDyeingProgramData() {
+    $.ajax({
+        url: "/dyeing-tx-program-view/",
+        type: "POST",
+        data: {
+            tm_id: $("#tm_id").val(),
+            // tx_id: $("#tx_id").val()
+        },
+        success: function (response) {
+            if (!response.data || !response.dia_list) {
+                console.error("Invalid response format");
+                return;
+            }
+
+            let diaList = response.dia_list;
+            let programData = response.data;
+
+            // **1. Clear Old Table Data**
+            $("#datatable thead").empty();
+            $("#datatable tbody").empty();
+            $("#datatable tfoot").remove(); // Prevent duplicate footers
+
+            // **2. Generate Table Headers**
+            let headerRow1 = `<tr><th rowspan="2">Fabric</th><th rowspan="2">Color</th>`;
+            diaList.forEach(dia => {
+                headerRow1 += `<th colspan="2">Dia ${dia.name}</th>`;
+            });
+            headerRow1 += `<th colspan="2" style="font-size:18px;"><b>Total</b></th></tr>`;
+            // headerRow1 += `<th colspan="2" style="background-color:#428bca;">Total</th></tr>`;
+
+            let headerRow2 = `<tr>`;
+            diaList.forEach(() => {
+                headerRow2 += `<th>Rolls</th><th>Wt</th>`;
+            });
+            headerRow2 += `<th>Rolls</th><th>Wt</th></tr>`;
+
+            $("#datatable thead").append(headerRow1 + headerRow2);
+
+            // **3. Group Data by Fabric**
+            let fabricGroups = {};
+            programData.forEach(item => {
+                if (!fabricGroups[item.fabric_id]) {
+                    fabricGroups[item.fabric_id] = {
+                        fabric_name: item.fabric_name,
+                        rows: []
+                    };
+                }
+                fabricGroups[item.fabric_id].rows.push(item);
+            });
+
+            // **4. Populate Table Body**
+            Object.keys(fabricGroups).forEach(fabricId => {
+                let fabricData = fabricGroups[fabricId];
+                let fabricRows = fabricData.rows;
+                let rowspanCount = fabricRows.length;
+                let firstRow = true;
+
+                fabricRows.forEach(item => {
+                    let rowHtml = `<tr>`;
+
+                        
+                    if (firstRow) {
+                        rowHtml += `<td rowspan="${rowspanCount}">${fabricData.fabric_name}
+                                    <input type="hidden" class="tbl-fabric-id" value="${item.fabric_id}">
+                                    </td>`;
+                        firstRow = false;
+                    }
+
+                    rowHtml += `<td>${item.color_name}
+                                <input type="hidden" class="color-id" value="${item.color_id}">
+                                <input type="hidden" class="tm-id" value="${item.tm_id}">
+                                <input type="hidden" class="tbl-fabric-id" value="${item.fabric_id}">
+
+                                <input type="hidden" class="tx-id" value="${item.tx_id}">
+
+                                </td>`;
+
+                    let rowTotalRolls = 0;
+                    let rowTotalWt = 0;
+
+                    diaList.forEach(dia => {
+                        let diaValues = item.dia_values[String(dia.id)] || { rolls: "", wt_per_roll: "" };
+                        let rolls = parseFloat(diaValues.rolls) || "";
+                        let wt = parseFloat(diaValues.wt_per_roll) || "";
+
+                        let isDiaValid = item.valid_dia_ids.includes(dia.id.toString());
+                        let cellStyle = isDiaValid ? `` : `style="background-color: #c0c4c5; color: white;"`;
+
+                        rowHtml += `<td class="dia-rolls" ${cellStyle} contenteditable="${isDiaValid}">
+                                    ${isDiaValid ? rolls : ""}
+                                    <input type="hidden" class="dia-id" value="${dia.id}">
+                                    </td>
+                                    <td class="dia-wt" ${cellStyle} contenteditable="${isDiaValid}">
+                                    ${isDiaValid ? wt : ""}
+
+                                    <input type="hidden" class="dia-id" value="${dia.id}">
+                                    </td>`;
+
+                        if (isDiaValid) {
+                            rowTotalRolls += rolls || 0;
+                            rowTotalWt += wt || 0; 
+                        }
+                    });
+
+                    rowHtml += `<td class="totalRolls">${rowTotalRolls || ""}</td>
+                                <td class="totalWt">${rowTotalWt ? rowTotalWt.toFixed(2) + " kg" : ""}</td>
+                                </tr>`;
+
+                    $("#datatable tbody").append(rowHtml);
+                });
+            });
+ 
+            // **5. Generate & Append Footer**
+            let tfootHtml = `<tfoot><tr><td colspan="2" style="font-size:18px;"><b>Total</b></td>`;
+            diaList.forEach(() => {
+                tfootHtml += `<td class="totalDiaRolls">0</td><td class="totalDiaWt">0</td>`;
+            });
+            tfootHtml += `<td class="totalTotalRolls">0</td><td class="totalTotalWt">0</td></tr></tfoot>`;
+
+            $("#datatable").append(tfootHtml);
+
+            // **6. Calculate Column Totals**
+            calculateTotals("#datatable");
+
+            // **7. Update Totals on Change**
+            $("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+                let row = $(this).closest("tr");
+                updateRowTotals(row);
+                updateGrandTotals();
+            });
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+// Update row totals dynamically
+function updateRowTotals(row) {
+    let totalRolls = 0, totalWt = 0;
+
+    row.find(".dia-rolls").each(function () {
+        totalRolls += parseFloat($(this).text()) || 0;
+    });
+
+    row.find(".dia-wt").each(function () {
+        totalWt += parseFloat($(this).text()) || 0;
+    });
+
+    row.find(".totalRolls").text(totalRolls || "");
+    row.find(".totalWt").text(totalWt ? totalWt.toFixed(2) + " kg" : "");
+}
+
+// Update grand totals dynamically
+function updateGrandTotals() {
+    calculateTotals("#datatable");
+}
+
+
+
+// $("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+//     let row = $(this).closest("tr");  
+//     let diaColumn = $(this).closest("td");  
+//     let dia_id = diaColumn.find(".dia-id").val(); 
+
+//     // ✅ Identify whether the user changed "Rolls" or "Weight"
+//     let isRollsField = $(this).hasClass("dia-rolls");
+//     let isWeightField = $(this).hasClass("dia-wt");
+
+//     // ✅ Fetch values correctly based on the field changed
+//     let rolls = isRollsField ? $(this).text().trim() : diaColumn.prev("td").text().trim();
+//     let weight = isWeightField ? $(this).text().trim() : diaColumn.next("td").text().trim();
+
+//     let tm_id = row.find(".tm-id").val();
+//     let tx_id = row.find(".tx-id").val();
+//     let color_id = row.find(".color-id").val();
+
+//     // ✅ Fix fabric_id selection (Checking Parent Fabric Row)
+//     let fabric_id = row.find(".tbl-fabric-id").val();
+//     if (!fabric_id) {
+//         fabric_id = row.closest("tbody").find(".tbl-fabric-id").first().val(); // Try finding in parent tbody
+//     }
+
+//     // ✅ Debugging Logs
+//     console.log("Fabric ID:", fabric_id);
+//     alert("Fabric ID: " + fabric_id); // Debugging alert
+
+//     // ✅ Convert empty values to 0
+//     rolls = rolls ? parseFloat(rolls) : 0;
+//     weight = weight ? parseFloat(weight) : 0;
+
+//     if (!tm_id || !tx_id || !dia_id || !fabric_id) {
+//         console.error("Error: Missing required values (tm_id, tx_id, dia_id, fabric_id)");
+//         return;
+//     }
+
+//     let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+//     // ✅ Debug AJAX Data Before Sending
+//     console.log({
+//         csrfmiddlewaretoken: csrfToken,
+//         tm_id: tm_id,
+//         tx_id: tx_id,
+//         fabric_id: fabric_id,
+//         color_id: color_id,
+//         dia_id: dia_id,
+//         rolls: rolls,
+//         weight: weight
+//     });
+
+//     // ✅ Send AJAX Request
+//     $.ajax({
+//         url: "/program/update-dyeing-program/",
+//         type: "POST",
+//         data: {
+//             csrfmiddlewaretoken: csrfToken,
+//             tm_id: tm_id,
+//             tx_id: tx_id,
+//             fabric_id: fabric_id,
+//             color_id: color_id,
+//             dia_id: dia_id,
+//             rolls: rolls,
+//             weight: weight
+//         },
+//         success: function (response) {
+//             if (response.status === "success") {
+//                 console.log("Update successful:", response);
+//                 notifier.show(
+//                     'Well Done!', 
+//                     'Values Updated successfully.', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 );    
+//                 refresh_dyeing_data();
+//             } else {
+//                 console.error("Update failed:", response);
+//                 notifier.show(
+//                     'Error!', 
+//                     'Failed to update! ' + response, 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 );        
+//             }
+//         },
+//         error: function (error) {
+//             console.error("Error updating dyeing program:", error);
+//             notifier.show(
+//                 'Error!', 
+//                 'Failed to update! ' + error, 
+//                 'danger', 
+//                 "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                 4000
+//             );     
+//         }
+//     });
+
+//     // ✅ Update totals after change
+//     updateRowTotals(row);
+//     updateGrandTotals(); 
+// });
+
+
+
+
+$("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+    let row = $(this).closest("tr");  
+    let diaColumn = $(this).closest("td");  
+    let dia_id = diaColumn.find(".dia-id").val(); 
+
+    // ✅ Identify whether the user changed "Rolls" or "Weight"
+    let isRollsField = $(this).hasClass("dia-rolls");
+    let isWeightField = $(this).hasClass("dia-wt");
+
+    // ✅ Fetch values correctly based on the field changed
+    let rolls = isRollsField ? $(this).text().trim() : diaColumn.prev("td").text().trim();
+    let weight = isWeightField ? $(this).text().trim() : diaColumn.next("td").text().trim();
+
+    let tm_id = row.find(".tm-id").val();
+    let tx_id = row.find(".tx-id").val();
+    let color_id = row.find(".color-id").val();
+
+    // ✅ Get Fabric ID - Correct Method
+    let fabric_id = row.find(".tbl-fabric-id").val();  // Check in current row
+
+    if (!fabric_id) {
+        fabric_id = row.prevAll("tr").find(".tbl-fabric-id").first().val(); // Find in previous rows
+    }
+
+    // ✅ Debugging Logs
+    console.log("Fabric ID:", fabric_id);
+    // alert("Fabric ID: " + fabric_id); // Debugging alert
+
+    // ✅ Convert empty values to 0
+    rolls = rolls ? parseFloat(rolls) : 0;
+    weight = weight ? parseFloat(weight) : 0;
+
+    if (!tm_id || !tx_id || !dia_id || !fabric_id) {
+        console.error("Error: Missing required values (tm_id, tx_id, dia_id, fabric_id)");
+        return;
+    }
+
+    let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+    // ✅ Debug AJAX Data Before Sending
+    console.log({
+        csrfmiddlewaretoken: csrfToken,
+        tm_id: tm_id,
+        tx_id: tx_id,
+        fabric_id: fabric_id,
+        color_id: color_id,
+        dia_id: dia_id,
+        rolls: rolls,
+        weight: weight
+    });
+
+    // ✅ Send AJAX Request
+    $.ajax({
+        url: "/update-dyeing-program/",
+        type: "POST",
+        data: {
+            csrfmiddlewaretoken: csrfToken,
+            tm_id: tm_id,
+            tx_id: tx_id,
+            fabric_id: fabric_id,
+            color_id: color_id,
+            dia_id: dia_id,
+            rolls: rolls,
+            weight: weight
+        },
+        success: function (response) {
+            if (response.status === "success") {
+                console.log("Update successful:", response);
+                notifier.show(
+                    'Well Done!', 
+                    'Values Updated successfully.', 
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                );    
+                refresh_dyeing_data();
+            } else {
+                console.error("Update failed:", response);
+                notifier.show(
+                    'Error!', 
+                    'Failed to update! ' + response, 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                );        
+            }
+        },
+        error: function (error) {
+            console.error("Error updating dyeing program:", error);
+            notifier.show(
+                'Error!', 
+                'Failed to update! ' + error, 
+                'danger', 
+                "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+            );     
+        }
+    });
+
+    // ✅ Update totals after change
+    updateRowTotals(row);
+    updateGrandTotals(); 
+});
+
+
+
+
+// $("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+//     let row = $(this).closest("tr");  
+//     let diaColumn = $(this).closest("td");  
+//     let dia_id = diaColumn.find(".dia-id").val(); 
+
+//     // ✅ Identify whether the user changed "Rolls" or "Weight"
+//     let isRollsField = $(this).hasClass("dia-rolls");
+//     let isWeightField = $(this).hasClass("dia-wt");
+
+//     // ✅ Fetch values correctly based on the field changed
+//     let rolls = isRollsField ? $(this).text().trim() : diaColumn.prev("td").text().trim();
+//     let weight = isWeightField ? $(this).text().trim() : diaColumn.next("td").text().trim();
+
+//     let tm_id = row.find(".tm-id").val();
+//     let tx_id = row.find(".tx-id").val();
+//     let fabric_id = row.find(".tbl-fabric-id").val();
+
+//     let color_id = row.find(".color-id").val();
+
+//     // ✅ Convert empty values to 0
+//     rolls = rolls ? parseFloat(rolls) : 0;
+//     weight = weight ? parseFloat(weight) : 0;
+
+//     if (!tm_id || !tx_id || !dia_id || !fabric_id) {
+//         console.error("Error: Missing required values (tm_id, tx_id, dia_id,fabric_id)");
+//         return;
+//     }
+
+//     let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+//     // ✅ Send correct values based on what was edited
+//     $.ajax({
+//         url: "/program/update-dyeing-program/",
+//         type: "POST",
+//         data: {
+//             csrfmiddlewaretoken: csrfToken,
+//             tm_id: tm_id,
+//             tx_id: tx_id,
+//             fabric_id: fabric_id,
+//             color_id: color_id,
+//             dia_id: dia_id,
+//             rolls: rolls,
+//             weight: weight
+//         },
+//         success: function (response) {
+//             if (response.status === "success") {
+//                 console.log("Update successful:", response);
+//                 notifier.show(
+//                     'Well Done!', 
+//                     'Values Updated successfully.', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 );    
+//                 refresh_dyeing_data();
+//             } else {
+//                 console.error("Update failed:", response);
+//                 notifier.show(
+//               'Error!', 
+//               'Failed to update!'+ response, 
+//               'danger', 
+//               "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//               4000
+//           );        
+//             }
+//         },
+//         error: function (error) {
+//             console.error("Error updating dyeing program:", error);
+//             notifier.show(
+//               'Error!', 
+//               'Failed to update!'+ error, 
+//               'danger', 
+//               "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//               4000
+//           );     
+//         }
+//     });
+
+//     // ✅ Update totals after change
+//     updateRowTotals(row);
+//     updateGrandTotals(); 
+// });
+
+
+
+
+// Run function on page load
+$(document).ready(function () {
+    loadDyeingProgramData();
+});
+
+
+
+
+
+    </script>
+
+
+
+
+    <script>
+
+
+
+
+
+// $(document).ready(function () {
+//     $("#load_data").click(function () {
+//         let fabricId = $("#fabric_id").val();
+//         let fabricName = $("#fabric_id option:selected").text();
+//         let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+//         let tmId = $("#tm_id").val();  // Ensure `tm_id` is available
+
+//         if (!fabricId || !tmId) {
+//             alert("Please select a fabric and ensure tm_id is set.");
+//             return;
+//         }
+
+//         // ✅ Fetch dia list via AJAX
+//         $.ajax({
+//             url: "/program/get-fabric-dias/",
+//             type: "POST",
+//             data: {
+//                 fabric_id: fabricId,
+//                 csrfmiddlewaretoken: csrfToken
+//             },
+//             success: function (response) {
+//                 if (!response.success || !response.dia_list) {
+//                     console.error("Invalid response format");
+//                     return;
+//                 }
+
+//                 let diaList = response.dia_list;
+//                 let newRowHtml = `<tr>
+//                     <td>${fabricName} <input type="hidden" class="fabric-id" value="${fabricId}"></td>
+//                     <td>-</td>  <!-- Placeholder for Color -->
+//                 `;
+
+//                 diaList.forEach(dia => {
+//                     newRowHtml += `<td class="dia-rolls" contenteditable="true">0
+//                                     <input type="hidden" class="dia-id" value="${dia.id}">
+//                                    </td>
+//                                    <td class="dia-wt" contenteditable="true">0</td>`;
+//                 });
+
+//                 newRowHtml += `<td class="totalRolls">0</td>
+//                                <td class="totalWt">0 kg</td>
+//                                <td><button class="btn btn-success save-row">Save</button></td>
+//                                </tr>`;
+
+//                 let $newRow = $(newRowHtml);
+//                 $("#datatable tbody").append($newRow);
+
+//                 updateGrandTotals(); // Recalculate totals
+//             },
+//             error: function (error) {
+//                 console.error("Error fetching data:", error);
+//             }
+//         });
+//     });
+
+//     // ✅ Save only when the "Save" button is clicked
+//     $("#datatable").on("click", ".save-row", function () {
+//         let row = $(this).closest("tr");
+//         saveFabricRow(row);
+//     });
+
+//     // ✅ Function to Save Data
+//     function saveFabricRow(row) {
+//         let fabricId = row.find(".fabric-id").val();
+//         let tmId = $("#tm_id").val();  // Ensure `tm_id` is available
+
+//         let diaData = [];
+//         row.find(".dia-rolls").each(function () {
+//             let diaId = $(this).find(".dia-id").val();
+//             let rolls = $(this).text().trim();
+//             let weight = $(this).next(".dia-wt").text().trim();
+
+//             diaData.push({
+//                 dia_id: diaId,
+//                 rolls: rolls || "0",
+//                 weight: weight || "0"
+//             });
+//         });
+
+//         let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+//         $.ajax({
+//             url: "/program/add-fabric-rolls/",
+//             type: "POST",
+//             data: {
+//                 fabric_id: fabricId,
+//                 tm_id: tmId,
+//                 dia_data: JSON.stringify(diaData),
+//                 csrfmiddlewaretoken: csrfToken
+//             },
+//             success: function (response) {
+//                 if (response.success) {
+//                     alert("Fabric rolls saved successfully!");
+//                 } else {
+//                     console.error("Error:", response.message);
+//                 }
+//             },
+//             error: function (error) {
+//                 console.error("Error saving data:", error);
+//             }
+//         });
+//     }
+
+//     // ✅ Update Totals on Change
+//     $("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+//         let row = $(this).closest("tr");
+//         updateRowTotals(row);
+//         updateGrandTotals();
+//     });
+
+//     // ✅ Function to Update Row Totals
+//     function updateRowTotals(row) {
+//         let totalRolls = 0;
+//         let totalWeight = 0;
+
+//         row.find(".dia-rolls").each(function () {
+//             totalRolls += parseFloat($(this).text()) || 0;
+//         });
+
+//         row.find(".dia-wt").each(function () {
+//             totalWeight += parseFloat($(this).text()) || 0;
+//         });
+
+//         row.find(".totalRolls").text(totalRolls);
+//         row.find(".totalWt").text(totalWeight + " kg");
+//     }
+
+//     // ✅ Function to Update Grand Totals
+//     function updateGrandTotals() {
+//         let totalRolls = 0;
+//         let totalWeight = 0;
+
+//         $("#datatable tbody tr").each(function () {
+//             totalRolls += parseFloat($(this).find(".totalRolls").text()) || 0;
+//             totalWeight += parseFloat($(this).find(".totalWt").text()) || 0;
+//         });
+
+//         $("#grandTotalRolls").text(totalRolls);
+//         $("#grandTotalWt").text(totalWeight + " kg");
+//     }
+// });
+
+
+
+
+
+$(document).ready(function () {
+    $("#load_data").click(function () {
+        LoadFabricData();
+    });
+});
+
+function LoadFabricData() {
+    let fabricId = $("#fabric_id").val();
+    let fabricName = $("#fabric_id option:selected").text();
+    let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+    let tmId = $("#tm_id").val();  // Ensure `tm_id` is available
+
+    if (!fabricId || !tmId) {
+        alert("Please select a fabric and ensure tm_id is set.");
+        return;
+    }
+
+    // ✅ Fetch dia list via AJAX
+    $.ajax({
+        url: "/get-fabric-dias/",
+        type: "POST",
+        data: {
+            fabric_id: fabricId,
+            csrfmiddlewaretoken: csrfToken
+        },
+        success: function (response) {
+            if (!response.success || !response.dia_list) {
+                console.error("Invalid response format");
+                return;
+            }
+
+            let diaList = response.dia_list;
+            let newRowHtml = `<tr>
+                <td>${fabricName} <input type="hidden" class="fabric-id" value="${fabricId}"></td>
+                <td>-</td>  <!-- Placeholder for Color -->
+            `;
+
+            diaList.forEach(dia => {
+                newRowHtml += `<td class="dia-rolls" contenteditable="true">0
+                                <input type="hidden" class="dia-id" value="${dia.id}">
+                               </td>
+                               <td class="dia-wt" contenteditable="true">0</td>`;
+            });
+
+            newRowHtml += `<td class="totalRolls">0</td>
+                           <td class="totalWt">0 kg</td>
+                           </tr>`;
+
+            let $newRow = $(newRowHtml);
+            $("#datatable tbody").append($newRow);
+
+            // ✅ Auto-save immediately after adding row
+            saveFabricRow($newRow);
+
+            updateGrandTotals(); // Recalculate totals
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
+
+// ✅ Function to Save Data Automatically
+function saveFabricRow(row) {
+    let fabricId = row.find(".fabric-id").val();
+    let tmId = $("#tm_id").val();  // Ensure `tm_id` is available
+
+    let diaData = [];
+    row.find(".dia-rolls").each(function () {
+        let diaId = $(this).find(".dia-id").val();
+        let rolls = $(this).text().trim();
+        let weight = $(this).next(".dia-wt").text().trim();
+
+        diaData.push({
+            dia_id: diaId,
+            rolls: rolls || "0",
+            weight: weight || "0"
+        });
+    });
+
+    let csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+
+    $.ajax({
+        url: "/add-fabric-rolls/",
+        type: "POST",
+        data: {
+            fabric_id: fabricId,
+            tm_id: tmId,
+            dia_data: JSON.stringify(diaData),
+            csrfmiddlewaretoken: csrfToken
+        },
+        success: function (response) {
+            if (response.success) {
+                console.log("Fabric rolls saved successfully!");
+            } else {
+                console.error("Error:", response.message);
+            }
+        },
+        error: function (error) {
+            console.error("Error saving data:", error);
+        }
+    });
+}
+
+// ✅ Update Totals on Change & Auto-Save
+// $("#datatable").on("input", ".dia-rolls, .dia-wt", function () {
+//     let row = $(this).closest("tr");
+//     updateRowTotals(row);
+//     updateGrandTotals();
+
+//     // ✅ Auto-save on value change
+//     saveFabricRow(row);
+// });
+
+// ✅ Function to Update Row Totals
+function updateRowTotals(row) {
+    let totalRolls = 0;
+    let totalWeight = 0;
+
+    row.find(".dia-rolls").each(function () {
+        totalRolls += parseFloat($(this).text()) || 0;
+    });
+
+    row.find(".dia-wt").each(function () {
+        totalWeight += parseFloat($(this).text()) || 0;
+    });
+
+    row.find(".totalRolls").text(totalRolls);
+    row.find(".totalWt").text(totalWeight + " kg");
+}
+
+// ✅ Function to Update Grand Totals
+function updateGrandTotals() {
+    let totalRolls = 0;
+    let totalWeight = 0;
+
+    $("#datatable tbody tr").each(function () {
+        totalRolls += parseFloat($(this).find(".totalRolls").text()) || 0;
+        totalWeight += parseFloat($(this).find(".totalWt").text()) || 0;
+    });
+
+    $("#grandTotalRolls").text(totalRolls);
+    $("#grandTotalWt").text(totalWeight + " kg");
+}
+
+
+
+
+
+    </script>

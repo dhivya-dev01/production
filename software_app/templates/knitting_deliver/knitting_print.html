@@ -1,0 +1,307 @@
+{% load static %}
+{% include 'includes/header.html' %}
+
+<style>
+  @page {
+    size: A5;
+    margin: 10mm;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    width: 148mm; /* A5 width */
+    height: 210mm; /* A5 height */
+    margin: auto;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .invoice-wrapper { 
+    width: 100%;
+    margin: auto;
+    /* padding: 10px; */
+    /* box-sizing: border-box; */
+  }
+
+  .table-border {
+    border-top: 1px solid black;
+  }
+
+  .table-bordered {
+    border: 1px solid black;
+    width: 100%;
+  }
+
+  .invoice-description {
+    font-size: 10px;
+    padding-top: 2px;
+    margin-top: 2px;
+    text-align: center;
+  }
+
+  .invoice-body {
+    margin-top: 10px;
+    border-color: black ;
+  }
+
+  .page-footer {
+    margin-top: 5px;
+    font-size: 12px;
+    padding-top: 5px;
+    text-align: center;
+  }
+
+  .page-footer ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .left {
+    float: left;
+    width: 50%;
+  }
+
+  .right {
+    float: right;
+    width: 50%;
+    text-align: right;
+  }
+
+  .table tr > td p {
+    padding: 0;
+    margin-bottom: 2px;
+    line-height: 1;
+    color: #585858;
+  }
+
+  .page-footer .table tr > td p {
+    padding: 0;
+    margin-bottom: 5px;
+    line-height: 1.5;
+    color: #585858;
+    font-size: 12px;
+  }
+
+  h4 {
+    background-color: black;
+    color: white;
+    padding: 5px;
+    display: inline-block;
+  }
+
+  /* Dotted line styling */
+  .dotted-line {
+    border-bottom: 1px dotted black;
+    width: 100%;
+    min-height: 20px;
+    display: block; 
+  }
+
+  .left-top{
+    margin-top: 1px;
+  }
+  .page-top{
+    font-size: 10px;
+  }
+  .order {
+    background-color: black; 
+    color:white; 
+    /* border: 2px solid black;  */
+    border-radius: 5px; 
+    padding: 8px 15px; 
+    /* text-align: center; */
+    display: inline-block; 
+    width: 100%; /* Ensures full width inside the table cell */
+    font-weight: bold; /* Makes the text bold */
+    font-size: 12px;
+}
+
+
+</style>
+
+<section class="theme-invoice-1 section-b-space" style="padding-top:30px !important;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="invoice-wrapper">
+          
+          <!-- Header Section -->
+          <table  align="left" valign="top" width="100%">
+            <tbody>
+              <tr>
+                <td  width="20%">
+                  <!-- <img src="{% static 'assets/images/mirra.ico' %}" alt="logo" class="logo images" style="margin-left: 0px; border-radius: 50%;" height="30px" width="30px">-->
+                  <h3 style="color: rgb(194, 5, 5);font-size: 13px;">MIRRA</h3>
+                  <p style="font-size: 11px;">INNERWEARS</p>
+                </td>
+                <!-- </tr>
+                <tr> -->
+                <td width="80%" align="right">
+                  <h3 style="color: rgb(194, 5, 5);font-size: 13px;">{{ company.name.upper }}</h3>
+                  <p style="font-size: 10px;">
+                    {{ company.address_line1 }} <br>
+                    {{ company.address_line2 }} <br>
+                    <i class="feather icon-phone-call"></i> {{ company.phone }} &nbsp;  
+                    <i class="feather icon-phone"></i>:{{ company.mobile }} &nbsp;  
+                    email: {{ company.email }} <br>
+                    PAN: AARCM1424C | GSTIN: {{ company.gstin }} | CIN: U14101TZ2023PTC029092
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- To Section -->
+          <table class="table">
+            <tbody>
+              <tr>
+                <td align="left" width="60%" style="vertical-align: top;">
+                  <b>To</b> <b style="margin-top: 2px;">M/S:</b>
+                  <span class="dotted-line"> &nbsp; &nbsp; &nbsp; &nbsp; {{customer_name}}</span>
+                  <span class="dotted-line"></span>
+                </td>
+                <td  width="40%">
+                  <h4  class="order"><strong>Knitting DO</strong></h4>
+                  <p style="margin-bottom: 1px; font-size: 10px;" >NO &nbsp; &nbsp; &nbsp;:  {{total_values.do_number}} </p> 
+                  <p style="margin-top: 1px; font-size: 10px;">DATE &nbsp;: {{total_values.delivery_date}}</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Invoice Body -->
+          <div class="invoice-body table-responsive-md mt-0">
+            <table class="table table-bordered mb-0" style=" border: black;">
+              <thead>
+                <tr >
+                  <th style="font-size:11px;">#</th>
+                  <th  style="font-size:11px;">Particulars</th>
+                  <th  style="font-size:11px;" align="right">Rate</th>
+                  <th  style="font-size:11px;" align="center">Quantity</th>
+                  <th  style="font-size:11px;" align="right">Amount</th>
+                </tr>
+              </thead>
+              <tbody style="font-size: 10px;">
+                {% for item in combined_details %} 
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td style="font-size:10px;">{{ item.name }}</td>
+                  <td align="right">{{ item.rate }}</td>
+                  <td align="center">{{ item.quantity }}</td>
+                  <td align="right">{{ item.amount }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <!-- <tfoot>
+                <tr>
+                  <td colspan="5">
+                    <p><b>Delivery Date:</b> {{ delivery_date }}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <p><b>Note:</b> &nbsp; 1. Enclose a Duplicate copy of our PO along with the bill.</p>
+                    <li>
+                        2.Kindly send the bill alogn with goods delivery.
+                    </li>
+                    <li>
+                        2.Kindly send the bill alogn with goods delivery.
+                    </li>
+                                       <p style="margin-left: 35px;">  &nbsp;   2.Kindly send the bill alogn with goods delivery.</p>
+                                       <p> &nbsp; 3.Any delay in supply will not be accepted.</p>
+                                        <p>&nbsp; 4. Subject to Tirupur Jurisdiction</p>
+                    </p>
+                  </td>
+                </tr>
+              </tfoot> -->
+
+              <tfoot style="font-size: 10px;">
+<!-- 
+                <tr>
+                    <td  colspan="4" style="text-align:right;">TOTAL</td>
+                    <td align="center">{{ total_values.total_quantity }}</td>
+                    <td align="right">{{ total_values.amount }}</td>
+                </tr>
+                <tr>
+                    <td  colspan="5" style="text-align:right;">GST@5%</td>
+                    <td align="right">{{ total_values.tax_total }}</td>
+                </tr>
+                <tr>
+                    <td  colspan="5" style="text-align:right;">DELIVERY CHARGE</td>
+                    <td align="right"> {% if total_values.shipping_charge %} {{ total_values.shipping_charge }} {% else %} 0.00 {% endif %} </td>
+                </tr>
+                <tr>
+                    <td  colspan="5" style="text-align:right;">GRAND TOTAL</td>
+                    <td align="right">{{ total_values.total_amount }}</td>
+                </tr> -->
+
+
+                <tr>
+                    <td colspan="3">
+                        <p align="right"><b>TOTAL</b></p>
+                    </td>
+                    <td align="center">{{ total_values.total_quantity }}</td>
+
+                    <td colspan="4">
+                        <p align="right"> {{ total_values.total_amount }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan="4" style="text-align:right;">GST@5%</td>
+                    <td align="right">{{ total_values.total_tax }}</td>
+                </tr>
+                <tr>
+                    <td  colspan="4" style="text-align:right;">GRAND TOTAL</td>
+                    <td align="right" style="color: rgb(194, 5, 5);">{{ total_values.grand_total }}</td>
+                </tr>
+                <!-- <tr>
+                    <td colspan="4">
+                        <p align="right"><b>Total Amount</b></p>
+                    </td>
+                    <td colspan="5">
+                        <p> {{ total_amount }}</p>
+                    </td> 
+                </tr> -->
+
+
+                <tr>
+                    <td colspan="5">
+                        <p><b>Delivery Date:</b> {{ delivery_date }}</p>
+                    </td>
+                </tr> 
+                <tr>
+                    <td colspan="5">
+                        <p><b>Note:</b></p>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            <li>Enclose a Duplicate copy of our DO along with the bill.</li>
+                            <li>Kindly send the bill along with goods delivery.</li>
+                            <li>Any delay in supply will not be accepted.</li>
+                            <li>Subject to Tirupur Jurisdiction.</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tfoot>
+            
+            </table>
+          </div>
+
+          <!-- Signature & Approval -->
+          <table class="table">
+            <tbody>
+              <tr>
+                <td width="50%">
+                  <p><b style="font-size: 13px;">Party's Signature: {{ payment_method }}</b></p>
+                </td>
+                <td width="50%" align="right">
+                  <p><b style="font-size: 13px; color: rgb(194, 5, 5);">For <strong>MIRRA GARMENTS PVT LTD</strong> {{ payment_status }}</b></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

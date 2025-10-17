@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>MIRRA GARMENTS - DYED FABRIC PO</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <!-- Normalize or reset CSS with your favorite library -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+      <!-- Load paper.css for happy printing -->
+     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">-->
+      <!-- Set page size here: A5, A4 or A3 -->
+      <!-- Set also "landscape" if you need -->
+      <style>
+         @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+      </style>
+      <style>
+
+
+         @page { size: A4  }
+         .clearfix:after {
+         content: "";
+         display: table;
+         clear: both;
+         }
+         a {
+         color: #5D6975;
+         text-decoration: underline;
+         }
+         body {
+         position: relative;
+         width: 15.8cm;  
+         height: 25cm; 
+         margin: 0 auto; 
+         color: #001028;
+         background: #FFFFFF; 
+         font-family: Roboto, sans-serif; 
+         font-size: 12px; 
+         font-family: Arial;
+         }
+         header {
+         padding: 10px 0;
+         margin-bottom: 30px;
+         }
+         #logo {
+         text-align: center;
+         margin-bottom: 10px;
+         }
+         #logo img {
+         width: 90px;
+         }
+         * {margin:0; padding:0; text-indent:0; }
+         a { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 8pt; }
+         h1 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13.5pt; }
+         h4 { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 13pt; }
+         p { color: black; font-family:Roboto, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; margin:0pt; }
+
+
+		 	 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			padding: 4px;
+			
+		}
+		 
+      </style>
+   </head>
+   
+
+   <body class="A4">
+
+			<section class="sheet" style="padding:2px">
+   
+                <div class="page-number"></div>
+			
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td width="35%" style="vertical-align: top;"><img  width="140" height="70" src="{{ image_url }}"/></td>
+							</td>
+							
+								<td width="65%" align="right">
+								<h4><big><b><strong>{{ company.name.upper }}</strong><b></big></h4>
+
+									
+								 <div class="mt-5" style="margin-top: -6px;">
+									<p>#73 Devji Colony, B.S. Sundaram Road, Tirupur-641604</p>
+									<p><b>Cell:</b> {{ company.mobile }} | <b>Phone:</b> {{ company.phone }}</p>
+									<p><b>Email:</b> {{ company.email }}</p>
+									<p><b>GSTIN:</b> {{ company.gstin }} </p>
+
+								</div>
+								
+							</td>
+						</tr>
+					</table>
+					
+					<hr style="margin:6px">
+					
+
+					
+          			<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+						<tbody>
+							<tr>
+								<td  align="left">
+									<p><strong>PO No. :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ total_values.po_number }} </strong> </p>
+						
+								</td>
+								
+								 <td align="center" >
+								<div class="border-box" style="width: 180px;border:2px solid black;text-align:center;padding: 3px;">
+									<p><strong>DYED FABRIC PO</strong></p>
+								</div>
+								
+							  </td>
+
+								<td  align="right" >
+                  					<p><strong>PO Date: {{ total_values.po_date|date:"d-m-Y" }}</strong></p>
+								</td>
+							</tr>
+							
+							
+							
+						</tbody>					
+					</table>
+
+					<hr style="margin:6px">
+
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >  
+						<tbody>
+							<tr>
+								<td  align="left">
+									<p>To. M/S  : <strong>{{ customer_name }} </strong> </p>
+									<p>GSTIN  &nbsp;&nbsp;: <strong>{{ gstin }} </strong> </p>
+									<p>Mobile.&nbsp;  : <strong>{{ mobile_no }} </strong> </p>
+									
+								</td>
+                                <td align="right">
+                                    <p>PO Name: <strong>{{total_values.po_name}}</strong></p>
+                                    <p>Lot No: <strong>{{total_values.lot_no}}</strong></p>
+                                    <p></p>
+                                </td>
+
+							</tr>
+							
+							
+						</tbody>					
+					</table>
+
+ 
+
+					<table class="table table-striped table-bordered" style="border: black; margin-top:6px">
+                
+                    <tbody>
+                        <tr>
+                            <td rowspan="2"><p>Fabric</p></td>
+                            <td rowspan="2"><p>Color</p></td>
+                            {% for dia in dias %}
+                                <td colspan="2" align="center"><p>{{ dia }}</p></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            {% for dia in dias %}
+                                <td align="right"><p>Roll</p></td>
+                                <td align="right"><p> Wt.</p></td>
+                            {% endfor %}
+                        </tr>
+
+
+                        {% for row in table_rows %}
+                        
+                            <tr>
+                                <td><p>{{ row.fabric }}</p></td>
+                                <td><p>{{ row.color }}</p></td>
+                                {% for d in row.dias %}
+                                    <td align="right"><p>{{ d.roll }}</p></td>
+                                    <td align="right"><p>{{ d.roll_wt|floatformat:3 }}</p></td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+						<tbody>
+							<tr>
+								<td align="left">
+
+								</td>
+								<td  align="right">
+									<p><strong> For MIRRA GARMENTS PVT LTD</strong> </p>
+						
+								</td>
+							</tr>
+							
+							<tr>
+								<td align="left">
+								<br>
+								<br>	
+								</td>
+						
+							</tr>
+							
+							<tr>
+								<td align="left">
+									<p><strong> Party's Signature </strong></p>
+								</td>
+
+									<td align="right">
+									<p><strong> Authroized Signature </strong></p>
+								</td>
+
+
+							</tr>
+							
+							
+						</tbody>					
+					</table>
+				
+
+				
+			</section>
+
+ </body>
+</html>

@@ -1,0 +1,2129 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+ 
+<style>
+/* Remove spinner arrows for number fields */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  border: none;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Make Select2 dropdown appear above the modal */
+.select2-container--open {
+  z-index: 1060 !important; /* higher than Bootstrap modal's z-index */
+}
+
+table td input.form-control {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Table inputs */
+#purchaseTable td input.form-control {
+  padding: 0.50rem 0.5rem;
+  border: none;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* Table cells */
+#purchaseTable td {
+  padding: 1px !important;
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Specific input types */
+#purchaseTable input[type="number"] {
+  margin: 0 auto;
+  display: block;
+  border: none;
+}
+
+/* Fixed column widths for neatness */
+#purchaseTable tbody td {
+  width: 90px;
+  word-break: break-word;
+  vertical-align: middle;
+}
+
+/* Header */
+.table thead th {
+  border-bottom: 1px solid #e2e5e8;
+  font-size: 13px;
+  color: #111;
+  background: #eff3f6;
+  text-transform: uppercase;
+  padding: 4px;
+  text-align: center;
+}
+
+/* Footer */
+.footer {
+  padding: 1px !important;
+  vertical-align: middle;
+  text-align: center;
+}
+</style>
+
+
+<style>
+    .summary-container {
+        max-width: 500px;
+        margin: 20px auto;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+
+    
+    .summary-table {
+        width: 100%;
+        background: white;
+        color: black;
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 10px;
+    }
+
+    .summary-table th {
+        /* background: white; */
+        color: black    ;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .summary-table td {
+        padding: 8px;
+        font-weight: bold;
+    }
+
+    .highlight {
+        background: #428bca;
+        color: white;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .transparent-input {
+        width: 100%;
+        border: none;
+        outline: none; 
+        background: transparent;
+        text-align: right;
+        font-weight: bold;
+        font-size: 16px;
+        color: black;
+    }
+
+    .transparent-input:focus {
+        border-bottom: 2px solid #428bca;
+    }
+</style>
+
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery --> 
+                                            <h4 class="m-b-10">Invoice Add  </h4>
+                                        </div>
+                                        <ul class="breadcrumb">
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Invoice</a></li> 
+                                            <li class="breadcrumb-item"><a href="/packing-received"> Invoice Add</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option"> 
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false"> 
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button> 
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+
+ 
+
+                                    <!-- Add Loose Pieces Modal -->
+                                    <div class="modal fade" id="loose_pcs_modal"  role="dialog" aria-labelledby="loosePcsModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <form id="loosePcsForm">
+                                        <div class="modal-content"> 
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="loosePcsModalLabel">Add Loose Pieces</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                
+                                            </div> 
+                                            <div class="modal-body">
+                                            <h5 id="modal_size_name" style="text-align:center;">Size: </h5>
+                                            <div class="row"> 
+                                                <div class="col-md-4">
+                                                <label for="color_ids" class="form-label">Color</label>
+                                                <select class="form-control select" id="color_ids" name="color_id">
+                                                    <option value="">Select</option>
+                                                </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                <label for="modal_available_qty">Available Quantity</label>
+                                                <input type="number" id="modal_available_qty" readonly class="form-control" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                <label for="modal_add_qty">Add Quantity</label>
+                                                <input type="number" id="modal_add_qty" min="1" class="form-control" required />
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 text-center">
+                                                <input type="hidden" id="size_id" name="size_id" />
+                                                <button type="submit" id="add_loose_pcs" class="btn btn-primary">+ Add</button>
+                                            </div>
+                                            <div class="row mt-4">
+                                                <div class="col-md-12">
+                                                <table id="loose_pcs_table" class="table table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Color</th>
+                                                        <th>Quantity</th>
+                                                        <th style="display:none;" class="size_id">Size ID</th>
+                                                        <th style="display:none;" class="color_id">Color ID</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div> 
+                                    </div>
+
+
+
+
+                                    <div class="card">
+
+                                        <div class="card-body row"> 
+                                            <div class="col-sm-12"> 
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <form id="add_new" >
+                                                            <div class="row ">
+                                                                
+                                                                <!-- <div class="col-md-2 mt-3">
+                                                                    <label for="delivery_no" class="form-lebel">Receive No.</label>
+                                                                    <input type="text" class="form-control" value="{{inward_no}}" readonly>
+                                                                </div>  
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="order_date" class="form-label">Receive Date</label>
+                                                                    <input class="form-control" type="date" name="inward_date" id="inward_date" required>
+                                                                </div> -->
+
+
+                                                               
+ 
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="party_id" class="form-label">Party</label>
+                                                                    <select id="party_id" name="party_id" class="form-control single-select" readonly onchange="LoadParty_Outward()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in party %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="invoice_no" class="form-lebel">Invoice No.</label>
+                                                                    <input type="text" class="form-control" value="{{invoice_no}}" id="invoice_no" name="invoice_no">
+                                                                </div>  
+
+
+                                                                  
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="invoice_date" class="form-label">Invoice Date</label>
+                                                                    <input class="form-control" type="date" name="invoice_date" id="invoice_date" required>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <div class="row">
+                                                      
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="product_id" class="form-label">S/Packing Delivery</label>
+                                                                    <select id="prg_id" name="prg_id" class="form-control form-select single-select" multiple>
+                                                                        <option value="">Select</option>
+                                                                     
+                                                                    </select>
+
+
+
+                                                                    <input class="form-control" type="hidden" name="prg_quantity" id="prg_quantity" readonly>
+                                                                    <input class="form-control" type="hidden" name="work_order_no" id="work_order_no" readonly>
+                                                                </div>
+
+
+
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quality_id" class="form-label">Quality</label>
+                                                                    <select id="quality_id" name="quality_id" class="form-control single-select" readonly onchange="LoadStyle()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in quality %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="fabric_id" class="form-label">Style</label>
+                                                                    <select id="style_id" name="style_id" class="form-control single-select" aria-readonly="true" onchange="Loadfabric()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in style %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-4">
+                                                                    <button id="load_data" class="btn btn-primary mt-3" type="button" onclick="LoadData(),Loadfabric()">+ Load</button>
+                                                                </div>
+ 
+
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-2 mt-4"> 
+                                                                    <input type="hidden" class="form-control" id="original_quantity" name="original_quantity" >
+                                                                    <input type="hidden" class="form-control" id="balance_qty" name="balance_qty" >
+                                                                    {% csrf_token %}
+                                                                </div>
+
+                                                            </div>
+                                                    
+                                                        </div> 
+
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="table-responsive table-desi">
+
+                                                                        
+                                                                        
+
+                                                                          <table id="purchaseTable" class="table table-bordered">
+                                                                            <thead>
+                                                                                <tr> 
+                                                                                    <th>Size</th>
+                                                                                    <th>Delivered Pcs</th>
+                                                                                    <th>Already Rec Pcs</th>
+                                                                                    <th>Box</th>
+                                                                                    <th>Pcs Per Box</th>
+                                                                                    <th>Box Pcs</th>
+                                                                                    <th>Loose Pcs </th> 
+                                                                                    <th>Seconds Pcs </th>
+                                                                                    <th>Shortage Pcs</th>
+                                                                                    <th>Total Pcs </th>
+
+                                                                                    <th>Balance Pcs</th>
+                                                                                    <th style="display: none;">Size id</th>
+
+                                                                                    <th style="display: none;">Original Qty</th>
+
+                                                                                    <th>Actions</th> 
+ 
+                                                                                </tr>
+                                                                            </thead> 
+                                                                            <tbody></tbody>  
+                                                                            <tfoot>
+                                                                                <th>Total</th>
+                                                                                <th style="text-align:center;" id="total_delivered_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_already_rec_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_boxes"></th>
+                                                                                <th style="text-align:center;" id="pcs_per_box">0</th>
+                                                                                <th style="text-align:center;" id="total_box_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_loose_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_seconds_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_shortage_pcs"></th>
+                                                                                <th style="text-align:center;" id="total_pieces"></th>
+                                                                                <th style="text-align:center;" id="balance_pieces"></th>
+                                                                            </tfoot>
+                                                                        </table>
+
+                                                                    
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-3">
+                                                                    <table id="summary_table" class="table table-striped table-bordered w-100">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th colspan="3" style="text-align: center;">Summary Table</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th></th>  <!-- Empty cell for left-side labels -->
+                                                                                <th>Pcs / Boxes</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Total(pcs)</td>
+                                                                                <td class="highlight"><span id="delivered_pcs">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Total Boxes</td>
+                                                                                <td class="highlight"><span id="total_box">0</span></td>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <td>Box Pcs</td>
+                                                                                <td class="highlight"><span id="box_piece">0</span></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Loose(pcs)</td>
+                                                                                <td class="highlight"><span id="loose_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <tr>
+                                                                                <td>Seconds(pcs)</td>
+                                                                                <td class="highlight"><span id="seconds_pcs">0</span></td>
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
+                                                                                <td>Shortage(pcs)</td>
+                                                                                <td class="highlight"><span id="shortage_pcs">0</span></td>
+                                                                            </tr> 
+
+                                                                            <tr>
+                                                                                <td>Balance(pcs)</td>
+                                                                                <td class="highlight"><span id="balance_pcs">0</span></td>
+                                                                            </tr> 
+                                                                            <!-- <tr>
+                                                                                <td> Total</td>
+                                                                                <td class="highlight"><span id="grand_total">0</span></td>
+                                                                            </tr> -->
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                             <div class="col-md-6 mt-2">
+                                                                    <!-- <label for="order_date" class="form-label">Remarks</label> -->
+                                                                    <textarea class="form-control" type="text" name="remarks" id="remarks" placeholder="Remarks"></textarea>
+                                                                </div>
+
+                        
+                                                            <div class="col-md-2 mt-3">
+                                                                <div class="" style="text-align: center;" >
+                                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                                                                                
+                                                                    <input type="hidden" id="fabric_id" name="fabric_id" value="">
+                                                                    <!-- <span id="fabric_name_display"></span>  optional to show name -->
+                                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4"> 
+
+                                                       
+
+
+                                                               
+
+                                              
+                                                  
+
+                                                        </div>
+                                             
+                                                    
+                                            
+                                                    </div>
+
+                                                    <!-- colmn-2 -->
+                                                           
+
+                                               
+                                                </div>
+                                        
+                                            </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .no-border-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            width: 100%;
+            color: inherit; /* Matches text color to the row */
+        }
+
+        .no-border-input:focus {
+            outline: none;
+        }
+
+    </style>
+    
+</div>
+{% include 'includes/footer.html' %}
+
+
+<script>
+
+
+function LoadParty_Outward() {
+    var party_id = $('#party_id').val(); 
+    console.log('Party-ID:', party_id); // Debugging output
+
+    if (!party_id) {
+        console.warn("No Party ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+ 
+    // ✅ Preserve po_quantity value
+    // let currentPoQuantity = $('#po_quantity').val();
+    // console.log("Stored po_quantity before AJAX:", currentPoQuantity);
+    $('#prg_id').empty().append('<option value="">Select</option>');
+ 
+    
+    $.ajax({
+        type: 'POST',   
+        url: '/get_party_outward_lists/',
+
+        data: {
+            'party_id': party_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+
+        dataType: 'json',
+        success: function(data) {
+            $('#prg_id').empty().append('<option value="">Select</option>');
+
+            if (data.outward && Array.isArray(data.outward)) {
+                data.outward.forEach(function(item) {
+                    // const label = `${item.outward_no} (${item.type}) - [${item.work_order_no} - ${item.total_quantity}.wt]`;
+                    const label = `${item.outward_no} (${item.type}) - [WO:  ${item.work_order_no}]`;
+                    $('#prg_id').append(`<option value="${item.id}">${label}</option>`);
+                });
+            } else {
+                $('#prg_id').append('<option>No outwards found</option>');
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+
+
+$('#prg_id').on('change', function() {
+    var selectedOptions = $(this).find('option:selected');
+    console.log('selected-prgId:',selectedOptions); 
+    if (selectedOptions.length <= 1) return; // no problem with 0 or 1 selection
+
+    // Gather qualities and styles of selected options
+    let qualities = new Set();
+    let styles = new Set();
+
+    selectedOptions.each(function() {
+        qualities.add($(this).data('quality'));
+        styles.add($(this).data('style'));
+    });
+
+    // Check if all selected options share same quality and style
+    if (qualities.size > 1 || styles.size > 1) {
+        alert('You can only multi-select options with the same Quality and Style.');
+
+        // Keep only the last selected option and deselect others
+        let lastSelected = selectedOptions.last();
+        $(this).val(lastSelected.val());
+    }
+});
+
+ 
+
+$("#prg_id").on("change", function () {
+    const selectedOption = $(this).find("option:selected");
+    const prgText = selectedOption.text(); // e.g., "12345 - [WO-5678- 250.wt]"
+    
+    const match = prgText.match(/\[WO:\s*(.*?)\]/);  // Extracts value inside "[WO: ...]"
+
+    // const match = prgText.match(/\[(.*?)-/);  // Extract work_order_no
+    if (match) {
+        $("#work_order_no").val(match[1].trim());
+    } else {
+        $("#work_order_no").val('');
+    }
+
+    // const qtyMatch = prgText.match(/-\s*(\d+(\.\d+)?)\.wt\]/);  // Extract program quantity
+    // if (qtyMatch) {
+    //     $("#prg_quantity").val(qtyMatch[1]);
+    // } else {
+    //     $("#prg_quantity").val('');
+    // }
+});
+
+
+
+function updateProgramDetails() {
+    let selectedOption = $('#prg_id').find(':selected');
+    let totalQuantity = selectedOption.data('total') || '';
+    let qualityId = selectedOption.data('quality') || '';
+    let styleId = selectedOption.data('style') || '';
+
+    console.log('Updating fields:', { totalQuantity, qualityId, styleId });
+
+    $('#prg_quantity').val(totalQuantity);
+    $('#quality_id').val(qualityId).change();
+    $('#style_id').val(styleId).change();
+}
+
+
+
+$('#prg_id').on('change', function () {
+    const prg_id = $(this).val();
+    if (prg_id) {
+        sizeColorMap = {}; // 🧹 Clear previous tracking map
+        LoadProgramData();  // Load dropdown values
+        // loadProgramDetails(prg_id); // Load and auto-add rows
+    }
+}); 
+
+
+
+
+function LoadData() {
+    const selectedValues = $("#prg_id").val();
+
+    if (!selectedValues || selectedValues.length === 0) {
+        notifier.show(
+            'Warning!',
+            'Please select a packing outward before loading.',
+            'warning',
+            "{% static 'assets/images/notification/medium_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    // If your select allows multiple, selectedValues could be an array
+    let prg_ids = Array.isArray(selectedValues) ? selectedValues : [selectedValues];
+
+    loadProgramDetails(prg_ids);
+}
+
+
+
+
+// ````````````````````````````````````````````
+
+// 🔁 Declare globally at the top of your script
+let sizeColorMap = {};
+
+
+
+/* Corrected Javascript */
+let selectedItems = [];
+const prg_id_select = $('#prg_id');
+prg_id_select.on('change', function(e) {
+  const selectedOptions = $(this).val();
+  if (selectedOptions && selectedOptions.length > 1) {
+    // This is a multiple selection
+    // You need to fetch data for all selected IDs and compare
+    LoadProgramData(selectedOptions);
+  } else if (selectedOptions && selectedOptions.length === 1) {
+    // This is the first selection or a single selection
+    LoadProgramData(selectedOptions);
+  } else {
+    // No options selected, clear everything
+    $('#quality_id').empty();
+    $('#style_id').empty();
+    $('#size_id').empty();
+    $('#color_id').empty();
+    selectedItems = [];
+  }
+});
+
+
+
+// JavaScript Function: Corrected
+// =============================
+
+function LoadProgramData(prg_ids) {
+    const currentPrgIds = Array.isArray(prg_ids) ? prg_ids : [prg_ids];
+    const csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+    var tbl = $('#purchaseTable tbody').empty();
+    const prgSelect = $('#prg_id'); // <- Reference to the program dropdown
+
+    const inwardText = prgSelect.find(`option[value='${currentPrgIds[0]}']`).text().trim();
+    let inwardType = null;
+    const match = inwardText.match(/\((.*?)\)/);
+    if (match) {
+        inwardType = match[1];
+    }
+
+    let url = '';
+    if (inwardType === 'P') {
+        url = '/get_packing_delivery_list/';
+    } else if (inwardType === 'SP') {
+        url = '/get_stiching_packing_delivery_list/';
+    } else {
+        console.warn("Invalid or unknown inward type:", inwardType);
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'prg_ids[]': currentPrgIds,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+
+        success: function (data) {
+            if (data.quality_mismatch || data.style_mismatch) {
+                // Show error notification with proper parameters
+                notifier.show(
+                    'Error!',
+                    data.error_message || 'Selected outwards have different Quality or Style.',
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+
+                // Reset the selection to the first valid option
+                prgSelect.val(currentPrgIds[0]).trigger('change');
+                return;
+            }
+
+            // Normal processing if no mismatch
+            $('#quality_id').empty().append('<option value="' + data.quality.id + '">' + data.quality.name + '</option>');
+            
+            // /.append('<option value="' + data.quality.id + '">' + data.quality.name + '</option>');
+            $('#style_id').empty().append('<option value="' + data.style.id + '">' + data.style.name + '</option>');
+            $('#size_id').empty();
+            $('#color_id').empty();
+            Loadfabric()
+            $('#fabric_id').val(data.fabrics.id);
+            cosnole.log('fab-id:',data.fabrics.id);
+            if (data.sizes && Array.isArray(data.sizes)) {
+                data.sizes.forEach(function (item) {
+                    $('#size_id').append('<option value="' + item.size_id + '">' + item.size_name + '</option>');
+                    $('#color_id').append('<option value="' + item.color_id + '">' + item.color_name + '</option>');
+                });
+            }
+
+            // Enable multiple selection again
+            prgSelect.attr('multiple', 'multiple');
+        }, 
+
+
+        error: function (xhr, status, error) {
+            console.error('Error loading delivery list:', error);
+
+            let errorMessage = "Selected outwards have different Quality or Style, cannot load together.";
+            // 'An unknown error occurred.';
+            try {
+                const responseJson = JSON.parse(xhr.responseText);
+                errorMessage = responseJson.error_message || errorMessage;
+            } catch (e) {
+                errorMessage = error;
+            }
+
+            notifier.show(
+                'Error!',
+                errorMessage,
+                'danger',
+                "{% static 'assets/images/notification/high_priority-48.png' %}",
+                4000
+            );
+        }
+
+
+
+
+        // success: function (data) {
+        //     if (data.quality_mismatch || data.style_mismatch) {
+        //         notifier.show(
+        //             'Error!',
+        //             data.error_message || 'Selected outwards have different Quality or Style.',
+        //             'danger',
+        //             "{% static 'assets/images/notification/high_priority-48.png' %}",
+        //             4000
+        //         );
+
+        //         // Reset the selection to the first valid option
+        //         prgSelect.val(currentPrgIds[0]).trigger('change');
+        //         return;
+        //     }
+
+        //     // Proceed to populate fields
+        //     $('#quality_id').empty().append('<option value="' + data.quality.id + '">' + data.quality.name + '</option>');
+        //     $('#style_id').empty().append('<option value="' + data.style.id + '">' + data.style.name + '</option>');
+        //     $('#size_id').empty();
+        //     $('#color_id').empty();
+
+        //     if (data.sizes && Array.isArray(data.sizes)) {
+        //         data.sizes.forEach(function (item) {
+        //             $('#size_id').append('<option value="' + item.size_id + '">' + item.size_name + '</option>');
+        //             $('#color_id').append('<option value="' + item.color_id + '">' + item.color_name + '</option>');
+        //         });
+        //     }
+
+        //     // Re-enable multiple select after valid load
+        //     prgSelect.attr('multiple', 'multiple');
+        // },
+        // error: function (xhr, status, error) {
+        //     console.error('Error loading delivery list:', error);
+
+        //     let errorMessage = 'An unknown error occurred.';
+        //     try {
+        //         const responseJson = JSON.parse(xhr.responseText);
+        //         errorMessage = responseJson.error_message || xhr.statusText;
+        //     } catch (e) {
+        //         errorMessage = xhr.statusText;
+        //     }
+
+        //     notifier.show(
+        //         'Error!',
+        //         error,
+        //         errorMessage,
+        //         'danger',
+        //         "{% static 'assets/images/notification/high_priority-48.png' %}",
+        //         4000
+        //     );
+        // }
+    });
+}
+
+
+$(document).ready(function () {
+    // After selecting color, focus quantity
+    $('#size_id').on('change', function () {
+        $('#box').focus(); 
+    });
+
+      // Enter in quantity → focus wt
+    $('#size_id').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#box').focus();
+        }
+    });
+
+ 
+    // Enter in cutter → focus Add button
+    $('#box').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            $('#add_button').focus();
+        }
+    });
+
+    // Enter in Add button → trigger row add
+    $('#add_button').on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addManualRow(); // Call your wrapper
+        }
+    });
+    });
+
+
+
+
+// ```````````````````````````
+
+function Loadfabric() {
+    var quality_id = $('#quality_id').val(); 
+    var style_id = $('#style_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_fabrics_list/',
+        data: {
+            'quality_id': quality_id,
+            'style_id': style_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            const fabrics = data.fabric || [];
+
+            if (fabrics.length > 0) {
+                const firstFabric = fabrics[0];
+                $('#fabric_id').val(firstFabric.id); // Set hidden input value
+                $('#fabric_name_display').text(firstFabric.name); // Optional display
+            } else {
+                $('#fabric_id').val('');
+                $('#fabric_name_display').text('');
+                console.warn("No fabric found for selected quality/style");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+
+function LoadStyle() {
+    var quality_id = $('#quality_id').val(); 
+
+    if (!quality_id) {
+        console.warn("No Quality ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_quality_style_list/',
+        data: {
+            'quality_id': quality_id,
+            'csrfmiddlewaretoken': csrfToken 
+        },
+        dataType: 'json',
+        success: function(data) {
+            // Reset all relevant dropdowns
+            $('#style_id').empty().append('<option value="">Select</option>');
+            $('#size_id').empty().append('<option value="">Select</option>');
+            $('#fabric_id').empty().append('<option value="">Select</option>');
+
+            if (data.style && Array.isArray(data.style)) {
+                data.style.forEach(function(item) {
+                    $('#style_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            if (data.size && Array.isArray(data.size)) {
+                data.size.forEach(function(item) {
+                    $('#size_id').append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            }
+
+            // Optionally auto-load fabrics after loading styles/sizes
+            // Loadfabric();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading style/size list:', error);
+        } 
+    });
+}
+
+
+ $('#style_id').change(function () {
+        Loadfabric(); 
+    });
+
+// // ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+
+const loadedItemsMap = {};
+
+
+
+let rowCounter = 0; // Initialize row counter
+
+
+
+
+// ```````````````````` loose pcs table ````````````````
+
+
+
+
+function StoreLoosePcsTblValuesGrouped() {
+    const groupedData = {};
+
+    $('#loose_pcs_table tbody tr').each(function () {
+        const $row = $(this);
+
+        const sizeId = $row.find('td:eq(2)').text().trim();
+        const colorId = $row.find('td:eq(3)').text().trim();
+        const quantity = parseInt($row.find('td:eq(1)').text().trim()) || 0;
+
+        if (sizeId && colorId && quantity > 0) {
+            const key = `${sizeId}_${colorId}`;
+
+            if (!groupedData[key]) {
+                groupedData[key] = {
+                    tm_id: '', // or set dynamically if you have it
+                    size_id: sizeId,
+                    color_id: colorId,
+                    quantity: quantity
+                };
+            } else {
+                // ✅ Sum quantity if same size_id + color_id already exists
+                groupedData[key].quantity += quantity;
+            }
+        }
+    });
+
+    console.log('✅ Grouped Loose Pcs Table Data:', groupedData);
+    return groupedData;
+}
+
+
+
+// ```````purchaseTable``````````````````````
+
+function storeTblValues() {
+    const TableData = []; 
+    let hasInvalidBox = false;
+
+    $('#purchaseTable tbody tr').each(function () {
+        const $row = $(this);
+
+        const size = $row.find('td:eq(0)').text().trim();
+        const sizeId = $row.find('.size_id').text().trim(); 
+        const colorId = $row.find('.color_id').text().trim();
+
+        const box = parseFloat($row.find('.box input').val()) || 0;
+        const pcs_per_box = parseFloat($row.find('.pcs_per_box input').val()) || 0;
+
+        console.log('pcs_per_box:',pcs_per_box);
+
+        // 🔑 fix: these are plain <td>, not input 
+        const box_pcs = parseFloat($row.find('.box_pcs').text()) || 0;
+        const total_pcs = parseFloat($row.find('.total_pcs').text()) || 0;
+        const balance = parseFloat($row.find('.balance').text()) || 0;
+
+        const loose_pcs = parseFloat($row.find('.loose_pcs input').val()) || 0;
+        const seconds_pcs = parseFloat($row.find('.seconds_pcs input').val()) || 0;
+        const shortage = parseFloat($row.find('.shortages input').val()) || 0;
+
+        // if (box <= 0) {
+        //     hasInvalidBox = true;
+        // }
+
+        // if (size && box > 0) {
+        if (size) {
+            TableData.push({
+                size,
+                size_id: sizeId,
+                color_id: colorId,
+                box, 
+                pcs_per_box,
+                box_pcs,
+                loose_pcs,
+                seconds_pcs,
+                shortage,  
+                total_pcs,
+                balance
+            });
+        }
+    });
+
+    // if (hasInvalidBox) {
+    //     console.warn('⚠️ Some rows have box <= 0. Please fix before submission.');
+    //     return [];
+    // }
+
+    console.log('✅ TABLE DATA:', TableData);
+    return TableData;
+}
+
+
+function addManualRow() {
+    console.log("Manual row function triggered");
+
+    const box = $("#box").val() || 1;
+    let selectedSizes = $("#size_id").val();
+    // let selectedColors = $("#color_id").val();
+
+    selectedSizes = Array.isArray(selectedSizes) ? selectedSizes : [selectedSizes];
+    // selectedColors = Array.isArray(selectedColors) ? selectedColors : [selectedColors];
+
+    if (!selectedSizes[0] ) {
+        notifier.show(
+            'Error!',
+            'Please select a size.',
+            'danger',
+            "{% static 'assets/images/notification/high_priority-48.png' %}",
+            4000
+        );
+        return;
+    }
+
+    selectedSizes.forEach(sizeId => {
+        const sizeName = $("#size_id option[value='" + sizeId + "']").text();
+
+        // selectedColors.forEach(colorId => {
+            // const colorName = $("#color_id option[value='" + colorId + "']").text();
+
+            if (!isRowDuplicate(sizeId)) { 
+                addRow(sizeName, sizeId, box);
+            } else {
+                notifier.show(
+                    'Error!',
+                    `Size: ${sizeName} already exists in the table.`,
+                    'danger',
+                    "{% static 'assets/images/notification/high_priority-48.png' %}",
+                    4000
+                );
+            }
+        // }); 
+    });
+}
+
+function isRowDuplicate(sizeId, colorId) {
+    let isDuplicate = false;
+
+    $("#purchaseTable tbody tr").each(function () {
+        const existingSizeId = $(this).find(".size_id").text();
+        const existingColorId = $(this).find(".color_id").text();
+
+        if (existingSizeId === sizeId && existingColorId === colorId) {
+            isDuplicate = true;
+            return false;
+        }
+    });
+
+    return isDuplicate;
+}
+
+
+
+// ````````````````````````````````````````````````
+// 
+
+
+function editRow(row) {
+    const size = row.querySelector("td:nth-child(1)").innerText.trim();
+    const color = row.querySelector("td:nth-child(2)").innerText.trim();
+    const quantityCell = row.querySelector(".quantity");
+    const wtCell = row.querySelector(".wt");
+    const cutter = row.querySelector(".cutter");
+    const sizeId = row.querySelector(".size_id").innerText.trim();
+    const colorId = row.querySelector(".color_id").innerText.trim();
+
+    // Get the original quantity from the row attribute or initialize it
+    let originalQuantity = row.getAttribute("data-original-quantity");
+    if (!originalQuantity) {
+        originalQuantity = quantityCell.textContent.trim();
+        row.setAttribute("data-original-quantity", originalQuantity);
+    }
+    
+    originalQuantity = parseFloat(originalQuantity) || 0;
+    const currentQuantity = parseFloat(quantityCell.textContent.trim()) || 0;
+    const currentWt = parseFloat(wtCell.textContent.trim()) || 0;
+    const cutterName = parseFloat(cutter.textContent.trim()) || 0;
+
+    // Remove the row before updating form fields
+    row.remove();
+    calculateTotalValue();
+
+    // Append values into form fields
+    $("#size_id").val([sizeId]).trigger("change");
+    $("#color_id").val([colorId]).trigger("change");
+    $("#quantity").val(currentQuantity);
+    $("#wt").val(currentWt);
+    $("#cutter").val(cutterName);
+
+    // Store the original quantity in a hidden field for balance calculation
+    $("#original_quantity").val(originalQuantity);
+}
+
+
+// $("#lot_no").on("change", function () {
+//     const selectedOption = $(this).find("option:selected");
+//     const lotText = selectedOption.text(); // example: LOT123 (Avl: 150.00 kg)
+
+//     const match = lotText.match(/\(Avl:\s*([\d.]+)\s*kg\)/);
+//     if (match) {
+//         const availableWt = parseFloat(match[1]);
+//         $("#available_wt").val(availableWt);
+//     } else {
+//         $("#available_wt").val(0);
+//     }
+// });
+
+
+
+
+    function aggregateData(data) {
+    return Object.values(
+        data.reduce((acc, curr) => {
+        const key = curr.size_id;
+        if (!acc[key]) {
+            acc[key] = { ...curr, available_qty: parseFloat(curr.available_qty || 0) };
+        } else {
+            acc[key].already_received_qty = (
+            parseFloat(acc[key].already_received_qty) + parseFloat(curr.already_received_qty)
+            ).toFixed(2);
+            acc[key].already_out_qty = (
+            parseFloat(acc[key].already_out_qty) + parseFloat(curr.already_out_qty)
+            ).toFixed(2);
+            acc[key].available_qty = (
+            parseFloat(acc[key].available_qty) + parseFloat(curr.available_qty)
+            ).toFixed(2);
+        }
+        return acc;
+        }, {})
+    );
+    }
+
+function loadProgramDetails(prg_ids) {
+    console.log('out-id:', prg_ids);
+
+    let selectedText = $('#prg_id option:selected').map(function () {
+        return $(this).text().trim();
+    }).get().join(', ');
+
+    console.log('Selected Outward(s):', selectedText);
+
+    // Assume all selected have same type (P or SP), grab from first
+    let typeMatch = selectedText.match(/\((.*?)\)/);
+    let inwardType = typeMatch ? typeMatch[1] : null;
+
+    let url = '';
+    if (inwardType === 'P') {
+        url = '/get-packing-delivery-list/';
+    } else if (inwardType === 'SP') {   
+        url = '/get-stiching-delivery-data/';
+    } else {
+        console.warn('Unknown type. Cannot determine URL.');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'prg_id[]': prg_ids, // Send as array
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        traditional: true, // important if prg_ids is an array
+        success: function(data) {
+            // Check for quality or style mismatch errors first
+            if (data.quality_mismatch || data.style_mismatch) {
+                notifier.show(
+                    'Error!', 
+                    data.error_message || 'Selected outwards have different Quality or Style, cannot load together,Please select each delievry as separately.', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+
+
+                // alert(data.error_message || 'Selected outwards have different Quality or Style, cannot load together.');
+                return;  // Stop further processing
+            }
+
+            if (!data || !Array.isArray(data.sizes) || data.sizes.length === 0) return;
+
+            let combined = data.sizes;
+
+            if (prg_ids.length > 1) {
+                combined = aggregateData(data.sizes); // assuming this function expects an array
+            }
+
+            let $tableBody = $('#purchaseTable tbody');
+            $tableBody.empty();
+
+            combined.forEach(function(items) {
+                const per_box = parseInt(items.per_box) || 0;
+                const alreadyOut = parseFloat(items.already_out_qty) || 0;
+                const alreadyReceived = parseFloat(items.already_received_qty) || 0;
+                const loose_pcs_delivery = parseFloat(items.loose_pcs_delivery) || 0;
+                const qty = alreadyOut - alreadyReceived;
+                const box = per_box > 0 ? Math.floor(qty / per_box) : 0;
+                const loose_pcs = per_box > 0 ? qty % per_box : qty;
+
+                addRow(
+                    items.size_name,
+                    items.color_name,
+                    items.size_id,
+                    items.color_id,
+                    per_box,
+                    alreadyOut,
+                    alreadyReceived,
+                    loose_pcs_delivery,
+                    parseFloat(items.available_qty) || 0,
+                    box,
+                    loose_pcs,
+                    0,
+                    0,
+                    qty
+                );
+            });
+        },
+
+
+
+
+        // success: function(data) {
+        //     if (!data || !Array.isArray(data.sizes) || data.sizes.length === 0) return;
+
+        //     let combined = data.sizes;
+
+        //     if (prg_ids.length > 1) {
+        //         combined = aggregateData(data.sizes); // assuming this function expects an array
+        //     }
+
+        //     let $tableBody = $('#purchaseTable tbody');
+        //     $tableBody.empty();
+
+        //     combined.forEach(function(items) {
+        //         const per_box = parseInt(items.per_box) || 0;
+        //         const alreadyOut = parseFloat(items.already_out_qty) || 0;
+        //         const alreadyReceived = parseFloat(items.already_received_qty) || 0;
+        //         const qty = alreadyOut - alreadyReceived;
+        //         const box = per_box > 0 ? Math.floor(qty / per_box) : 0;
+        //         const loose_pcs = per_box > 0 ? qty % per_box : qty;
+
+        //         addRow(
+        //             items.size_name,
+        //             items.color_name,
+        //             items.size_id,
+        //             items.color_id,
+        //             per_box,
+        //             alreadyOut,
+        //             alreadyReceived,
+        //             parseFloat(items.available_qty) || 0,
+        //             box,
+        //             loose_pcs,
+        //             0,
+        //             0,
+        //             qty
+        //         );
+        //     });
+        // },
+
+
+        error: function (xhr, status, error) {
+            console.error('Error loading program details:', error);
+        }
+    });
+}
+ 
+
+
+
+
+function addRow(size, color, sizeId, colorId, per_box, alreadyOut, alreadyReceived, loose_pcs_delivery,available_balance,box = 0, loose_pcs = 0, seconds_pcs = 0, shortage = 0) {
+  const tableBody = document.querySelector("#purchaseTable tbody");
+  if (!tableBody) {
+    console.error("Table body not found!");
+    return;
+  }
+
+  const key = `${sizeId}`;
+  let existingRow = document.querySelector(`#purchaseTable tbody tr[data-key="${key}"]`);
+
+  let total_pcs_to_add = (box * per_box) + loose_pcs + seconds_pcs + shortage;
+  let newTotalPcs;
+  let newCalculatedBox;
+  let calculatedBoxPcs;
+  let newCalculatedLoosePcs;
+
+  if (existingRow) {
+    // Get existing values from the input fields
+    let currentBox = parseInt(existingRow.querySelector(".box ").value) || 0;
+    let currentLoosePcs = parseInt(existingRow.querySelector(".loose_pcs input").value) || 0;
+    let currentSecondsPcs = parseInt(existingRow.querySelector(".seconds_pcs input").value) || 0;
+    let currentShortage = parseInt(existingRow.querySelector(".shortage input").value) || 0;
+
+   
+    // Calculate the new grand total pieces
+    const currentTotalPcs = (currentBox * per_box) + currentLoosePcs + currentSecondsPcs + currentShortage;
+    newTotalPcs = currentTotalPcs + total_pcs_to_add + loose_pcs_delivery;
+
+    // If new total pcs exceed available balance, restrict to available balance
+    if (newTotalPcs > available_balance) {
+    newTotalPcs = available_balance;
+    }
+
+    // Recalculate boxes and loose pieces from the new total
+    newCalculatedBox = Math.floor(newTotalPcs / per_box);
+    newCalculatedLoosePcs = newTotalPcs % per_box;
+
+
+
+    const remaining = alreadyOut + loose_pcs_delivery- newTotalPcs;
+
+    // Update the existing row
+    existingRow.querySelector(".box ").value = newCalculatedBox;
+    existingRow.querySelector(".loose_pcs input").value = newCalculatedLoosePcs;
+    existingRow.querySelector(".seconds_pcs input").value = currentSecondsPcs + seconds_pcs;
+    existingRow.querySelector(".shortages input").value = currentShortage + shortage;
+    existingRow.querySelector(".total_pcs").textContent = newTotalPcs;
+    existingRow.querySelector(".balance").textContent = remaining >= 0 ? remaining : 0;
+    existingRow.querySelector(".box_pcs").textContent = newCalculatedBox * per_box;
+
+  } else {
+    // Logic for creating a new row
+
+    newTotalPcs = total_pcs_to_add + loose_pcs_delivery;
+
+    // Restrict if total pcs > available balance
+    if (newTotalPcs > available_balance) {
+    newTotalPcs = available_balance + loose_pcs_delivery;
+    }
+
+    newCalculatedBox = Math.floor(newTotalPcs / per_box);
+    const newCalculatedLoosePcs = newTotalPcs % per_box;
+
+
+
+    // newTotalPcs = total_pcs_to_add;
+    // newCalculatedBox = Math.floor(newTotalPcs / per_box);
+    // const newCalculatedLoosePcs = newTotalPcs % per_box;
+    const calculatedBoxPcs = newCalculatedBox * per_box;
+    // const remaining = alreadyOut - newTotalPcs;
+    const remaining =  newTotalPcs;
+    // const avl = available_balance - (calculatedBoxPcs + loose_pcs + seconds_pcs + shortage_pcs);
+    const avl = available_balance - ((newCalculatedBox * per_box) + loose_pcs + seconds_pcs + shortage);
+    console.log('avl:',avl);
+    const balance_qty = available_balance - newTotalPcs;
+    console.log('b-qty:',balance_qty);
+    const newRow = document.createElement("tr");
+
+    const delivery_qty = alreadyOut + loose_pcs_delivery;
+    newRow.dataset.key = key;
+
+    console.log('available_balance:',available_balance);
+    newRow.innerHTML = ` 
+      <td>${size}</td>
+      <td class="alr_out"><input type="number" style="border:none;background:#d4f1f1" class="form-control delivered_qty" readonly value="${delivery_qty}"></td>
+      <td class="alr_rec"><input type="number" style="border:none;background:#eff3f6" class="form-control alr_rec" readonly value="${alreadyReceived}"></td>
+      <td class="box">
+        <input type="number" style="border:none;width:50px;" class="form-control" value="0"> 
+      </td>
+      <td class="pcs_per_box">
+        <input type="number" style="border:none;background:#eff3f6;" class="form-control" readonly value="${per_box}">
+      </td>
+      <td class="box_pcs">0</td>
+  
+
+        <td class="loose_pcs">
+        <a href="#loose_pcs_modal" 
+            class="form-control open-modal"  
+            data-toggle="modal" 
+            data-size-id="${sizeId}"  
+            data-color-id="${colorId}" 
+            data-size-name="${size}"  
+            data-color-name="${color}" 
+            data-available="${available_balance}"  
+            style="border:none; text-decoration:underline; cursor:pointer;">
+            0
+        </a>
+        <input type="number" class="form-control loose-pcs-input" value="${available_balance}" style="display:none;" />
+        </td>
+
+ 
+
+      <td class="seconds_pcs"><input type="number" style="border:none;" class="form-control" value="0"></td>
+      <td class="shortages"><input type="number" style="border:none;" class="form-control shortage" value="0"></td>
+      <td class="total_pcs">${newTotalPcs}</td>
+      <td class="balance_pieces">${remaining}</td>
+      <td class="size_id" style="display:none">${sizeId}</td>
+      <td class="color_id" style="display:none">${colorId}</td>
+      <td class="boxess" style="display:none">${newCalculatedBox}</td>
+      <td class="avl_qty" style="display:none;">${available_balance}</td>
+      <td class="loose_pcs_delivery" style="display:none;">${loose_pcs_delivery}</td>
+      <td><button class="btn btn-danger btn-xs remove-row"><i class="feather icon-trash-2"></i></button></td>
+    `;
+    tableBody.appendChild(newRow);
+            // data-available="${available_balance}-${newTotalPcs}"  
+
+    // Remove row functionality
+    newRow.querySelector(".remove-row").addEventListener("click", function () {
+      newRow.remove();
+
+      updateMainTableLoosePcs(sizeId);
+      calculateTotalValue();
+      calculateSummaryTotalValue();
+    });
+
+
+newRow.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", () => {
+        const boxVal = parseInt(newRow.querySelector(".box input").value) || 0;
+        const perBoxVal = parseInt(newRow.querySelector(".pcs_per_box input").value) || 0;
+        const looseVal = parseInt(newRow.querySelector(".loose-pcs-input").value) || 0;
+        const secondsVal = parseInt(newRow.querySelector(".seconds_pcs input").value) || 0;
+        const shortageVal = parseInt(newRow.querySelector(".shortages input").value) || 0;
+
+        const available_qty = parseInt(newRow.querySelector(".avl_qty").textContent.trim()) || 0;
+
+        const updatedBoxPcs = boxVal * perBoxVal;
+        const updatedTotalPcs = updatedBoxPcs + looseVal + secondsVal + shortageVal;
+
+        // ✅ Prevent exceeding available quantity
+        if (updatedTotalPcs > available_qty) {
+            alert(`Cannot exceed available quantity of ${available_qty}. Current total is ${updatedTotalPcs}`);
+            input.value = 0; // or reset to previous value if you stored it
+            return;
+        }
+
+        const alreadyOut = parseInt(newRow.querySelector(".alr_out input").value) || 0;
+        const alreadyReceived = parseInt(newRow.querySelector(".alr_rec input").value) || 0;
+        const updatedRemaining = (alreadyOut - alreadyReceived) - updatedTotalPcs;
+
+        newRow.querySelector(".box_pcs").textContent = updatedBoxPcs;
+        newRow.querySelector(".total_pcs").textContent = updatedTotalPcs;
+        newRow.querySelector(".balance_pieces").textContent = updatedRemaining >= 0 ? updatedRemaining : 0;
+
+        calculateTotalValue();
+        calculateSummaryTotalValue();
+    });
+});
+
+
+
+
+newRow.querySelector(".box input").addEventListener("input", () => {
+    const boxVal = parseInt(newRow.querySelector(".box input").value) || 0;
+    const perBoxVal = parseInt(newRow.querySelector(".pcs_per_box input").value) || 0;
+    const updatedBoxPcs = boxVal * perBoxVal;
+
+    newRow.querySelector(".box_pcs").textContent = updatedBoxPcs;
+});
+
+
+
+
+  }
+
+  calculateTotalValue();
+  calculateSummaryTotalValue();
+  updateMainTableLoosePcs();
+} 
+
+
+const loosePcsGroupedData = {};  // key: sizeId_colorId, value: { size_id, color_id, quantity }
+
+
+$(document).ready(function () {
+
+    $('#add_loose_pcs').on('click', addSize); 
+
+
+
+function addSize(event) {
+    event.preventDefault();
+
+    const sizeId = $('#size_id').val();
+    const colorId = $('#color_ids').val();
+    const quantity = parseInt($('#modal_add_qty').val());
+    const available_qty = parseInt($('#modal_available_qty').val()) || 0;
+    const colorName = $('#color_ids option:selected').text();
+
+    // 🔒 Validation
+    if (!sizeId || !colorId || isNaN(quantity) || quantity <= 0) {
+        notifier.show('Error!', 'Please select a valid size, color and quantity.', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    if (quantity > available_qty) {
+        notifier.show('Error!', 'Given Quantity is greater than available quantity!', 'danger', "{% static 'assets/images/notification/high_priority-48.png' %}", 4000);
+        return;
+    }
+
+    const key = `${sizeId}_${colorId}`;
+    let rowUpdated = false;
+
+    // 🔁 Update quantity in modal table if row already exists
+    $('#loose_pcs_table tbody tr').each(function () {
+        const existingColorId = $(this).find('td:eq(3)').text().trim();
+        const existingSizeId = $(this).find('td:eq(2)').text().trim();
+
+        if (existingColorId === colorId && existingSizeId === sizeId) {
+            $(this).find('td:eq(1)').text(quantity);
+            rowUpdated = true;
+            return false;
+        }
+    });
+
+    // ➕ If not found, add a new row
+    if (!rowUpdated) {
+        const row = $('<tr>');
+        row.append('<td>' + colorName + '</td>');               // Color Name
+        row.append('<td>' + quantity + '</td>');                // Quantity
+        row.append('<td style="display: none;">' + sizeId + '</td>');   // Size ID
+        row.append('<td style="display: none;">' + colorId + '</td>');  // Color ID
+
+        const deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+        deleteButton.on('click', function () {
+            row.remove();
+            delete loosePcsGroupedData[key]; // 🗑 Remove from memory
+            updateMainTableLoosePcs(sizeId);
+        });
+
+        const deleteCell = $('<td>').append(deleteButton);
+        row.append(deleteCell);
+        $('#loose_pcs_table tbody').prepend(row);
+    }
+
+    // ✅ Always update grouped data in memory
+    loosePcsGroupedData[key] = {
+        tm_id: '',  // or dynamic if needed
+        size_id: sizeId,
+        color_id: colorId,
+        quantity: quantity
+    };
+
+    // 🔃 Sync with main table
+    updateMainTableLoosePcs(sizeId);
+
+    // Reset modal inputs
+    $('#modal_add_qty').val('');
+    $('#color_ids').val('').trigger("change");
+
+    console.log("📦 loosePcsGroupedData:", loosePcsGroupedData);
+}
+
+
+
+    function addDeleteButton(row) {
+        var deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+        deleteButton.on('click', function () {
+            row.remove();
+        });
+
+        var deleteCell = $('<td>');
+        deleteCell.append(deleteButton);
+        row.append(deleteCell); 
+    }
+});
+
+
+
+
+function updateMainTableLoosePcs(sizeId) {
+    let totalLoosePcs = 0;
+
+    // Step 1: Sum all loose pcs from modal table
+    $('#loose_pcs_table tbody tr').each(function () {
+        const rowSizeId = $(this).find('td:eq(2)').text().trim();
+        if (rowSizeId === sizeId) {
+            const qty = parseInt($(this).find('td:eq(1)').text()) || 0;
+            totalLoosePcs += qty;
+        }
+    });
+
+    // Step 2: Update corresponding row in #purchaseTable
+    $('#purchaseTable tbody tr').each(function () {
+        const rowSizeId = $(this).find('.size_id').text().trim();
+
+        if (rowSizeId === sizeId) {
+            const $row = $(this);
+            
+            // Update the hidden loose pcs input
+            $row.find('.loose-pcs-input').val(totalLoosePcs).trigger('input');
+
+            // Update <a> text
+            $row.find('.loose_pcs a').text(totalLoosePcs);
+
+            // Get available quantity from hidden .avl_qty cell
+            const availableQty = parseInt($row.find('.avl_qty').text().trim()) || 0;
+
+            // Calculate new balance
+            const newBalance = availableQty - totalLoosePcs;
+            $row.find('.balance_pieces').text(newBalance >= 0 ? newBalance : 0);
+
+            // Recalculate total_pcs and box pcs too if needed
+            const box = parseInt($row.find('.box input').val()) || 0;
+            const perBox = parseInt($row.find('.pcs_per_box input').val()) || 0;
+            const boxPcs = box * perBox;
+
+            const seconds = parseInt($row.find('.seconds_pcs input').val()) || 0;
+            const shortage = parseInt($row.find('.shortage input').val()) || 0;
+
+            const totalPcs = boxPcs + totalLoosePcs + seconds + shortage;
+            $row.find('.total_pcs').text(totalPcs);
+            $row.find('.box_pcs').text(boxPcs);
+        }
+    });
+
+    calculateSummaryTotalValue();
+    calculateTotalValue(); // Optional: if needed
+}
+
+
+
+
+    $(document).ready(function () {
+    let currentRow = null;
+
+
+
+$('#purchaseTable').on('click', '.loose_pcs .open-modal', function (e) {
+    e.preventDefault();
+    currentRow = $(this).closest('tr');
+
+    const anchor = $(this);
+    const sizeId = anchor.data('size-id');
+    const colorId = anchor.data('color-id');
+    const sizeName = anchor.data('size-name');
+    const colorName = anchor.data('color-name');
+    const available = anchor.data('available'); 
+    console.log('avl-qty:',available);
+    // Clear modal inputs
+    $('#modal_size_name').text(''); 
+    $('#modal_available_qty').val(''); 
+    $('#size_id').val('');       // <-- Use val() here
+    $('#modal_add_qty').val('');
+    $('#color_ids').empty().append('<option value="">Select</option>');
+
+    const prg_id = $('#prg_id').val();
+    const selectedText = $('#prg_id option:selected').text().trim();
+    const typeMatch = selectedText.match(/\((.*?)\)/);
+    const inwardType = typeMatch ? typeMatch[1] : null;
+
+    let url = '';
+    if (inwardType === 'P') {
+        url = '/get-packing-delivery-color-list/';
+    } else if (inwardType === 'SP') {
+        url = '/get-stiching-delivery-color-list/';
+    } else { 
+        console.warn('Unknown inward type');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+        'prg_id': prg_id,
+        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+        },
+        success: function (data) {
+        $('#modal_size_name').text(sizeName);
+        $('#size_id').val(sizeId);  // <-- Here val()
+
+        const colorSelect = $('#color_ids');
+        (data.color_list || []).forEach(color => {
+            colorSelect.append(`<option value="${color.id}">${color.name}</option>`);
+        });
+
+        colorSelect.off('change').on('change', function () {
+            const selectedColorId = $(this).val();
+            const sizeObj = (data.size_list || []).find(sz => sz.name == sizeName);
+            const sizeId = sizeObj ? sizeObj.id : null;
+
+            if (!selectedColorId || !sizeId) {
+            $('#modal_available_qty').val(''); 
+            return;
+            }
+             
+            const match = (data.data || []).find(item =>
+                item.size_id == sizeId
+            );
+
+            if (match) {
+                $('#modal_available_qty').val(match.quantity);
+                $('#modal_available_qty').closest('.col-md-4').show();
+            } else {
+                $('#modal_available_qty').val('');
+                $('#modal_available_qty').closest('.col-md-4').hide();
+            }
+
+
+        });
+
+
+        $('#loose_pcs_modal').modal('show');
+ 
+        $('#loose_pcs_table tbody').empty();
+   
+for (const key in loosePcsGroupedData) {
+
+    const entry = loosePcsGroupedData[key];
+    
+    if (entry.size_id === sizeId.toString()) {
+        // Check if already present in the table
+        const exists = $('#loose_pcs_table tbody tr').filter(function () {
+            return $(this).find('.size_id').text() === entry.size_id &&
+                   $(this).find('.color_id').text() === entry.color_id;
+        }).length > 0; 
+
+        if (!exists) {
+            const colorName = $('#color_ids option[value="' + entry.color_id + '"]').text() || `Color ${entry.color_id}`;
+            
+            const row = $('<tr>');
+            row.append('<td>' + colorName + '</td>');                         // Color Name
+            row.append('<td>' + entry.quantity + '</td>');                   // Quantity
+            row.append('<td class="size_id" style="display: none;">' + entry.size_id + '</td>');   // Size ID
+            row.append('<td class="color_id" style="display: none;">' + entry.color_id + '</td>'); // Color ID
+
+            const deleteButton = $('<button class="btn btn-danger btn-xs"><i class="feather icon-trash-2"></i></button>');
+            deleteButton.on('click', function () {
+                row.remove();
+                delete loosePcsGroupedData[key]; // Remove from memory
+                updateMainTableLoosePcs(entry.size_id);
+            });
+
+            const deleteCell = $('<td>').append(deleteButton);
+            row.append(deleteCell);
+
+            $('#loose_pcs_table tbody').append(row);
+        }
+    }
+}
+
+
+
+
+
+        $('#loose_pcs_modal').modal('show');
+        // let $tableBody = $('#loose_pcs_modal tbody');
+        //     $tableBody.empty(); 
+        },
+        error: function () {
+        alert('Failed to fetch data for modal.');
+        }
+    });
+    });
+
+
+
+});
+
+ 
+
+function recalcRowTotals(row) {
+  const perBox = parseInt(row.find('.pcs_per_box input').val()) || 1;
+  const boxVal = parseInt(row.find('.box input').val()) || 0;
+  const loosePcs = parseInt(row.find('.loose_pcs a.open-modal').text()) || 0;
+  const secondsPcs = parseInt(row.find('.seconds_pcs input').val()) || 0;
+  const shortage = parseInt(row.find('.shortage input').val()) || 0;
+
+  const totalPcs = (boxVal * perBox) + loosePcs + secondsPcs + shortage;
+  row.find('.total_pcs').text(totalPcs);
+
+  // Update balance or other fields similarly as needed
+}
+
+
+
+
+function calculateSummaryTotalValue() {
+    let totalBox = 0;
+    let loose_pcs = 0; 
+    let seconds_pcs = 0; 
+    let shortage_pcs = 0;
+    let totalDeliveredPcs = 0;
+    let totalBalancePcs = 0; //  🔧 New accumulator
+    const perBox = 10;
+
+    $('#purchaseTable tbody > tr').each(function () { 
+        const $row = $(this);
+        const box = parseInt($row.find('.box ').val()) || 0;
+        const loose = parseInt($row.find('.loose_pcs input').val()) || 0;
+        const seconds = parseInt($row.find('.seconds_pcs input').val()) || 0;
+        const shortage = parseInt($row.find('.shortages input').val()) || 0;
+        const balance_val = parseInt($row.find('.balance_pieces').text()) || 0;
+
+        const total = (box * perBox) + loose + seconds + shortage;
+        totalDeliveredPcs += total;
+        totalBox += box;
+        loose_pcs += loose;
+        seconds_pcs += seconds;
+        shortage_pcs += shortage;
+        totalBalancePcs += balance_val; // ✅ Sum instead of overwriting
+
+        // Optional: update row values if needed
+        $row.find('.total_pcs input').val(total); // Only if it's an <input>
+    });
+
+    // Update summary totals
+    $('#delivered_pcs').text(totalDeliveredPcs);
+    $('#loose_pcs').text(loose_pcs);
+    $('#seconds_pcs').text(seconds_pcs);
+    $('#shortage_pcs').text(shortage_pcs);
+    $('#total_box').text(totalBox);
+    $('#per_box').text(perBox);
+
+    // ✅ Show total balance in summary
+    $('#balance_pieces').text(totalBalancePcs);
+    $('#balance_pcs').text(totalBalancePcs);
+}
+
+
+
+
+function calculateTotalValue() {
+  let totalDelivered = 0;
+  let totalAlreadyRec = 0;
+  let totalBoxes = 0;
+  let totalBoxPcs = 0;
+  let totalLoosePcs = 0;
+  let totalSecondsPcs = 0;
+  let totalShortagePcs = 0;
+  let totalPcs = 0;
+  let balancePcs = 0;
+
+  document.querySelectorAll("#purchaseTable tbody tr").forEach(row => {
+    totalDelivered += parseInt(row.querySelector(".delivered_qty").value) || 0;
+    totalAlreadyRec += parseInt(row.querySelector(".alr_rec input").value) || 0;
+    totalBoxes += parseInt(row.querySelector(".box input").value) || 0;
+    // <!-- totalBoxes += parseInt(row.querySelector(".box ").value) || 0; -->
+    totalBoxPcs += parseInt(row.querySelector(".box_pcs").textContent) || 0;
+    // totalLoosePcs += parseInt(row.querySelector(".loose_pcs").value) || 0;
+    // totalLoosePcs += parseInt(row.querySelector(".loose-pcs-input").value) || 0;
+
+    totalSecondsPcs += parseInt(row.querySelector(".seconds_pcs input").value) || 0;
+    totalShortagePcs += parseInt(row.querySelector(".shortages input").value) || 0;
+    totalPcs += parseInt(row.querySelector(".total_pcs").textContent) || 0;
+    balancePcs += parseInt(row.querySelector(".balance_pieces").textContent) || 0;
+    // balancePcs += parseInt(row.querySelector(".balance_pieces").textContent) || 0;
+    totalLoosePcs += parseInt(row.querySelector(".loose-pcs-input").value) || 0;
+
+
+  });
+
+  document.getElementById("total_delivered_pcs").textContent = totalDelivered;
+  document.getElementById("total_already_rec_pcs").textContent = totalAlreadyRec;
+  document.getElementById("total_boxes").textContent = totalBoxes;
+  document.getElementById("total_box_pcs").textContent = totalBoxPcs;
+  document.getElementById("total_loose_pcs").textContent = totalLoosePcs;
+  document.getElementById("total_seconds_pcs").textContent = totalSecondsPcs;
+  document.getElementById("total_shortage_pcs").textContent = totalShortagePcs;
+  document.getElementById("total_pieces").textContent = totalPcs;
+  document.getElementById("balance_pieces").textContent = balancePcs;
+}
+
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked");
+
+    // Get outward text and extract values
+    var outward_text = $('#prg_id option:selected').text().trim();
+    console.log('out-text:', outward_text);
+
+    var outward_number_match = outward_text.match(/^([^\s]+)/); // match until first space
+    var outward_number = outward_number_match ? outward_number_match[1] : '';
+    console.log('outward_number:', outward_number);
+
+    var delivery_from = '';
+    if (outward_text.includes('(P)')) {
+        delivery_from = 'packing';
+    } else if (outward_text.includes('(SP)')) {
+        delivery_from = 'stiching';
+    }
+    console.log('delivery_from:', delivery_from);
+
+    var fab_id = $('#fabric_id').val();
+    var TableData = storeTblValues();
+    console.log('tbl-data:', TableData);
+    // var LoosePcsTableData = StoreLoosePcsTblValuesGrouped();
+
+
+    var LoosePcsTableData = loosePcsGroupedData;
+
+    console.log('loose-pcs-data:',LoosePcsTableData);
+
+
+
+    if (TableData.length === 0) { 
+        notifier.show(
+            'Error!', 
+            'Some rows have Weight (Wt) <= 0. Please correct them before submitting.',
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+        return;
+    }
+
+    if (confirm("Are you sure you want to save?")) {
+        TableData = JSON.stringify(TableData); 
+        var mdata = new FormData(this); 
+
+        // Append custom data
+        mdata.append('cutting_data', TableData);  
+
+        LoosePcsTableData = JSON.stringify(LoosePcsTableData); 
+
+        // Append custom data 
+        mdata.append('loose_pcs_data', LoosePcsTableData);  
+
+
+        mdata.append('party_id', $('#party_id').val() ); 
+       
+        
+		var delivered_pcs = $('#delivered_pcs').text();
+        var total_box = $('#total_box').text();
+
+        var per_box = $('#box_piece').text();  // 🔹 Fixed `.text()` to `.text()`
+        var balance_pcs = $('#balance_pcs').text();
+        var loose_pcs = $('#loose_pcs').text();
+        var seconds_pcs = $('#seconds_pcs').text();
+        var shortage_pcs = $('#shortage_pcs').text();
+
+        // alert('q-id:', quality_id);
+
+
+        mdata.append('total_box', total_box);
+        mdata.append('delivered_pcs', delivered_pcs);
+        mdata.append('per_box', per_box) || 0;
+        mdata.append('loose_pcs', loose_pcs) || 0;
+        mdata.append('seconds_pcs', seconds_pcs) || 0;
+        mdata.append('shortage_pcs', shortage_pcs) || 0;
+        mdata.append('balance_pcs', balance_pcs) || 0;
+  
+
+        mdata.append('delivery_from', delivery_from);
+        mdata.append('outward_number', outward_number);  
+        // mdata.append('fabric_id', fab_id);
+        
+        mdata.append('fab_id',fab_id);
+        $.ajax({
+            type: "POST", 
+            url: "/add-packing-received/", 
+            data: mdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                console.log("Sending AJAX request...");
+                $('#submit').attr('disabled', true).text('Processing...');
+            },
+            success: function(data) {  // 🔹 Fixed response handling
+                console.log("Server Response:", data);
+                $('#submit').attr('disabled', false).text('Save');
+
+                if (data.status === 'yes') {  // ✅ Corrected condition
+                    notifier.show(
+                        'Well Done!', 
+                        'Packing Received Added!', 
+                        'success', 
+                        "{% static 'assets/images/notification/ok-48.png' %}", 
+                        4000
+                    );  
+                    location.reload();
+                    $('#add_new').trigger('reset'); 
+					
+					// $('#quality_id').val('').trigger("change");
+					// $('#prg_id').val('').trigger("change");
+					// $('#style_id').val('').trigger("change");
+					// $('#size_id').val('').trigger("change");
+
+					// $('#purchaseTable tbody').empty();      
+					// $('#summary_table tbody').empty();     
+                
+                } else {
+                    notifier.show(
+                        'Error!', 
+                        'Failed To add', 
+                        'danger', 
+                        "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                        4000
+                    ); 
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("AJAX Error:", textStatus, errorThrown);
+                notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+                $('#submit').attr('disabled', false).text('Save');
+            }
+        });
+    }
+});
+
+ 
+
+
+$('.single-select').select2();
+$('.select-to').select2();
+
+
+$('.pcs-select').select2({
+	dropdownParent: $('#loose_pcs_modal')
+});
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('inward_date').value = currentDateString;
+    document.getElementById('dc_date').value = currentDateString;
+
+ 
+
+</script>

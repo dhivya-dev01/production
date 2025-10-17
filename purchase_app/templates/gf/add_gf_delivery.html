@@ -1,0 +1,1648 @@
+
+{% include 'includes/header.html' %}
+{% include 'includes/sidenavbar.html' %}
+{% include 'includes/navbar.html' %}
+{% load static %}
+
+<div class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                         <div class="page-header-title"> <!-- mill to knitting delivery -->
+                                            <h4 class="m-b-10">Gray Fabric Outward  </h4>
+                                        </div>
+                                        <ul class="breadcrumb"> 
+                                            <li class="breadcrumb-item"><a href="/dashboard"><i
+                                                        class="feather icon-home"></i></a></li>
+                                            <li class="breadcrumb-item">Grey fabric</a></li>
+                                            <li class="breadcrumb-item"><a href="/gf-deliver"> Gray Fabric Outward</a></li>
+                                        </ul>
+                                        <div class="card-header-right">
+                                            <div class="btn-group card-option">
+                                                <button type="button" class="btn dropdown-toggle btn-icon"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="feather icon-more-horizontal"></i>
+                                                </button>
+                                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-end">
+                                                    <li class="dropdown-item full-card"><a href="#!"><span><i
+                                                                    class="feather icon-maximize"></i>
+                                                                maximize</span><span style="display:none"><i
+                                                                    class="feather icon-minimize"></i>
+                                                                Restore</span></a></li>
+                                                    <li class="dropdown-item minimize-card"><a href="#!"><span><i
+                                                                    class="feather icon-minus"></i> collapse</span><span
+                                                                style="display:none"><i class="feather icon-plus"></i>
+                                                                expand</span></a></li>
+                                                    <li class="dropdown-item reload-card"><a href="#!"><i
+                                                                class="feather icon-refresh-cw"></i> reload</a></li>
+                                                    <li class="dropdown-item close-card"><a href="#!"><i
+                                                                class="feather icon-trash"></i> remove</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                    </div>
+
+                                    <div class="card">  
+
+                                        <div class="card-body row"> 
+                                            <form id="add_new">
+                                                <div class="col-sm-12">
+                                                    <div class="row"> 
+                                                        {% csrf_token %}
+                                                        <div class="col-md-9">
+                                                            <div class="row ">
+                                                            
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="number" class="form-label">DO Number</label>
+                                                                    <input type="number" class="form-control" id="delivery_number" value="{{do_number}}" disabled>
+
+                                                                </div>
+                                                              
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="order_date" class="form-label">DO Date</label>
+                                                                    <input class="form-control" type="date" name="delivery_date" id="delivery_date" required>
+                                                                </div>
+
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Inward </label>
+                                                                    <select id="inward_id" name="inward_id" class="form-control single-select">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in inward %}
+                                                                        <option value="{{ k.id }}">{{ k.inward_number }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div> 
+
+
+                                                               
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Deliver To </label> <!-- //bleaching or dyeing -->
+                                                                    <select id="deliver_id" name="deliver_id" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                        {% for k in supplier %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select>  
+                                                                </div> 
+ 
+                                                                <!-- <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Lot </label>
+                                                                    <select id="lot" name="lot" class="form-control single-select" onchange="LoadLotDetails()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in lot %}
+                                                                        <option value="{{ k.id }}">{{ k.lot_no }}</option> 
+                                                                        {% endfor %} 
+                                                                    </select> 
+                                                                </div>  -->
+                                                                
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label for="product_id" class="form-label">Lot </label>
+                                                                    <input class="form-control" type="number" name="lot_no" id="lot_no" disabled>
+                                                                </div>
+
+
+
+                                                                <div class="col-md-2 mt-2">
+                                                                    <label class="form-label">Dyeing Program</label>
+                                                                    <select class="form-control single-select" id="dye_prg_id" name="dye_prg_id" onchange="load_DyePrg_details()">
+                                                                        <option>Select</option>
+
+                                                                        {% for d in dyeing_prg %}
+                                                                        <option value="{{d.id}}">{{d.program_no}}</option>
+                                                                        {% endfor %}
+
+                                                                    </select>
+                                                                </div>
+                                                                <input class="form-control" type="hidden" name="lot_total_quantity" id="lot_total_quantity">
+                                                              
+                                                                <!-- </div>
+                        
+                        
+                                                                <div class="row "> -->
+                                                      
+                    
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="bag" class="form-label">Fabric</label>
+                                                                    <select id="fabric_id" name="fabric_id" class="form-control form-select single-select" onchange="LoadFabricValues()">
+                                                                        <option value="">Select</option>
+                                                                        {% for k in product %}
+                                                                        <option value="{{ k.id }}">{{ k.name }}</option> 
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <div class="form-group">
+                                                                        <label for="product_id" class="form-label">Count</label>
+                                                                        
+                                                                        <select id="count" name="count" class="form-control form-select single-select" >
+                                                                            <option value="">Select</option>
+                                                                           
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                
+
+
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="per_bag" class="form-label">Gauge</label>
+                                                                    <select id="gauge" name="gauge" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                    
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                                <div class="col-md-2 mt-3 mb-3">
+                                                                    <label for="quantity" class="form-label">TEX/Loop Length</label>
+                                                                    <select id="tex" name="tex" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                       
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">GSM</label>
+                                                                    <input type="number"  class="form-control" id="gsm" name="gsm"  >
+                                                                </div>
+
+                                                            
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rate" class="form-label">DIA</label>
+                                                                    <!-- <input type="number"  class="form-control" id="dia" name="dia"  > -->
+                                                                    <select id="dia" name="dia" class="form-control form-select single-select" >
+                                                                        <option value="">Select</option>
+                                                                       
+                                                                    </select>
+
+                                                                </div>
+                                                                
+                                                                
+                                                             
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="rolls" class="form-label">Rolls</label>
+                                                                    <input type="number" class="form-control" id="rolls" name="rolls"  oninput="calculateValueTotal()" min="0">
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="wt_per_roll" class="form-label">Roll Wt.(kg)</label>
+                                                                    <input type="number" class="form-control" id="wt_per_roll" name="wt_per_roll" min="0" oninput="calculateValueTotal()">
+                                                                </div>
+                                                                
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="quantity" class="form-label">Qty (kg)</label>
+                                                                    <input type="number" class="form-control" id="quantity" name="quantity" readonly>
+                                                                </div>
+                                                                
+                                                                
+
+                                                                <div class="col-md-2 mt-3">
+                                                                    <label for="qty" class="form-label">Gross Wt. (kg)</label>
+                                                                    <input type="number" class="form-control" id="gross_wt" name="gross_wt">
+                                                                </div>
+
+
+                                                                
+                                                                <div class="col-md-2 mt-5">
+                                                                    <input type="hidden" id="edit_id" name="edit_id">
+                                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                                                                    <button type="button" id="update" class="btn btn-primary " onclick="addManualRow()">+ Add</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                     
+                                                        
+                    
+                    
+                                                        <div class="col-md-3">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="p-2">
+                                                                        <table id="DeliverTable" class="table table-striped table-bordered w-100">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th colspan="2">Inward</th>
+                                                                                    <th colspan="2">Delivered</th>
+                                                                                    <th colspan="2">Balance</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td>Total Quantity</td>
+                                                                                    <td colspan="2" id="qty_total_placeholder" class="text-end">0</td>
+                                                                                </tr>
+                                                                    
+                                                                            
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                                
+
+                                                            </div>
+                                                            <div class="row">
+                                                            <div class=" p-2">
+                                                                <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="2" style="text-align: center;">Summary Table</th>
+                                                                        </tr> 
+                                                                    </thead>
+                                                                    <tbody> 
+                                                                        <tr> 
+                                                                            <td> Total Quantity</td>
+                                                                            <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Gross Total</td>
+                                                                            <td align="end" colspan="2" id="sub_total_placeholder">0.00</td>
+                                                                        </tr>
+                                                                        <!-- <tr>
+                                                                            <td>Total Tax</td>
+                                                                            <td align="end" colspan="2" id="tax_placeholder">0.00</td>
+                                                                        </tr>
+
+                                                                        <tr>
+                                                                            <td>Round off</td>
+                                                                            <td align="end" colspan="2" id="round_off">0.00</td>
+                                                                        </tr>
+                                                                        <tr> 
+                                                                            <td>Grand Total</td>
+                                                                            <td style="background-color: #428bca; color: black; font-size: 21px" align="end" colspan="2" id="total_payable">0.00</td>
+                                                                        </tr> -->
+                                                                    </tbody>
+                                                                </table>     
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+                                                        
+                                                    </div>
+
+                                                   
+                                                    
+                                                </div>  
+                                        
+                                                
+                                                    <div class="">
+                                                        <div class="table-responsive table-desi">
+                                                            <table id="purchaseTable" class="table table-bordered w-100">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Fabric</th>
+                                                                        <th style="display: none;">Lot No</th>
+                                                                        <th>Count</th>
+                                                                        <th>Gauge</th>
+                                                                        <th>Tex</th>
+                                                                        <th>GSM</th>
+                                                                        <th>Dia</th>
+                                                                        <th>Rolls</th>
+                                                                        <th>Wt Per Roll</th>
+                                                                        <th>Quantity</th>
+                                                                        <th>Gross Wt. (kg)</th>
+                                                                        
+                                                                        <!-- <th style="display: none;">Tax Value</th> -->
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <!-- Rows will be added dynamically here -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                    
+                                                        <div class="col-md-8">
+                                                            
+                                                        </div>
+                                                        <!-- <div class="col-md-3"></div> -->
+                                                        <!-- <div class="col-md-4">
+                                                        <div class=" m-b-30"> -->
+                                                            <!-- <div class="card-body">            
+                                                                <table id="summaryTable" class="table table-striped table-bordered w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th colspan="2">Summary Table</th>
+                                                                        </tr> 
+                                                                    </thead>
+                                                                    <tbody> 
+                                                                        <tr> 
+                                                                            <td> Total Quantity</td>
+                                                                            <td align="end" colspan="2" id="qty_total_placeholder">0</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>Gross Total</td>
+                                                                            <td align="end" colspan="2" id="sub_total_placeholder">0.00</td>
+                                                                        </tr>
+                                                                    
+                                                                    </tbody>
+                                                                </table>     
+                                                            </div> -->
+                                                        <!-- </div>
+                                                    </div> -->
+                                             
+                                            
+                                            </div>
+ <!-- <div class="col-md-4 mt-2">
+                                                        <label for="order_date" class="form-label">Remarks</label>
+                                                        
+                                                        <input class="form-control" type="text" name="remarks" id="remarks" >
+                                                    </div> -->
+                                                <div class="modal-footer" >
+
+                                                    
+                                                   
+                                                    <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                    <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                </div>
+
+                                                <div class="row" style="display: none;">
+                                                    <div class="col-md-12">
+
+                                                        
+                                                        <div class="table-responsive table-desi">
+
+                                                            <table class="table table-bordered w-100" id="program_details">
+                                                                <thead>
+                                                                    <tr>
+                                                                        
+                                                                        <th>Item</th>
+                                                                        <th>Color</th>
+                                                                        <th>Dia</th>
+                                                                        <th>Rolls</th>
+                                                                        <th>Wt. Per Roll</th>
+                                                                    </tr> 
+                                                                </thead> 
+                                                                <tbody>
+                                                                    
+                                                                    
+                                                                  
+                                                                </tbody> 
+                                                            </table>
+                                                        </div> 
+
+
+                                                        <!-- <div class="" style="text-align: end;" >
+                                                            <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                        </div> -->
+
+
+                                                        <hr>
+                                                        <!-- po-deliver table -->
+                                                    </div>
+                                                    
+                                                    <div class="" style="text-align: end;" >
+                                                        <button type="button" id="cancel" class="btn btn-danger" onclick="history.back()">Close</button>
+                                                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                                                        <button type="submit" id="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                     
+                                            
+                                    
+                                                </div>
+
+
+                                            </div> </form>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer.html' %}
+
+<script>
+ 
+
+ 
+
+
+ function load_DyePrg_details() {
+    let dye_prg_id = $("#dye_prg_id").val(); 
+
+    // Check if the table is already initialized
+    if ($.fn.DataTable.isDataTable('#program_details')) {
+        $('#program_details').DataTable().destroy();  // Destroy old instance
+    }
+
+    $('#program_details').DataTable({
+        "processing": true,
+        "pageLength": 50,
+        "destroy": true, // Allow reinitialization  
+        "order": [],
+        "ajax": {
+            "url": '/dye-prg-list/',
+            "type": "POST",
+            "data": function (data) {
+                data.csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                data.prg_id = dye_prg_id;
+            },
+            "dataSrc": function (json) {
+                if (json.message === 'error') {
+                    console.log('Access denied');
+                    return [];
+                }
+                console.log(json);
+                return json.data;
+            }
+        },
+        "columns": [
+            { "data": "fabric_id", "title": "Item" },
+            { "data": "color", "title": "Color" },
+            { "data": "dia", "title": "Dia" },
+            { "data": "rolls", "title": "Rolls" },
+            // { "data": "dia", "title": "Dia" },
+            // { "data": "rolls", "title": "Rolls" },
+            { "data": "wt_per_roll", "title": "Wt. Per Roll" },
+            // { "data": "quantity", "title": "Quantity" },
+            // { "data": "rate", "title": "Rate" },
+            // { "data": "total_amount", "title": "Total Amount" }
+        ]
+    });
+}
+
+
+
+// ```````````````````````````````````````````````````````````
+ 
+function LoadLotDetails() {
+    var lot_no = $('#lot_no').val(); 
+    console.log('Lot ID:', lot_no); // Debugging output
+ 
+    if (!lot_no) { 
+        console.warn("No Lot selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_lot_details/',
+        data: {
+            'lot_id': lot_no,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',  
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Update Total Quantity Input
+            // $('#lot_total_quantity').val(data.inward_total_quantity);  
+            // $('#lot_no').val(data.lot_no);   
+
+            $('#lot_total_quantity').val('');  // Clear input field 
+
+          
+            if (data) {
+                $('#lot_total_quantity').val(data.inward_total_quantity);  // Assigning GSM value
+            }
+            $('#lot_no').val('');  // Clear input field
+
+          
+            if (data) {
+                $('#lot_no').val(data.lot_no);  // Assigning GSM value
+            }
+
+            // Update Table Data <td colspan="2" class="text-end">${data.program_total_quantity}</td> 
+            var tableHtml = `
+                <tr>
+                    <td>Total Quantity</td>
+                    <td colspan="2" class="text-end">${data.inward_total_quantity}</td> 
+                    <td colspan="2" class="text-end">${data.delivered_quantity}</td>
+                    <td colspan="2" class="text-end">${data.balance_quantity}</td>
+                </tr>
+            `;
+
+            // Replace the existing table body with new data
+            $('#DeliverTable tbody').html(tableHtml);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading lot details:', error);
+        } 
+    });
+}
+
+
+
+function LoadFabricValues() {
+    var product_id = $('#fabric_id').val(); 
+    console.log('Product-ID:', product_id); // Debugging output
+
+    if (!product_id) {
+        console.warn("No Product ID selected");
+        return;
+    }
+
+    var csrfToken = $('input[name="csrfmiddlewaretoken"]').val();  // CSRF Token
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_fabric_program_lists/',
+        data: {
+            'product_id': product_id,
+            'csrfmiddlewaretoken': csrfToken
+        },
+        dataType: 'json',
+        success: function(data) {
+            console.log('Received Data:', data); // Debugging output
+
+            // Clear existing values and add default "Select" option
+            $('#count').empty().append('');
+            $('#dia').empty().append('<option value="">Select</option>');
+            $('#gauge').empty().append('');
+            $('#tex').empty().append('');
+            $('#gsm').val('');  // Clear input field  
+
+            // Populate dropdowns only if data exists 
+            if (data.count) {
+                $('#count').append('<option value="' + data.count.id + '">' + data.count.count + '</option>');
+            }
+
+            // if (data.dia) {
+            //     $('#dia_id').append('<option value="' + data.dia.id + '">' + data.dia.name + '</option>');
+            // }
+
+
+            if (data.dia && Array.isArray(data.dia)) {
+                let diaOptions = '<option value="">Select</option>';
+                data.dia.forEach(function(dia) {
+                    diaOptions += '<option value="' + dia.id + '">' + dia.name + '</option>';
+                });
+                $('#dia').html(diaOptions);
+            } 
+
+
+            if (data.gauge) {
+                $('#gauge').append('<option value="' + data.gauge.id + '">' + data.gauge.name + '</option>');
+            }
+
+            if (data.tex) {
+                $('#tex').append('<option value="' + data.tex.id + '">' + data.tex.name + '</option>');
+            }
+
+            if (data.gsm) {
+                $('#gsm').val(data.gsm.gray_gsm);  // Assigning GSM value
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading fabric details:', error);
+        } 
+    });
+}
+
+function calculateValueTotal() {
+    // Get input values
+    let rolls = parseFloat(document.getElementById("rolls").value) || 0;
+    let wtPerRoll = parseFloat(document.getElementById("wt_per_roll").value) || 0;
+
+    // Calculate quantity in kg
+    let quantity = rolls * wtPerRoll;
+    document.getElementById("quantity").value = quantity.toFixed(2); // Set with 2 decimal places
+    document.getElementById("gross_wt").value = quantity.toFixed(2); // Set with 2 decimal places
+}
+
+// function LoadPO() {
+//     var supplier_id = $('#supplier_id').val(); 
+//     console.log('Supplier-ID:', supplier_id); // Adjusted for clarity
+ 
+//     $.ajax({
+//         type: 'POST',  // Change to POST
+//         url: '/get_gf_delivery_list/',
+//         data: {
+//             'supplier_id': supplier_id,
+//             'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+//         },
+//         success: function(data) {
+//             $('#do_id').empty().append('<option value="">Select</option>');
+            
+//             if (data.length > 0) {
+//                 data.forEach(function(po) {
+//                     $('#do_id').append('<option value="' + po.id + '">' + po.inward_number + '</option>');
+//                 });
+//             }
+
+
+            
+//         },
+//         error: function(xhr, status, error) {
+//             console.error('Error loading po lists:', error);
+//         } 
+//     });
+// }
+
+
+
+
+
+
+$(document).on('change', '#do_id', function() {
+    const poId = $(this).val(); // Get selected Purchase Order IDs from the multiple select
+
+    if (    !poId) {
+        alert("Please select both a Supplier and a Purchase Order.");
+        return; // Exit if either is not selected
+    }
+
+    // Call the function to load purchases based on the selected supplier and purchase orders
+    // LoadDeliver();
+    loadPurchases( poId);
+});
+
+
+
+function LoadDeliver() {
+    var process_id = $('#process_id').val();  
+    console.log('Process-ID:', process_id); 
+
+    $.ajax({
+        type: 'POST',
+        url: '/get_process_deliver_lists/',  // Ensure this matches Django view URL
+        data: {
+            'process_id': process_id,
+            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()  // Include CSRF token
+        },
+        dataType: 'json', // Ensure JSON response
+        success: function(data) {
+            $('#deliver_id').empty().append('<option value="">Select</option>');
+
+            if (data.deliveries && data.deliveries.length > 0) {
+                data.deliveries.forEach(function(deliver) {
+                    $('#deliver_id').append('<option value="' + deliver.id + '">' + deliver.name + '</option>');
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error loading deliver lists:', error);
+        }
+    });
+}
+
+// ``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
+
+const loadedItemsMap = {}; 
+
+function loadPurchases(poIds) {
+    const currentLoadedItems = new Set();
+
+    $.ajax({
+        type: "GET",
+        url: "/load-gf-inward-orders/",
+        data: {
+            'po_id': poIds.join(',') // Send as a comma-separated string
+        },
+        success: function(data) {
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(function(item) {
+                    const uniqueKey = `${item.product_id}_${item.tm_id}`;
+
+                    if (!loadedItemsMap[uniqueKey]) {
+                        const price = parseFloat(item.rate) || 0;
+                        const tax_value = 5;
+
+                        console.log("Adding row:", item);
+
+
+                        addRow(
+                            item.product, item.rate, item.count, item.gauge, item.tex, item.gsm, item.dia, 
+                            item.rolls, item.wt_per_roll, item.amount, price, item.id, 
+                            item.product_id, item.count_id, item.gauge_id, item.tex_id, 
+                            item.tm_id, item.quantity, tax_value, item.delivery_rolls, item.lot_no  // Fix here
+                        );
+
+
+                        loadedItemsMap[uniqueKey] = true;
+                        calculateTotalValue();
+                    }
+
+                    currentLoadedItems.add(uniqueKey);
+                });
+            } else {
+                alert('No unassigned items found or all items are already assigned.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log('error:', error);
+            alert('Error loading purchases: ' + error);
+        }
+    });
+}
+
+
+
+
+let rowCounter = 0; // Initialize row counter 
+function addManualRow() { 
+    console.log("✅ addManualRow function triggered!");
+
+    const product = $("#fabric_id option:selected").text();
+    const productId = $("#fabric_id").val();
+    const count = $("#count option:selected").text();
+    const countId = $("#count").val();
+    const gauge = $("#gauge option:selected").text();
+    const gaugeId = $("#gauge").val();
+    const tex = $("#tex option:selected").text();
+    const texId = $("#tex").val();
+    const rate = $("#rate").val();
+    const gsm = $("#gsm").val(); 
+
+    const dia = $("#dia option:selected").text();
+    const diaId = $("#dia").val();
+
+
+    const color = $("#colorId option:selected").text();
+    const colorId = $("#colorId").val();
+
+
+    
+    // const dia = $("#dia").val(); 
+    const rolls = $("#rolls").val();
+    const wt_per_roll = $("#wt_per_roll").val();
+    const quantity = $("#quantity").val();
+    const gross_wt = $("#gross_wt").val();
+    const tmId = 0; 
+    const lot_no = 0;
+    const taxValue = 5;
+
+    console.log("🔍 Values:");
+    console.log({ product, productId, count, countId, gauge, gaugeId, tex, texId, gsm, rate, dia, rolls, wt_per_roll, quantity, gross_wt,diaId ,colorId});
+
+    if (!productId || !quantity) {
+        alert("❌ Please fill in all required fields.");
+        return;
+    }
+
+    // FIX: Correct parameter order
+    addRow(product, count, gauge, tex, gsm, dia, rolls, wt_per_roll, quantity, gross_wt, productId, countId, gaugeId, texId, tmId, color, lot_no,diaId, colorId);
+}
+
+ 
+
+$('#inward_id').on('change', function() {
+    var do_id = $(this).val(); // Get the selected DO ID
+    console.log('Selected DO ID:', do_id);
+
+    if (do_id) {
+        $.ajax({
+            type: 'POST',
+            url: '/get_gf_inward_details/', // A new endpoint to handle this
+            data: {
+                'do_id': do_id,
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+            },
+ 
+
+            success: function(data) {
+                $('#purchaseTable tbody').empty();
+                // $("#prg_list").val('').trigger('change');
+
+
+                $("#do_id").val(data.do_id);
+                $("#lot_no").val(data.lot_no);
+
+    
+                data.deliveries.forEach(function(delivery) {
+                    addRow(
+                        delivery.fabric,           // product
+                        delivery.yarn_count,       // count
+                        delivery.gauge_name,       // gauge
+                        delivery.tex_name,         // tex
+                        delivery.gsm,  
+                        delivery.dia_name,       
+                        delivery.rolls,
+                        delivery.wt_per_roll,
+                        delivery.quantity,
+                        delivery.gross_wt,
+
+                        delivery.product_id,        // productId
+                        delivery.count,            // countId
+                        delivery.gauge,            // gaugeId
+                        delivery.tex,              // texId
+                        data.prg_id,               // tmId
+                        5,                         // color (or tax placeholder)
+                        data.lot_no,               // lot_no
+                        delivery.dia,              // diaId
+                        delivery.do_id             // colorId
+                    );
+                });
+
+
+
+
+
+
+
+
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading knitting deliveries:', error);
+            }
+        });
+    }
+});
+
+function addRow(product, count, gauge, tex, gsm, dia, rolls, wt_per_roll, quantity, gross_wt, productId, count_id, gauge_id, tex_id, tmId, color, lot_no , diaId, doId) {
+    const tableBody = document.querySelector("#purchaseTable tbody");
+    
+    if (!tableBody) {
+        console.error("Table body not found! Make sure the table exists in the DOM.");
+        return;
+    }
+
+    rowCounter++;  // Generate unique row ID
+    const rowId = `row_${rowCounter}`;
+
+    const newRow = document.createElement("tr");
+    newRow.setAttribute("data-product-id", productId);
+    newRow.setAttribute("data-tm-id", tmId);
+    newRow.setAttribute("data-row-id", rowId);
+
+    newRow.innerHTML = `
+        <td>${product}</td>
+        <td style="display:none">${lot_no}</td>
+        <td>${count}</td>
+        <td>${gauge}</td>
+        <td>${tex}</td>   
+        <td>${gsm}</td>
+        <td>${dia}</td>
+        <td>${rolls}</td>  
+        <td>${wt_per_roll}</td>
+        <td>${quantity}</td>  <!-- FIX: Correctly inserting quantity -->
+        <td>${gross_wt}</td>  <!-- FIX: Correctly inserting gross_wt -->
+        
+        <td id="tm_id" style="display:none">${tmId}</td>
+        <td id="product_id" style="display:none">${productId}</td>
+        <td id="count_id" style="display:none">${count_id}</td> 
+        <td id="gauge_id" style="display:none">${gauge_id}</td>
+        <td id="tex_id" style="display:none">${tex_id}</td>
+        <td id="dia_id" style="display:none">${diaId}</td>
+        <td id="do_id" style="display:none">${doId}</td>
+        <td>  
+
+            <button class="btn btn-primary btn-xs" onclick="editRow(this)">
+                <i class="feather icon-edit"></i>
+            </button>
+
+
+            <button class="btn btn-danger btn-xs remove-row"> 
+                <i class="feather icon-trash-2"></i>
+            </button>
+        </td>
+    `; 
+
+    // Append row to table body
+    tableBody.appendChild(newRow);
+    console.log("✅ Row successfully added:", newRow);
+
+    calculateTotalValue();
+    resetFields();
+
+    // Event listener to remove row
+    newRow.querySelector(".remove-row").addEventListener("click", function() {
+        newRow.remove();
+        calculateTotalValue();
+        console.log("Row removed:", rowId);
+    });
+}
+
+
+
+ 
+function resetFields() {
+
+document.getElementById('dia').value = ''; 
+// $('#fabric_id').val('').trigger("change");
+$('#count_id').val('').trigger("change");
+$('#gauge_id').val('').trigger("change");
+$('#tex_id').val('').trigger("change");
+$('#dia').val('').trigger("change");
+// document.getElementById('dia').value = '';  
+document.getElementById('gsm').value = ''; 
+document.getElementById('rolls').value = ''; 
+document.getElementById('wt_per_roll').value = ''; 
+document.getElementById('quantity').value = ''; 
+document.getElementById('gross_wt').value = ''; 
+}
+
+ 
+// function editRow(mrow) {
+//     // Get the row index to update later
+//     editIndex = $(mrow).closest('tr').index();
+
+//     const row = $(mrow).closest('tr');
+
+//     // Get values using class-based selectors (more reliable than column index)
+//     const productText = row.find('td:eq(0)').text().trim();
+//     const countText = row.find('td:eq(2)').text().trim();
+//     const gaugeText = row.find('td:eq(3)').text().trim();
+//     const texText = row.find('td:eq(4)').text().trim();
+//     const diaText = row.find('td:eq(5)').text().trim();
+//     const gsm = row.find('td:eq(6)').text().trim();
+//     const rolls = row.find('td:eq(7)').text().trim();
+//     const wtPerRoll = row.find('td:eq(8)').text().trim();
+//     const quantity = row.find('td:eq(9)').text().trim();
+//     let rate = row.find('td:eq(10)').text().trim();
+//     let totalAmount = row.find('td:eq(11)').text().trim();
+
+//     // Hidden fields (using class names)
+//     const productId = row.find('.prd-id').text().trim();
+//     const countId = row.find('.count-id').text().trim();
+//     const gaugeId = row.find('.gauge-id').text().trim();
+//     const texId = row.find('.tex-id').text().trim();
+//     const tmId = row.find('.tm-id').text().trim();
+//     const tmPoId = row.find('.tm-po-id').text().trim();
+//     const diaId = row.find('.dia-id').text().trim();
+//     const doId = row.find('.do-id').text().trim();
+
+//     console.log("📝 Editing row with:");
+//     console.log("   Product ID:", productId);
+//     console.log("   DO ID:", doId);
+
+//     // Populate form fields
+//     $("#fabric_id").val(productId).trigger("change");
+//     $("#count_id").val(countId).trigger("change");
+//     $("#gauge_id").val(gaugeId).trigger("change");
+//     $("#tex_id").val(texId).trigger("change");
+//     $("#dia").val(diaId).trigger("change");
+//     $('#lot').val(doId);  // If you want to populate lot/do-id
+
+//     $("#rolls").val(rolls);
+//     $("#wt_per_roll").val(wtPerRoll);
+//     $("#quantity").val(quantity);
+
+//     // Clean rate and amount
+//     rate = rate.replace(/[^0-9.]/g, '');
+//     totalAmount = totalAmount.replace(/[^0-9.]/g, '');
+
+//     $("#rate").val(parseFloat(rate) || 0);
+//     $("#total_amount").val(parseFloat(totalAmount) || 0);
+
+//     // Remove the existing row (so it can be added back on update)
+//     row.remove();
+//     calculateTotalValue();
+// }
+
+
+
+
+var editIndex = -1; // Track the row being edited
+
+function editRow(mrow) {
+    // Get row index for later update
+    editIndex = $(mrow).closest('tr').index();
+
+    // Get the row object
+    var row = $(mrow).closest('tr');
+
+    // Fetch values from the selected row
+    var productText = row.find("td:eq(0)").text().trim();  // Product
+    var lotNo = row.find("td:eq(1)").text().trim();        // Lot No 
+    var countText = row.find("td:eq(2)").text().trim();    // Count
+    var gaugeText = row.find("td:eq(3)").text().trim();    // Gauge
+    var texText = row.find("td:eq(4)").text().trim();      // TEX
+    var dia = row.find("td:eq(5)").text().trim();          // DIA
+    var rolls = row.find("td:eq(6)").text().trim();        // Rolls
+    var wtPerRoll = row.find("td:eq(7)").text().trim();    // Weight per Roll
+    var quantity = row.find("td:eq(9)").text().trim();     // Quantity
+    var grosswt = row.find("td:eq(10)").text().trim(); // Total Amount
+    var color = row.find("td:eq(11)").text().trim(); // Total Amount
+
+    // Fetch hidden field values correctly 
+    var productId = row.find("#product_id").text().trim(); 
+    var countId = row.find("#count_id").text().trim();
+    var gaugeId = row.find("#gauge_id").text().trim();
+    var texId = row.find("#tex_id").text().trim();
+    var tmId = row.find("#tm_id").text().trim();
+    var diaId = row.find("#dia_id").text().trim();
+    var colorId = row.find("#color-id").text().trim();
+
+    // Populate form fields
+    $("#fabric_id").val(productId).trigger("change");
+    $("#count_id").val(countId).trigger("change");
+    $("#gauge_id").val(gaugeId).trigger("change");
+    $("#tex_id").val(texId).trigger("change");
+    $("#dia").val(diaId).trigger("change");
+    $("#color").val(colorId).trigger("change");
+    
+    // $("#dia").val(dia);
+    $("#rolls").val(rolls);
+    $("#wt_per_roll").val(wtPerRoll);
+    $("#quantity").val(quantity);
+    $("#gross_wt").val(grosswt);
+    row.remove();
+
+    // // Clean and set numerical values
+    // rate = rate.replace(/[^0-9.]/g, '');
+    // totalAmount = totalAmount.replace(/[^0-9.]/g, '');
+    // $("#rate").val(parseFloat(rate) || 0);
+    // $("#total_amount").val(parseFloat(totalAmount) || 0);
+    // // $(mrow).closest('tr').remove();
+
+    // console.log("Editing Row:", editIndex);
+
+    calculateTotalValue();
+    // Do NOT remove row immediately; wait for user to update
+}
+
+
+
+
+
+
+
+// Ensure table body is visible in CSS
+const css = `
+    #purchaseTable tbody {
+        display: table-row-group; /* Ensure rows are visible */
+    }
+`;
+const style = document.createElement('style');
+style.appendChild(document.createTextNode(css));
+document.head.appendChild(style);
+
+
+
+
+// Calculation function for the row
+function calculateRow(event) {
+    var rowId = event.target.getAttribute('data-row-id');
+    var row = document.querySelector(`[data-row-id="${rowId}"]`).closest('tr');
+    
+    var bagElement = row.querySelector('.bag');
+    var perBagElement = row.querySelector('.per_bag');
+    var quantityElement = row.querySelector('.quantity');
+    var rateElement = row.querySelector('.rate');
+    
+    if (bagElement && perBagElement && quantityElement && rateElement) {
+        // Calculate quantity based on bag and per_bag
+        var bag = parseFloat(bagElement.value) || 0;
+        var perBag = parseFloat(perBagElement.value) || 0;
+        var quantity = bag * perBag;
+        quantityElement.value = quantity;
+
+        // Calculate amount based on quantity and rate
+        var rate = parseFloat(rateElement.value) || 0;
+        var amount = quantity * rate;
+        row.querySelector('.amount').value = amount.toFixed(2);
+    } else {
+        console.error('Missing elements in the row.');
+    }
+    calculateTotalValue();
+}
+
+
+function storeTblValues() {
+    var TableData = [];
+
+    // Loop through each row in the table body
+    $('#purchaseTable tbody tr').each(function(index) { 
+        // Extract values from the columns of the row
+        var product = $(this).find('td:eq(0)').text().trim(); // Product name
+        var lot_no = $(this).find('td:eq(1)').text().trim(); // Product name
+        var rate =parseFloat($(this).find('td:eq(9)').text()) || 0;  // Rate from input field
+        var count =  $(this).find('td:eq(2)').text().trim(); // Bag quantity from input field 
+        var gauge =  $(this).find('td:eq(3)').text().trim();  // Per Bag price
+        var tex =  $(this).find('td:eq(4)').text().trim();  // Per Bag price 
+        var gsm =  $(this).find('td:eq(5)').text().trim();  // Per Bag price
+        var dia =  $(this).find('td:eq(6)').text().trim();  // Per Bag price
+        var rolls =  $(this).find('td:eq(7)').text().trim();  // Per Bag price
+        var wt_per_roll =  $(this).find('td:eq(8)').text().trim();  // Per Bag price
+        var quantity =  $(this).find('td:eq(9)').text().trim(); // Quantity
+        var amount = parseFloat($(this).find('td:eq(10)').text()) || 0;  // Amount calculated
+        var taxValue = parseFloat($(this).find('td:eq(11)').text()) || 0; // Tax value (as percentage)
+        var tmId =  $(this).find('td:eq(12)').text().trim();// TM ID
+        // var id = $(this).find('td:eq(13)').text().trim();  // ID for the product/order
+        var product_id = $(this).find('#product_id').text().trim();  // ID for the product/order
+        var count_id = $(this).find('td:eq(14)').text().trim();  // ID for the product/order
+        var gauge_id = $(this).find('td:eq(15)').text().trim();  // ID for the product/order
+        var tex_id = $(this).find('td:eq(16)').text().trim();  // ID for the product/order
+        var dia_id = $(this).find('td:eq(17)').text().trim();  // ID for the product/order
+
+        // Validate that the necessary fields are populated
+        if (product && rate && quantity && amount !== undefined && tmId) {
+            TableData.push({
+                "product": product,
+                "rate": rate.toFixed(2),  // Fixed decimal format for rate
+                "count_id": count_id,
+                'gauge_id':gauge_id,
+                'tex_id':tex_id,
+                'dia':dia,
+                'dia_id':dia,
+                'rolls':rolls,
+                'wt_per_roll':wt_per_roll,
+                "quantity": quantity,
+                "amount": amount.toFixed(2),  // Fixed decimal format for amount
+                "tax_value": taxValue.toFixed(2), // Fixed decimal format for tax value
+                "tm_id": tmId,
+                // "id": id ,
+                'product_id':product_id,
+                'lot_no':lot_no
+            });
+        } else {
+            console.error(`Row ${index + 1} is missing required data:`, {
+                product_name: product || "Missing", 
+                rate: rate || "Missing",
+                quantity: quantity || "Missing",
+                amount: amount || "Missing",
+                tm_id: tmId || "Missing",
+                id: id || "Missing"
+            });
+        }
+    });
+
+    // Calculate the total (assuming you have a function for total calculation)
+    calculateTotalValue();  // Call to calculate the total after collecting all values
+    
+    console.log('TABLE-DATA:', TableData);  // Output the collected table data
+    return TableData;  // Return the data to be used further (for submission, storage, etc.)
+}
+
+
+// Calculate the total of all rows
+
+// Calculate the total of all rows 
+function calculateTotalValue() {
+    let totalQuantity = 0;
+    let subTotal = 0;
+    let totalTax = 0; 
+    let taxSummary = {}; 
+  
+    // Tax rate as a percentage
+    const taxRate = 5;
+
+    // Iterate over each row in the table to calculate totals
+    $('#purchaseTable tbody > tr').each(function() {
+        // Fetch values from each cell
+        const quantity = parseFloat($(this).find('td:eq(9)').text()) || 0; // Quantity from input field
+        const gross_wt = parseFloat($(this).find('td:eq(10)').text()) || 0; // Rate from input field
+        // const amount = parseFloat($(this).find('td:eq(10)').text()) || 0; // Amount from input field
+
+        // Calculate tax amount as 5% of the amount
+        // const taxAmount = (amount * taxRate) / 100;
+
+        // Update totals 
+        totalQuantity += quantity;
+        subTotal += gross_wt;
+        // totalTax += taxAmount;  // Adding calculated tax to total tax
+
+        // Update tax summary (if any tax logic is needed)
+        // if (taxAmount > 0) {
+        //     if (!taxSummary[taxRate]) {
+        //         taxSummary[taxRate] = { sgst: 0, cgst: 0, igst: 0, totalTax: 0 };
+        //     }
+        //     // Assuming SGST and CGST split equally for simplicity
+        //     const sgstAmount = taxAmount / 2;
+        //     taxSummary[taxRate].sgst += sgstAmount;
+        //     taxSummary[taxRate].cgst += sgstAmount;
+        //     taxSummary[taxRate].totalTax += taxAmount;
+        // }
+    });
+
+    // Calculate round-off value and grand total
+    // const totalAmount = subTotal + totalTax;
+    // const roundOff = totalAmount - Math.floor(totalAmount);  // Get the decimal part
+
+    // // Apply the round-off logic (if >= 0.5, round up; if < 0.5, round down)
+    // const adjustedRoundOff = roundOff >= 0.5 ? (1 - roundOff) : -roundOff;
+
+    // const grandTotal = (subTotal + totalTax + adjustedRoundOff).toFixed(2);  // Add adjusted round-off to grand total
+
+    // Display totals 
+    $('#qty_total_placeholder').text(totalQuantity);
+    $('#sub_total_placeholder').text(subTotal.toFixed(2));
+    // $('#tax_placeholder').text(totalTax.toFixed(2));
+    // $('#round_off').text(adjustedRoundOff.toFixed(2));
+    // $('#total_payable').text(grandTotal);
+ 
+
+
+    // Update tax summary table (if needed)
+    // $('#tax_summary_body').empty();
+    // for (const [rate, data] of Object.entries(taxSummary)) {
+    //     $('#tax_summary_body').append(`
+    //         <tr>
+    //             <td>${rate}%</td>
+    //             <td>${data.sgst.toFixed(2)}</td>
+    //             <td>${data.cgst.toFixed(2)}</td>
+    //             <td>${data.igst ? data.igst.toFixed(2) : '0.00'}</td>
+    //             <td>${data.totalTax.toFixed(2)}</td>
+    //         </tr>
+    //     `);
+    // }
+}
+
+
+// `````````````````````````````````````````````````````````````````````
+
+
+
+
+// ```````````````````````````````````````````````````````
+
+
+
+
+// $('#add_new').on('submit', function(e) {
+//     e.preventDefault(); // Prevent default form submission
+//     console.log("Submit button clicked"); // Debugging
+
+//     var TableData = storeTblValues();
+//     console.log('tbl-data:', TableData);
+
+//     if (TableData.length === 0) {
+//         notifier.show(
+//             'Error!', 
+//             'Table is empty. Please insert the program details.', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         return;
+//     }  
+
+//     // Get Total Quantity from Summary Table
+//     var totalQty = parseFloat($('#qty_total_placeholder').text()) || 0;
+
+//     // Get Balance Quantity from Delivery Table (Assuming it's the last row, update selector if needed)
+//     var balanceQty = parseFloat($('#DeliverTable tbody tr:last td:nth-child(3)').text()) || 0;
+//     alert('b-qty:',balanceQty);
+//     // Check if Total Quantity exceeds Balance Quantity
+//     if (totalQty > balanceQty) {
+//         notifier.show(
+//             'Warning!', 
+//             'Total Quantity exceeds Balance Quantity! Please adjust the values before saving.', 
+//             'warning', 
+//             "{% static 'assets/images/notification/warning-48.png' %}", 
+//             4000
+//         ); 
+//         return; // Stop form submission
+//     }
+
+//     if (!confirm("Are you sure you want to save?")) {
+//         return; // Stop form submission if the user cancels
+//     }
+
+//     TableData = JSON.stringify(TableData); 
+//     var mdata = new FormData(this);
+//     mdata.append('chemical_data', TableData);
+
+//     var subTotal = $('#sub_total_placeholder').text();
+//     var taxTotal = $('#tax_placeholder').text();
+//     var roundOff = $('#round_off').text();
+//     var totalPayable = $('#total_payable').text();
+
+//     // Append total values to FormData
+//     mdata.append('total_quantity', totalQty);  
+//     mdata.append('sub_total', subTotal); 
+//     mdata.append('tax_total', taxTotal);
+//     mdata.append('round_off', roundOff);
+//     mdata.append('total_payable', totalPayable);
+
+//     $.ajax({
+//         type: "POST", 
+//         url: "/add-gf-deliver/",
+//         data: mdata,
+//         processData: false,
+//         contentType: false,
+//         beforeSend: function() {
+//             console.log("Sending AJAX request...");
+//             $('#submit').attr('disabled', true).text('Processing...');
+//         },
+//         success: function(data) {
+//             console.log("Server Response:", data);
+//             $('#submit').attr('disabled', false).text('Save');
+
+//             if (data === 'yes') {
+//                 notifier.show( 
+//                     'Well Done!', 
+//                     'Knitting program added!', 
+//                     'success', 
+//                     "{% static 'assets/images/notification/ok-48.png' %}", 
+//                     4000
+//                 ); 
+
+//                 // Reset the form
+//                 $('#add_new').trigger('reset'); 
+
+//                 // Clear dynamically added rows in the table
+//                 $('#purchaseTable tbody').empty();
+//                 $('#DeliverTable tbody').empty();
+
+//                 // Reset summary values
+//                 $('#qty_total_placeholder').text('0');
+//                 $('#sub_total_placeholder').text('0.00');
+//                 $('#tax_placeholder').text('0.00');
+//                 $('#round_off').text('0.00');
+//                 $('#total_payable').text('0.00');
+
+//                 // Reset dropdowns (if needed)
+//                 $('#deliver_id, #lot, #fabric_id, #count, #gauge, #tex').val('').trigger('change');
+
+//             } else {
+//                 notifier.show(
+//                     'Error!', 
+//                     'Failed To add', 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 ); 
+//             }
+//         },
+//         error: function(jqXHR, textStatus, errorThrown) {
+//             console.log("AJAX Error:", textStatus, errorThrown);
+//             notifier.show(
+//                     'Error!', 
+//                     'Error adding data', 
+//                     'danger', 
+//                     "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                     4000
+//                 ); 
+//             $('#submit').attr('disabled', false).text('Save');
+//         }
+//     });
+// });
+
+$('#add_new').on('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    console.log("Submit button clicked"); // Debugging
+
+    var TableData = storeTblValues(); 
+    console.log('tbl-data:', TableData); 
+
+    if (TableData.length === 0) {
+        notifier.show(
+            'Error!', 
+            'Table is empty. Please insert the program details.', 
+            'danger', 
+            "{% static 'assets/images/notification/high_priority-48.png' %}", 
+            4000
+        ); 
+        return;
+    }  
+
+    // Get Total Quantity from Summary Table
+    var totalQty = parseFloat($('#qty_total_placeholder').text()) || 0;
+
+    // Get Balance Quantity from Delivery Table (Fixing issue)
+    var balanceQtyText = $('#DeliverTable tbody tr:last td:nth-child(4)').text().trim();
+    var balanceQty = parseFloat(balanceQtyText) || 0;
+
+    console.log("Balance Quantity: " + balanceQty);  // ✅ Corrected alert format
+
+    // Check if Total Quantity exceeds Balance Quantity
+    // if (totalQty > balanceQty) {
+    //     notifier.show(
+    //         'Warning!', 
+    //         'Total Quantity exceeds Balance Quantity! Please adjust the values before saving.', 
+    //         'warning', 
+    //         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+    //         4000
+    //     ); 
+    //     return; // Stop form submission
+    // }
+
+    if (!confirm("Are you sure you want to save?")) {
+        return; // Stop form submission if the user cancels
+    }
+
+    TableData = JSON.stringify(TableData); 
+    var mdata = new FormData(this);
+    mdata.append('chemical_data', TableData);
+ 
+    var subTotal = $('#sub_total_placeholder').text();
+    var taxTotal = $('#tax_placeholder').text();
+    var roundOff = $('#round_off').text();
+    var totalPayable = $('#total_payable').text();
+
+    // Append total values to FormData
+    mdata.append('total_quantity', totalQty);  
+    mdata.append('sub_total', subTotal); 
+    mdata.append('tax_total', taxTotal);
+    mdata.append('round_off', roundOff);
+    mdata.append('total_payable', totalPayable);
+
+    $.ajax({
+        type: "POST", 
+        url: "/add-gf-deliver/",
+        data: mdata,
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            console.log("Sending AJAX request...");
+            $('#submit').attr('disabled', true).text('Processing...');
+        },
+        success: function(data) {
+            console.log("Server Response:", data);
+            $('#submit').attr('disabled', false).text('Save');
+
+            if (data === 'yes') {
+                notifier.show( 
+                    'Well Done!', 
+                    'Grey Fabric Deliver added!',  
+                    'success', 
+                    "{% static 'assets/images/notification/ok-48.png' %}", 
+                    4000
+                ); 
+
+                // Reset the form
+                $('#add_new').trigger('reset'); 
+
+                // Clear dynamically added rows in the table
+                $('#purchaseTable tbody').empty();
+                $('#DeliverTable tbody').empty();
+
+                // Reset summary values
+                $('#qty_total_placeholder').text('0');
+                $('#sub_total_placeholder').text('0.00');
+                $('#tax_placeholder').text('0.00');
+                $('#round_off').text('0.00');
+                $('#total_payable').text('0.00');
+
+                // Reset dropdowns (if needed)
+                $('#deliver_id, #lot, #fabric_id, #count, #gauge, #tex').val('').trigger('change');
+
+            } else {
+                notifier.show(
+                    'Error!', 
+                    'Failed To add', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log("AJAX Error:", textStatus, errorThrown);
+            notifier.show(
+                    'Error!', 
+                    'Error adding data', 
+                    'danger', 
+                    "{% static 'assets/images/notification/high_priority-48.png' %}", 
+                    4000
+                ); 
+            $('#submit').attr('disabled', false).text('Save');
+        }
+    });
+});
+
+
+
+
+
+// $('#add_new').on('submit', function(e) {
+//     e.preventDefault(); // Prevent default form submission
+//     console.log("Submit button clicked"); // Debugging
+
+//     var TableData = storeTblValues();
+//     console.log('tbl-data:', TableData);
+
+//     if (TableData.length === 0) {
+//         notifier.show(
+//             'Error!', 
+//             'Table is empty. Please insert the program details.', 
+//             'danger', 
+//             "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//             4000
+//         ); 
+//         return;
+//     }  
+
+//     // Get Total Quantity from Summary Table
+//     var totalQty = parseFloat($('#qty_total_placeholder').text()) || 0;
+
+//     // Get Balance Quantity from Delivery Table (Assuming it's the last row, update selector if needed)
+//     var balanceQty = parseFloat($('#DeliverTable tbody tr:last td:nth-child(3)').text()) || 0;
+
+//     // Check if Total Quantity exceeds Balance Quantity
+//     if (totalQty > balanceQty) {
+//         alert("Total Quantity cannot be more than Balance Quantity in Delivery Table!");
+//         return; // Stop form submission
+//     }
+
+//     if (confirm("Are you sure you want to save?")) {
+//         TableData = JSON.stringify(TableData); 
+//         var mdata = new FormData(this);
+//         mdata.append('chemical_data', TableData);
+
+//         var subTotal = $('#sub_total_placeholder').text();
+//         var taxTotal = $('#tax_placeholder').text();
+//         var roundOff = $('#round_off').text();
+//         var totalPayable = $('#total_payable').text();
+
+//         // Append total values to FormData
+//         mdata.append('total_quantity', totalQty);  
+//         mdata.append('sub_total', subTotal); 
+//         mdata.append('tax_total', taxTotal);
+//         mdata.append('round_off', roundOff);
+//         mdata.append('total_payable', totalPayable);
+
+//         $.ajax({
+//             type: "POST", 
+//             url: "/add-gf-deliver/",
+//             data: mdata,
+//             processData: false,
+//             contentType: false,
+//             beforeSend: function() {
+//                 console.log("Sending AJAX request...");
+//                 $('#submit').attr('disabled', true).text('Processing...');
+//             },
+//             success: function(data) {
+//                 console.log("Server Response:", data);
+//                 $('#submit').attr('disabled', false).text('Save');
+
+//                 if (data === 'yes') {
+//                     notifier.show( 
+//                         'Well Done!', 
+//                         'Knitting program added!', 
+//                         'success', 
+//                         "{% static 'assets/images/notification/ok-48.png' %}", 
+//                         4000
+//                     ); 
+
+//                     // Reset the form
+//                     $('#add_new').trigger('reset'); 
+
+//                     // Clear dynamically added rows in the table
+//                     $('#purchaseTable tbody').empty();
+//                     $('#DeliverTable tbody').empty();
+
+//                     // Reset summary values
+//                     $('#qty_total_placeholder').text('0');
+//                     $('#sub_total_placeholder').text('0.00');
+//                     $('#tax_placeholder').text('0.00');
+//                     $('#round_off').text('0.00');
+//                     $('#total_payable').text('0.00');
+
+//                     // Reset dropdowns (if needed)
+//                     $('#deliver_id, #lot, #fabric_id, #count, #gauge, #tex').val('').trigger('change');
+
+//                 } else {
+//                     notifier.show(
+//                         'Error!', 
+//                         'Failed To add', 
+//                         'danger', 
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     ); 
+//                 }
+//             },
+//             error: function(jqXHR, textStatus, errorThrown) {
+//                 console.log("AJAX Error:", textStatus, errorThrown);
+//                 notifier.show(
+//                         'Error!', 
+//                         'Error adding data', 
+//                         'danger', 
+//                         "{% static 'assets/images/notification/high_priority-48.png' %}", 
+//                         4000
+//                     ); 
+//                 $('#submit').attr('disabled', false).text('Save');
+//             }
+//         });
+//     }
+// });
+
+
+$('.single-select').select2();
+
+            // Get current date and time
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    const currentTimeString = currentDate.toTimeString().slice(0, 5); // Format as HH:MM
+
+    // Set default values for date and time fields
+    document.getElementById('delivery_date').value = currentDateString;
+    // document.getElementById('purchase_time').value = currentTimeString;
+
+
+
+</script>
