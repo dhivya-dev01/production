@@ -2,13 +2,13 @@
     "version": 2,
     "builds": [
     {
-        "src": "Genplus_Production/wsgi.py",    #project name 
+        "src": "Genplus_Production/wsgi.py",    
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "50mb" }
     }
     ],
     "routes": [
-    { "src": "/(.*)", "dest": "Genplus_Production/wsgi.py" }  # project name
+    { "src": "/(.*)", "dest": "Genplus_Production/wsgi.py" } 
 
     ]
 }
