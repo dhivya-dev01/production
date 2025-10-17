@@ -9,15 +9,24 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
+import environ
 import os
 from pathlib import Path
+from django_filters.rest_framework import DjangoFilterBackend
+from datetime import timedelta 
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env(Path(__file__).resolve().parent.parent / '.env')
+# SECRET_KEY=env('SECRET_KEY')
+
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/ 
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-ok!$)3-4bh5*sf85^l^+zzt8tpaa0rgnf-zua79x^tds!*j4s3'
@@ -37,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 
     'software_app',
     'purchase_app',
@@ -69,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # handle static folde
 ]
 
 ROOT_URLCONF = 'Genplus_Production.urls'
@@ -92,6 +103,29 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Genplus_Production.wsgi.application'
 
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  
+    'http://127.0.0.1:8000',
+    'https://production.vercel.app',
+]
+
+
+
+CSRF_COOKIE_SECURE = False 
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://production.vercel.app',
+]
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7), 
+    'ROTATE_REFRESH_TOKENS': True,                
+    'BLACKLIST_AFTER_ROTATION': True,             
+    'AUTH_HEADER_TYPES': ('Bearer',),              
+    
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -146,10 +180,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
