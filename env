@@ -1,0 +1,7 @@
+SECRET_KEY=django-insecure-ok!$)3-4bh5*sf85^l^+zzt8tpaa0rgnf-zua79x^tds!*j4s3
+DEBUG=False
+DB_NAME=ideapro_production
+DB_USER=ideapro_production
+DB_PASSWORD=Production@321
+DB_HOST=69.57.172.213
+DB_PORT=3306
